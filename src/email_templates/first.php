@@ -26,7 +26,7 @@
 				<table border="0" align="left" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding:0" width="80">
 				<tr>
 					<td valign="top" align="left" style="text-align: left; font-family: Arial; font-size: 24px; line-height: 28px; font-weight: bold; color: #fdfeff; padding: 15px;">
-						<a href="http://www.newsman.ro/"><img src="https://cdn.newsmanapp.eu/imgsrv/i/3f7de525225d1fcedd45cd46f0da3e4b/46074.jpg" style="display: block;" border="0"/></a>
+						<a href="http://www.newsman.ro/"><img src="<?php echo plugins_url('NewsMan/src/email_templates/first/46074.jpg')?>" style="display: block;" border="0"/></a>
 					</td>
 				</tr>
 				</table>
@@ -36,19 +36,19 @@
 						<table class="tableSocial" border="0" align="left" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding:0" width="25">
 						<tr>
 							<td valign="top" align="left" style="padding: 15px 5px;">
-								<a href="##NEWSMAN:facebook_likebutton##"><img src="https://cdn.newsmanapp.eu/imgsrv/i/edae7e1d600decb2207ae68567e10c17/46075.jpg" style="display: block;" border="0"/></a>
+								<a href="##NEWSMAN:facebook_likebutton##"><img src="<?php echo plugins_url('NewsMan/src/email_templates/first/46075.jpg')?>" style="display: block;" border="0"/></a>
 							</td>
 							<td valign="top" align="left" style="padding: 15px 5px;">
-								<a href="##NEWSMAN:twitter_sharebutton##"><img src="https://cdn.newsmanapp.eu/imgsrv/i/9f4692c76e27cff3dd113d9e86983639/46076.jpg" style="display: block;" border="0"/></a>
+								<a href="##NEWSMAN:twitter_sharebutton##"><img src="<?php echo plugins_url('NewsMan/src/email_templates/first/46076.jpg')?>" style="display: block;" border="0"/></a>
 							</td>
 							<td valign="top" align="left" style="padding: 15px 5px;">
-								<a href="##NEWSMAN:pinterest_sharebutton##"><img src="https://cdn.newsmanapp.eu/imgsrv/i/fa984547a653e5db9d6957148609a889/46077.jpg" style="display: block;" border="0"/></a>
+								<a href="##NEWSMAN:pinterest_sharebutton##"><img src="<?php echo plugins_url('NewsMan/src/email_templates/first/46077.jpg')?>" style="display: block;" border="0"/></a>
 							</td>
 							<td valign="top" align="left" style="padding: 15px 5px;">
-								<a href="##NEWSMAN:plusone_sharebutton##"><img src="https://cdn.newsmanapp.eu/imgsrv/i/9dbb96961aa55c3071f11caa39677ba0/46078.jpg" style="display: block;" border="0"/></a>
+								<a href="##NEWSMAN:plusone_sharebutton##"><img src="<?php echo plugins_url('NewsMan/src/email_templates/first/46078.jpg')?>" style="display: block;" border="0"/></a>
 							</td>
 							<td valign="top" align="left" style="padding: 15px 5px;">
-								<img src="https://cdn.newsmanapp.eu/imgsrv/i/d1b1969789c6acb947fe38f77b2989f8/46079.jpg" style="display: block;" border="0"/>
+								<img src="<?php echo plugins_url('NewsMan/src/email_templates/first/46079.jpg')?>" style="display: block;" border="0"/>
 							</td>
 						</tr>
 						</table>
@@ -104,7 +104,7 @@
 				<table border="0" align="center" cellpadding="0" valign="middle" cellspacing="0" height="100" style="height: 100px; background-color: #fff; padding:0;" width="115">
 				<tr>
 					<td class="tdSocialImg" valign="middle" align="center" height="40" style="padding: 0px; height: 40px;">
-						<a href="<?php echo $post->guid?>"><img class="social_img" src="https://cdn.newsmanapp.eu/imgsrv/i/6141136145ca144dcdd7a874b46affa5/46081.jpg" border="0"/></a>
+						<a href="<?php echo $post->guid?>"><img class="social_img" src="<?php echo plugins_url('NewsMan/src/email_templates/first/46081.jpg')?>" border="0"/></a>
 					</td>
 				</tr>
 				</table>
@@ -163,7 +163,7 @@
 				</tr>
 				<tr>
 					<td class="tdSocialImg" valign="middle" align="left" style="padding: 0px; padding-left: 15px;">
-						<a href="<?php echo $post->guid;?>"><img class="social_img" src="https://cdn.newsmanapp.eu/imgsrv/i/6141136145ca144dcdd7a874b46affa5/46081.jpg" border="0"/></a>
+						<a href="<?php echo $post->guid;?>"><img class="social_img" src="<?php echo plugins_url('NewsMan/src/email_templates/first/46081.jpg')?>" border="0"/></a>
 					</td>
 				</tr>
 				</table>
@@ -227,7 +227,7 @@
 		</tr>
 		<tr>
 			<td class="tdSocialImg" valign="middle" align="left" style="padding: 0px; padding-left: 25px;">
-				<a href="<?php echo $post->guid;?>"><img class="social_img" src="https://cdn.newsmanapp.eu/imgsrv/i/6141136145ca144dcdd7a874b46affa5/46081.jpg" border="0"/></a>
+				<a href="<?php echo $post->guid;?>"><img class="social_img" src="<?php echo plugins_url('NewsMan/src/email_templates/first/46081.jpg')?>" border="0"/></a>
 			</td>
 		</tr>
 		<tr>
@@ -282,7 +282,7 @@
 		</tr>
 		<tr>
 			<td class="tdSocialImg" valign="middle" align="left" style="padding: 0px; padding-left: 25px;">
-				<a href="<?php echo $post->guid;?>"><img class="social_img" src="https://cdn.newsmanapp.eu/imgsrv/i/6141136145ca144dcdd7a874b46affa5/46081.jpg" border="0"/></a>
+				<a href="<?php echo $post->guid;?>"><img class="social_img" src="<?php echo plugins_url('NewsMan/src/email_templates/first/46081.jpg')?>" border="0"/></a>
 			</td>
 		</tr>
 		<tr>
@@ -312,6 +312,5 @@
 	</td>
 </tr>
 </table>
-<div></div>
 </body>
 </html>

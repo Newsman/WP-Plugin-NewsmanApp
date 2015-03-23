@@ -69,7 +69,7 @@
 		<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding: 0px;">
 		<tr>
 			<td id="splash" align="center" style="padding: 0px;">
-				<img src="https://cdn.newsmanapp.eu/imgsrv/i/a3d2c62c3f2e3e49621f0f237e6b08bd/46013.jpg" border="0" style="display: block;"/>
+				<img src="<?php echo plugins_url('NewsMan/src/email_templates/second/46013.jpg')?>" border="0" style="display: block;"/>
 			</td>
 		</tr>
 		</table>
@@ -142,6 +142,5 @@
 	</td>
 </tr>
 </table>
-<div></div>
 </body>
 </html>
