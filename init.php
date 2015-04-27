@@ -340,6 +340,7 @@ class WP_Newsman{
 					$html, /* The html content or false if no html present */
 					false, /* The text alternative or false if no text present */
 					array(
+						"encoding" => "UTF-8",
 						"subject" => $_POST['subject'] /* the newsletter subject. will be encoding using encoding. required */
 					));
 				$this->client->newsletter->confirm(
