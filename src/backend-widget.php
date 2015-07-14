@@ -1,5 +1,14 @@
 <?php 
 
+/*
+ Plugin Name: NewsmanApp for Wordpress
+ Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
+ Version: 1.0
+ Author: newsmanapp
+ Author URI: https://www.newsmanapp.com
+ */
+
 if( $_POST['newsman_submit'] == 'Y' ){
 	// process form submission
 	$confirm = ( isset( $_POST['newsman_widget_confirm'] ) && !empty( $_POST['newsman_widget_confirm'] ) ) 	? strip_tags( trim( $_POST[ 'newsman_widget_confirm' ] ) ) 	: get_option( $confirm );

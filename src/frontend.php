@@ -1,4 +1,15 @@
-<div id="newsman_subscribtion_message"></div>
+<?php 
+
+/*
+ Plugin Name: NewsmanApp for Wordpress
+ Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
+ Version: 1.0
+ Author: newsmanapp
+ Author URI: https://www.newsmanapp.com
+ */
+
+?><div id="newsman_subscribtion_message"></div>
 <form method="post" class="newsman-subscription-form">
 	<input type="hidden" name="newsman_subscription_submited" value="Y" />
 	<dl>

@@ -1,15 +1,25 @@
 <?php 
-	$list = get_option( 'newsman_list' );
-	//Check if credentials are valid
-	try{
-		$available_lists = $this->client->list->all();	
-	}catch( Exception $e ){
-		$this->valid_credential = false;
-		$this->setMessageBackend('error', 'Invalid Credentials');
-	}
+
+/*
+ Plugin Name: NewsmanApp for Wordpress
+ Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
+ Version: 1.0
+ Author: newsmanapp
+ Author URI: https://www.newsmanapp.com
+ */
+
+$list = get_option( 'newsman_list' );
+// Check if credentials are valid
+try 
+{
+	$available_lists = $this->client->list->all();	
+} catch( Exception $e )
+{
+	$this->valid_credential = false;
+	$this->setMessageBackend('error', 'Invalid Credentials');
+}
 ?>
-
-
 <div class="wrap">
 		<h2>Newsman Newsletter Setup</h2>
 		
@@ -103,4 +113,3 @@
     </div>
   </div>
 </div>
-

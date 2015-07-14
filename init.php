@@ -1,12 +1,12 @@
 <?php 
 
 /*
- Plugin Name: Newsman Email Client
- Plugin URI: http://www.newsman.ro
- Description: Newsman email client plugin for Wordpress
- Author: Newsman
+ Plugin Name: NewsmanApp for Wordpress
+ Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
  Version: 1.0
- Author URI: http://www.newsman.ro
+ Author: newsmanapp
+ Author URI: https://www.newsmanapp.com
  */
 
 if (!defined('ABSPATH')) { exit; }
