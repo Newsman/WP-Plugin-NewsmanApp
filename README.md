@@ -22,19 +22,19 @@ Download the latest archive from [here](https://github.com/Newsman/WP-Plugin-New
 Some quick screenshots of the plugin features.
 	
 ## Newsman plugin settings
-![newsetter plugin settings](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_settings.png)
+![newsletter plugin settings](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_settings.png)
 
 ## Newsletter signup widget
-![newsetter signup widget](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_widget.png)
+![newsletter signup widget](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_widget.png)
 
 ## Import subscribers to NewsmanApp
-![newsetter import subscribers](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_import_subscribers.png)
+![newsletter import subscribers](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_import_subscribers.png)
 
 ## Edit newsletter templates
-![newsetter templates](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_templates.png)
+![newsletter templates](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_templates.png)
 
 ## Create and send a newsletter
-![newsetter create from blog posts](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_newsletter.png)
+![newsletter create from blog posts](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_newsletter.png)
 
 # License
 
