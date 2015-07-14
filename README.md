@@ -1,9 +1,9 @@
-# WP-Plugin-NewsmanApp
-Wordpress plugin for NewsmanApp.com
+# NewsmanApp plugin for WordPress
+[NewsmanApp](https://www.newsmanapp.com) plugin for WordPress 
 
-NewsmanApp for WordPress allows you to place a newsletter signup form on your blog (widget), to sync your subscribers via API and to send newsletters based on the blog posts via [NewsmanApp - Smart Email Service Provider](https://www.newsmanapp.com).
+[NewsmanApp](https://www.newsmanapp.com) plugin for WordPress allows you to place a newsletter signup form on your blog (widget), to sync your subscribers via API and to send newsletters based on the blog posts via [NewsmanApp](https://www.newsmanapp.com).
 
-This is the easiest way to connect your Blog with NewsmanApp.com. Generate an API KEY in your [NewsmanApp - Smart Email Service Provider](https://www.newsmanapp.com) account, install this plugin and you will be able to collect and sync subscribers and to send newsletter with your blog posts. 
+This is the easiest way to connect your Blog with NewsmanApp.com. Generate an API KEY in your [NewsmanApp](https://www.newsmanapp.com) account, install this plugin and you will be able to collect and sync subscribers and to send newsletter with your blog posts. 
 
 Two free templates are included in the plugin, but more can be easilly added. Generating a newsletter is extremly easy now. Set the subject, select and order which blog posts should be included in the newsletter, preview and send live.
 
