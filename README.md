@@ -13,10 +13,10 @@ Download the latest archive from [here](https://github.com/Newsman/WP-Plugin-New
 
 # Instalation
 
-* Download the .zip archive
-* Extract it in the `/wp-content/plugins/` directory (make sure folder name is NewsMan - rename if required)
-* Activate the plugin through the `Plugins` menu in WordPress
-* Go to `Newsman -> Settings` and paste your API key and User ID (you can find those in your account section in [NewsmanApp](https://www.newsmanapp.com))
+1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
+1. Alternatively, download the plugin and upload the contents of `newsmanapp.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
+1. Activate the plugin
+1. Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsmanapp.com)
 
 # Screenshots
 Some quick screenshots of the plugin features.
