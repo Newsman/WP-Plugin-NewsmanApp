@@ -10,10 +10,11 @@
  */
 
 if (!defined('ABSPATH')) { exit; }
+
 require_once 'vendor/Newsman/Client.php';
 define(templates_dir, __DIR__."/src/email_templates/");
 
-class WP_Newsman{
+class WP_Newsman {
 	
 	/*
 	 * @var Newsman_Client
@@ -200,7 +201,7 @@ class WP_Newsman{
 	 * Register plugin custom css 
 	 */
 	public function registerPluginStyles(){
-		wp_register_style( 'newsman_css', plugins_url( 'NewsMan/src/css/style.css' ) );
+		wp_register_style( 'newsman_css', plugins_url( 'newsmanapp/src/css/style.css' ) );
 		wp_register_style( 'jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css' );
 		wp_register_style( 'bootstrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css' );
 		wp_enqueue_style( 'newsman_css' );
@@ -212,7 +213,7 @@ class WP_Newsman{
 	 * Register plugin custom javascript
 	 */
 	public function registerPluginScripts(){
-		wp_register_script( 'newsman_js', plugins_url( 'NewsMan/src/js/script.js' ), array( 'jquery' ) );
+		wp_register_script( 'newsman_js', plugins_url( 'newsmanapp/src/js/script.js' ), array( 'jquery' ) );
 		wp_register_script( 'jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array( 'jquery' ) );
 		wp_register_script( 'bootstrap-js', "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js", array( 'jquery' ) );
 		wp_enqueue_script( 'newsman_js' );
@@ -515,15 +516,16 @@ class WP_Newsman{
 	 * @param string $template 		the filename of the template
 	 * @return string 				The html of the template after including the posts
 	 */
-	public function constructTemplateEditorPreview($post_nr, $template){
-
+	public function constructTemplateEditorPreview($post_nr, $template)
+	{
 		$posts = wp_get_recent_posts( array( 
 			'numberposts' => $post_nr,
 			'post_type' => 'post',
 			'post_status' => 'publish'
 		 ), OBJECT );
 			
-		foreach( $posts as $k => $post ){
+		foreach( $posts as $k => $post )
+		{
 			$post->image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' );
 			$post->image = $post->image[0];
 			$post->post_author = get_userdata($post->post_author)->display_name; 
@@ -540,8 +542,10 @@ class WP_Newsman{
 	 * @param string $filename The filename of the template
 	 * @return string $source The source of the file
 	 */
-	protected function getTemplateSource($filename = null){
-		if( $filename ){
+	protected function getTemplateSource($filename = null)
+	{
+		if ( $filename )
+		{
 			$source = file_get_contents(templates_dir.$filename);
 			return $source;
 		}
@@ -553,13 +557,18 @@ class WP_Newsman{
 	 * @param string $filename The name of the template (with the php extension)
 	 * @param string $source The modified source of the template
 	 */
-	protected function saveTemplateSource($filename = null, $source){
-		if( $filename ){
+	protected function saveTemplateSource($filename = null, $source)
+	{
+		if( $filename )
+		{
 			$status = file_put_contents(templates_dir.$filename, stripcslashes($source));
-			if($status){
+			if($status)
+			{
 				return true;
-			}else 
+			} else
+			{ 
 				return false;
+			}
 		}
 	}
 	
