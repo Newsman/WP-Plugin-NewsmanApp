@@ -22,10 +22,10 @@ The newsletter signup widget can be placed in the side column of your blog. Tran
 
 == Installation ==
 
-1. Download the .zip archive
-2. Extract it in the `/wp-content/plugins/` directory (make sure folder name is NewsMan - rename if required)
-3. Activate the plugin through the `Plugins` menu in WordPress
-4. Go to `Newsman -> Settings` and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsmanapp.com)
+1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
+1. Alternatively, download the plugin and upload the contents of `newsmanapp.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
+1. Activate the plugin
+1. Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsmanapp.com)
 
 == Frequently Asked Questions ==
 
