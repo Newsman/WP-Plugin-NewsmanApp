@@ -1,15 +1,6 @@
 <?php 
-
-/*
- Plugin Name: NewsmanApp for Wordpress
- Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
- Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- Version: 1.0
- Author: newsmanapp
- Author URI: https://www.newsmanapp.com
- */
-
-if( $_POST['newsman_submit'] == 'Y' ){
+if( $_POST['newsman_submit'] == 'Y' )
+{
 	// process form submission
 	$confirm = ( isset( $_POST['newsman_widget_confirm'] ) && !empty( $_POST['newsman_widget_confirm'] ) ) 	? strip_tags( trim( $_POST[ 'newsman_widget_confirm' ] ) ) 	: get_option( $confirm );
 	$infirm  = ( isset( $_POST['newsman_widget_infirm'] ) && !empty( $_POST['newsman_widget_infirm'] ) ) 	? strip_tags( trim( $_POST[ 'newsman_widget_infirm' ] ) ) 	: get_option( $infirm );
@@ -22,12 +13,10 @@ if( $_POST['newsman_submit'] == 'Y' ){
 		'status' => 'updated',
 		'message' => 'Options saved.'
 	);
-
-}else{	
-
+} else 
+{	
 	$confirm = get_option( 'newsman_widget_confirm' );
 	$infirm = get_option( 'newsman_widget_infirm' );
-
 }
 ?>
 
@@ -70,6 +59,3 @@ if( $_POST['newsman_submit'] == 'Y' ){
 		<input type="submit" value="Save Changes" class="button button-primary"/>
 	</form>
 </div>
-
-
-

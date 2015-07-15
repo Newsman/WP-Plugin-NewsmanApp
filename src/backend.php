@@ -1,21 +1,14 @@
 <?php 
-/*
- Plugin Name: NewsmanApp for Wordpress
- Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
- Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- Version: 1.0
- Author: newsmanapp
- Author URI: https://www.newsmanapp.com
- */
-
 //Check if credentials are valid
-	try{
-		$available_lists = $this->client->list->all();
-		$credentials_status = "credentials-valid";
-	}catch( Exception $e ){
-		$this->valid_credential = false;
-		$credentials_status = "credentials-invalid";
-	}
+try 
+{
+	$available_lists = $this->client->list->all();
+	$credentials_status = "credentials-valid";
+} catch( Exception $e )
+{
+	$this->valid_credential = false;
+	$credentials_status = "credentials-invalid";
+}
 ?>
 
 
