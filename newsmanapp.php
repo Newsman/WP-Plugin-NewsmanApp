@@ -15,14 +15,8 @@ require_once 'vendor/Newsman/Client.php';
 
 $upload_dir = wp_upload_dir();
 
-//copy default email templates to wp-uploads folder if it doesn't already exist
-if(!is_dir($upload_dir['basedir']."/newsmanapp/email_templates")){
-    mkdir($upload_dir['basedir']."/newsmanapp", 0755, true);
-    exec("cp -r ".__DIR__."/src/email_templates/ " . $upload_dir['basedir']."/newsmanapp/email_templates/");
-} 
-   
 define(templates_dir, $upload_dir['basedir']."/newsmanapp/email_templates/");
-
+define(templates_default_dir, __DIR__."/src/email_templates/");
 
 class WP_Newsman {
 	
@@ -470,21 +464,47 @@ class WP_Newsman {
 	}
 	
 	/*
-	 * Loads templates from templates directory (filenames with .html extension)
+	 * Loads templates from templates directory (filenames with .php extension)
 	 */
 	public function findTemplates(){
-		if ($handle = opendir(templates_dir)) {
-			/* This is the correct way to loop over the directory. */
-			while (false !== ($entry = readdir($handle))) {
-				if ($entry != "." && $entry != ".." && strtolower(substr($entry, strrpos($entry, '.') + 1)) == 'php'){
-					$template = array();
-					$template['name'] = ($r = explode('.', $entry)) ? $r[0] : "" ;
-					$template['filename'] = $entry;
-					$this->templates[] = $template;
-				}
-			}
-			closedir($handle);
-		}
+	    
+	    //check custom templates folder for templates
+	    if(is_dir(templates_dir)){
+	        if ($handle = opendir(templates_dir)) {
+	            while (false !== ($entry = readdir($handle))) {
+	                if ($entry != "." && $entry != ".." && strtolower(substr($entry, strrpos($entry, '.') + 1)) == 'php'){
+	                    $template = array();
+	                    $template['name'] = ($r = explode('.', $entry)) ? $r[0] : "" ;
+	                    $template['filename'] = $entry;
+	                    $this->templates[] = $template;
+	                }
+	            }
+	            closedir($handle);
+	        }
+	    }
+	    
+	    //check default templates folder for templates
+	    //if the templates exists in the custom template folder, it is omitted
+	    if ($handle = opendir(templates_default_dir)) {
+	        while (false !== ($entry = readdir($handle))) {
+	            if ($entry != "." && $entry != ".." && strtolower(substr($entry, strrpos($entry, '.') + 1)) == 'php'){
+	                $template = array();
+	                $template['name'] = ($r = explode('.', $entry)) ? $r[0] : "" ;
+	                $template['filename'] = $entry;
+	                $exists = false;
+	                foreach($this->templates as $item){
+	                    if($item == $template){
+	                        $exists = true;
+	                    }
+	                }
+	                if(!$exists){
+    	                $this->templates[] = $template;
+	                }
+	            }
+	        }
+	        closedir($handle);
+	    }
+	    
 		sort($this->templates);
 	}
 	
@@ -554,9 +574,17 @@ class WP_Newsman {
 	 */
 	protected function getTemplateSource($filename = null)
 	{
-		if ( $filename )
-		{
-			$source = file_get_contents(templates_dir.$filename);
+		if ( $filename ) {
+		    //look for the template in the upload dir, if it's not there look in plugins folder
+		    if(file_exists(templates_dir . $filename)){
+		        $filename = templates_dir . $filename;
+		    }elseif(file_exists(templates_default_dir . $filename)) {
+		        $filename = templates_default_dir . $filename;
+		    } else {
+		        return false;
+		    }
+		    
+			$source = file_get_contents($filename);
 			return $source;
 		}
 	}
@@ -571,12 +599,16 @@ class WP_Newsman {
 	{
 		if( $filename )
 		{
+		    $upload_dir = wp_upload_dir();
+		    //check if the upload directory exists if not create it
+		    if(!is_dir(templates_dir)){
+		        mkdir(templates_dir, 0755, true);
+		    }
+		    
 			$status = file_put_contents(templates_dir.$filename, stripcslashes($source));
-			if($status)
-			{
+			if($status) {
 				return true;
-			} else
-			{ 
+			} else { 
 				return false;
 			}
 		}

@@ -69,7 +69,7 @@
 		<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="width: 100%; padding: 0px;">
 		<tr>
 			<td id="splash" align="center" style="padding: 0px;">
-				<img src="<?php echo $template_dir . '/second/46013.jpg';?>" border="0" style="display: block;"/>
+				<img src="<?php echo $template_dir . 'second/46013.jpg';?>" border="0" style="display: block;"/>
 			</td>
 		</tr>
 		</table>
