@@ -12,7 +12,17 @@
 if (!defined('ABSPATH')) { exit; }
 
 require_once 'vendor/Newsman/Client.php';
-define(templates_dir, __DIR__."/src/email_templates/");
+
+$upload_dir = wp_upload_dir();
+
+//copy default email templates to wp-uploads folder if it doesn't already exist
+if(!is_dir($upload_dir['basedir']."/newsmanapp/email_templates")){
+    mkdir($upload_dir['basedir']."/newsmanapp", 0755, true);
+    exec("cp -r ".__DIR__."/src/email_templates/ " . $upload_dir['basedir']."/newsmanapp/email_templates/");
+} 
+   
+define(templates_dir, $upload_dir['basedir']."/newsmanapp/email_templates/");
+
 
 class WP_Newsman {
 	
@@ -49,7 +59,7 @@ class WP_Newsman {
 	
 	/*
 	 * @var array
-	 * Array containing the names of the html files found in the templates directory (as defined by the templates_dir contant) 
+	 * Array containing the names of the html files found in the templates directory (as defined by the templates_dir constant) 
 	 */
 	public $templates = array();
 	

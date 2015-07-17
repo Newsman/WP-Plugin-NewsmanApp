@@ -8,13 +8,17 @@ class TemplateFactory{
 	 * @var string $path
 	 */
 	protected $path;
+	
+	protected $url;
 
 	public function __construct($path = false){
+	    $upload_dir = wp_upload_dir();
 		if($path){
 			$this->setPath($path);
 		}else{
-			$this->setPath( dirname(__FILE__) . '/../email_templates/' );
+			$this->setPath( $upload_dir['basedir']."/newsmanapp/email_templates/" );
 		}
+		$this->url = $upload_dir['baseurl']."/newsmanapp/email_templates/";
 	}
 	
 	/*
@@ -43,8 +47,9 @@ class TemplateFactory{
 	 * @return string Returns the html of the rendered template
 	 */
 	public function render( $template, $posts ){
-		
-		ob_start();		
+	    
+		ob_start();	
+		$template_dir = $this->url;	
 		require  $this->getPath().$template;
 		$html = ob_get_clean();
 		
