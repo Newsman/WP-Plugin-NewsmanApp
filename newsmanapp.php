@@ -487,7 +487,7 @@ class WP_Newsman
 		$email = array();
 		$firstname = array();
 
-		$con = mysqli_connect("localhost", "lucian", "88technology88", DB_NAME);
+		$con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
 		$sql = "SELECT email, firstname FROM `wp_wysija_user`";
 		$result = $con->query($sql);
 
