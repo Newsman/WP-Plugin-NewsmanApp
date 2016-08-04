@@ -88,8 +88,8 @@ class WP_Newsman
 
 	/*
 	 * Set's up the Newsman_Client instance
-	 * @param integer | string $userid 	The user id for Newsman (default's to null)
-	 * @param string $apikey 			The api key for Newsman (default's to null)
+	 * @param integer | string $userid The user id for Newsman (default's to null)
+	 * @param string $apikey The api key for Newsman (default's to null)
 	 * @return nothing
 	 */
 	public function constructClient($userid = null, $apikey = null)
@@ -136,7 +136,7 @@ class WP_Newsman
 		#enqueue plugin styles
 		add_action('wp_enqueue_scripts', array($this, 'registerPluginStyles'));
 		#enqueue plugin styles in admin
-		add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
+		//add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
 		#enqueue wordpress ajax library
 		add_action('wp_head', array($this, 'addAjaxLibrary'));
 		#enqueue plugin scripts
@@ -719,7 +719,6 @@ class WP_Newsman
 		$html = $this->engine->render($template, $posts);
 		return $html;
 	}
-
 
 	/*
 	 * Return the source code of a template
