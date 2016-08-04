@@ -136,7 +136,7 @@ class WP_Newsman
 		#enqueue plugin styles
 		add_action('wp_enqueue_scripts', array($this, 'registerPluginStyles'));
 		#enqueue plugin styles in admin
-		//add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
+		add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
 		#enqueue wordpress ajax library
 		add_action('wp_head', array($this, 'addAjaxLibrary'));
 		#enqueue plugin scripts
