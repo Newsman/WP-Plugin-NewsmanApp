@@ -18,8 +18,9 @@ require_once 'vendor/Newsman/Client.php';
 
 $upload_dir = wp_upload_dir();
 
-define(templates_dir, $upload_dir['basedir'] . "/newsmanapp/email_templates/");
+define(templates_dir, __DIR__ . "/src/email_templates/");
 define(templates_default_dir, __DIR__ . "/src/email_templates/");
+define(template_img_dir, "/wp-content/plugins/newsmanapp/src/email_templates/");
 
 class WP_Newsman
 {
@@ -278,7 +279,6 @@ class WP_Newsman
 
 			$email = strip_tags(trim($_POST['email']));
 			$list = get_option('newsman_list');
-
 			try
 			{
 				$ret = $this->client->subscriber->initSubscribe(
@@ -335,7 +335,6 @@ class WP_Newsman
 	{
 		if (isset($_POST['template']) && !empty($_POST['template']))
 		{
-
 			$template = $_POST['template'];
 			$source = $this->getTemplateSource($template);
 			echo json_encode(array('source' => $source));

@@ -58,8 +58,8 @@
 			</td>
 		</tr>
 		</table>
-		<?php 
-		if( isset($posts) ) { 
+		<?php
+		if( isset($posts) ) {
 			$post = $posts[0];
 	?>
 		<?php if(isset( $post->
@@ -122,7 +122,7 @@
 		<table border="0" cellpadding="0" cellspacing="0" align="center" style="background-color: #fff; border-bottom: 1px solid #eaeaea; padding: 0px;" width="600">
 		<tr>
 			<td valign="top" align="center" style="padding: 0px; padding-left: 10px; padding-right: 10px;">
-				<?php 
+				<?php
 		foreach( $posts as $key =>
 				 $post ){ if( $key == 2 ){ break; } ?>
 				<table align="left" border="0" cellpadding="0" cellspacing="0" width="290" style="background-color: #fff; padding: 0px;">
@@ -167,7 +167,7 @@
 					</td>
 				</tr>
 				</table>
-				<?php 
+				<?php
 		array_shift($posts);
 	}
 	?>
@@ -186,7 +186,7 @@
 			</td>
 		</tr>
 		</table>
-		<?php 
+		<?php
 		foreach( $posts as $key =>
 		 $post ){ if( $key == 1 ){ break; } ?>
 		<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #fff; border-bottom: 1px solid #eaeaea; padding: 0px;">

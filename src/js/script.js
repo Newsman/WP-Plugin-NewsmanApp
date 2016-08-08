@@ -208,7 +208,6 @@
         //template selection list
         $(document).on('change', '.newsman-select-list', function () {
             var filename = $(this).val();
-
             $.post(ajaxurl, {
                 action: 'newsman_ajax_template_editor_selection',
                 template: filename
