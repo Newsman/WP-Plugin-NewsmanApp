@@ -102,6 +102,7 @@ class WP_Newsman
 		try
 		{
 			$this->client = new Newsman_Client($this->userid, $this->apikey);
+                        $this->client->setCallType("rest");
 		} catch (Exception $e)
 		{
 			$this->valid_credentials = false;
