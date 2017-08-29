@@ -9,7 +9,7 @@
 			<input type="text" name="newsman_subscription_email"/>
 		</dd>
 		<dd>
-			<input type="submit" value="Subscribe"/>
+			<input type="button" id="newsman_widget" value="Subscribe"/>
 		</dd>
 	</dl>
 </form>

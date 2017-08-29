@@ -1,23 +1,45 @@
 (function ($) {
     $(function () {
 
-        $(".newsman-subscription-form").submit(function (e) {
-            e.preventDefault();
+     /*
+            $(".newsman-subscription-form").submit(function (e) {
+                e.preventDefault();
 
-            var email = $(this).find("input[name='newsman_subscription_email']").val();
+                var email = $(this).find("input[name='newsman_subscription_email']").val();
+                
+                $.post(ajaxurl, {
+                    action: 'newsman_ajax_subscribe',
+                    email: email
+                }, function (response) {
+                    
+                    response = jQuery.parseJSON(response);
 
-            $.post(ajaxurl, {
-                action: 'newsman_ajax_subscribe',
-                email: email
-            }, function (response) {
+                    $("#newsman_subscribtion_message").html(response.message);
+                    $("#newsman_subscribtion_message").addClass(response.status);
 
-                response = jQuery.parseJSON(response);
-
-                $("#newsman_subscribtion_message").html(response.message);
-                $("#newsman_subscribtion_message").addClass(response.status);
+                });
 
             });
-        });
+            */
+
+            $("#newsman_widget").click(function (e) {
+                e.preventDefault();
+
+                var email = $('.newsman-subscription-form').find("input[name='newsman_subscription_email']").val();
+
+                $.post(ajaxurl, {
+                    action: 'newsman_ajax_subscribe',
+                    email: email
+                }, function (response) {
+
+                    response = jQuery.parseJSON(response);
+
+                    $("#newsman_subscribtion_message").html(response.message);
+                    $("#newsman_subscribtion_message").addClass(response.status);
+
+                });
+
+            });
 
         //show template preview
         $("#newsman-preview-newsletter").on("click", function (event) {

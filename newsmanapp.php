@@ -147,6 +147,7 @@ class WP_Newsman
 		add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
 		#do ajax form subscribe
 		add_action('wp_ajax_nopriv_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
+		add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
 		#preview template
 		add_action('wp_ajax_newsman_ajax_preview_template', array($this, "newsmanAjaxTemplatePreview"));
 		#send newsletter
