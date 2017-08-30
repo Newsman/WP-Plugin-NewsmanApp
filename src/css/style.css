@@ -8,7 +8,8 @@
 }
 
 .newsman-subscription-form input[type='submit'], 
-.newsman-subscription-form input[type='text']{
+.newsman-subscription-form input[type='text'],
+.newsman-subscription-form input[type='button']{
 	width: 100%;
 }
 
