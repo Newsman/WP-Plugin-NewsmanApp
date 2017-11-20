@@ -76,6 +76,10 @@ input[name='newsman_newsletter_title'], input[name='newsman_newslewtter_nr_posts
 	background-color: #993300;
 }
 
+body{
+	background: #fff;
+}
+
 .newsman-template-preview-container{
 	display: none;
 }

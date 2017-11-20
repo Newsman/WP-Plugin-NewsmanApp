@@ -237,12 +237,12 @@ class WP_Newsman
 	 */
 	public function registerPluginStyles()
 	{
-		wp_register_style('newsman_css', plugins_url('newsmanapp/src/css/style.css'));
 		wp_register_style('jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
-		wp_register_style('bootstrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-		wp_enqueue_style('newsman_css');
+		wp_register_style('bootstrap-css', plugins_url('newsmanapp/src/css/bootstrap.css'));
+		wp_register_style('newsman_css', plugins_url('newsmanapp/src/css/style.css'));
 		wp_enqueue_style('bootstrap-css');
 		wp_enqueue_style('jquery-ui-css');
+		wp_enqueue_style('newsman_css');
 	}
 
 	/*
