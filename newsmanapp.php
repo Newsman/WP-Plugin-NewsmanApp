@@ -75,7 +75,7 @@ class WP_Newsman
 	 * 3. Loads templates from directory 
 	 */
 
-	public $wpSync, $mailpoetSync = false;
+	public $wpSync, $mailpoetSync, $sendpressSync, $wooCommerce = false;
 
 	public function __construct()
 	{
@@ -102,7 +102,7 @@ class WP_Newsman
 		try
 		{
 			$this->client = new Newsman_Client($this->userid, $this->apikey);
-                        $this->client->setCallType("rest");
+			$this->client->setCallType("rest");
 		} catch (Exception $e)
 		{
 			$this->valid_credentials = false;
@@ -150,6 +150,8 @@ class WP_Newsman
 		add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
 		#preview template
 		add_action('wp_ajax_newsman_ajax_preview_template', array($this, "newsmanAjaxTemplatePreview"));
+		#check if plugin is active
+		add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));
 		#send newsletter
 		add_action('wp_ajax_newsman_ajax_send_newsletter', array($this, "newsmanAjaxSendNewsletter"));
 		#load template source code for editing
@@ -250,8 +252,8 @@ class WP_Newsman
 	 */
 	public function registerPluginScripts()
 	{
-		wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));
 		wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
+		wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));
 		wp_register_script('bootstrap-js', "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js", array('jquery'));
 		wp_enqueue_script('newsman_js');
 		wp_enqueue_script('bootstrap-js');
@@ -480,6 +482,181 @@ class WP_Newsman
 		include 'src/frontend.php';
 	}
 
+	public function newsmanAjaxCheckPlugin()
+	{
+		$activePlugins = get_option('active_plugins');
+
+		$plugin = $_POST["plugin"];
+
+		if (in_array($plugin, $activePlugins))
+		{
+			echo json_encode(array("status" => 1));
+			exit();
+		}
+		echo json_encode(array("status" => 0));
+		exit();
+	}
+
+	public function GetWooCommerceApi()
+	{
+		$api = array();
+
+		$con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
+		$sql = "SELECT consumer_key, consumer_secret FROM `wp_woocommerce_api_keys`";
+		$result = $con->query($sql);
+
+		if ($result->num_rows > 0)
+		{
+			while ($row = $result->fetch_assoc())
+			{
+				$api["consumer_key"][] .= $row["consumer_key"];
+				$api["consumer_secret"][] .= $row["consumer_secret"];
+			}
+		} else
+		{
+			$con->close();
+			$this->setMessageBackend("error", "No MailPoet subscribers found or plugin is not installed.");
+		}
+		$con->close();
+
+		return $api;
+	}
+
+	public function importWoocommerceSubscribers($list)
+	{
+		$woocommerceCustomers = array();
+
+		$allOrders = wc_get_orders();
+
+		$ordersCount = count($allOrders);
+
+		$email = array();
+
+
+		if ($ordersCount > 0)
+		{
+			for ($int = 0; $int < $ordersCount; $int++)
+			{
+				$email[] = $allOrders[$int]->data["billing"]["email"];
+			}
+		} else
+		{
+			$this->setMessageBackend("error ", "No woocommerce customers found or plugin is not installed.");
+			return;
+		}
+
+		foreach ($email as $_email)
+		{
+			$woocommerceCustomers[]['email'] = $_email;
+		}
+
+		$subscribers = array();
+		foreach ($woocommerceCustomers as $k => $s)
+		{
+			$subscribers[$k]['email'] = $s['email'];
+		}
+
+		$csv = "email" . PHP_EOL;
+		foreach ($subscribers as $s)
+		{
+			$csv .= $s['email'];
+			$csv .= PHP_EOL;
+		}
+
+		$csv = utf8_encode($csv);
+
+		try
+		{
+			$ret = $this->client->import->csv($list, array(), $csv);
+			if ($ret)
+			{
+				$this->wooCommerce = true;
+				$this->setMessageBackend("updated ", 'WooCommerce customers synced with Newsman.');
+			}
+		} catch (Exception $e)
+		{
+			$this->setMessageBackend("error ", "Failed to sync Woocommerce customers with Newsman.");
+		}
+
+		if (empty($this->message))
+		{
+			$this->setMessageBackend("updated", 'Options saved.');
+		}
+	}
+
+	public function importSendPressSubscribers($list)
+	{
+		$sendpress_subscribers = array();
+
+		$email = array();
+		$firstname = array();
+
+		$con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
+		$sql = "SELECT email, firstname FROM `wp_sendpress_subscribers`";
+		$result = $con->query($sql);
+
+		if ($result->num_rows > 0)
+		{
+			while ($row = $result->fetch_assoc())
+			{
+				$email[] = $row['email'];
+				$firstname[] = $row['firstname'];
+			}
+		} else
+		{
+			$con->close();
+			$this->setMessageBackend("error ", "No SendPress subscribers found or plugin is not installed.");
+			return;
+		}
+		$con->close();
+
+		foreach ($email as $_email)
+		{
+			$sendpress_subscribers[]['email'] = $_email;
+		}
+
+		foreach ($firstname as $_firstname)
+		{
+			$sendpress_subscribers[]['first_name'] = $_firstname;
+		}
+
+		$subscribers = array();
+		foreach ($sendpress_subscribers as $k => $s)
+		{
+			$subscribers[$k]['first_name'] = $s['first_name'];
+			$subscribers[$k]['email'] = $s['email'];
+		}
+
+		$csv = "email, firstname" . PHP_EOL;
+		foreach ($subscribers as $s)
+		{
+			$csv .= $s['email'];
+			$csv .= ", ";
+			$csv .= $s['first_name'];
+			$csv .= PHP_EOL;
+		}
+
+		$csv = utf8_encode($csv);
+
+		try
+		{
+			$ret = $this->client->import->csv($list, array(), $csv);
+			if ($ret)
+			{
+				$this->sendpressSync = true;
+				$this->setMessageBackend("updated ", 'SendPress subscribers synced with Newsman.');
+			}
+		} catch (Exception $e)
+		{
+			$this->setMessageBackend("error ", "Failed to sync Sendpress subscribers with Newsman.");
+		}
+
+		if (empty($this->message))
+		{
+			$this->setMessageBackend("updated", 'Options saved.');
+		}
+	}
+
 	public function importMailPoetSubscribers($list)
 	{
 		//get mailpoet subscribers as array
@@ -503,7 +680,7 @@ class WP_Newsman
 		} else
 		{
 			$con->close();
-			$this->setMessageBackend("- No MailPoet subscribers found or plugin is not installed.");
+			$this->setMessageBackend("error", "No MailPoet subscribers found or plugin is not installed.");
 			return;
 		}
 		$con->close();

@@ -1,26 +1,45 @@
 (function ($) {
     $(function () {
 
-     /*
-            $(".newsman-subscription-form").submit(function (e) {
-                e.preventDefault();
-
-                var email = $(this).find("input[name='newsman_subscription_email']").val();
-                
-                $.post(ajaxurl, {
-                    action: 'newsman_ajax_subscribe',
-                    email: email
-                }, function (response) {
-                    
-                    response = jQuery.parseJSON(response);
-
-                    $("#newsman_subscribtion_message").html(response.message);
-                    $("#newsman_subscribtion_message").addClass(response.status);
-
-                });
-
+        /*
+        $("#wooCommerce_connectBtn").on('click', function () {
+            // Initialize the WooCommerceAPI class
+            var WooCommerce = new WooCommerceAPI({
+                url: 'http://wp.corodeanu.dazoot.ro', // Your store url (required)
+                // version: 'v3', // WooCommerce API version (optional)
+                // verifySsl: true, // Use `false` when need test with self-signed certificates, default is `true` (optional)
+                // encoding: 'utf8', // Encode, default is 'utf8' (optional)
+                consumerKey: $('#consumerKey').val(), // Your API consumer key (required)
+                consumerSecret: $('#consumerSecret').val() // Your API consumer secret (required)
             });
-            */
+
+            // GET example
+            WooCommerce.get('customers', function (err, data, res) {
+                console.log(res);
+            });
+        });
+        */
+
+        /*
+               $(".newsman-subscription-form").submit(function (e) {
+                   e.preventDefault();
+
+                   var email = $(this).find("input[name='newsman_subscription_email']").val();
+
+                   $.post(ajaxurl, {
+                       action: 'newsman_ajax_subscribe',
+                       email: email
+                   }, function (response) {
+
+                       response = jQuery.parseJSON(response);
+
+                       $("#newsman_subscribtion_message").html(response.message);
+                       $("#newsman_subscribtion_message").addClass(response.status);
+
+                   });
+
+               });
+         */
 
             $("#newsman_widget").click(function (e) {
                 e.preventDefault();
@@ -295,13 +314,135 @@
             $(this).next('dd').slideDown();
         });
 
-        $('#mailpoet').change(function () {
-            if ($(this).is(":checked")) {
-                $('#submitMailPoet').css('display', 'block');
-            }
-            else {
-                $('#submitMailPoet').css('display', 'none');
-            }
+        //sync extra Plugins
+        $('#newsman_mailPoetPanel').on('click', function () {
+            $.post(ajaxurl, {
+                    action: 'newsman_ajax_check_plugin',
+                    plugin: "wysija-newsletters/index.php"
+                },
+                function (response) {
+                    var _response = jQuery.parseJSON(response);
+
+                    switch (_response.status) {
+                        case 1:
+                            ClearError();
+
+                            $('#submitNewsman').slideUp("fast");
+                            $('#newsman_Panel').removeClass('active');
+                            $('#submitMailPoet').slideDown("fast");
+                            $('#newsman_mailPoetPanel').addClass('active');
+                            $('#submitSendPress').slideUp("fast");
+                            $('#newsman_sendPressPanel').removeClass('active');
+                            $('#submitWooCommerce').slideUp("fast");
+                            $('#newsman_wooCommercePanel').removeClass('active');
+                            break;
+                        case 0:
+                            ActivateError("MailPoet plugin is not activated/installed.");
+                            break;
+                    }
+                }
+            );
         });
+
+        $('#newsman_Panel').on('click', function () {
+            $.post(ajaxurl, {
+                    action: 'newsman_ajax_check_plugin',
+                    plugin: "newsmanapp/newsmanapp.php"
+                },
+                function (response) {
+                    var _response = jQuery.parseJSON(response);
+
+                    switch (_response.status) {
+                        case 1:
+                            ClearError();
+
+                            $('#submitMailPoet').slideUp("fast");
+                            $('#newsman_mailPoetPanel').removeClass('active');
+                            $('#submitSendPress').slideUp("fast");
+                            $('#newsman_sendPressPanel').removeClass('active');
+                            $('#submitWooCommerce').slideUp("fast");
+                            $('#newsman_wooCommercePanel').removeClass('active');
+
+                            $('#submitNewsman').slideDown("fast");
+                            $('#newsman_Panel').addClass('active');
+                            break;
+                        case 0:
+                            ActivateError("MailPoet plugin is not activated/installed.");
+                            break;
+                    }
+                }
+            );
+        });
+
+        $('#newsman_sendPressPanel').on('click', function () {
+            $.post(ajaxurl, {
+                    action: 'newsman_ajax_check_plugin',
+                    plugin: "sendpress/sendpress.php"
+                },
+                function (response) {
+                    var _response = jQuery.parseJSON(response);
+
+                    switch (_response.status) {
+                        case 1:
+                            ClearError();
+
+                            $('#submitMailPoet').slideUp("fast");
+                            $('#newsman_mailPoetPanel').removeClass('active');
+                            $('#submitNewsman').slideUp("fast");
+                            $('#newsman_Panel').removeClass('active');
+                            $('#submitWooCommerce').slideUp("fast");
+                            $('#newsman_wooCommercePanel').removeClass('active');
+
+                            $('#submitSendPress').slideDown("fast");
+                            $('#newsman_sendPressPanel').addClass('active');
+                            break;
+                        case 0:
+                            ActivateError("SendPress plugin is not activated/installed.");
+                            break;
+                    }
+                }
+            );
+        });
+
+        $('#newsman_wooCommercePanel').on('click', function () {
+            $.post(ajaxurl, {
+                    action: 'newsman_ajax_check_plugin',
+                    plugin: "woocommerce/woocommerce.php"
+                },
+                function (response) {
+                    var _response = jQuery.parseJSON(response);
+
+                    switch (_response.status) {
+                        case 1:
+                            ClearError();
+
+                            $('#submitMailPoet').slideUp("fast");
+                            $('#newsman_mailPoetPanel').removeClass('active');
+                            $('#submitNewsman').slideUp("fast");
+                            $('#newsman_Panel').removeClass('active');
+                            $('#submitSendPress').slideUp("fast");
+                            $('#newsman_sendPressPanel').removeClass('active');
+
+                            $('#submitWooCommerce').slideDown("fast");
+                            $('#newsman_wooCommercePanel').addClass('active');
+                            break;
+                        case 0:
+                            ActivateError("Woocommerce plugin is not activated/installed.");
+                            break;
+                    }
+                }
+            );
+        });
+
+        function ActivateError(msg) {
+            $('#activatedPluginMsg').html(msg);
+            $('#activatedPluginMsg').css("display", "block");
+        }
+
+        function ClearError() {
+            $('#activatedPluginMsg').css("display", "none");
+        }
+
+        //end - sync extra Plugins
     });
 }(jQuery));

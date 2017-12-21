@@ -13,6 +13,18 @@
 	width: 100%;
 }
 
+.pluginsItem {
+	width: 200px !important;
+	margin: 5px;
+	height: 150px !important;
+	display: inline;
+}
+
+.pluginsItem input[type=button] {
+	width: 200px !important;
+	height: 75px;
+}
+
 .preview-template-container{
 	width:50%; 
 	height: 500px;
