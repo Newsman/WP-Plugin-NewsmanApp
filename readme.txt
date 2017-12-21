@@ -48,6 +48,10 @@ Sure. Go to `Newsman -> Templates` and make any changes you want to the HTML tem
 = 1.1 =
  * Sync improvements
  * Import subscribers functionality from MailPoet plugin
+= 1.2 =
+ * Sendpress plugin import
+ * Woocommerce customers import
+ * Small frontend corrections
  
 == Upgrade Notice ==
 
