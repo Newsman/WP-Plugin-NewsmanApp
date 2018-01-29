@@ -18,9 +18,9 @@ require_once 'vendor/Newsman/Client.php';
 
 $upload_dir = wp_upload_dir();
 
-define(templates_dir, __DIR__ . "/src/email_templates/");
-define(templates_default_dir, __DIR__ . "/src/email_templates/");
-define(template_img_dir, "/wp-content/plugins/newsmanapp/src/email_templates/");
+define('templates_dir', __DIR__ . "/src/email_templates/");
+define('templates_default_dir', __DIR__ . "/src/email_templates/");
+define('template_img_dir', "/wp-content/plugins/newsmanapp/src/email_templates/");
 
 class WP_Newsman
 {
@@ -240,7 +240,6 @@ class WP_Newsman
 	public function registerPluginStyles()
 	{
 		wp_register_style('jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
-		wp_register_style('bootstrap-css', plugins_url('newsmanapp/src/css/bootstrap.css'));
 		wp_register_style('newsman_css', plugins_url('newsmanapp/src/css/style.css'));
 		wp_enqueue_style('bootstrap-css');
 		wp_enqueue_style('jquery-ui-css');
