@@ -159,7 +159,6 @@ class WP_Newsman
 		#save changes made to the source code of the template
 		add_action('wp_ajax_newsman_ajax_template_editor_save', array($this, "newsmanAjaxTemplateEditorSave"));
 		#subscribe from front
-		add_action('wp_ajax_newsman_nopriv_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
 	}
 
 	/*
@@ -284,6 +283,13 @@ class WP_Newsman
 			$list = get_option('newsman_list');
 			try
 			{
+				if ($this->newsmanListEmailExists($email, $list))
+				{
+					$message = "Email deja inscris la newsletter";
+					$this->sendMessageFront('error', $message);
+					die();
+				}
+
 				$ret = $this->client->subscriber->initSubscribe(
 					$list, /* The list id */
 					$email, /* Email address of subscriber */
@@ -306,6 +312,29 @@ class WP_Newsman
 
 		}
 		die();
+	}
+
+	public function newsmanListEmailExists($email, $list)
+	{
+		$bool = false;
+
+		try
+		{
+			$ret = $this->client->subscriber->getByEmail(
+				$list, /* The list id */
+				$email /* The email address */
+			);
+
+			if ($ret["status"] == "subscribed")
+			{
+				$bool = true;
+			}
+
+			return $bool;
+		} catch (Exception $e)
+		{
+			return $bool;
+		}
 	}
 
 	/*
