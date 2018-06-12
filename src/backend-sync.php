@@ -1,6 +1,4 @@
 <?php
-//process form submission
-$wooCommerceApi = $this->GetWooCommerceApi();
 
 if ($_POST['newsman_submit'] == 'Y')
 {
@@ -45,44 +43,6 @@ if ($_POST['newsman_submit'] == 'Y')
 			$this->valid_credential = false;
 			$this->setMessageBackend('error', 'Invalid Credentials');
 		}
-
-		/*
-		$consumerKey = $_POST["consumerKey"];
-		$consumerSecret = $_POST["consumerSecret"];
-		$store_url = 'http://wp.corodeanu.dazoot.ro';
-
-		$options = array(
-			'debug' => true,
-			'return_as_array' => false,
-			'validate_url' => false,
-			'timeout' => 30,
-			'ssl_verify' => false,
-		);
-
-		try
-		{
-			$client = new WC_API_Client($store_url, $consumerKey, $consumerSecret, $options);
-
-			print_r($client->orders->get());
-		} catch (WC_API_Client_Exception $e)
-		{
-			echo $e->getMessage() . PHP_EOL;
-			echo $e->getCode() . PHP_EOL;
-
-			if ($e instanceof WC_API_Client_HTTP_Exception)
-			{
-
-				print_r($e->get_request());
-				print_r($e->get_response());
-			}
-		}
-		*/
-
-		/*
-		$wc_api = new WC_API_Client($consumerKey, $consumerSecret, $store_url);
-		$customers = $wc_api->get_products();
-		*/
-		//print_r($customers);
 	} else
 	{
 		//import wordpress
@@ -255,65 +215,33 @@ if ($_POST['newsman_submit'] == 'Y')
 				<div class="pluginsItem">
 					<ul id="submitWooCommerce" style="display: none;">
 						<li><h2>WooCommerce import subscribers</h2></li>
-					    <!--
 						<li>
-							<div>
-								<input type="button" name="wooCommerce_connectBtn" id="wooCommerce_connectBtn" value="Connect"
-								       class="button button-primary"/>
-							</div>
-						</li>
-						<li>
-							<div>
-								<label>Consumer key</label>
-								<select id="consumerKey" name="consumerKey">
-									<?php
-									$int = count($wooCommerceApi["consumer_key"]);
-									for ($no = 0; $no < $int; $no++)
-									{ ?>
-										<option
-											value="<?php echo $wooCommerceApi["consumer_key"][$no]; ?>"><?php echo $wooCommerceApi["consumer_key"][$no]; ?></option>
-									<?php } ?>
-								</select>
-							</div>
-							<div>
-								<label>Consumer secret</label>
-								<select id="consumerSecret" name="consumerSecret">
-									<?php
-									$int = count($wooCommerceApi["consumer_secret"]);
-									for ($no = 0; $no < $int; $no++)
-									{ ?>
-										<option
-											value="<?php echo $wooCommerceApi["consumer_secret"][$no]; ?>"><?php echo $wooCommerceApi["consumer_secret"][$no]; ?></option>
-									<?php } ?>
-								</select>
-							</div>
-							-->
-							<?php if (isset($_POST['wooCommerce_subscribeBtn']))
-							{ ?>
-								<?php if ($this->wooCommerce): ?>
-								<table class="form-table">
-								<tr scope="row">
-								<th>
-									<div id="nws-message" class="updated"><p><strong>Imported Successfully from
-												WooCommerce
-												plugin</strong></p>
-									</div>
-								</th>
-							<?php else: ?>
-								<th>
-									<div id="nws-message" class="error"><p><strong>
-												<?php
-												$arr = $this->getBackendMessage();
-												foreach ($arr as $array => $s)
-													echo $s;
-												?></strong></p></div>
-								</th>
-								</tr>
-								</table>
-							<?php endif; ?>
-							<?php } ?>
-							<input type="submit" name="wooCommerce_subscribeBtn" value="Import WooCommerce Subscribers"
-							       class="button button-primary"/>
+						<?php if (isset($_POST['wooCommerce_subscribeBtn']))
+						{ ?>
+							<?php if ($this->wooCommerce): ?>
+							<table class="form-table">
+							<tr scope="row">
+							<th>
+								<div id="nws-message" class="updated"><p><strong>Imported Successfully from
+											WooCommerce
+											plugin</strong></p>
+								</div>
+							</th>
+						<?php else: ?>
+							<th>
+								<div id="nws-message" class="error"><p><strong>
+											<?php
+											$arr = $this->getBackendMessage();
+											foreach ($arr as $array => $s)
+												echo $s;
+											?></strong></p></div>
+							</th>
+							</tr>
+							</table>
+						<?php endif; ?>
+						<?php } ?>
+						<input type="submit" name="wooCommerce_subscribeBtn" value="Import WooCommerce Subscribers"
+						       class="button button-primary"/>
 						</li>
 					</ul>
 				</div>

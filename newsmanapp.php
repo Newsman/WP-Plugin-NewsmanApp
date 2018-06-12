@@ -525,31 +525,6 @@ class WP_Newsman
 		exit();
 	}
 
-	public function GetWooCommerceApi()
-	{
-		$api = array();
-
-		$con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
-		$sql = "SELECT consumer_key, consumer_secret FROM `wp_woocommerce_api_keys`";
-		$result = $con->query($sql);
-
-		if ($result->num_rows > 0)
-		{
-			while ($row = $result->fetch_assoc())
-			{
-				$api["consumer_key"][] .= $row["consumer_key"];
-				$api["consumer_secret"][] .= $row["consumer_secret"];
-			}
-		} else
-		{
-			$con->close();
-			$this->setMessageBackend("error", "No MailPoet subscribers found or plugin is not installed.");
-		}
-		$con->close();
-
-		return $api;
-	}
-
 	public function importWoocommerceSubscribers($list)
 	{
 		$woocommerceCustomers = array();
