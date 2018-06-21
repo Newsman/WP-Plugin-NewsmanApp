@@ -485,13 +485,13 @@ class WP_Newsman
 	 */
 	public function getUserIP()
 	{
-		$client = @$_SERVER['HTTP_CLIENT_IP'];
+		$cl = @$_SERVER['HTTP_CLIENT_IP'];
 		$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
 		$remote = $_SERVER['REMOTE_ADDR'];
 
-		if (filter_var($client, FILTER_VALIDATE_IP))
+		if (filter_var($cl, FILTER_VALIDATE_IP))
 		{
-			$ip = $client;
+			$ip = $cl;
 		} elseif (filter_var($forward, FILTER_VALIDATE_IP))
 		{
 			$ip = $forward;
@@ -527,9 +527,41 @@ class WP_Newsman
 
 	public function importWoocommerceSubscribers($list)
 	{
+		$woocommerceFilter = array();
+		$wpSubscriberFilter = false;
+		$wp_subscribers = array();
+
+		switch ($_POST["woocommerceSelect"])
+		{
+			case "customernewsletter":
+				$wpSubscriberFilter = true;
+				$woocommerceFilter = array();
+				break;
+			case "customerscompleted":
+				$woocommerceFilter = array(
+					'status' => 'completed'
+				);
+				break;
+			case "customers":
+				$woocommerceFilter = array();
+				break;
+		}
+
 		$woocommerceCustomers = array();
 
-		$allOrders = wc_get_orders();
+		$allOrders = wc_get_orders($woocommerceFilter);
+
+		//Filter orders with customer Subscriber
+		if ($wpSubscriberFilter)
+		{
+			$subscribers = get_users("role=subscriber");
+
+			foreach ($subscribers as $k => $s)
+			{
+				$wp_subscribers[] = $s->data->user_email;
+			}
+		}
+		//Filter orders with customer Subscriber
 
 		$ordersCount = count($allOrders);
 
@@ -540,7 +572,10 @@ class WP_Newsman
 		{
 			for ($int = 0; $int < $ordersCount; $int++)
 			{
-				$email[] = $allOrders[$int]->data["billing"]["email"];
+				if (in_array($allOrders[$int]->data["billing"]["email"], $wp_subscribers))
+				{
+					$email[] = $allOrders[$int]->data["billing"]["email"];
+				}
 			}
 		} else
 		{
@@ -589,13 +624,10 @@ class WP_Newsman
 
 	public function importSendPressSubscribers($list)
 	{
-		$sendpress_subscribers = array();
-
-		$email = array();
-		$firstname = array();
+		global $wpdb;
 
 		$con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
-		$sql = "SELECT email, firstname FROM `wp_sendpress_subscribers`";
+		$sql = "SELECT email, firstname FROM `" . $wpdb->prefix . "sendpress_subscribers`";
 		$result = $con->query($sql);
 
 		if ($result->num_rows > 0)
@@ -662,6 +694,8 @@ class WP_Newsman
 
 	public function importMailPoetSubscribers($list)
 	{
+		global $wpdb;
+
 		//get mailpoet subscribers as array
 		$mailpoet_subscribers = array();
 
@@ -669,7 +703,7 @@ class WP_Newsman
 		$firstname = array();
 
 		$con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
-		$sql = "SELECT email, firstname FROM `wp_wysija_user`";
+		$sql = "SELECT email, first_name FROM `" . $wpdb->prefix . "mailpoet_subscribers` where `status` = 'subscribed'";
 		$result = $con->query($sql);
 
 		if ($result->num_rows > 0)
@@ -704,6 +738,9 @@ class WP_Newsman
 			$subscribers[$k]['first_name'] = $s['first_name'];
 			$subscribers[$k]['email'] = $s['email'];
 		}
+
+		var_dump($subscribers);
+		die("");
 
 		//construct csv string
 		$csv = "email, firstname" . PHP_EOL;

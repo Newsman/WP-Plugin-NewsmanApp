@@ -6,8 +6,19 @@ if ($_POST['newsman_submit'] == 'Y')
 	$infirm = (isset($_POST['newsman_widget_infirm']) && !empty($_POST['newsman_widget_infirm'])) ? strip_tags(trim($_POST['newsman_widget_infirm'])) : get_option($infirm);
 	$title = (isset($_POST['newsman_widget_title']) && !empty($_POST['newsman_widget_title'])) ? strip_tags(trim($_POST['newsman_widget_title'])) : get_option($title);
 
+	$compliant1 = (isset($_POST['newsman_widget_compliant1']) && !empty($_POST['newsman_widget_compliant1'])) ? strip_tags(trim($_POST['newsman_widget_compliant1'])) : get_option($compliant1);
+	$compliant2 = (isset($_POST['newsman_widget_compliant2']) && !empty($_POST['newsman_widget_compliant2'])) ? strip_tags(trim($_POST['newsman_widget_compliant2'])) : get_option($compliant2);
+
+	$compliant1Url = (isset($_POST['newsman_widget_compliant1_url']) && !empty($_POST['newsman_widget_compliant1_url'])) ? strip_tags(trim($_POST['newsman_widget_compliant1_url'])) : get_option($compliant1Url);
+	$compliant2Url = (isset($_POST['newsman_widget_compliant2_url']) && !empty($_POST['newsman_widget_compliant2_url'])) ? strip_tags(trim($_POST['newsman_widget_compliant2_url'])) : get_option($compliant2Url);
+
+
 	update_option("newsman_widget_confirm", $confirm);
 	update_option("newsman_widget_infirm", $infirm);
+	update_option("newsman_widget_compliant1", $compliant1);
+	update_option("newsman_widget_compliant2", $compliant2);
+	update_option("newsman_widget_compliant1_url", $compliant1Url);
+	update_option("newsman_widget_compliant2_url", $compliant2Url);
 
 	$message = array(
 		'status' => 'updated',
@@ -17,6 +28,10 @@ if ($_POST['newsman_submit'] == 'Y')
 {
 	$confirm = get_option('newsman_widget_confirm');
 	$infirm = get_option('newsman_widget_infirm');
+	$compliant1 = get_option('newsman_widget_compliant1');
+	$compliant2 = get_option('newsman_widget_compliant2');
+	$compliant1Url = get_option('newsman_widget_compliant1_url');
+	$compliant2Url = get_option('newsman_widget_compliant2_url');
 }
 ?>
 
@@ -58,6 +73,34 @@ if ($_POST['newsman_submit'] == 'Y')
 					<textarea type="text" name="newsman_widget_infirm"
 					          value="<?php echo $infirm ?>"><?php echo $infirm ?></textarea>
 					<p class="description">The message to display when an invalid email address is entered.</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="newsman_widget_compliant1">Policy Subscription 1 Checkbox</label>
+				</th>
+				<td>
+					<textarea id="newsman_widget_compliant1" type="text" name="newsman_widget_compliant1"
+					          value="<?php echo $compliant1 ?>"><?php echo $compliant1 ?></textarea>
+					<p class="description">User must check before submit (Leave empty if not mandatory)</p>
+					<input style="display: block;" id="newsman_widget_compliant1_url" type="text"
+					       name="newsman_widget_compliant1_url"
+					       value="<?php echo $compliant1Url; ?>"
+					       placeholder="www.example.com"></input>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="newsman_widget_compliant2">Policy Subscription 2 Checkbox</label>
+				</th>
+				<td>
+					<textarea id="newsman_widget_compliant2" type="text" name="newsman_widget_compliant2"
+					          value="<?php echo $compliant2 ?>"><?php echo $compliant2 ?></textarea>
+					<p class="description">User must check before submit (Leave empty if not mandatory)</p>
+					<input style="display:block;" id="newsman_widget_compliant2_url" type="text"
+					       name="newsman_widget_compliant2_url"
+					       value="<?php echo $compliant2Url ?>"
+					       placeholder="www.example.com"></input>
 				</td>
 			</tr>
 		</table>

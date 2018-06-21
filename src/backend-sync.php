@@ -214,34 +214,45 @@ if ($_POST['newsman_submit'] == 'Y')
 				</div>
 				<div class="pluginsItem">
 					<ul id="submitWooCommerce" style="display: none;">
+						<h2>Select type of import:</h2>
+						<select name="woocommerceSelect">
+							<option value="customernewsletter">All customers who ordered and Subscribed to newsletter
+							</option>
+							<option value="customerscompleted">All customers with Completed order</option>
+							<option value="customers">All customers who ordered</option>
+						</select>
+
 						<li><h2>WooCommerce import subscribers</h2></li>
 						<li>
-						<?php if (isset($_POST['wooCommerce_subscribeBtn']))
-						{ ?>
-							<?php if ($this->wooCommerce): ?>
-							<table class="form-table">
-							<tr scope="row">
-							<th>
-								<div id="nws-message" class="updated"><p><strong>Imported Successfully from
-											WooCommerce
-											plugin</strong></p>
-								</div>
-							</th>
-						<?php else: ?>
-							<th>
-								<div id="nws-message" class="error"><p><strong>
-											<?php
-											$arr = $this->getBackendMessage();
-											foreach ($arr as $array => $s)
-												echo $s;
-											?></strong></p></div>
-							</th>
-							</tr>
-							</table>
-						<?php endif; ?>
-						<?php } ?>
-						<input type="submit" name="wooCommerce_subscribeBtn" value="Import WooCommerce Subscribers"
-						       class="button button-primary"/>
+							<?php if (isset($_POST['wooCommerce_subscribeBtn']))
+							{ ?>
+								<?php if ($this->wooCommerce): ?>
+								<table class="form-table">
+								<tr scope="row">
+								<th>
+									<div id="nws-message" class="updated"><p><strong>Imported Successfully from
+												WooCommerce
+												plugin</strong></p>
+									</div>
+								</th>
+							<?php else: ?>
+								<th>
+									<div id="nws-message" class="error"><p><strong>
+												<?php
+												$arr = $this->getBackendMessage();
+												foreach ($arr as $array => $s)
+													echo $s;
+												?></strong></p></div>
+								</th>
+								</tr>
+								</table>
+							<?php endif; ?>
+							<?php } ?>
+
+							Clicking the button below automatically imports your woocommerce subscribers into Newsman based on your selection.
+							<br>
+							<input type="submit" name="wooCommerce_subscribeBtn" value="Import WooCommerce Subscribers"
+							       class="button button-primary"/>
 						</li>
 					</ul>
 				</div>

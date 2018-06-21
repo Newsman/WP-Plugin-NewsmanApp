@@ -1,70 +1,41 @@
 (function ($) {
     $(function () {
 
-        /*
-         $("#wooCommerce_connectBtn").on('click', function () {
-         // Initialize the WooCommerceAPI class
-         var WooCommerce = new WooCommerceAPI({
-         url: 'http://wp.corodeanu.dazoot.ro', // Your store url (required)
-         // version: 'v3', // WooCommerce API version (optional)
-         // verifySsl: true, // Use `false` when need test with self-signed certificates, default is `true` (optional)
-         // encoding: 'utf8', // Encode, default is 'utf8' (optional)
-         consumerKey: $('#consumerKey').val(), // Your API consumer key (required)
-         consumerSecret: $('#consumerSecret').val() // Your API consumer secret (required)
-         });
-
-         // GET example
-         WooCommerce.get('customers', function (err, data, res) {
-         console.log(res);
-         });
-         });
-         */
-
-        /*
-         $(".newsman-subscription-form").submit(function (e) {
-         e.preventDefault();
-
-         var email = $(this).find("input[name='newsman_subscription_email']").val();
-
-         $.post(ajaxurl, {
-         action: 'newsman_ajax_subscribe',
-         email: email
-         }, function (response) {
-
-         response = jQuery.parseJSON(response);
-
-         $("#newsman_subscribtion_message").html(response.message);
-         $("#newsman_subscribtion_message").addClass(response.status);
-
-         });
-
-         });
-         */
-
         $("#newsman_widget").click(function (e) {
             e.preventDefault();
 
-            var compliantAccepted = true;
+            var compliantAccepted1 = true;
+            var compliantAccepted2 = true;
+            var compliantExists1 = true;
+            var compliantExists2 = true;
 
             var email = $('.newsman-subscription-form').find("input[name='newsman_subscription_email']").val();
 
             $('#newsman_subscribtion_message').removeClass("success");
             $('#newsman_subscribtion_message').removeClass("error");
 
-            if(!email)
-            {
+            if (!email) {
                 $("#newsman_subscribtion_message").html("Va rugam adaugati adresa de email");
                 $("#newsman_subscribtion_message").addClass("error");
                 return;
             }
 
-            var compliant1 = $('.newsman-subscription-form').find("input[name='compliant1']:checked");
-            var compliant2 = $('.newsman-subscription-form').find("input[name='compliant2']:checked");
+            compliantExists1 = $('.newsman-subscription-form').find("input[name='compliant1']");
+            compliantExists1 = (compliantExists1[0] != null) ? "True" : "False";
 
-            compliantAccepted = compliant1.is(':checked');
-            compliantAccepted = compliant2.is(':checked');
+            compliantExists2 = $('.newsman-subscription-form').find("input[name='compliant2']");
+            compliantExists2 = (compliantExists2[0] != null) ? "True" : "False";
 
-            if (compliantAccepted === false) {
+            if (compliantExists1 == "True") {
+                var compliant1 = $('.newsman-subscription-form').find("input[name='compliant1']:checked");
+                compliantAccepted1 = compliant1.is(':checked');
+            }
+            if (compliantExists2 == "True") {
+                var compliant2 = $('.newsman-subscription-form').find("input[name='compliant2']:checked");
+                compliantAccepted2 = compliant2.is(':checked');
+            }
+
+            if (compliantAccepted1 === false || compliantAccepted2 === false) {
                 $("#newsman_subscribtion_message").html("Va rugam acceptati conditiile de mai jos");
                 $("#newsman_subscribtion_message").addClass("error");
                 return;
@@ -341,7 +312,7 @@
         $('#newsman_mailPoetPanel').on('click', function () {
             $.post(ajaxurl, {
                     action: 'newsman_ajax_check_plugin',
-                    plugin: "wysija-newsletters/index.php"
+                    plugin: "mailpoet/mailpoet.php"
                 },
                 function (response) {
                     var _response = jQuery.parseJSON(response);
@@ -360,7 +331,7 @@
                             $('#newsman_wooCommercePanel').removeClass('active');
                             break;
                         case 0:
-                            ActivateError("MailPoet plugin is not activated/installed.");
+                            ActivateError("MailPoet New plugin is not activated/installed.");
                             break;
                     }
                 }
