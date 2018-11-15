@@ -75,6 +75,11 @@ class WP_Newsman
 	 * 3. Loads templates from directory 
 	 */
 
+	/*
+	 * integer maximum value 9999, by default 5000
+	 */
+	public $batchSize = 5000;
+
 	public $wpSync, $mailpoetSync, $sendpressSync, $wooCommerce = false;
 
 	public function __construct()
@@ -525,7 +530,7 @@ class WP_Newsman
 		exit();
 	}
 
-	public function importWoocommerceSubscribers($list)
+	public function importWoocommerceSubscribers($list, $segments)
 	{
 		$woocommerceFilter = array();
 		$wpSubscriberFilter = false;
@@ -594,23 +599,40 @@ class WP_Newsman
 			$subscribers[$k]['email'] = $s['email'];
 		}
 
-		$csv = "email" . PHP_EOL;
+		/*$csv = "email" . PHP_EOL;
 		foreach ($subscribers as $s)
 		{
 			$csv .= $s['email'];
 			$csv .= PHP_EOL;
 		}
 
-		$csv = utf8_encode($csv);
+		$csv = utf8_encode($csv);*/
 
 		try
 		{
-			$ret = $this->client->import->csv($list, array(), $csv);
-			if ($ret)
+			$_segments = array($segments);
+			$customers_to_import = array();
+
+			foreach ($subscribers as $user)
 			{
+				$customers_to_import[] = array(
+					"email" => $user["email"],
+					"firstname" => ""
+				);
+				if ((count($customers_to_import) % $this->batchSize) == 0)
+				{
+					$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+				}
+			}
+			if (count($customers_to_import) > 0)
+			{
+				$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+			}
+			unset($customers_to_import);
+
 				$this->wooCommerce = true;
 				$this->setMessageBackend("updated ", 'WooCommerce customers synced with Newsman.');
-			}
+
 		} catch (Exception $e)
 		{
 			$this->setMessageBackend("error ", "Failed to sync Woocommerce customers with Newsman.");
@@ -622,7 +644,7 @@ class WP_Newsman
 		}
 	}
 
-	public function importSendPressSubscribers($list)
+	public function importSendPressSubscribers($list, $segments)
 	{
 		global $wpdb;
 
@@ -630,12 +652,19 @@ class WP_Newsman
 		$sql = "SELECT email, firstname FROM `" . $wpdb->prefix . "sendpress_subscribers`";
 		$result = $con->query($sql);
 
+		$sendpr = array();
+
 		if ($result->num_rows > 0)
 		{
 			while ($row = $result->fetch_assoc())
 			{
-				$email[] = $row['email'];
-				$firstname[] = $row['firstname'];
+				//$email[] = $row['email'];
+				//$firstname[] = $row['firstname'];
+
+				$sendpr[] = array(
+					"email" => $row["email"],
+					"firstname" => $row["firstname"]
+				);
 			}
 		} else
 		{
@@ -645,7 +674,7 @@ class WP_Newsman
 		}
 		$con->close();
 
-		foreach ($email as $_email)
+		/*foreach ($email as $_email)
 		{
 			$sendpress_subscribers[]['email'] = $_email;
 		}
@@ -671,16 +700,33 @@ class WP_Newsman
 			$csv .= PHP_EOL;
 		}
 
-		$csv = utf8_encode($csv);
+		$csv = utf8_encode($csv);*/
 
 		try
 		{
-			$ret = $this->client->import->csv($list, array(), $csv);
-			if ($ret)
+			$_segments = array($segments);
+			$customers_to_import = array();
+
+			foreach ($sendpr as $user)
 			{
+				$customers_to_import[] = array(
+					"email" => $user["email"],
+					"firstname" => $user["firstname"]
+				);
+				if ((count($customers_to_import) % $this->batchSize) == 0)
+				{
+					$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+				}
+			}
+			if (count($customers_to_import) > 0)
+			{
+				$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+			}
+			unset($customers_to_import);
+
 				$this->sendpressSync = true;
 				$this->setMessageBackend("updated ", 'SendPress subscribers synced with Newsman.');
-			}
+
 		} catch (Exception $e)
 		{
 			$this->setMessageBackend("error ", "Failed to sync Sendpress subscribers with Newsman.");
@@ -692,7 +738,7 @@ class WP_Newsman
 		}
 	}
 
-	public function importMailPoetSubscribers($list)
+	public function importMailPoetSubscribers($list, $segments)
 	{
 		global $wpdb;
 
@@ -711,8 +757,13 @@ class WP_Newsman
 			// output data of each row
 			while ($row = $result->fetch_assoc())
 			{
-				$email[] = $row['email'];
-				$firstname[] = $row['firstname'];
+				$mailpoet_subscribers[] = array(
+					"email" => $row["email"],
+					"firstname" => $row["firstname"]
+				);
+
+			//	$email[] = $row['email'];
+			//	$firstname[] = $row['firstname'];
 			}
 		} else
 		{
@@ -722,7 +773,7 @@ class WP_Newsman
 		}
 		$con->close();
 
-		foreach ($email as $_email)
+		/*foreach ($email as $_email)
 		{
 			$mailpoet_subscribers[]['email'] = $_email;
 		}
@@ -739,9 +790,6 @@ class WP_Newsman
 			$subscribers[$k]['email'] = $s['email'];
 		}
 
-		var_dump($subscribers);
-		die("");
-
 		//construct csv string
 		$csv = "email, firstname" . PHP_EOL;
 		foreach ($subscribers as $s)
@@ -752,17 +800,34 @@ class WP_Newsman
 			$csv .= PHP_EOL;
 		}
 
-		$csv = utf8_encode($csv);
+		$csv = utf8_encode($csv);*/
 
 		//sync with Newsman from mailpoet
 		try
 		{
-			$ret = $this->client->import->csv($list, array(), $csv);
-			if ($ret)
+			$_segments = array($segments);
+			$customers_to_import = array();
+
+			foreach ($mailpoet_subscribers as $user)
 			{
-				$this->mailpoetSync = true;
-				$this->setMessageBackend("updated", 'MailPoet subscribers synced with Newsman.');
+				$customers_to_import[] = array(
+					"email" => $user["email"],
+					"firstname" => $user["firstname"]
+				);
+				if ((count($customers_to_import) % $this->batchSize) == 0)
+				{
+					$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+				}
 			}
+			if (count($customers_to_import) > 0)
+			{
+				$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+			}
+			unset($customers_to_import);
+
+			$this->mailpoetSync = true;
+			$this->setMessageBackend("updated", 'MailPoet subscribers synced with Newsman.');
+
 		} catch (Exception $e)
 		{
 			$this->setMessageBackend("error", "Failure to sync MailPoet subscribers with Newsman.");
@@ -778,19 +843,19 @@ class WP_Newsman
 	 * Imports subscribers from Wordpress Into Newsman and creates a message
 	 * @param integer | string 	The id of the list into which to import the subscribers
 	 */
-	public function importWPSubscribers($list)
+	public function importWPSubscribers($list, $segments)
 	{
 		//get wordpress subscribers as array
 		$wp_subscribers = get_users("role=subscriber");
-		$subscribers = array();
-		foreach ($wp_subscribers as $k => $s)
+		//$subscribers = array();
+		/*foreach ($wp_subscribers as $k => $s)
 		{
 			$subscribers[$k]['firstname'] = $s->data->display_name;
 			$subscribers[$k]['email'] = $s->data->user_email;
-		}
+		}*/
 
 		//construct csv string
-		$csv = "email, firstname" . PHP_EOL;
+		/*$csv = "email, firstname" . PHP_EOL;
 		foreach ($subscribers as $s)
 		{
 			$csv .= $s['email'];
@@ -799,17 +864,34 @@ class WP_Newsman
 			$csv .= PHP_EOL;
 		}
 
-		$csv = utf8_encode($csv);
+		$csv = utf8_encode($csv);*/
 
 		//sync with newsman
 		try
 		{
-			$ret = $this->client->import->csv($list, array(), $csv);
-			if ($ret)
+			$_segments = array($segments);
+			$customers_to_import = array();
+
+			foreach ($wp_subscribers as $users => $user)
 			{
-				$this->wpSync = true;
-				$this->setMessageBackend("updated", 'Subscribers synced with Newsman.');
+				$customers_to_import[] = array(
+					"email" => $user->data->user_email,
+					"firstname" => $user->data->display_name
+				);
+				if ((count($customers_to_import) % $this->batchSize) == 0)
+				{
+					$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+				}
 			}
+			if (count($customers_to_import) > 0)
+			{
+				$this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+			}
+			unset($customers_to_import);
+
+			$this->wpSync = true;
+			$this->setMessageBackend("updated", 'Subscribers synced with Newsman.');
+
 		} catch (Exception $e)
 		{
 			$this->setMessageBackend("error", "Failure to sync subscribers with Newsman.");
@@ -991,6 +1073,46 @@ class WP_Newsman
 			}
 		}
 	}
+
+	function safeForCsv($str)
+	{
+		return '"' . str_replace('"', '""', $str) . '"';
+	}
+
+	function _importData(&$data, $list, $segments = null, $client, $source)
+	{
+		$csv = '"email","firstname","source"' . PHP_EOL;
+		foreach ($data as $_dat)
+		{
+			$csv .= sprintf(
+				"%s,%s,%s",
+				$this->safeForCsv($_dat["email"]),
+				$this->safeForCsv($_dat["firstname"]),
+				$this->safeForCsv($source)
+			);
+			$csv .= PHP_EOL;
+		}
+		$ret = null;
+		try
+		{
+			if (is_array($segments) && count($segments) > 0)
+			{
+				$ret = $client->import->csv($list, $segments, $csv);
+			} else
+			{
+				$ret = $client->import->csv($list, array(), $csv);
+			}
+			if ($ret == "")
+			{
+				throw new Exception("Import failed");
+			}
+		} catch (Exception $e)
+		{
+			throw new Exception("Import failed");
+		}
+		$data = array();
+	}
+
 
 }
 

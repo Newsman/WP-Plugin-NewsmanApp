@@ -5,6 +5,7 @@ if ($_POST['newsman_submit'] == 'Y')
 	$userid = get_option("newsman_userid");
 	$apikey = get_option("newsman_apikey");
 	$list = get_option("newsman_list");
+	$segments = get_option("newsman_segments");
 
 	$this->constructClient($userid, $apikey);
 
@@ -14,7 +15,7 @@ if ($_POST['newsman_submit'] == 'Y')
 		try
 		{
 			$available_lists = $this->client->list->all();
-			$this->importMailPoetSubscribers($list);
+			$this->importMailPoetSubscribers($list, $segments);
 		} catch (Exception $e)
 		{
 			$this->valid_credential = false;
@@ -26,7 +27,7 @@ if ($_POST['newsman_submit'] == 'Y')
 		try
 		{
 			$available_lists = $this->client->list->all();
-			$this->importSendPressSubscribers($list);
+			$this->importSendPressSubscribers($list, $segments);
 		} catch (Exception $e)
 		{
 			$this->valid_credential = false;
@@ -37,7 +38,7 @@ if ($_POST['newsman_submit'] == 'Y')
 		try
 		{
 			$available_lists = $this->client->list->all();
-			$this->importWoocommerceSubscribers($list);
+			$this->importWoocommerceSubscribers($list, $segments);
 		} catch (Exception $e)
 		{
 			$this->valid_credential = false;
@@ -55,7 +56,7 @@ if ($_POST['newsman_submit'] == 'Y')
 			$this->setMessageBackend('error', 'Invalid Credentials');
 		}
 
-		$this->importWPSubscribers($list);
+		$this->importWPSubscribers($list, $segments);
 	}
 
 } else
