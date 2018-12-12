@@ -610,7 +610,7 @@ class WP_Newsman
 
 		try
 		{
-			$_segments = array($segments);
+			$_segments = (!empty($segments)) ? array($segments) : "";
 			$customers_to_import = array();
 
 			foreach ($subscribers as $user)
@@ -704,7 +704,7 @@ class WP_Newsman
 
 		try
 		{
-			$_segments = array($segments);
+			$_segments = (!empty($segments)) ? array($segments) : "";
 			$customers_to_import = array();
 
 			foreach ($sendpr as $user)
@@ -805,7 +805,7 @@ class WP_Newsman
 		//sync with Newsman from mailpoet
 		try
 		{
-			$_segments = array($segments);
+			$_segments = (!empty($segments)) ? array($segments) : "";
 			$customers_to_import = array();
 
 			foreach ($mailpoet_subscribers as $user)
@@ -869,7 +869,7 @@ class WP_Newsman
 		//sync with newsman
 		try
 		{
-			$_segments = array($segments);
+			$_segments = (!empty($segments)) ? array($segments) : "";
 			$customers_to_import = array();
 
 			foreach ($wp_subscribers as $users => $user)
@@ -894,7 +894,7 @@ class WP_Newsman
 
 		} catch (Exception $e)
 		{
-			$this->setMessageBackend("error", "Failure to sync subscribers with Newsman.");
+			$this->setMessageBackend("error", "Failure to sync subscribers with Newsman." . $e->getMessage());
 		}
 
 		if (empty($this->message))
