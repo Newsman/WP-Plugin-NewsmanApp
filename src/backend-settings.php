@@ -1,9 +1,4 @@
 	<?php
-	ini_set('display_errors', 1);
-
-	// Enable error reporting for NOTICES
-	error_reporting(E_NOTICE);
-	//process form submission
 
 	if (!empty($_POST['newsman_submit']) && $_POST['newsman_submit'] == 'Y')
 	{
