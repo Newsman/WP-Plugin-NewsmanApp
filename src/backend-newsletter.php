@@ -11,6 +11,7 @@ try
 	$this->setMessageBackend('error', 'Invalid Credentials');
 }
 ?>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" type="text/javascript"></script>
 <div class="wrap">
 	<h2>Newsman Newsletter Setup</h2>
 

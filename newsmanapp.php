@@ -257,7 +257,7 @@ class WP_Newsman
 	{
 		wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
 		wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));
-		wp_register_script('bootstrap-js', "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js", array('jquery'));
+		//wp_register_script('bootstrap-js', "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js", array('jquery'));
 		wp_enqueue_script('newsman_js');
 		wp_enqueue_script('bootstrap-js');
 		wp_enqueue_script('jquery-ui');
