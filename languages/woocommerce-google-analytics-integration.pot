@@ -1,0 +1,156 @@
+msgid "Newsman Remarketing &amp; WooCommerce"
+msgstr ""
+
+msgid ""
+"<a href=\"%s\">Connect Newsman Remarketing</a> to finish "
+"setting up this integration."
+msgstr ""
+
+msgid "Dismiss this notice."
+msgstr ""
+
+msgid "(Dismiss)"
+msgstr ""
+
+msgid "Newsman Remarketing"
+msgstr ""
+
+msgid ""
+"Google Analytics is a free service offered by Google that generates "
+"detailed statistics about the visitors to a website."
+msgstr ""
+
+msgid "Newsman Remarketing ID"
+msgstr ""
+
+msgid ""
+"Log into Newsman account to find your ID. e.g. "
+"<code>UA-XXXXX-X</code>"
+msgstr ""
+
+msgid "Set Domain Name"
+msgstr ""
+
+msgid ""
+"(Optional) Sets the <code>_setDomainName</code> variable. <a "
+"href=\"%s\">See here for more information</a>."
+msgstr ""
+
+msgid "Tracking Options"
+msgstr ""
+
+msgid "Enable Standard Tracking"
+msgstr ""
+
+msgid "Anonymize IP addresses."
+msgstr ""
+
+msgid ""
+"Enabling this option is mandatory in certain countries due to national "
+"privacy laws. %sRead more about IP Anonymization%s."
+msgstr ""
+
+msgid "Track 404 (Not found) Errors."
+msgstr ""
+
+msgid ""
+"Enable this to find broken or dead links. An \"Event\" with category "
+"\"Error\" and action \"404 Not Found\" will be created in Google Analytics "
+"for each incoming pageview to a non-existing page. By setting up a \"Custom "
+"Goal\" for these events within Google Analytics you can find out where "
+"broken links originated from (the referrer). %sRead how to set up a goal%s."
+msgstr ""
+
+msgid "Purchase Transactions"
+msgstr ""
+
+msgid ""
+"This requires a payment gateway that redirects to the thank you/order "
+"received page after payment. Orders paid with gateways which do not do this "
+"will not be tracked."
+msgstr ""
+
+msgid "Add to Cart Events"
+msgstr ""
+
+msgid "Enhanced eCommerce"
+msgstr ""
+
+msgid "Enable Enhanced eCommerce "
+msgstr ""
+
+msgid ""
+"Enhanced eCommerce allows you to measure more user interactions with your "
+"store, including: product impressions, product detail views, starting the "
+"checkout process, adding cart items, and removing cart items. Universal "
+"Analytics must be enabled for Enhanced eCommerce to work. Before enabling "
+"this setting, turn on Enhanced eCommerce in your Google Analytics "
+"dashboard. <a href=\"%s\">See here for more information</a>."
+msgstr ""
+
+msgid "Remove from Cart Events"
+msgstr ""
+
+msgid "Product Impressions from Listing Pages"
+msgstr ""
+
+msgid "Product Clicks from Listing Pages"
+msgstr ""
+
+msgid "Product Detail Views"
+msgstr ""
+
+msgid "Checkout Process Initiated"
+msgstr ""
+
+msgid "Please allow Newsman Remarketing a few hours to start displaying results."
+msgstr ""
+
+msgid ""
+"Please note, for transaction tracking to work properly, you will need to "
+"use a payment gateway that redirects the customer back to a WooCommerce "
+"order received/thank you page."
+msgstr ""
+
+msgid "Products"
+msgstr ""
+
+msgid "Add to Cart"
+msgstr ""
+
+msgid "ID:"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "WooCommerce Newsman Remarketing depends on the last version of %s to work!"
+msgstr ""
+
+msgid "WooCommerce"
+msgstr ""
+
+msgid "Get detailed insights into your sales"
+msgstr ""
+
+msgid ""
+"Add advanced tracking for your sales funnel, coupons and more. [<a "
+"href=\"%s\" target=\"_blank\">Learn more</a> &gt;]"
+msgstr ""
+
+msgid "Newsman Remarketing"
+msgstr ""
+
+msgid "https://www.newsman.app/"
+msgstr ""
+
+msgid ""
+"Allows Newsman Remarketing tracking code to be inserted into WooCommerce store "
+"pages."
+msgstr ""
+
+msgid "https://newsman.app"
+msgstr ""

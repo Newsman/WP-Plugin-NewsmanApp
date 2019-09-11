@@ -1,4 +1,4 @@
-# NewsmanApp plugin for WordPress
+# NewsmanApp plugin for WordPress & Remarketing
 [NewsmanApp](https://www.newsmanapp.com) plugin for WordPress allows you to place a newsletter signup form on your blog (widget), to sync your subscribers via API and to send newsletters based on the blog posts via [NewsmanApp](https://www.newsmanapp.com).
 
 This is the easiest way to connect your Blog with NewsmanApp.com. Generate an API KEY in your [NewsmanApp](https://www.newsmanapp.com) account, install this plugin and you will be able to collect and sync subscribers and to send newsletter with your blog posts. 
@@ -14,9 +14,9 @@ Download the latest archive from [here](https://github.com/Newsman/WP-Plugin-New
 # Instalation
 
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
-1. Alternatively, download the plugin and rename folder `WP-Plugin-NewsmanApp-master` to `newsmanapp`, upload the contents of `newsmanapp` to your plugins directory, which usually is `/wp-content/plugins/`.
-1. Activate the plugin
-1. Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsmanapp.com)
+2. Alternatively, download the plugin and rename folder `WP-Plugin-NewsmanApp-master` to `newsmanapp`, upload the contents of `newsmanapp` to your plugins directory, which usually is `/wp-content/plugins/`.
+3. Activate the plugin
+4. Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsmanapp.com)
 
 # Screenshots
 Some quick screenshots of the plugin features.
@@ -35,6 +35,19 @@ Some quick screenshots of the plugin features.
 
 ## Create and send a newsletter
 ![newsletter create from blog posts](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_newsletter.png)
+
+# Newsman Remarketing
+
+NewsmanApp plugin for Woocommerce allows you to track your shop customers.
+
+1. Activate the plugin NewsmanApp Remarketing
+2. Go to *Woocommerce > Integrations* and paste your Newsman Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsmanapp.com)
+
+# Newsman Remarketing Screenshots
+Some quick screenshots of the Newsman Remarketing plugin features.
+	
+## Newsman Remarketing plugin settings
+![newsletter plugin settings](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/1.jpg)
 
 # License
 
