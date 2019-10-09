@@ -22,6 +22,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 	/**
 	 * Newsman Remarketing Integration main class.
 	 */
+
 	class WC_Newsman_Remarketing {
 
 		/**
@@ -43,9 +44,9 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		 */
 		public function __construct() {
 			//Allow non ecommerce pages
-			/*if ( ! class_exists( 'WooCommerce' ) ) {
+			if ( ! class_exists( 'WooCommerce' ) ) {
 				return;
-			}*/
+			}
 
 			// Load plugin text domain
 			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
