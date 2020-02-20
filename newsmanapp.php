@@ -131,11 +131,164 @@ class WP_Newsman
 		}
 	}
 
+	public function _json($obj)
+	{
+		header('Content-Type: application/json');
+		echo json_encode($obj, JSON_PRETTY_PRINT);
+		exit;
+	}
+
+	public function newsmanFetchData()
+	{
+		if (!empty($_GET["newsman"] && !empty($_GET["apikey"])))
+		{
+		    $apikey = $_GET["apikey"];
+            $currApiKey = get_option('newsman_apikey');
+
+            if($apikey != $currApiKey){
+                $this->_json(array("status" => 403));
+                return;
+            }
+
+			if (!class_exists('WooCommerce'))
+			{
+				require ABSPATH . 'wp-content/plugins/woocommerce/woocommerce.php';
+
+				wp_send_json(array("error" => "WooCommerce is not installed"));
+			}
+
+			switch ($_GET["newsman"])
+			{
+				case "orders.json":
+
+					$ordersObj = array();
+
+					$args = array();
+					$orders = wc_get_orders($args);
+
+					foreach ($orders as $item)
+					{
+						$user = get_userdata($item->get_user_id());
+
+						$products = $item->get_items();
+						$productsJson = array();
+
+						$itemData = $item->get_data();
+
+						foreach ($products as $prod)
+						{
+							$_prod = wc_get_product($prod['product_id']);
+
+							$productsJson[] = array(
+								"id" => $prod['product_id'],
+								"name" => $prod['name'],
+								"quantity" => $prod['quantity'],
+								"price" => $_prod->get_price()
+							);
+						}
+
+						$ordersObj[] = array(
+							"order_no" => $item->get_order_number(),
+							"lastname" => (empty($user) ? $item->get_billing_last_name() : $user->last_name),
+							"firstname" => (empty($user) ? $item->get_billing_first_name() : $user->first_name),
+							"email" => (empty($user) ? $item->get_billing_email() : $user->first_name),
+							"phone" => $itemData['billing']['phone'],
+							"state" => $itemData['billing']['state'],
+							"city" => $itemData['billing']['city'],
+							"address" => $itemData['billing']['address_1'],
+							"discount" => (empty($itemData['billing']['discount_total'])) ? 0 : $itemData['billing']['discount_total'],
+							"discount_code" => "",
+							"shipping" => $itemData["shipping_total"],
+							"fees" => 0,
+							"rebates" => 0,
+							"total" => wc_format_decimal($item->get_total(), 2),
+							"products" => $productsJson
+						);
+					}
+
+					$this->_json($ordersObj);
+                    return;
+                    
+					break;
+
+				case "products.json":
+
+					$args = array(
+						'stock_status' => 'instock',
+					);
+					$products = wc_get_products($args);
+					$productsJson = array();
+
+					foreach ($products as $prod)
+					{
+						$productsJson[] = array(
+							"id" => $prod->get_id(),
+							"name" => $prod->get_name(),
+							"stock_quantity" => $prod->get_stock_quantity(),
+							"price" => $prod->get_price()
+						);
+					}
+
+					$this->_json($productsJson);
+                    return;
+
+					break;
+
+				case "customers.json":
+
+					$wp_cust = get_users("role=customer");
+					$custs = array();
+
+					foreach ($wp_cust as $users => $user)
+					{
+						$data = get_user_meta($user->data->ID);
+
+						$custs[] = array(
+							"email" => $user->data->user_email,
+							"firstname" => $data["first_name"][0],
+							"lastname" => $data["last_name"][0]
+						);
+					}
+
+					$this->_json($custs);
+                    return;
+
+					break;
+
+				case "subscribers.json":
+
+					$wp_subscribers = get_users("role=subscriber");
+					$subs = array();
+
+					foreach ($wp_subscribers as $users => $user)
+					{
+						$data = get_user_meta($user->data->ID);
+
+						$subs[] = array(
+							"email" => $user->data->user_email,
+							"firstname" => $data["first_name"][0],
+							"lastname" => $data["last_name"][0]
+						);
+					}
+
+					$this->_json($subs);
+                    return;
+
+					break;
+			}
+		}
+		else{
+            $this->_json(array("status" => 403));
+            return;
+        }
+	}
+
 	/*
 	 * Initializes wordpress hooks
 	 */
 	public function initHooks()
 	{
+		add_action('init', array($this, 'newsmanFetchData'));
 		#admin menu hook
 		add_action('admin_menu', array($this, "adminMenu"));
 		#add links to plugins page
@@ -630,8 +783,8 @@ class WP_Newsman
 			}
 			unset($customers_to_import);
 
-				$this->wooCommerce = true;
-				$this->setMessageBackend("updated ", 'WooCommerce customers synced with Newsman.');
+			$this->wooCommerce = true;
+			$this->setMessageBackend("updated ", 'WooCommerce customers synced with Newsman.');
 
 		} catch (Exception $e)
 		{
@@ -724,8 +877,8 @@ class WP_Newsman
 			}
 			unset($customers_to_import);
 
-				$this->sendpressSync = true;
-				$this->setMessageBackend("updated ", 'SendPress subscribers synced with Newsman.');
+			$this->sendpressSync = true;
+			$this->setMessageBackend("updated ", 'SendPress subscribers synced with Newsman.');
 
 		} catch (Exception $e)
 		{
@@ -762,8 +915,8 @@ class WP_Newsman
 					"firstname" => $row["firstname"]
 				);
 
-			//	$email[] = $row['email'];
-			//	$firstname[] = $row['firstname'];
+				//	$email[] = $row['email'];
+				//	$firstname[] = $row['firstname'];
 			}
 		} else
 		{
