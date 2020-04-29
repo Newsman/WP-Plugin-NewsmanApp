@@ -4,7 +4,7 @@
  Plugin Name: NewsmanApp for Wordpress
  Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- Version: 1.2
+ Version: 1.3
  Author: Newsman
  Author URI: https://www.newsman.app
  */
@@ -314,8 +314,8 @@ class WP_Newsman
         add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
         add_submenu_page("Newsman", "Sync", "Sync", "administrator", "NewsmanSync", array($this, "includeAdminSyncPage"));
         add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
-        add_submenu_page("Newsman", "Newsletter", "Newsletter", "administrator", "NewsmanNewsletter", array($this, "includeAdminNewsletterPage"));
-        add_submenu_page("Newsman", "Templates", "Templates", "administrator", "NewsmanNewsletterTemplates", array($this, "includeNewsletterTemplatesPage"));
+        //add_submenu_page("Newsman", "Newsletter", "Newsletter", "administrator", "NewsmanNewsletter", array($this, "includeAdminNewsletterPage"));
+        //add_submenu_page("Newsman", "Templates", "Templates", "administrator", "NewsmanNewsletterTemplates", array($this, "includeNewsletterTemplatesPage"));
     }
 
     /*

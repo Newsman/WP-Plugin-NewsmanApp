@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter, create, form
 Requires at least: 3.7
-Tested up to: 4.5.1
+Tested up to: 5.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,8 @@ Sure. Go to `Newsman -> Templates` and make any changes you want to the HTML tem
  * Sendpress plugin import
  * Woocommerce customers import
  * Small frontend corrections
+= 1.3 =
+ * Improvements
  
 == Upgrade Notice ==
 
