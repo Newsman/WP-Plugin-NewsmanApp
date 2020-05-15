@@ -132,7 +132,7 @@ class WC_Newsman_Remarketing_JS
 		}
 
 
-		$domainname = self::get( 'ga_set_domain_name' );
+		$domainname = '';
 
 		if ( ! empty( $domainname ) ) {
 			$set_domain_name = "['_setDomainName', '" . esc_js( self::get( 'ga_set_domain_name' ) ) . "'],";
