@@ -6,6 +6,7 @@
 		$apikey = (isset($_POST['newsman_apikey']) && !empty($_POST['newsman_apikey'])) ? strip_tags(trim($_POST['newsman_apikey'])) : "";
 		$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
 		$segments = (isset($_POST['newsman_segments']) && !empty($_POST['newsman_segments'])) ? strip_tags(trim($_POST['newsman_segments'])) : "";
+		$allowAPI = (isset($_POST['newsman_api']) && !empty($_POST['newsman_api'])) ? strip_tags(trim($_POST['newsman_api'])) : "";
 
 		$this->constructClient($userid, $apikey);
 
@@ -13,6 +14,7 @@
 		update_option("newsman_apikey", $this->apikey);
 		update_option("newsman_list", $list);
 		update_option("newsman_segments", $segments);
+		update_option("newsman_api", $allowAPI);
 
 		try
 		{
@@ -32,6 +34,7 @@
 	{
 		$list = get_option('newsman_list');
 		$segments = get_option('newsman_segments');
+		$allowAPI = get_option('newsman_api');
 		try
 		{
 			$available_lists = $this->client->list->all();
@@ -121,6 +124,18 @@
 						</td>
 					</tr>
 				<?php } ?>
+
+					<tr>
+						<th scope="row">
+							<label for="newsman_api">Allow API access</label>
+						</th>
+						<td>
+
+						<input name="newsman_api" type="checkbox" id="newsman_api" <?php echo (!empty($allowAPI) && $allowAPI == "on") ? "checked" : ""; ?>/>										
+						<p class="description">Check to enable API access</p>
+						</td>
+					</tr>
+
 			</table>
 			<input type="submit" value="Save Changes" class="button button-primary"/>
 		</form>

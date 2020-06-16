@@ -35,6 +35,7 @@ if ($_POST['newsman_submit'] == 'Y')
 		}
 	} elseif (isset($_POST['wooCommerce_subscribeBtn']))
 	{
+		//woocommerce
 		try
 		{
 			$available_lists = $this->client->list->all();

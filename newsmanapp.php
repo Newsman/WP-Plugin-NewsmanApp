@@ -139,6 +139,14 @@ class WP_Newsman
         $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
 
         if (!empty($newsman) && !empty($apikey)) {
+
+            $allowAPI = get_option('newsman_api');  
+
+            if ($allowAPI != "on") {
+                $this->_json(array("status" => 403));
+                return;
+            }
+
             $apikey = $_GET["apikey"];
             $currApiKey = get_option('newsman_apikey');
 
@@ -172,11 +180,17 @@ class WP_Newsman
                         foreach ($products as $prod) {
                             $_prod = wc_get_product($prod['product_id']);
 
+                            $image_id  = $_prod->get_image_id();
+                            $image_url = wp_get_attachment_image_url( $image_id, 'full' );
+                            $url = get_permalink( $_prod->get_id() );   
+
                             $productsJson[] = array(
                                 "id" => $prod['product_id'],
                                 "name" => $prod['name'],
                                 "quantity" => $prod['quantity'],
-                                "price" => $_prod->get_price()
+                                "price" => $_prod->get_price(),
+                                "image_url" => $image_url,
+                                "url" => $url
                             );
                         }
 
@@ -213,11 +227,18 @@ class WP_Newsman
                     $productsJson = array();
 
                     foreach ($products as $prod) {
+
+                        $image_id  = $prod->get_image_id();
+                        $image_url = wp_get_attachment_image_url( $image_id, 'full' );
+                        $url = get_permalink( $prod->get_id() );                        
+
                         $productsJson[] = array(
                             "id" => $prod->get_id(),
                             "name" => $prod->get_name(),
                             "stock_quantity" => $prod->get_stock_quantity(),
-                            "price" => $prod->get_price()
+                            "price" => $prod->get_price(),
+                            "image_url" => $image_url,
+                            "url" => $url
                         );
                     }
 
@@ -687,51 +708,60 @@ class WP_Newsman
 
         $email = array();
 
-
         if ($ordersCount > 0) {
             for ($int = 0; $int < $ordersCount; $int++) {
+
+            if ($wpSubscriberFilter) {
                 if (in_array($allOrders[$int]->data["billing"]["email"], $wp_subscribers)) {
                     $email[] = $allOrders[$int]->data["billing"]["email"];
                 }
+             }
+              else{          
+                $email[] = array(
+                    "email" => $allOrders[$int]->data["billing"]["email"],
+                    "firstname" => $allOrders[$int]->data["billing"]["first_name"],
+                    "lastname" => $allOrders[$int]->data["billing"]["last_name"]
+                );                           
+             }
             }
         } else {
-            $this->setMessageBackend("error ", "No woocommerce customers found or plugin is not installed.");
+            $this->setMessageBackend("error ", "No woocommerce customers found with selected filters or plugin is not installed.");
             return;
-        }
+        }      
 
         foreach ($email as $_email) {
-            $woocommerceCustomers[]['email'] = $_email;
-        }
+            $woocommerceCustomers[] = array(
+                "email" => $_email["email"],
+                "firstname" => $_email["firstname"],
+                "lastname" => $_email["lastname"]
+            );
+        }    
 
         $subscribers = array();
         foreach ($woocommerceCustomers as $k => $s) {
             $subscribers[$k]['email'] = $s['email'];
+            $subscribers[$k]['firstname'] = $s['firstname'];
+            $subscribers[$k]['lastname'] = $s['lastname'];
         }
-
-        /*$csv = "email" . PHP_EOL;
-        foreach ($subscribers as $s)
-        {
-            $csv .= $s['email'];
-            $csv .= PHP_EOL;
-        }
-
-        $csv = utf8_encode($csv);*/
 
         try {
-            $_segments = (!empty($segments)) ? array($segments) : "";
+            $_segments = (!empty($segments)) ? array($segments) : array();         
+
             $customers_to_import = array();
 
             foreach ($subscribers as $user) {
                 $customers_to_import[] = array(
                     "email" => $user["email"],
-                    "firstname" => ""
+                    "firstname" => (!empty($user["lastname"])) ? $user["firstname"] : "",
+                    "lastname" => (!empty($user["lastname"])) ? $user["lastname"] : ""
                 );
+
                 if ((count($customers_to_import) % $this->batchSize) == 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce");
                 }
             }
             if (count($customers_to_import) > 0) {
-                $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+                $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce");
             }
             unset($customers_to_import);
 
@@ -809,14 +839,15 @@ class WP_Newsman
             foreach ($sendpr as $user) {
                 $customers_to_import[] = array(
                     "email" => $user["email"],
-                    "firstname" => $user["firstname"]
+                    "firstname" => $user["firstname"],
+                    "lastname" => ""
                 );
                 if ((count($customers_to_import) % $this->batchSize) == 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress sendpress");
                 }
             }
             if (count($customers_to_import) > 0) {
-                $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+                $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress sendpress");
             }
             unset($customers_to_import);
 
@@ -901,14 +932,15 @@ class WP_Newsman
             foreach ($mailpoet_subscribers as $user) {
                 $customers_to_import[] = array(
                     "email" => $user["email"],
-                    "firstname" => $user["firstname"]
+                    "firstname" => $user["firstname"],
+                    "lastname" => ""
                 );
                 if ((count($customers_to_import) % $this->batchSize) == 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress mailpoet");
                 }
             }
             if (count($customers_to_import) > 0) {
-                $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
+                $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress mailpoet");
             }
             unset($customers_to_import);
 
@@ -959,7 +991,8 @@ class WP_Newsman
             foreach ($wp_subscribers as $users => $user) {
                 $customers_to_import[] = array(
                     "email" => $user->data->user_email,
-                    "firstname" => $user->data->display_name
+                    "firstname" => $user->data->display_name,
+                    "lastname" => ""
                 );
                 if ((count($customers_to_import) % $this->batchSize) == 0) {
                     $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
@@ -1139,12 +1172,13 @@ class WP_Newsman
 
     function _importData(&$data, $list, $segments = null, $client, $source)
     {
-        $csv = '"email","firstname","source"' . PHP_EOL;
+        $csv = '"email","firstname","lastname","source"' . PHP_EOL;
         foreach ($data as $_dat) {
             $csv .= sprintf(
-                "%s,%s,%s",
+                "%s,%s,%s,%s",
                 $this->safeForCsv($_dat["email"]),
                 $this->safeForCsv($_dat["firstname"]),
+                $this->safeForCsv($_dat["lastname"]),
                 $this->safeForCsv($source)
             );
             $csv .= PHP_EOL;
