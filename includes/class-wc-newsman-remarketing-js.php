@@ -101,6 +101,10 @@ class WC_Newsman_Remarketing_JS
 	public static function load_analytics($order = false)
 	{
 		$logged_in = is_user_logged_in() ? 'yes' : 'no';
+		if(current_user_can('administrator')){
+			return "";		  
+	  	}	 
+
 		if ('yes' === self::get('ga_use_universal_analytics'))
 		{
 			add_action('wp_footer', array('WC_Newsman_Remarketing_JS', 'universal_analytics_footer'));
@@ -163,23 +167,27 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static function listing_impression($product, $position)
 	{
-		if (isset($_GET['s']))
-		{
-			$list = "Search Results";
-		} else
-		{
-			$list = "Product List";
-		}
+		if(!current_user_can('administrator')){				
 
-		wc_enqueue_js("
-			" . self::tracker_var() . "( 'ec:addImpression', {
-				'id': '" . esc_js($product->get_id()) . "',
-				'name': '" . esc_js($product->get_title()) . "',
-				'category': " . self::product_get_category_line($product) . "
-				'list': '" . esc_js($list) . "',
-				'position': '" . esc_js($position) . "'
-			} );
-		");
+			if (isset($_GET['s']))
+			{
+				$list = "Search Results";
+			} else
+			{
+				$list = "Product List";
+			}
+
+			wc_enqueue_js("
+				" . self::tracker_var() . "( 'ec:addImpression', {
+					'id': '" . esc_js($product->get_id()) . "',
+					'name': '" . esc_js($product->get_title()) . "',
+					'category': " . self::product_get_category_line($product) . "
+					'list': '" . esc_js($list) . "',
+					'position': '" . esc_js($position) . "'
+				} );
+			");
+
+		}
 	}
 
 	/**
@@ -187,34 +195,38 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static function listing_click($product, $position)
 	{
-		if (isset($_GET['s']))
-		{
-			$list = "Search Results";
-		} else
-		{
-			$list = "Product List";
-		}
+		if(!current_user_can('administrator')){		
 
-		echo("
-			<script>
-			(function($) {
-				$( '.products .post-" . esc_js($product->get_id()) . " a' ).click( function() {
-					if ( true === $(this).hasClass( 'add_to_cart_button' ) ) {
-						return;
-					}
+			if (isset($_GET['s']))
+			{
+				$list = "Search Results";
+			} else
+			{
+				$list = "Product List";
+			}
 
-					" . self::tracker_var() . "( 'ec:addProduct', {
-						'id': '" . esc_js($product->get_id()) . "',
-						'name': '" . esc_js($product->get_title()) . "',
-						'category': " . self::product_get_category_line($product) . "
-						'position': '" . esc_js($position) . "'
+			echo("
+				<script>
+				(function($) {
+					$( '.products .post-" . esc_js($product->get_id()) . " a' ).click( function() {
+						if ( true === $(this).hasClass( 'add_to_cart_button' ) ) {
+							return;
+						}
+
+						" . self::tracker_var() . "( 'ec:addProduct', {
+							'id': '" . esc_js($product->get_id()) . "',
+							'name': '" . esc_js($product->get_title()) . "',
+							'category': " . self::product_get_category_line($product) . "
+							'position': '" . esc_js($position) . "'
+						});
+
+						" . self::tracker_var() . "( 'send', 'pageview', '_ecommerce', 'pageview', ' " . esc_js($list) . "' );
 					});
+				})(jQuery);
+				</script>
+			");
 
-					" . self::tracker_var() . "( 'send', 'pageview', '_ecommerce', 'pageview', ' " . esc_js($list) . "' );
-				});
-			})(jQuery);
-			</script>
-		");
+		}
 	}
 
 	/**
@@ -252,8 +264,7 @@ class WC_Newsman_Remarketing_JS
 	 * @return string Universal Analytics Code
 	 */
 	public static function load_analytics_universal($logged_in)
-	{
-
+	{	   
 		$domainname = self::get('ga_set_domain_name');
 
 		if (!empty($domainname))
