@@ -54,6 +54,8 @@ Sure. Go to `Newsman -> Templates` and make any changes you want to the HTML tem
  * Small frontend corrections
 = 1.3 =
  * Improvements
+= 1.4 =
+ * Remarketing improvements
  
 == Upgrade Notice ==
 
