@@ -133,10 +133,12 @@ class WP_Newsman
         exit;
     }
 
-    public function newsmanFetchData()
+   public function newsmanFetchData()
     {
         $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
         $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
+        $start = (!empty($_GET["start"]) && $_GET["start"] >= 0) ? $_GET["start"] : 0;
+        $limit = (empty($_GET["limit"])) ? 10 : $_GET["limit"];
 
         if (!empty($newsman) && !empty($apikey)) {
 
@@ -166,7 +168,10 @@ class WP_Newsman
 
                     $ordersObj = array();
 
-                    $args = array();
+         $args = array(
+    'limit' => $limit,
+    'offset' => $start
+);
                     $orders = wc_get_orders($args);
 
                     foreach ($orders as $item) {
@@ -222,6 +227,8 @@ class WP_Newsman
 
                     $args = array(
                         'stock_status' => 'instock',
+			 'limit' => $limit,
+   			 'offset' => $start
                     );
                     $products = wc_get_products($args);
                     $productsJson = array();
@@ -249,7 +256,8 @@ class WP_Newsman
 
                 case "customers.json":
 
-                    $wp_cust = get_users("role=customer");
+$args = array("role" => "customer", "offset" => $start, "number" => $limit);
+                    $wp_cust = get_users($args);
                     $custs = array();
 
                     foreach ($wp_cust as $users => $user) {
@@ -269,7 +277,8 @@ class WP_Newsman
 
                 case "subscribers.json":
 
-                    $wp_subscribers = get_users("role=subscriber");
+$args = array("role" => "subscriber", "offset" => $start, "number" => $limit);
+                    $wp_subscribers = get_users($args);
                     $subs = array();
 
                     foreach ($wp_subscribers as $users => $user) {
