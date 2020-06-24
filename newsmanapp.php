@@ -6,7 +6,7 @@ Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
 Version: 1.4
 Author: Newsman
-Author URI: https://www.newsman.app
+Author URI: https://www.newsman.com
 */
 
     if (!defined('ABSPATH')) {
