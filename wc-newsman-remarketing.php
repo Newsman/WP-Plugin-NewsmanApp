@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: Allows Newsman Remarketing code to be inserted into WooCommerce store pages.
  * Author: Newsman
- * Author URI: https://newsman.app
+ * Author URI: https://newsman.com
  * Version: 1.7
  * WC requires at least: 2.1
  * WC tested up to: 4.1
@@ -114,7 +114,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		 * @return string
 		 */
 		public function woocommerce_missing_notice() {
-			echo '<div class="error"><p>' . sprintf( __( 'WooCommerce Newsman Remarketing depends on the last version of %s to work!', 'wc-newsman-remarketing' ), '<a href="https://newsman.app/" target="_blank">' . __( 'WooCommerce', 'wc-newsman-remarketing' ) . '</a>' ) . '</p></div>';
+			echo '<div class="error"><p>' . sprintf( __( 'WooCommerce Newsman Remarketing depends on the last version of %s to work!', 'wc-newsman-remarketing' ), '<a href="https://newsman.com/" target="_blank">' . __( 'WooCommerce', 'wc-newsman-remarketing' ) . '</a>' ) . '</p></div>';
 		}
 
 		/**

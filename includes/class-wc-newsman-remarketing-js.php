@@ -582,15 +582,15 @@ class WC_Newsman_Remarketing_JS
 
 				<script>
 			(function($) {
-			$( document.body ).on( 'updated_cart_totals', function(){
+			//$( document.body ).on( 'updated_cart_totals', function(){
+			$('button[name=\"update_cart\"]').click(function(){
 
+  			 	$('.shop_table tr.cart_item').each(function () {
 
-   $('.shop_table tr.cart_item').each(function () {
+					var id = $(this).find('.product-remove a').attr('data-product_id');
+					var qty = $(this).find('.product-quantity input').val();
 
-        var id = $(this).find('.product-remove a').attr('data-product_id');
-        var qty = $(this).find('.product-quantity input').val();
-
-        						" . self::tracker_var() . "( 'ec:addProduct', {
+        				" . self::tracker_var() . "( 'ec:addProduct', {
 						'id': id,
 					} );
 					" . self::tracker_var() . "( 'ec:setAction', 'remove' );
@@ -598,14 +598,16 @@ class WC_Newsman_Remarketing_JS
 
 
 						" . self::tracker_var() . "( 'ec:addProduct', {
-									'id': id,
+						'id': id,
 						'quantity': qty,
 					} );
 					" . self::tracker_var() . "( 'ec:setAction', 'add' );
 					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
 
-              });
+			    });
+			  
 			});
+			//});
 
 			})(jQuery);
 			</script>
@@ -722,7 +724,7 @@ class WC_Newsman_Remarketing_JS
 					$( '" . $selector . "' ).click( function() {
 						" . $parameters['enhanced'] . "
 						" . self::tracker_var() . "( 'ec:setAction', 'add' );
-						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
+						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );					
 					});
 				");
 	}
