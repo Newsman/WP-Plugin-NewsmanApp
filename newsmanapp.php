@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 1.4
+Version: 1.7
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -168,10 +168,10 @@ Author URI: https://www.newsman.com
 
                         $ordersObj = array();
 
-            $args = array(
-        'limit' => $limit,
-        'offset' => $start
-    );
+                        $args = array(
+                            'limit' => $limit,
+                            'offset' => $start
+                        );
                         $orders = wc_get_orders($args);
 
                         foreach ($orders as $item) {
@@ -227,8 +227,8 @@ Author URI: https://www.newsman.com
 
                         $args = array(
                             'stock_status' => 'instock',
-                'limit' => $limit,
-                'offset' => $start
+                            'limit' => $limit,
+                            'offset' => $start
                         );
                         $products = wc_get_products($args);
                         $productsJson = array();
@@ -296,6 +296,28 @@ Author URI: https://www.newsman.com
 
                         break;
                 }
+            }
+
+            switch($_GET["newsman"])
+            {
+                case "cron":
+
+                    $list = get_option("newsman_list");
+                    $segments = get_option("newsman_segments");
+
+                    $this->importWoocommerceSubscribers($list, $segments);
+                    $this->importMailPoetSubscribers($list, $segments);
+                    $this->importSendPressSubscribers($list, $segments);
+                    $this->importWPSubscribers($list, $segments);
+
+                    $json = array(
+                        "status" => "ok"
+                    );
+
+                    $this->_json($json);
+                    return;
+
+                break;
             }
         }
 
