@@ -568,15 +568,41 @@ class WC_Newsman_Remarketing_JS
 	{
 		echo("
 			<script>
+
 			(function($) {
-				$( '.remove' ).click( function() {
-					" . self::tracker_var() . "( 'ec:addProduct', {
+			
+			$('.remove').each(function(index) {
+  		   		 $(this).unbind('click').click( function(){					 
+
+			        " . self::tracker_var() . "( 'ec:addProduct', {
 						'id': ($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id')),
 						'quantity': $(this).parent().parent().find( '.qty' ).val() ? $(this).parent().parent().find( '.qty' ).val() : '1',
 					} );
 					" . self::tracker_var() . "( 'ec:setAction', 'remove' );
 					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'remove from cart' );
+	 
 				});
+			});
+			
+				    //$( '.remove' ).click( function(e) {
+				
+					//e.preventDefault();
+					
+					//var the_href = $(this).attr('href');
+														
+					//" . self::tracker_var() . "('send', 'event', 'UX', 'click', 'remove from cart', null, _nzm.createFunctionWithTimeout(function () {
+               
+                    //_nzm.run('send', 'pageview');     
+                
+					//alert('test');
+				
+               		//document.location.href = the_href
+           	 	 //});
+
+                 //return false;	
+				 
+				//});
+
 			})(jQuery);
 			</script>
 

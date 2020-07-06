@@ -295,29 +295,26 @@ Author URI: https://www.newsman.com
                         return;
 
                         break;
+
+                        case "cron":
+
+                            $list = get_option("newsman_list");
+                            $segments = get_option("newsman_segments");
+        
+                            $this->importWoocommerceSubscribers($list, $segments);
+                            $this->importMailPoetSubscribers($list, $segments);
+                            $this->importSendPressSubscribers($list, $segments);
+                            $this->importWPSubscribers($list, $segments);
+        
+                            $json = array(
+                                "status" => "ok"
+                            );
+        
+                            $this->_json($json);
+                            return;
+        
+                        break;
                 }
-            }
-
-            switch($_GET["newsman"])
-            {
-                case "cron":
-
-                    $list = get_option("newsman_list");
-                    $segments = get_option("newsman_segments");
-
-                    $this->importWoocommerceSubscribers($list, $segments);
-                    $this->importMailPoetSubscribers($list, $segments);
-                    $this->importSendPressSubscribers($list, $segments);
-                    $this->importWPSubscribers($list, $segments);
-
-                    $json = array(
-                        "status" => "ok"
-                    );
-
-                    $this->_json($json);
-                    return;
-
-                break;
             }
         }
 
