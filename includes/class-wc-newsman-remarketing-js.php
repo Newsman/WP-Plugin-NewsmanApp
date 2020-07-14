@@ -421,6 +421,22 @@ class WC_Newsman_Remarketing_JS
 	{
 		//$code = "" . self::tracker_var() . "( 'set', '&cu', '" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() : $order->get_currency() ) . "' );";
 		$code = "" . self::tracker_var() . "( 'set', 'currencyCode', '" . esc_js(version_compare(WC_VERSION, '3.0', '<') ? $order->get_order_currency() : $order->get_currency()) . "' );";
+		$email = $order->get_billing_email();
+		$f = $order->get_billing_first_name();
+		$l = $order->get_billing_last_name();
+
+		$code .= "
+		function wait_to_load_and_identifypurchase() {
+			if (typeof _nzm.get_tracking_id === 'function') {
+				if (_nzm.get_tracking_id() == '') {
+		 _nzm.identify({ email: \"$email\", first_name: \"$f\", last_name: \"$l\" });
+				}
+			} else {
+				setTimeout(function() {wait_to_load_and_identifypurchase()}, 50)
+			}
+		}
+		wait_to_load_and_identifypurchase();
+		";
 
 		// Order items
 		if ($order->get_items())
@@ -706,6 +722,7 @@ class WC_Newsman_Remarketing_JS
 		}
 
 		$code .= "" . self::tracker_var() . "( 'ec:setAction','checkout' );";
+
 		wc_enqueue_js($code);
 	}
 
