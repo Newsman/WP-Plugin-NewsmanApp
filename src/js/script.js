@@ -10,6 +10,8 @@
             var compliantExists2 = true;
 
             var email = $('.newsman-subscription-form').find("input[name='newsman_subscription_email']").val();
+            var name = $('.newsman-subscription-form').find("input[name='newsman_subscription_name']").val();
+            var prename = $('.newsman-subscription-form').find("input[name='newsman_subscription_prename']").val();
 
             $('#newsman_subscribtion_message').removeClass("success");
             $('#newsman_subscribtion_message').removeClass("error");
@@ -43,7 +45,9 @@
 
             $.post(ajaxurl, {
                 action: 'newsman_ajax_subscribe',
-                email: email
+                email: email,
+                name: name,
+                prename: prename
             }, function (response) {
 
                 response = jQuery.parseJSON(response);

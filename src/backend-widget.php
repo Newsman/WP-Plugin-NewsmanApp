@@ -6,6 +6,8 @@ if ($_POST['newsman_submit'] == 'Y')
 	$infirm = (isset($_POST['newsman_widget_infirm']) && !empty($_POST['newsman_widget_infirm'])) ? strip_tags(trim($_POST['newsman_widget_infirm'])) : get_option($infirm);
 	$title = (isset($_POST['newsman_widget_title']) && !empty($_POST['newsman_widget_title'])) ? strip_tags(trim($_POST['newsman_widget_title'])) : get_option($title);
 
+	$name = (isset($_POST['newsman_name']) && !empty($_POST['newsman_name'])) ? strip_tags(trim($_POST['newsman_name'])) : get_option($name);
+
 	$compliant1 = (isset($_POST['newsman_widget_compliant1']) && !empty($_POST['newsman_widget_compliant1'])) ? strip_tags(trim($_POST['newsman_widget_compliant1'])) : get_option($compliant1);
 	$compliant2 = (isset($_POST['newsman_widget_compliant2']) && !empty($_POST['newsman_widget_compliant2'])) ? strip_tags(trim($_POST['newsman_widget_compliant2'])) : get_option($compliant2);
 
@@ -14,11 +16,12 @@ if ($_POST['newsman_submit'] == 'Y')
 
 
 	update_option("newsman_widget_confirm", $confirm);
+	update_option('newsman_name', $name);
 	update_option("newsman_widget_infirm", $infirm);
 	update_option("newsman_widget_compliant1", $compliant1);
 	update_option("newsman_widget_compliant2", $compliant2);
 	update_option("newsman_widget_compliant1_url", $compliant1Url);
-	update_option("newsman_widget_compliant2_url", $compliant2Url);
+	update_option("newsman_widget_compliant2_url", $compliant2Url);	
 
 	$message = array(
 		'status' => 'updated',
@@ -27,6 +30,7 @@ if ($_POST['newsman_submit'] == 'Y')
 } else
 {
 	$confirm = get_option('newsman_widget_confirm');
+	$name = get_option('newsman_name');
 	$infirm = get_option('newsman_widget_infirm');
 	$compliant1 = get_option('newsman_widget_compliant1');
 	$compliant2 = get_option('newsman_widget_compliant2');
@@ -53,6 +57,14 @@ if ($_POST['newsman_submit'] == 'Y')
 						<br>To use the widget go to Appearance > Widgets. Look for the widget called Newsman Form and
 						drag it to any of the page containers available. You can also edit the tile here.
 					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label>Display Name & Lastname fields ?</label>
+				</th>
+				<td>
+					<input name="newsman_name" type="checkbox" id="newsman_name" <?php echo (!empty($name) && $name == "on") ? "checked" : ""; ?>/>				
 				</td>
 			</tr>
 			<tr>

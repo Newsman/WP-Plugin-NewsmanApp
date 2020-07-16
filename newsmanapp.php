@@ -483,6 +483,8 @@ Author URI: https://www.newsman.com
             if (isset($_POST['email']) && !empty($_POST['email'])) {
 
                 $email = strip_tags(trim($_POST['email']));
+                $name = strip_tags(trim($_POST['name']));
+                $prename = strip_tags(trim($_POST['prename']));
                 $list = get_option('newsman_list');
                 try {
                     if ($this->newsmanListEmailExists($email, $list)) {
@@ -494,8 +496,8 @@ Author URI: https://www.newsman.com
                     $ret = $this->client->subscriber->initSubscribe(
                         $list, /* The list id */
                         $email, /* Email address of subscriber */
-                        null, /* Firstname of subscriber, can be null. */
-                        null, /* Lastname of subscriber, can be null. */
+                        $prename, /* Firstname of subscriber, can be null. */
+                        $name, /* Lastname of subscriber, can be null. */
                         $this->getUserIP(), /* IP address of subscriber */
                         null, /* Hash array with props (can be later used to build segment criteria) */
                         null

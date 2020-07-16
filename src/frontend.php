@@ -6,11 +6,29 @@ $compliant2 = get_option('newsman_widget_compliant2');
 $compliant1url = get_option('newsman_widget_compliant1_url');
 $compliant2url = get_option('newsman_widget_compliant2_url');
 
+$name = get_option('newsman_name');
+$prename = get_option('newsman_prename');
+
 ?>
 <div id="newsman_subscribtion_message"></div>
 <form method="post" class="newsman-subscription-form">
 	<input type="hidden" name="newsman_subscription_submited" value="Y"/>
 	<dl>
+	<?php if (!empty($name))
+		{ ?>
+		<dt>
+			<label for="newsman_subscription_name">Nume</label>
+		</dt>
+		<dd>
+			<input type="text" name="newsman_subscription_name"/>
+		</dd>
+		<dt>
+			<label for="newsman_subscription_prename">Prenume</label>
+		</dt>
+		<dd>
+			<input type="text" name="newsman_subscription_prename"/>
+		</dd>
+		<?php } ?>
 		<dt>
 			<label for="newsman_subscription_email">Email</label>
 		</dt>
@@ -31,6 +49,7 @@ $compliant2url = get_option('newsman_widget_compliant2_url');
 				<input name="compliant2" type="checkbox" id="compliant2"/>
 			</dd>
 		<?php } ?>
+
 		<dd>
 			<input type="button" id="newsman_widget" value="Subscribe"/>
 		</dd>
