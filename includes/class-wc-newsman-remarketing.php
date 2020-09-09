@@ -40,7 +40,8 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		if (is_admin())
 		{
 			include_once('class-wc-newsman-remarketing-info-banner.php');
-			WC_Newsman_Remarketing_Info_Banner::get_instance($this->dismissed_info_banner, $this->ga_id);
+			$remarketingid = get_option('newsman_remarketingid');
+			WC_Newsman_Remarketing_Info_Banner::get_instance($this->dismissed_info_banner, $remarketingid);
 		}
 
 		// Admin Options
@@ -70,7 +71,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	public function init_options()
 	{
 		$options = array(
-			'ga_id',
+			'remarketingid',
 			/*'ga_set_domain_name',*/
 			'ga_standard_tracking_enabled',
 			'ga_support_display_advertising',
@@ -103,13 +104,13 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	public function init_form_fields()
 	{
 		$this->form_fields = array(
-			'ga_id' => array(
+			/*'ga_id' => array(
 				'title' => __('Newsman Remarketing ID', 'newsman-remarketing-translate'),
 				'description' => __('Log into your Newsman Account to find your Remarketing ID', 'newsman-remarketing-translate'),
 				'type' => 'text',
 				'placeholder' => 'XXXXX',
 				'default' => get_option('woocommerce_ga_id') // Backwards compat
-			),
+			),*/
 			/*'ga_set_domain_name' => array(
 				'title' 			=> __( 'Set Domain Name', 'newsman-remarketing-translate' ),
 				'description' 		=> sprintf( __( '(Optional) Sets the <code>_setDomainName</code> variable. <a href="%s">See here for more information</a>.', 'newsman-remarketing-translate' ), 'https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite#multipleDomains' ),
@@ -393,7 +394,9 @@ wait_to_load_and_identify();
 	 */
 	private function disable_tracking($type)
 	{
-		if (is_admin() || current_user_can('manage_options') || (!$this->ga_id) || 'no' === $type || apply_filters('woocommerce_ga_disable_tracking', false, $type))
+		$remarketingid = get_option('newsman_remarketingid');
+
+		if (is_admin() || current_user_can('manage_options') || empty($remarketingid) || 'no' === $type || apply_filters('woocommerce_ga_disable_tracking', false, $type))
 		{
 			return true;
 		}

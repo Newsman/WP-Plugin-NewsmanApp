@@ -81,6 +81,11 @@ Author URI: https://www.newsman.com
 
         public $wpSync, $mailpoetSync, $sendpressSync, $wooCommerce = false;
 
+        public static $endpoint = "https://retargeting.newsmanapp.com/js/retargeting/track.js";
+        public static $endpointHost = "https://retargeting.newsmanapp.com";
+        //public static $endpoint = "https://bogdandev2.newsmanapp.com/js/retargeting/track.dev.js";
+        //public static $endpointHost = "https://bogdandev2.newsmanapp.com";
+
         public function __construct()
         {  
             $this->constructClient();
@@ -470,6 +475,21 @@ Author URI: https://www.newsman.com
             $html = '<script type="text/javascript">';
             $html .= 'var ajaxurl = "' . admin_url('admin-ajax.php') . '"';
             $html .= '</script>';
+
+            if ( ! class_exists( 'WooCommerce' ) ) {         
+                $remarketingid = get_option('newsman_remarketingid');
+                if(!empty($remarketingid))
+                    $html .= "
+                    <script type='text/javascript'>
+                    var _nzm = _nzm || []; var _nzm_config = _nzm_config || []; _nzm_tracking_server = '" . self::$endpointHost . "';
+                    (function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
+                    }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
+                    s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
+                    script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
+                    script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();
+                    </script>
+                    ";
+            }            
 
             echo $html;
         }

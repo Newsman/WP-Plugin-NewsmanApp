@@ -45,7 +45,9 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		public function __construct() {
 			//Allow non ecommerce pages
 			if ( ! class_exists( 'WooCommerce' ) ) {
+
 				return;
+				
 			}
 
 			// Load plugin text domain

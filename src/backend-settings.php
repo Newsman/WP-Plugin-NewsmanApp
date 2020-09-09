@@ -2,6 +2,7 @@
 
 	if (!empty($_POST['newsman_submit']) && $_POST['newsman_submit'] == 'Y')
 	{
+		$remarketingid = (isset($_POST['newsman_remarketingid']) && !empty($_POST['newsman_remarketingid'])) ? strip_tags(trim($_POST['newsman_remarketingid'])) : "";
 		$userid = (isset($_POST['newsman_userid']) && !empty($_POST['newsman_userid'])) ? strip_tags(trim($_POST['newsman_userid'])) : "";
 		$apikey = (isset($_POST['newsman_apikey']) && !empty($_POST['newsman_apikey'])) ? strip_tags(trim($_POST['newsman_apikey'])) : "";
 		$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
@@ -10,6 +11,7 @@
 
 		$this->constructClient($userid, $apikey);
 
+		update_option("newsman_remarketingid", $remarketingid);
 		update_option("newsman_userid", $this->userid);
 		update_option("newsman_apikey", $this->apikey);
 		update_option("newsman_list", $list);
@@ -32,6 +34,7 @@
 		}
 	} else
 	{
+		$remarketingid = get_option('newsman_remarketingid');
 		$list = get_option('newsman_list');
 		$segments = get_option('newsman_segments');
 		$allowAPI = get_option('newsman_api');
@@ -68,10 +71,19 @@
 			<table class="form-table">
 				<tr>
 					<th scope="row">
+						<label for="newsman_remarketingid">REMARKETING ID</label>
+					</th>
+					<td>
+						<input type="text" name="newsman_remarketingid" value="<?php echo $remarketingid; ?>"/>
+						<p class="description">Your Newsman Remarketing ID</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
 						<label for="newsman_apikey">API KEY</label>
 					</th>
 					<td>
-						<input type="text" name="newsman_apikey" value="<?php echo $this->apikey ?>"/>
+						<input type="text" name="newsman_apikey" value="<?php echo $this->apikey; ?>"/>
 						<p class="description">Your Newsman API KEY</p>
 					</td>
 				</tr>
@@ -80,7 +92,7 @@
 						<label for="newsman_userid">User ID</label>
 					</th>
 					<td>
-						<input type="text" name="newsman_userid" value="<?php echo $this->userid ?>"/>
+						<input type="text" name="newsman_userid" value="<?php echo $this->userid; ?>"/>
 						<p class="description">Your Newsman User ID</p>
 					</td>
 				</tr>
@@ -97,7 +109,7 @@
 								<?php foreach ($available_lists as $l)
 								{ ?>
 									<option
-										value="<?php echo $l['list_id'] ?>" <?php echo $l['list_id'] == $list ? "selected = ''" : ""; ?>><?php echo $l['list_name'] ?></option>
+										value="<?php echo $l['list_id'] ?>" <?php echo $l['list_id'] == $list ? "selected = ''" : ""; ?>><?php echo $l['list_name']; ?></option>
 								<?php } ?>
 							</select>
 							<p class="description">Select a list of subscribers</p>
@@ -117,7 +129,7 @@
 								<?php foreach ($available_segments as $l)
 								{ ?>
 									<option
-										value="<?php echo $l['segment_id'] ?>" <?php echo $l['segment_id'] == $segments ? "selected = ''" : ""; ?>><?php echo $l['segment_name'] ?></option>
+										value="<?php echo $l['segment_id']; ?>" <?php echo $l['segment_id'] == $segments ? "selected = ''" : ""; ?>><?php echo $l['segment_name']; ?></option>
 								<?php } ?>
 							</select>
 							<p class="description">Select a segment</p>

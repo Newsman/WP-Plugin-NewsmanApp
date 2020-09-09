@@ -81,7 +81,7 @@ class WC_Newsman_Remarketing_JS
 		</script>";
 		*/
 		return "<script type='text/javascript'>
-			var gaProperty = '" . esc_js(self::get('ga_id')) . "';
+			var gaProperty = '" . esc_js(self::get('remarketingid')) . "';
 			var disableStr = 'nzm-disable-' + gaProperty;
 			if ( document.cookie.indexOf( disableStr + '=true' ) > -1 ) {
 				window[disableStr] = true;
@@ -103,7 +103,7 @@ class WC_Newsman_Remarketing_JS
 		$logged_in = is_user_logged_in() ? 'yes' : 'no';
 		if(current_user_can('administrator')){
 			return "";		  
-	  	}	 
+		}	 
 
 		if ('yes' === self::get('ga_use_universal_analytics'))
 		{
@@ -177,15 +177,19 @@ class WC_Newsman_Remarketing_JS
 				$list = "Product List";
 			}
 
-			wc_enqueue_js("
-				" . self::tracker_var() . "( 'ec:addImpression', {
-					'id': '" . esc_js($product->get_id()) . "',
-					'name': '" . esc_js($product->get_title()) . "',
-					'category': " . self::product_get_category_line($product) . "
-					'list': '" . esc_js($list) . "',
-					'position': '" . esc_js($position) . "'
-				} );
-			");
+			$remarketingid = get_option('newsman_remarketingid');
+			if(!empty($remarketingid))
+			{
+				wc_enqueue_js("
+					" . self::tracker_var() . "( 'ec:addImpression', {
+						'id': '" . esc_js($product->get_id()) . "',
+						'name': '" . esc_js($product->get_title()) . "',
+						'category': " . self::product_get_category_line($product) . "
+						'list': '" . esc_js($list) . "',
+						'position': '" . esc_js($position) . "'
+					} );
+				");
+			}
 
 		}
 	}
@@ -205,26 +209,30 @@ class WC_Newsman_Remarketing_JS
 				$list = "Product List";
 			}
 
-			echo("
-				<script>
-				(function($) {
-					$( '.products .post-" . esc_js($product->get_id()) . " a' ).click( function() {
-						if ( true === $(this).hasClass( 'add_to_cart_button' ) ) {
-							return;
-						}
+			$remarketingid = get_option('newsman_remarketingid');
+			if(!empty($remarketingid))
+			{
+				echo("
+					<script>
+					(function($) {
+						$( '.products .post-" . esc_js($product->get_id()) . " a' ).click( function() {
+							if ( true === $(this).hasClass( 'add_to_cart_button' ) ) {
+								return;
+							}
 
-						" . self::tracker_var() . "( 'ec:addProduct', {
-							'id': '" . esc_js($product->get_id()) . "',
-							'name': '" . esc_js($product->get_title()) . "',
-							'category': " . self::product_get_category_line($product) . "
-							'position': '" . esc_js($position) . "'
+							" . self::tracker_var() . "( 'ec:addProduct', {
+								'id': '" . esc_js($product->get_id()) . "',
+								'name': '" . esc_js($product->get_title()) . "',
+								'category': " . self::product_get_category_line($product) . "
+								'position': '" . esc_js($position) . "'
+							});
+
+							" . self::tracker_var() . "( 'send', 'pageview', '_ecommerce', 'pageview', ' " . esc_js($list) . "' );
 						});
-
-						" . self::tracker_var() . "( 'send', 'pageview', '_ecommerce', 'pageview', ' " . esc_js($list) . "' );
-					});
-				})(jQuery);
-				</script>
-			");
+					})(jQuery);
+					</script>
+				");
+			}
 
 		}
 	}
@@ -294,14 +302,14 @@ class WC_Newsman_Remarketing_JS
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','" . self::tracker_var() . "');";
 		*/
-		$ga_id = self::get('ga_id');
+		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
 		var _nzm = _nzm || []; var _nzm_config = _nzm_config || []; _nzm_tracking_server = '" . self::$endpointHost . "';
         (function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
         }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
         s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
-        script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($ga_id) . "');
+        script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();
         ";
 
