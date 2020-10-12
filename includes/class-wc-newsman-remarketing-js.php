@@ -434,6 +434,7 @@ class WC_Newsman_Remarketing_JS
 		$l = $order->get_billing_last_name();
 
 		$code .= "
+		/*
 		function wait_to_load_and_identifypurchase() {
 			if (typeof _nzm.get_tracking_id === 'function') {
 				if (_nzm.get_tracking_id() == '') {
@@ -444,6 +445,9 @@ class WC_Newsman_Remarketing_JS
 			}
 		}
 		wait_to_load_and_identifypurchase();
+		*/
+		
+		_nzm.identify({ email: \"$email\", first_name: \"$f\", last_name: \"$l\" });
 		";
 
 		// Order items
