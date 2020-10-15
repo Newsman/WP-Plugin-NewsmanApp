@@ -45,7 +45,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		public function __construct() {
 			//Allow non ecommerce pages
 			if ( ! class_exists( 'WooCommerce' ) ) {
-
+	
 				return;
 				
 			}
@@ -56,15 +56,15 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 
 			// Checks with WooCommerce is installed.
 			//if ( class_exists( 'WC_Integration' ) && defined( 'WOOCOMMERCE_VERSION' ) && version_compare( WOOCOMMERCE_VERSION, '2.1-beta-1', '>=' ) ) {
-				include_once 'includes/class-wc-newsman-remarketing.php';
+			include_once 'includes/class-wc-newsman-remarketing.php';
 
-				// Register the integration.
-				add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
-		//	} else {
-		//		add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
-		//	}
+			// Register the integration.
+			add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
+			//	} else {
+			//		add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
+			//	}
 
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
+			//add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
 		}
 
 		public function plugin_links( $links ) {

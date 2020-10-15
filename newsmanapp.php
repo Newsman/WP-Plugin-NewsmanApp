@@ -83,8 +83,6 @@ Author URI: https://www.newsman.com
 
         public static $endpoint = "https://retargeting.newsmanapp.com/js/retargeting/track.js";
         public static $endpointHost = "https://retargeting.newsmanapp.com";
-        //public static $endpoint = "https://bogdandev2.newsmanapp.com/js/retargeting/track.dev.js";
-        //public static $endpointHost = "https://bogdandev2.newsmanapp.com";
 
         public function __construct()
         {  
@@ -195,17 +193,22 @@ Author URI: https://www.newsman.com
                                 $url = get_permalink( $_prod->get_id() );   
 
                                 $productsJson[] = array(
-                                    "id" => $prod['product_id'],
+                                    "id" => (string)$prod['product_id'],
                                     "name" => $prod['name'],
-                                    "quantity" => $prod['quantity'],
-                                    "price" => $_prod->get_price(),
+                                    "quantity" => (int)$prod['quantity'],
+                                    "price" => (float)$_prod->get_price(),
                                     "image_url" => $image_url,
                                     "url" => $url
                                 );
-                            }
+                            }                         
+
+                            $date = $item->get_date_created();
+                            $date = $date->getTimestamp();                       
 
                             $ordersObj[] = array(
                                 "order_no" => $item->get_order_number(),
+                                "date" => $date,
+                                "status" => $item->get_status(),
                                 "lastname" => (empty($user) ? $item->get_billing_last_name() : $user->last_name),
                                 "firstname" => (empty($user) ? $item->get_billing_first_name() : $user->first_name),
                                 "email" => (empty($user) ? $item->get_billing_email() : $user->first_name),
@@ -213,12 +216,12 @@ Author URI: https://www.newsman.com
                                 "state" => $itemData['billing']['state'],
                                 "city" => $itemData['billing']['city'],
                                 "address" => $itemData['billing']['address_1'],
-                                "discount" => (empty($itemData['billing']['discount_total'])) ? 0 : $itemData['billing']['discount_total'],
+                                "discount" => (empty($itemData['billing']['discount_total'])) ? 0 : (float)$itemData['billing']['discount_total'],
                                 "discount_code" => "",
-                                "shipping" => $itemData["shipping_total"],
+                                "shipping" => (float)$itemData["shipping_total"],
                                 "fees" => 0,
                                 "rebates" => 0,
-                                "total" => wc_format_decimal($item->get_total(), 2),
+                                "total" => (float)wc_format_decimal($item->get_total(), 2),
                                 "products" => $productsJson
                             );
                         }
@@ -244,11 +247,24 @@ Author URI: https://www.newsman.com
                             $image_url = wp_get_attachment_image_url( $image_id, 'full' );
                             $url = get_permalink( $prod->get_id() );                        
 
+                            $_price = 0;
+                            $_price_old = 0;
+
+                            if(empty($prod->get_sale_price()))
+                            {
+                                $_price = $prod->get_price();
+                            }
+                            else{
+                                $_price = $prod->get_sale_price();
+                                $_price_old = $prod->get_regular_price();
+                            }
+
                             $productsJson[] = array(
-                                "id" => $prod->get_id(),
+                                "id" => (string)$prod->get_id(),
                                 "name" => $prod->get_name(),
-                                "stock_quantity" => $prod->get_stock_quantity(),
-                                "price" => $prod->get_price(),
+                                "stock_quantity" => (empty($prod->get_stock_quantity())) ? null : (float)$prod->get_stock_quantity(),
+                                "price" => (float)$_price,
+                                "price_old" => (float)$_price_old,
                                 "image_url" => $image_url,
                                 "url" => $url
                             );

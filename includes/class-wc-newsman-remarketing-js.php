@@ -17,8 +17,6 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static $endpoint = "https://retargeting.newsmanapp.com/js/retargeting/track.js";
 	public static $endpointHost = "https://retargeting.newsmanapp.com";
-	//public static $endpoint = "https://bogdandev2.newsmanapp.com/js/retargeting/track.dev.js";
-	//public static $endpointHost = "https://bogdandev2.newsmanapp.com";
 
 	/** @var object Class Instance */
 	private static $instance;
@@ -80,17 +78,7 @@ class WC_Newsman_Remarketing_JS
 			}
 		</script>";
 		*/
-		return "<script type='text/javascript'>
-			var gaProperty = '" . esc_js(self::get('remarketingid')) . "';
-			var disableStr = 'nzm-disable-' + gaProperty;
-			if ( document.cookie.indexOf( disableStr + '=true' ) > -1 ) {
-				window[disableStr] = true;
-			}
-			function gaOptout() {
-				document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-				window[disableStr] = true;
-			}
-		</script>";
+		return "";
 	}
 
 	/**
@@ -104,8 +92,8 @@ class WC_Newsman_Remarketing_JS
 		if(current_user_can('administrator')){
 			return "";		  
 		}	 
-
-		if ('yes' === self::get('ga_use_universal_analytics'))
+	
+		if (!empty(get_option('newsman_remarketingid')))
 		{
 			add_action('wp_footer', array('WC_Newsman_Remarketing_JS', 'universal_analytics_footer'));
 			return self::load_analytics_universal($logged_in);
@@ -134,7 +122,6 @@ class WC_Newsman_Remarketing_JS
 			// See https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiEventTracking#_trackevent
 			$track_404_enabled = "['_trackEvent', 'Error', '404 Not Found', 'page: ' + document.location.pathname + document.location.search + ' referrer: ' + document.referrer ],";
 		}
-
 
 		$domainname = '';
 
@@ -179,8 +166,8 @@ class WC_Newsman_Remarketing_JS
 
 			$remarketingid = get_option('newsman_remarketingid');
 			if(!empty($remarketingid))
-			{
-				wc_enqueue_js("
+			{				
+				wc_enqueue_js("				
 					" . self::tracker_var() . "( 'ec:addImpression', {
 						'id': '" . esc_js($product->get_id()) . "',
 						'name': '" . esc_js($product->get_title()) . "',
@@ -272,7 +259,8 @@ class WC_Newsman_Remarketing_JS
 	 * @return string Universal Analytics Code
 	 */
 	public static function load_analytics_universal($logged_in)
-	{	   
+	{	  
+		/* 
 		$domainname = self::get('ga_set_domain_name');
 
 		if (!empty($domainname))
@@ -295,6 +283,7 @@ class WC_Newsman_Remarketing_JS
 			// See https://developers.google.com/analytics/devguides/collection/analyticsjs/events for reference
 			$track_404_enabled = "" . self::tracker_var() . "( 'send', 'event', 'Error', '404 Not Found', 'page: ' + document.location.pathname + document.location.search + ' referrer: ' + document.referrer );";
 		}
+		*/
 
 		/*
 		$ga_snippet_head = "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -305,7 +294,9 @@ class WC_Newsman_Remarketing_JS
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
-		var _nzm = _nzm || []; var _nzm_config = _nzm_config || []; _nzm_tracking_server = '" . self::$endpointHost . "';
+		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
+		_nzm_config['disable_datalayer'] = 1;
+		_nzm_tracking_server = '" . self::$endpointHost . "';
         (function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
         }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
         s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
@@ -315,10 +306,12 @@ class WC_Newsman_Remarketing_JS
 
 		//$ga_snippet_create = self::tracker_var() . "( 'create', '" . esc_js( $ga_id ) . "', '" . $set_domain_name . "' );";
 
+		/*
 		$ga_snippet_require =
 			$anonymize_enabled .
 			$track_404_enabled . "
 		" . self::tracker_var() . "( 'set', 'dimension1', '" . $logged_in . "' );\n";
+		*/
 
 		/*
 		if ( 'yes' === self::get( 'ga_enhanced_ecommerce_tracking_enabled' ) ) {
@@ -698,7 +691,7 @@ class WC_Newsman_Remarketing_JS
 
 		wc_enqueue_js("
 			" . self::tracker_var() . "( 'ec:addProduct', {
-				'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',
+				'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ($product->get_id())) . "',
 				'name': '" . esc_js($product->get_title()) . "',
 				'category': " . self::product_get_category_line($product) . "
 				'price': '" . esc_js($product->get_price()) . "',
