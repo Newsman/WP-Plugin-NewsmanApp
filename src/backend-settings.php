@@ -20,9 +20,7 @@
 
 		if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
 		{
-			$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;			
-
-			var_dump($url);die('');
+			$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
 
 			$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
 		}		
