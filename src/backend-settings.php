@@ -18,6 +18,15 @@
 		update_option("newsman_segments", $segments);
 		update_option("newsman_api", $allowAPI);
 
+		if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
+		{
+			$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;			
+
+			var_dump($url);die('');
+
+			$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
+		}		
+
 		try
 		{
 			$available_lists = $this->client->list->all();

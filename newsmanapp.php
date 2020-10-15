@@ -141,7 +141,9 @@ Author URI: https://www.newsman.com
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
             $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
             $start = (!empty($_GET["start"]) && $_GET["start"] >= 0) ? $_GET["start"] : 0;
-            $limit = (empty($_GET["limit"])) ? 10 : $_GET["limit"];
+            $limit = (empty($_GET["limit"])) ? 1000 : $_GET["limit"];
+            $order_id = (empty($_GET["order_id"])) ? "" : $_GET["order_id"];
+            $product_id = (empty($_GET["product_id"])) ? "" : $_GET["product_id"];
 
             if (!empty($newsman) && !empty($apikey)) {
 
@@ -169,13 +171,31 @@ Author URI: https://www.newsman.com
                 switch ($_GET["newsman"]) {
                     case "orders.json":
 
-                        $ordersObj = array();
+                        $orders = null;
 
                         $args = array(
                             'limit' => $limit,
                             'offset' => $start
                         );
-                        $orders = wc_get_orders($args);
+
+                        if(!empty($order_id))
+                        {
+                            $orders = wc_get_order($order_id);
+                            $orders = array(
+                                $orders
+                            );                
+
+                            if(empty($orders[0]))
+                            {
+                                $this->_json(array());
+                                return;
+                            }
+                        }
+                        else{
+                            $orders = wc_get_orders($args);
+                        }                        
+
+                        $ordersObj = array();
 
                         foreach ($orders as $item) {
                             $user = get_userdata($item->get_user_id());
@@ -192,11 +212,24 @@ Author URI: https://www.newsman.com
                                 $image_url = wp_get_attachment_image_url( $image_id, 'full' );
                                 $url = get_permalink( $_prod->get_id() );   
 
+                                $_price = 0;
+                                $_price_old = 0;
+    
+                                if(empty($_prod->get_sale_price()))
+                                {
+                                    $_price = $_prod->get_price();
+                                }
+                                else{
+                                    $_price = $_prod->get_sale_price();
+                                    $_price_old = $_prod->get_regular_price();
+                                }
+
                                 $productsJson[] = array(
                                     "id" => (string)$prod['product_id'],
                                     "name" => $prod['name'],
                                     "quantity" => (int)$prod['quantity'],
-                                    "price" => (float)$_prod->get_price(),
+                                    "price" => (float)$_price,
+                                    "price_old" => (float)$_price_old,
                                     "image_url" => $image_url,
                                     "url" => $url
                                 );
@@ -231,14 +264,33 @@ Author URI: https://www.newsman.com
 
                         break;
 
-                    case "products.json":
+                    case "products.json":                        
+
+                        $products = null;
 
                         $args = array(
                             'stock_status' => 'instock',
                             'limit' => $limit,
                             'offset' => $start
                         );
-                        $products = wc_get_products($args);
+
+                        if(!empty($product_id))
+                        {
+                            $products = wc_get_product($product_id);
+                            $products = array(
+                                $products
+                            );                
+
+                            if(empty($products[0]))
+                            {
+                                $this->_json(array());
+                                return;
+                            }
+                        }
+                        else{
+                            $products = wc_get_products($args);
+                        }                        
+
                         $productsJson = array();
 
                         foreach ($products as $prod) {
