@@ -62,6 +62,8 @@ Sure. Go to `Newsman -> Templates` and make any changes you want to the HTML tem
  * Remarketing improvements
 = 1.7 =
  * Cron improvements
+= 1.8 = 
+ * Improvements
  
 == Upgrade Notice ==
 
@@ -70,7 +72,5 @@ No upgrade yet.
 == Screenshots ==
 
 1. Newsman settings
-2. Import Subscribers to NewsmanApp 
-3. Edit newsletter templates 
-4. Create and send a newsletter
-5. Newsletter signup widget 
+2. Import Subscribers to NewsmanApp  
+3. Popup Forms

@@ -22,7 +22,13 @@
 		{
 			$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
 
+			try{
 			$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
+			}
+			catch(Exception $ex)
+			{			
+				$this->setMessageBackend('error', 'Could not update feed list');
+			}
 		}		
 
 		try
@@ -154,6 +160,24 @@
 						<p class="description">Check to enable API access</p>
 						</td>
 					</tr>
+
+					<tr>
+					<th>
+					SYNC via CRON
+					<br>
+					<br>
+					{{limit}} = Sync with newsman from latest number of records (ex: 2000)
+					</th>
+					<td>
+						<?php 
+							echo $url = "CRON Sync wordpress subscribers: ". get_site_url() . "/?newsman=cron.json&method={{method}}&apikey=" . $this->apikey . "&start=1&limit={{limit}}&cronlast=true";
+							echo "<br><br>";
+							echo $url = "CRON Sync customers with orders completed: " . get_site_url() . "/?newsman=cron.json&method={{method}}&apikey=" . $this->apikey . "&start=1&limit={{limit}}&cronlast=true";		
+						?>									
+					</td>
+					</tr>
+					<th>
+					</th>
 
 			</table>
 			<input type="submit" value="Save Changes" class="button button-primary"/>

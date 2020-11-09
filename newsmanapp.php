@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 1.7
+Version: 1.8
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -66,18 +66,8 @@ Author URI: https://www.newsman.com
         * object that renders a php template
         */
         public $engine;
-
-        /*
-        * Initializes the object
-        * 1. Creates the Newsman_Client instance.
-        * 2. Initializes wordpress hooks.
-        * 3. Loads templates from directory
-        */
-
-        /*
-        * integer maximum value 9999, by default 5000
-        */
-        public $batchSize = 5000;
+ 
+        public $batchSize = 9000;
 
         public $wpSync, $mailpoetSync, $sendpressSync, $wooCommerce = false;
 
@@ -136,14 +126,19 @@ Author URI: https://www.newsman.com
             exit;
         }
 
-    public function newsmanFetchData()
+        public function newsmanFetchData()
         {
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
             $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
-            $start = (!empty($_GET["start"]) && $_GET["start"] >= 0) ? $_GET["start"] : 0;
+            $start = (!empty($_GET["start"]) && $_GET["start"] >= 0) ? $_GET["start"] : 1;
             $limit = (empty($_GET["limit"])) ? 1000 : $_GET["limit"];
             $order_id = (empty($_GET["order_id"])) ? "" : $_GET["order_id"];
             $product_id = (empty($_GET["product_id"])) ? "" : $_GET["product_id"];
+            $method = (empty($_GET["method"])) ? "" : $_GET["method"];
+            
+            $cronLast = (empty($_GET["cronlast"])) ? "" : $_GET["cronlast"];
+            if(!empty($cronLast))
+	        $cronLast = ($cronLast == "true") ? true : false;
 
             if (!empty($newsman) && !empty($apikey)) {
 
@@ -369,27 +364,188 @@ Author URI: https://www.newsman.com
 
                         break;
 
-                        case "cron":
+                        case "version.json":                        
+
+                            $this->_json(bloginfo('version'));
+                            return;
+    
+                        break;
+
+                        case "cron.json":
 
                             $list = get_option("newsman_list");
-                            $segments = get_option("newsman_segments");
+                            $segments = get_option("newsman_segments");                  
+
+                            if(empty($list))
+                                $this->_json(array("status" => "List setup incomplete"));
+
+                            switch($method)
+                            {
+                                case "woocommerce":
+
+                                    if (class_exists( 'WooCommerce' )) {         
+                                        $this->importWoocommerceSubscribers($list, $segments, $start, $limit, $cronLast);                            
+
+                                        $json = array(
+                                            "status" => "success"
+                                        );
+                    
+                                        $this->_json($json);
+                                     }
+                                     else{
+                                         $this->_json(array("status" => "woocommerce is not installed"));
+                                     }
+
+                                    return;
+                                     
+                                break;
+
+                                case "wordpress":
+                           
+                                   $this->importWPSubscribers($list, $segments, $start, $limit, $cronLast);
+
+                                   $json = array(
+                                    "status" => "success"
+                                );
+            
+                                $this->_json($json);
+
+                                return;
+
+                                break;
+                            }     
+                            
+                            $this->_json(array("status" => "method does not exist"));
         
-                            $this->importWoocommerceSubscribers($list, $segments);
-                            $this->importMailPoetSubscribers($list, $segments);
-                            $this->importSendPressSubscribers($list, $segments);
-                            $this->importWPSubscribers($list, $segments);
-        
-                            $json = array(
-                                "status" => "ok"
-                            );
-        
-                            $this->_json($json);
                             return;
         
                         break;
                 }
             }
         }
+
+                /*
+        * Imports subscribers from Wordpress Into Newsman and creates a message
+        * @param integer | string 	The id of the list into which to import the subscribers
+        */
+        public function importWPSubscribers($list, $segments, $start = 1, $limit = 1000, $cronLast = false)
+        {
+            //get wordpress subscribers as array
+
+            if($cronLast)
+            {
+                $args = array("role" => "subscriber");
+                $wp_subscribers = get_users($args); 
+
+                $data = count($wp_subscribers);
+
+                $start = $data - $limit;
+
+                if($start < 1)
+                {
+                    $start = 1;
+                }             
+            }
+
+            $args = array("role" => "subscriber", "offset" => $start, "number" => $limit);
+            $wp_subscribers = get_users($args);    
+
+            //sync with newsman
+            try {
+                $_segments = (!empty($segments)) ? array($segments) : "";
+                $customers_to_import = array();
+
+                foreach ($wp_subscribers as $users => $user) {
+                    $customers_to_import[] = array(
+                        "email" => $user->data->user_email,
+                        "firstname" => $user->data->display_name,
+                        "lastname" => ""
+                    );
+                    if ((count($customers_to_import) % $this->batchSize) == 0) {
+                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers CRON");
+                    }
+                }
+                if (count($customers_to_import) > 0) {
+                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers CRON");
+                }
+                              
+                unset($customers_to_import);
+
+                $this->wpSync = true;
+                $this->setMessageBackend("updated", 'Subscribers synced with Newsman.');
+
+            } catch (Exception $e) {
+                $this->setMessageBackend("error", "Failure to sync subscribers with Newsman." . $e->getMessage());
+            }
+
+            if (empty($this->message)) {
+                $this->setMessageBackend("updated", 'Options saved.');
+            }
+        }
+
+        public function importWoocommerceSubscribers($list, $segments, $start = 1, $limit = 1000, $cronLast = false)
+        {
+            $wp_subscribers = array();
+
+            if($cronLast)
+            {
+                $woocommerceFilter = array(
+                    'status' => 'completed',
+                );    
+
+                $allOrders = wc_get_orders($woocommerceFilter);
+                $data = count($allOrders);
+
+                $start = $data - $limit;
+
+                if($start < 1)
+                {
+                    $start = 1;
+                }             
+            }
+
+            $woocommerceFilter = array(
+                'status' => 'completed',
+                'limit' => $limit,
+                'offset' => $start
+            );    
+
+            $allOrders = wc_get_orders($woocommerceFilter);                            
+
+            try {
+                $_segments = (!empty($segments)) ? array($segments) : array();         
+
+                $customers_to_import = array();
+
+                foreach ($allOrders as $user) {         
+
+                    $customers_to_import[] = array(
+                        "email" => $user->data["billing"]["email"],
+                        "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
+                        "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : ""
+                    );
+
+                    if ((count($customers_to_import) % $this->batchSize) == 0) {
+                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce CRON");
+                    }
+                }
+                if (count($customers_to_import) > 0) {
+                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce CRON");
+                }          
+
+                unset($customers_to_import);
+
+                $this->wooCommerce = true;
+                $this->setMessageBackend("updated ", 'WooCommerce customers synced with Newsman.');
+
+            } catch (Exception $e) {
+                $this->setMessageBackend("error ", "Failed to sync Woocommerce customers with Newsman.");
+            }
+
+            if (empty($this->message)) {
+                $this->setMessageBackend("updated", 'Options saved.');
+            }
+        }        
 
         /*
         * Initializes wordpress hooks
@@ -445,7 +601,7 @@ Author URI: https://www.newsman.com
         {
             add_menu_page("Newsman", "Newsman", "administrator", "Newsman", array($this, "includeAdminPage"), plugin_dir_url(__FILE__) . "src/img/newsman-mini.png");
             add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
-            add_submenu_page("Newsman", "Sync", "Sync", "administrator", "NewsmanSync", array($this, "includeAdminSyncPage"));
+            //add_submenu_page("Newsman", "Sync", "Sync", "administrator", "NewsmanSync", array($this, "includeAdminSyncPage"));
             add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
             //add_submenu_page("Newsman", "Newsletter", "Newsletter", "administrator", "NewsmanNewsletter", array($this, "includeAdminNewsletterPage"));
             //add_submenu_page("Newsman", "Templates", "Templates", "administrator", "NewsmanNewsletterTemplates", array($this, "includeNewsletterTemplatesPage"));
@@ -796,115 +952,7 @@ Author URI: https://www.newsman.com
             }
             echo json_encode(array("status" => 0));
             exit();
-        }
-
-        public function importWoocommerceSubscribers($list, $segments)
-        {
-            $woocommerceFilter = array();
-            $wpSubscriberFilter = false;
-            $wp_subscribers = array();
-
-            switch ($_POST["woocommerceSelect"]) {
-                case "customernewsletter":
-                    $wpSubscriberFilter = true;
-                    $woocommerceFilter = array();
-                    break;
-                case "customerscompleted":
-                    $woocommerceFilter = array(
-                        'status' => 'completed'
-                    );
-                    break;
-                case "customers":
-                    $woocommerceFilter = array();
-                    break;
-            }
-
-            $woocommerceCustomers = array();
-
-            $allOrders = wc_get_orders($woocommerceFilter);
-
-            //Filter orders with customer Subscriber
-            if ($wpSubscriberFilter) {
-                $subscribers = get_users("role=subscriber");
-
-                foreach ($subscribers as $k => $s) {
-                    $wp_subscribers[] = $s->data->user_email;
-                }
-            }
-            //Filter orders with customer Subscriber
-
-            $ordersCount = count($allOrders);
-
-            $email = array();
-
-            if ($ordersCount > 0) {
-                for ($int = 0; $int < $ordersCount; $int++) {
-
-                if ($wpSubscriberFilter) {
-                    if (in_array($allOrders[$int]->data["billing"]["email"], $wp_subscribers)) {
-                        $email[] = $allOrders[$int]->data["billing"]["email"];
-                    }
-                }
-                else{          
-                    $email[] = array(
-                        "email" => $allOrders[$int]->data["billing"]["email"],
-                        "firstname" => $allOrders[$int]->data["billing"]["first_name"],
-                        "lastname" => $allOrders[$int]->data["billing"]["last_name"]
-                    );                           
-                }
-                }
-            } else {
-                $this->setMessageBackend("error ", "No woocommerce customers found with selected filters or plugin is not installed.");
-                return;
-            }      
-
-            foreach ($email as $_email) {
-                $woocommerceCustomers[] = array(
-                    "email" => $_email["email"],
-                    "firstname" => $_email["firstname"],
-                    "lastname" => $_email["lastname"]
-                );
-            }    
-
-            $subscribers = array();
-            foreach ($woocommerceCustomers as $k => $s) {
-                $subscribers[$k]['email'] = $s['email'];
-                $subscribers[$k]['firstname'] = $s['firstname'];
-                $subscribers[$k]['lastname'] = $s['lastname'];
-            }
-
-            try {
-                $_segments = (!empty($segments)) ? array($segments) : array();         
-
-                $customers_to_import = array();
-
-                foreach ($subscribers as $user) {
-                    $customers_to_import[] = array(
-                        "email" => $user["email"],
-                        "firstname" => (!empty($user["lastname"])) ? $user["firstname"] : "",
-                        "lastname" => (!empty($user["lastname"])) ? $user["lastname"] : ""
-                    );
-
-                    if ((count($customers_to_import) % $this->batchSize) == 0) {
-                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce");
-                    }
-                }
-                if (count($customers_to_import) > 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce");
-                }
-                unset($customers_to_import);
-
-                $this->wooCommerce = true;
-                $this->setMessageBackend("updated ", 'WooCommerce customers synced with Newsman.');
-
-            } catch (Exception $e) {
-                $this->setMessageBackend("error ", "Failed to sync Woocommerce customers with Newsman.");
-            }
-
-            if (empty($this->message)) {
-                $this->setMessageBackend("updated", 'Options saved.');
-            }
-        }
+        }    
 
         public function importSendPressSubscribers($list, $segments)
         {
@@ -1078,65 +1126,6 @@ Author URI: https://www.newsman.com
 
             } catch (Exception $e) {
                 $this->setMessageBackend("error", "Failure to sync MailPoet subscribers with Newsman.");
-            }
-
-            if (empty($this->message)) {
-                $this->setMessageBackend("updated", 'Options saved.');
-            }
-        }
-
-        /*
-        * Imports subscribers from Wordpress Into Newsman and creates a message
-        * @param integer | string 	The id of the list into which to import the subscribers
-        */
-        public function importWPSubscribers($list, $segments)
-        {
-            //get wordpress subscribers as array
-            $wp_subscribers = get_users("role=subscriber");
-            //$subscribers = array();
-            /*foreach ($wp_subscribers as $k => $s)
-            {
-                $subscribers[$k]['firstname'] = $s->data->display_name;
-                $subscribers[$k]['email'] = $s->data->user_email;
-            }*/
-
-            //construct csv string
-            /*$csv = "email, firstname" . PHP_EOL;
-            foreach ($subscribers as $s)
-            {
-                $csv .= $s['email'];
-                $csv .= ", ";
-                $csv .= $s['firstname'];
-                $csv .= PHP_EOL;
-            }
-
-            $csv = utf8_encode($csv);*/
-
-            //sync with newsman
-            try {
-                $_segments = (!empty($segments)) ? array($segments) : "";
-                $customers_to_import = array();
-
-                foreach ($wp_subscribers as $users => $user) {
-                    $customers_to_import[] = array(
-                        "email" => $user->data->user_email,
-                        "firstname" => $user->data->display_name,
-                        "lastname" => ""
-                    );
-                    if ((count($customers_to_import) % $this->batchSize) == 0) {
-                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
-                    }
-                }
-                if (count($customers_to_import) > 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers");
-                }
-                unset($customers_to_import);
-
-                $this->wpSync = true;
-                $this->setMessageBackend("updated", 'Subscribers synced with Newsman.');
-
-            } catch (Exception $e) {
-                $this->setMessageBackend("error", "Failure to sync subscribers with Newsman." . $e->getMessage());
             }
 
             if (empty($this->message)) {

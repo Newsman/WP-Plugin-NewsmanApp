@@ -37,15 +37,7 @@ try
 				<p>After entering and saving valid credentials you will be able to select a list to which subscribers
 					will be added.</p>
 			</td>
-		</tr>
-		<tr>
-			<th scope="row">
-				<label for="newsman_apikey">Sync</label>
-			</th>
-			<td>
-				<p>In the Sync page you cand save your current wordpress subscriber to Newsman.</p>
-			</td>
-		</tr>
+		</tr>		
 		<tr>
 			<th scope="row">
 				<label for="newsman_apikey">Widget</label>
@@ -55,15 +47,6 @@ try
 					address as well as an invalid email address.</p>
 				<p>To use the widget go to Appearance > Widgets. Look for the widget called Newsman Form and drag it to
 					any of the page containers available. You can also edit the tile here.</p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row">
-				<label for="newsman_apikey">Newsletter</label>
-			</th>
-			<td>
-				<p>In the Newsletter page you can send an email newsletter to all subscribers in the current email list.
-					Select a template, set the subject and select the posts you want to include in the newsletter.</p>
 			</td>
 		</tr>
 	</table>

@@ -47,6 +47,24 @@ if ($_POST['newsman_submit'] == 'Y')
 		<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
 			</p></div>
 
+			<h2>Widget from Newsman Shortcode</h2>
+
+			<table class="form-table">
+			<tr>
+				<th scope="row"> Info</th>
+				<td>
+					<p class="description">
+						Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form.
+						Copy paste Shortcode `newsman_subscribe_widget`
+					</p>
+				</td>
+			</tr>
+			</table>
+
+			<h2>OR</h2>
+
+			<h2>Widget from Wordpress Newsman plugin</h2>
+
 		<table class="form-table">
 			<tr>
 				<th scope="row"> Info</th>
