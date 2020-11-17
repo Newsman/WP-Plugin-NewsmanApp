@@ -64,6 +64,9 @@ Sure. Go to `Newsman -> Templates` and make any changes you want to the HTML tem
  * Cron improvements
 = 1.8 = 
  * Improvements
+= 1.8.1 = 
+ * Patch
+
  
 == Upgrade Notice ==
 

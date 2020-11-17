@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 1.8
+Version: 1.8.1
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -551,9 +551,65 @@ Author URI: https://www.newsman.com
         * Initializes wordpress hooks
         */   
 
+        public function pending($order_id){
+            $this->saveOrderNewsman($order_id, 'pending');
+        }
+
+        public function failed($order_id){
+            $this->saveOrderNewsman($order_id, 'failed');
+        }
+
+        //on-hold
+        public function hold($order_id){
+            $this->saveOrderNewsman($order_id, 'on-hold');
+        }
+
+        public function processing($order_id){
+            $this->saveOrderNewsman($order_id, 'processing');
+        }
+
+        public function completed($order_id){
+            $this->saveOrderNewsman($order_id, 'completed');
+        }
+
+        public function refunded($order_id){
+            $this->saveOrderNewsman($order_id, 'refunded');
+        }
+
+        public function cancelled($order_id){
+            $this->saveOrderNewsman($order_id, 'cancelled');
+        } 
+
+        public function saveOrderNewsman($order_id, $status){
+
+            $list = get_option("newsman_remarketingid");
+            $list = explode("-", $list);
+            $list = $list[1];        
+
+            $url = "https://ssl.newsman.app/api/1.2/rest/" . $this->userid . "/" . $this->apikey . "/ecommerce.setPurchaseStatus.json?list_id=" . $list . "&order_id=" . $order_id . "&status=" . $status;        
+
+            $response = wp_remote_get(
+                esc_url_raw($url),
+                array(
+             
+                )
+            );           
+            
+        }
+
         public function initHooks()
         { 
             add_action('init', array($this, 'newsmanFetchData'));
+        
+            //order status change hooks        
+            add_action( 'woocommerce_order_status_pending', array($this, 'pending'));
+            add_action( 'woocommerce_order_status_failed', array($this, 'failed'));
+            add_action( 'woocommerce_order_status_on-hold', array($this, 'hold'));
+            add_action( 'woocommerce_order_status_processing', array($this, 'processing'));
+            add_action( 'woocommerce_order_status_completed', array($this, 'completed'));
+            add_action( 'woocommerce_order_status_refunded', array($this, 'refunded'));
+            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));
+       
             #admin menu hook
             add_action('admin_menu', array($this, "adminMenu"));
             #add links to plugins page

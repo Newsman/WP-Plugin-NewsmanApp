@@ -170,9 +170,12 @@
 					</th>
 					<td>
 						<?php 
-							echo $url = "CRON Sync wordpress subscribers: ". get_site_url() . "/?newsman=cron.json&method={{method}}&apikey=" . $this->apikey . "&start=1&limit={{limit}}&cronlast=true";
+							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=2000&cronlast=true";
+							$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=2000&cronlast=true";
+
+							echo $url = "CRON Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
 							echo "<br><br>";
-							echo $url = "CRON Sync customers with orders completed: " . get_site_url() . "/?newsman=cron.json&method={{method}}&apikey=" . $this->apikey . "&start=1&limit={{limit}}&cronlast=true";		
+							echo $url = "CRON Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
 						?>									
 					</td>
 					</tr>

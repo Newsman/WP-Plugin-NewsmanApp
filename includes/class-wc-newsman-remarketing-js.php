@@ -55,8 +55,7 @@ class WC_Newsman_Remarketing_JS
 	 * Returns the tracker variable this integration should use
 	 */
 	public static function tracker_var()
-	{
-		//return apply_filters( 'woocommerce_ga_tracker_variable', 'ga' );
+	{	
 		return apply_filters('woocommerce_ga_tracker_variable', '_nzm.run');
 	}
 
@@ -65,19 +64,6 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static function header()
 	{
-		/*
-		return "<script type='text/javascript'>
-			var gaProperty = '" . esc_js( self::get( 'ga_id' ) ) . "';
-			var disableStr = 'ga-disable-' + gaProperty;
-			if ( document.cookie.indexOf( disableStr + '=true' ) > -1 ) {
-				window[disableStr] = true;
-			}
-			function gaOptout() {
-				document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-				window[disableStr] = true;
-			}
-		</script>";
-		*/
 		return "";
 	}
 
@@ -103,51 +89,6 @@ class WC_Newsman_Remarketing_JS
 			return self::load_analytics_universal($logged_in, $order);
 		}
 	}
-
-	/**
-	 * Loads ga.js analytics tracking code
-	 * @param  string $logged_in 'yes' if the user is logged in, no if not (this is a string so we can pass it to GA)
-	 * @param  boolean|object $order We don't always need to load order data for currency, so we omit that if false is set, otherwise this is an order object
-	 * @return string         Classic Analytics loading code
-	 */
-	/*
-	public static function load_analytics_classic( $logged_in, $order = false ) {
-		$anonymize_enabled = '';
-		if ( 'yes' === self::get( 'ga_anonymize_enabled' ) ) {
-			$anonymize_enabled = "['_gat._anonymizeIp'],";
-		}
-
-		$track_404_enabled = '';
-		if ( 'yes' === self::get( 'ga_404_tracking_enabled' ) && is_404() ) {
-			// See https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiEventTracking#_trackevent
-			$track_404_enabled = "['_trackEvent', 'Error', '404 Not Found', 'page: ' + document.location.pathname + document.location.search + ' referrer: ' + document.referrer ],";
-		}
-
-		$domainname = '';
-
-		if ( ! empty( $domainname ) ) {
-			$set_domain_name = "['_setDomainName', '" . esc_js( self::get( 'ga_set_domain_name' ) ) . "'],";
-		} else {
-			$set_domain_name = '';
-		}
-
-		$code = "var _gaq = _gaq || [];
-		_gaq.push(
-			['_setAccount', '" . esc_js( self::get( 'ga_id' ) ) . "'], " . $set_domain_name .
-			$anonymize_enabled .
-			$track_404_enabled . "
-			['_setCustomVar', 1, 'logged-in', '" . esc_js( $logged_in ) . "', 1],
-			['_trackPageview']";
-
-		if ( false !== $order ) {
-			$code .= ",['_set', 'currencyCode', '" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() : $order->get_currency() ) . "']";
-		}
-
-		$code .= ");";
-
-		return $code;
-	}
-	*/
 
 	/**
 	 * Builds the addImpression object
@@ -225,27 +166,6 @@ class WC_Newsman_Remarketing_JS
 	}
 
 	/**
-	 * Asyncronously loads the classic Google Analytics code, and does so after all of our properties are loaded
-	 * Loads in the footer
-	 * @see wp_footer
-	 */
-	/*
-	public static function classic_analytics_footer() {
-		if ( 'yes' === self::get( 'ga_support_display_advertising' ) ) {
-			$ga_url = "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'";
-		} else {
-			$ga_url = "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'";
-		}
-
-		echo "<script type='text/javascript'>(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = " . $ga_url . ";
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();</script>";
-	}
-	*/
-
-	/**
 	 * Sends the pageview last thing (needed for things like addImpression)
 	 */
 	public static function universal_analytics_footer()
@@ -260,37 +180,6 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static function load_analytics_universal($logged_in)
 	{	  
-		/* 
-		$domainname = self::get('ga_set_domain_name');
-
-		if (!empty($domainname))
-		{
-			$set_domain_name = esc_js(self::get('ga_set_domain_name'));
-		} else
-		{
-			$set_domain_name = 'auto';
-		}
-
-		$anonymize_enabled = '';
-		if ('yes' === self::get('ga_anonymize_enabled'))
-		{
-			$anonymize_enabled = "" . self::tracker_var() . "( 'set', 'anonymizeIp', true );";
-		}
-
-		$track_404_enabled = '';
-		if ('yes' === self::get('ga_404_tracking_enabled') && is_404())
-		{
-			// See https://developers.google.com/analytics/devguides/collection/analyticsjs/events for reference
-			$track_404_enabled = "" . self::tracker_var() . "( 'send', 'event', 'Error', '404 Not Found', 'page: ' + document.location.pathname + document.location.search + ' referrer: ' + document.referrer );";
-		}
-		*/
-
-		/*
-		$ga_snippet_head = "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','" . self::tracker_var() . "');";
-		*/
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
@@ -303,33 +192,17 @@ class WC_Newsman_Remarketing_JS
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();
         ";
+		
+		$ga_snippet_require = "";
 
-		//$ga_snippet_create = self::tracker_var() . "( 'create', '" . esc_js( $ga_id ) . "', '" . $set_domain_name . "' );";
-
-		/*
-		$ga_snippet_require =
-			$anonymize_enabled .
-			$track_404_enabled . "
-		" . self::tracker_var() . "( 'set', 'dimension1', '" . $logged_in . "' );\n";
-		*/
-
-		/*
-		if ( 'yes' === self::get( 'ga_enhanced_ecommerce_tracking_enabled' ) ) {
-			$ga_snippet_require .= "" . self::tracker_var() . "( 'require', 'ec' );";
-		} else {
-			$ga_snippet_require .= "" . self::tracker_var() . "( 'require', 'ecommerce', 'ecommerce.js');";
-		}
-		*/
 		if (is_woocommerce() || is_cart() || (is_checkout()))
 		{
 			$ga_snippet_require .= "" . self::tracker_var() . "( 'require', 'ec' );";
 		}
 
-		$ga_snippet_head = apply_filters('woocommerce_ga_snippet_head', $ga_snippet_head);
-		//$ga_snippet_create = apply_filters( 'woocommerce_ga_snippet_create' , $ga_snippet_create, $ga_id );
+		$ga_snippet_head = apply_filters('woocommerce_ga_snippet_head', $ga_snippet_head);		
 		$ga_snippet_require = apply_filters('woocommerce_ga_snippet_require', $ga_snippet_require);
-
-		//$code = $ga_snippet_head . $ga_snippet_create . $ga_snippet_require;
+	
 		$code = $ga_snippet_head . $ga_snippet_require;
 		$code = apply_filters('woocommerce_ga_snippet_output', $code);
 
@@ -343,84 +216,14 @@ class WC_Newsman_Remarketing_JS
 	 */
 	function add_transaction($order)
 	{
-		/*
-		if ( 'yes' == self::get( 'ga_use_universal_analytics' ) ) {
-			if ( 'yes' === self::get( 'ga_enhanced_ecommerce_tracking_enabled' ) ) {
-				return self::add_transaction_enhanced( $order );
-			} else {
-				return self::add_transaction_universal( $order );
-			}
-		} else {
-			return self::add_transaction_classic( $order );
-		}
-		*/
 		return self::add_transaction_enhanced($order);
 	}
-
-	/**
-	 * ga.js (classic) transaction tracking
-	 * @param object $order WC_Order Object
-	 * @return string Add Transaction Code
-	 */
-	/*
-	function add_transaction_classic( $order ) {
-		$code = "_gaq.push(['_addTrans',
-			'" . esc_js( $order->get_order_number() ) . "', 	// order ID - required
-			'" . esc_js( get_bloginfo( 'name' ) ) . "',  		// affiliation or store name
-			'" . esc_js( $order->get_total() ) . "',   	    	// total - required
-			'" . esc_js( $order->get_total_tax() ) . "',    	// tax
-			'" . esc_js( $order->get_total_shipping() ) . "',	// shipping
-			'" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->billing_city : $order->get_billing_city() ) . "',       	// city
-			'" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->billing_state : $order->get_billing_state() ) . "',      	// state or province
-			'" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->billing_country : $order->get_billing_country() ) . "'     	// country
-		]);";
-
-		// Order items
-		if ( $order->get_items() ) {
-			foreach ( $order->get_items() as $item ) {
-				$code .= self::add_item_classic( $order, $item );
-			}
-		}
-
-		$code .= "_gaq.push(['_trackTrans']);";
-		return $code;
-	}
-	*/
-
-	/**
-	 * Universal Analytics transaction tracking
-	 * @param object $order WC_Order object
-	 * @return string Add Transaction Code
-	 */
-	/*
-	function add_transaction_universal( $order ) {
-		$code = "" . self::tracker_var() . "('ecommerce:addTransaction', {
-			'id': '" . esc_js( $order->get_order_number() ) . "',         // Transaction ID. Required
-			'affiliation': '" . esc_js( get_bloginfo( 'name' ) ) . "',    // Affiliation or store name
-			'revenue': '" . esc_js( $order->get_total() ) . "',           // Grand Total
-			'shipping': '" . esc_js( $order->get_total_shipping() ) . "', // Shipping
-			'tax': '" . esc_js( $order->get_total_tax() ) . "',           // Tax
-			'currency': '" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() : $order->get_currency() ) . "'  // Currency
-		});";
-
-		// Order items
-		if ( $order->get_items() ) {
-			foreach ( $order->get_items() as $item ) {
-				$code .= self::add_item_universal( $order, $item );
-			}
-		}
-
-		$code .= "" . self::tracker_var() . "('ecommerce:send');";
-		return $code;
-	}
-	*/
 
 	/**
 	 * Enhanced Ecommerce Universal Analytics transaction tracking
 	 */
 	function add_transaction_enhanced($order)
-	{
-		//$code = "" . self::tracker_var() . "( 'set', '&cu', '" . esc_js( version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() : $order->get_currency() ) . "' );";
+	{		
 		$code = "" . self::tracker_var() . "( 'set', 'currencyCode', '" . esc_js(version_compare(WC_VERSION, '3.0', '<') ? $order->get_order_currency() : $order->get_currency()) . "' );";
 		$email = $order->get_billing_email();
 		$f = $order->get_billing_first_name();
@@ -428,6 +231,7 @@ class WC_Newsman_Remarketing_JS
 
 		$code .= "
 		/*
+		//obsolete
 		function wait_to_load_and_identifypurchase() {
 			if (typeof _nzm.get_tracking_id === 'function') {
 				if (_nzm.get_tracking_id() == '') {
@@ -464,50 +268,6 @@ class WC_Newsman_Remarketing_JS
 	}
 
 	/**
-	 * Add Item (Classic)
-	 * @param object $order WC_Order Object
-	 * @param array $item The item to add to a transaction/order
-	 */
-	/*
-	function add_item_classic( $order, $item ) {
-		$_product = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_product_from_item( $item ) : $item->get_product();
-
-		$code = "_gaq.push(['_addItem',";
-		$code .= "'" . esc_js( $order->get_order_number() ) . "',";
-		$code .= "'" . esc_js( $_product->get_sku() ? $_product->get_sku() : $_product->get_id() ) . "',";
-		$code .= "'" . esc_js( $item['name'] ) . "',";
-		$code .= self::product_get_category_line( $_product );
-		$code .= "'" . esc_js( $order->get_item_total( $item ) ) . "',";
-		$code .= "'" . esc_js( $item['qty'] ) . "'";
-		$code .= "]);";
-
-		return $code;
-	}
-	*/
-
-	/**
-	 * Add Item (Universal)
-	 * @param object $order WC_Order Object
-	 * @param array $item The item to add to a transaction/order
-	 */
-	/*
-	function add_item_universal( $order, $item ) {
-		$_product = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_product_from_item( $item ) : $item->get_product();
-
-		$code = "" . self::tracker_var() . "('ecommerce:addItem', {";
-		$code .= "'id': '" . esc_js( $order->get_order_number() ) . "',";
-		$code .= "'name': '" . esc_js( $item['name'] ) . "',";
-		$code .= "'sku': '" . esc_js( $_product->get_sku() ? $_product->get_sku() : $_product->get_id() ) . "',";
-		$code .= "'category': " . self::product_get_category_line( $_product );
-		$code .= "'price': '" . esc_js( $order->get_item_total( $item ) ) . "',";
-		$code .= "'quantity': '" . esc_js( $item['qty'] ) . "'";
-		$code .= "});";
-
-		return $code;
-	}
-	*/
-
-	/**
 	 * Add Item (Enhanced, Universal)
 	 * @param object $order WC_Order Object
 	 * @param array $item The item to add to a transaction/order
@@ -541,7 +301,6 @@ class WC_Newsman_Remarketing_JS
 	 */
 	private static function product_get_category_line($_product)
 	{
-
 		$out = array();
 		$variation_data = version_compare(WC_VERSION, '3.0', '<') ? $_product->variation_data : ($_product->is_type('variation') ? wc_get_product_variation_attributes($_product->get_id()) : '');
 		$categories = get_the_terms($_product->get_id(), 'product_cat');
@@ -603,26 +362,7 @@ class WC_Newsman_Remarketing_JS
 					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'remove from cart' );
 	 
 				});
-			});
-			
-				    //$( '.remove' ).click( function(e) {
-				
-					//e.preventDefault();
-					
-					//var the_href = $(this).attr('href');
-														
-					//" . self::tracker_var() . "('send', 'event', 'UX', 'click', 'remove from cart', null, _nzm.createFunctionWithTimeout(function () {
-               
-                    //_nzm.run('send', 'pageview');     
-                
-					//alert('test');
-				
-               		//document.location.href = the_href
-           	 	 //});
-
-                 //return false;	
-				 
-				//});
+			});						
 
 			})(jQuery);
 			</script>
@@ -741,32 +481,7 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public function event_tracking_code($parameters, $selector)
 	{
-		$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);
-
-		/*
-		if ( 'yes' === self::get( 'ga_use_universal_analytics' ) ) {
-			if ( 'yes' === self::get( 'ga_enhanced_ecommerce_tracking_enabled' ) ) {
-				wc_enqueue_js( "
-					$( '" . $selector . "' ).click( function() {
-						" . $parameters['enhanced'] . "
-						" . self::tracker_var() . "( 'ec:setAction', 'add' );
-						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
-					});
-				" );
-				return;
-			} else {
-				$track_event = "" . self::tracker_var() . "('send', 'event', %s, %s, %s);";
-			}
-		} else {
-			$track_event = "_gaq.push(['_trackEvent', %s, %s, %s]);";
-		}
-
-		wc_enqueue_js( "
-			$( '" . $selector . "' ).click( function() {
-				" . sprintf( $track_event, $parameters['category'], $parameters['action'], $parameters['label'] ) . "
-			});
-		" );
-		*/
+		$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);	
 
 		wc_enqueue_js("
 					$( '" . $selector . "' ).click( function() {
