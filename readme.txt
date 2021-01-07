@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter, create, form
 Requires at least: 3.7
-Tested up to: 5.4
+Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,8 @@ Sure. Go to `Newsman -> Templates` and make any changes you want to the HTML tem
 = 1.8 = 
  * Improvements
 = 1.8.1 = 
+ * Patch
+= 1.8.2 = 
  * Patch
 
  
