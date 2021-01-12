@@ -615,28 +615,28 @@ Author URI: https://www.newsman.com
             #add links to plugins page
             add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'pluginLinks'));
             #enqueue plugin styles
-            add_action('wp_enqueue_scripts', array($this, 'registerPluginStyles'));
+            //add_action('wp_enqueue_scripts', array($this, 'registerPluginStyles'));
             #enqueue plugin styles in admin
-            add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
+            //add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
             #enqueue wordpress ajax library
             add_action('wp_head', array($this, 'addAjaxLibrary'));
             #enqueue plugin scripts
-            add_action('wp_enqueue_scripts', array($this, 'registerPluginScripts'));
+            //add_action('wp_enqueue_scripts', array($this, 'registerPluginScripts'));
             #enqueue plugin scripts in admin
-            add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
+            //add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
             #do ajax form subscribe
             add_action('wp_ajax_nopriv_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
             add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
             #preview template
-            add_action('wp_ajax_newsman_ajax_preview_template', array($this, "newsmanAjaxTemplatePreview"));
+            //add_action('wp_ajax_newsman_ajax_preview_template', array($this, "newsmanAjaxTemplatePreview"));
             #check if plugin is active
             add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));
             #send newsletter
-            add_action('wp_ajax_newsman_ajax_send_newsletter', array($this, "newsmanAjaxSendNewsletter"));
+            //add_action('wp_ajax_newsman_ajax_send_newsletter', array($this, "newsmanAjaxSendNewsletter"));
             #load template source code for editing
-            add_action('wp_ajax_newsman_ajax_template_editor_selection', array($this, "newsmanAjaxTemplateEditorSelection"));
+            //add_action('wp_ajax_newsman_ajax_template_editor_selection', array($this, "newsmanAjaxTemplateEditorSelection"));
             #save changes made to the source code of the template
-            add_action('wp_ajax_newsman_ajax_template_editor_save', array($this, "newsmanAjaxTemplateEditorSave"));
+            //add_action('wp_ajax_newsman_ajax_template_editor_save', array($this, "newsmanAjaxTemplateEditorSave"));
             #widget auto init        
             add_action( 'init', array($this, 'init_widgets') );    
         }
@@ -1379,6 +1379,6 @@ Author URI: https://www.newsman.com
     $wp_newsman = new WP_Newsman();
 
     //include the widget
-    include 'newsman_widget.php';
+    //include 'newsman_widget.php';
 
     ?>
