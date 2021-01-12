@@ -1,4 +1,5 @@
 <?php
+/*OBSOLETE
 if ($_POST['newsman_submit'] == 'Y')
 {
 	// process form submission
@@ -37,6 +38,7 @@ if ($_POST['newsman_submit'] == 'Y')
 	$compliant1Url = get_option('newsman_widget_compliant1_url');
 	$compliant2Url = get_option('newsman_widget_compliant2_url');
 }
+*/
 ?>
 
 <div class="wrap">
@@ -61,11 +63,12 @@ if ($_POST['newsman_submit'] == 'Y')
 			</tr>
 			</table>
 
+			<!--OBSOLETE
 			<h2>OR</h2>
 
 			<h2>Widget from Wordpress Newsman plugin</h2>
 
-		<table class="form-table">
+			<table class="form-table">
 			<tr>
 				<th scope="row"> Info</th>
 				<td>
@@ -134,6 +137,8 @@ if ($_POST['newsman_submit'] == 'Y')
 				</td>
 			</tr>
 		</table>
+
 		<input type="submit" value="Save Changes" class="button button-primary"/>
+		-->
 	</form>
 </div>
