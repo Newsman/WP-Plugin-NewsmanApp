@@ -86,7 +86,7 @@ class WC_Newsman_Remarketing_JS
 		} else
 		{
 			add_action('wp_footer', array('WC_Newsman_Remarketing_JS', 'universal_analytics_footer'));
-			return self::load_analytics_universal($logged_in, $order);
+			return self::load_analytics_universal($logged_in);
 		}
 	}
 

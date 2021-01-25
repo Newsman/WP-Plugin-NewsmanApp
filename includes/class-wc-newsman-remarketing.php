@@ -377,12 +377,16 @@ wait_to_load_and_identify();
 		// Mark the order as tracked.
 		update_post_meta($order_id, '_ga_tracked', 1);
 
+		/*
 		return "
 		<!-- WooCommerce Newsman Remarketing -->
 		" . WC_Newsman_Remarketing_JS::get_instance()->header() . "
 		<script type='text/javascript'>$code</script>
 		<!-- /WooCommerce Newsman Remarketing -->
 		";
+		*/
+		
+		return "";
 	}
 
 	/**
