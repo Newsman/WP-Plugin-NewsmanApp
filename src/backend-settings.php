@@ -20,14 +20,26 @@
 
 		if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
 		{
-			$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
+			if (class_exists('WooCommerce')) {
+				
+				$args = array(
+					'stock_status' => 'instock'
+				);
+				$products = wc_get_products($args);
 
-			try{
-			$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
-			}
-			catch(Exception $ex)
-			{			
-				$this->setMessageBackend('error', 'Could not update feed list');
+				if(!empty($products)){
+
+					$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
+
+					try{
+						$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
+					}
+					catch(Exception $ex)
+					{			
+						$this->setMessageBackend('error', 'Could not update feed list');
+					}
+
+				}
 			}
 		}		
 
