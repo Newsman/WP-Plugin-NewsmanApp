@@ -38,6 +38,8 @@ Some quick screenshots of the plugin features.
 
 # Newsman Remarketing
 
+## You must be logged out of admin to be able to test Remarketing (forms, events).
+
 NewsmanApp plugin for Woocommerce allows you to track your shop customers.
 
 1. Activate the plugin NewsmanApp Remarketing
