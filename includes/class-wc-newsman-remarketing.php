@@ -433,7 +433,8 @@ wait_to_load_and_identify();
 		if (!$this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
 		{
 			$code = "" . WC_Newsman_Remarketing_JS::get_instance()->tracker_var() . "( 'ec:addProduct', {";
-			$code .= "'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',";
+			//$code .= "'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',";
+			$code .= "'id': '" . esc_js(($product->get_id()) ? ($product->get_id()) : $product->get_sku()) . "',";
 			$code .= "'name': '" . esc_js($product->get_title()) . "',";
 			$code .= "'quantity': $( 'input.qty' ).val() ? $( 'input.qty' ).val() : '1'";
 			$code .= "} );";
@@ -514,7 +515,8 @@ wait_to_load_and_identify();
 		if (!$this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
 		{
 			$code = "" . WC_Newsman_Remarketing_JS::get_instance()->tracker_var() . "( 'ec:addProduct', {";
-			$code .= "'id': ($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id')),";
+			//$code .= "'id': ($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id')),";
+			$code .= "'id': ($(this).data('product_id')) ?  ($(this).data('product_id')) : ($(this).data('product_sku')),";
 			$code .= "'quantity': $(this).data('quantity')";
 			$code .= "} );";
 			$parameters['enhanced'] = $code;

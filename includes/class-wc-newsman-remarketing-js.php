@@ -278,7 +278,8 @@ class WC_Newsman_Remarketing_JS
 		$variant = self::product_get_variant_line($_product);
 
 		$code = "" . self::tracker_var() . "( 'ec:addProduct', {";
-		$code .= "'id': '" . esc_js($_product->get_sku() ? $_product->get_sku() : $_product->get_id()) . "',";
+		//$code .= "'id': '" . esc_js($_product->get_sku() ? $_product->get_sku() : $_product->get_id()) . "',";
+		$code .= "'id': '" . esc_js($_product->get_id() ? $_product->get_id() : $_product->get_sku()) . "',";
 		$code .= "'name': '" . esc_js($item['name']) . "',";
 		$code .= "'category': " . self::product_get_category_line($_product);
 
@@ -355,7 +356,7 @@ class WC_Newsman_Remarketing_JS
   		   		 $(this).unbind('click').click( function(){					 
 
 			        " . self::tracker_var() . "( 'ec:addProduct', {
-						'id': ($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id')),
+						'id': ($(this).data('product_id')) ? ($(this).data('product_id')) : ($(this).data('product_sku')),
 						'quantity': $(this).parent().parent().find( '.qty' ).val() ? $(this).parent().parent().find( '.qty' ).val() : '1',
 					} );
 					" . self::tracker_var() . "( 'ec:setAction', 'remove' );
@@ -431,7 +432,7 @@ class WC_Newsman_Remarketing_JS
 
 		wc_enqueue_js("
 			" . self::tracker_var() . "( 'ec:addProduct', {
-				'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ($product->get_id())) . "',
+				'id': '" . esc_js($product->get_id() ? $product->get_id() : ($product->get_sku())) . "',
 				'name': '" . esc_js($product->get_title()) . "',
 				'category': " . self::product_get_category_line($product) . "
 				'price': '" . esc_js($product->get_price()) . "',
@@ -443,6 +444,7 @@ class WC_Newsman_Remarketing_JS
 	/**
 	 * Tracks when the checkout process is started
 	 */
+	//	'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',
 	function checkout_process($cart)
 	{
 		$code = "";
@@ -452,7 +454,7 @@ class WC_Newsman_Remarketing_JS
 			$product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
 			$variant = self::product_get_variant_line($product);
 			$code .= "" . self::tracker_var() . "( 'ec:addProduct', {
-				'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',
+				'id': '" . esc_js($product->get_id() ? $product->get_id() : ($product->get_sku())) . "',
 				'name': '" . esc_js($product->get_title()) . "',
 				'category': " . self::product_get_category_line($product);
 
@@ -483,8 +485,9 @@ class WC_Newsman_Remarketing_JS
 	{
 		$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);	
 
-		wc_enqueue_js("
-					$( '" . $selector . "' ).click( function() {
+		wc_enqueue_js("		
+
+					$( '" . $selector . "' ).click( function() {				
 						" . $parameters['enhanced'] . "
 						" . self::tracker_var() . "( 'ec:setAction', 'add' );
 						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );					
