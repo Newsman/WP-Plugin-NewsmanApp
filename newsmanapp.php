@@ -658,7 +658,7 @@ Author URI: https://www.newsman.com
             add_menu_page("Newsman", "Newsman", "administrator", "Newsman", array($this, "includeAdminPage"), plugin_dir_url(__FILE__) . "src/img/newsman-mini.png");
             add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
             //add_submenu_page("Newsman", "Sync", "Sync", "administrator", "NewsmanSync", array($this, "includeAdminSyncPage"));
-            add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
+            //add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
             //add_submenu_page("Newsman", "Newsletter", "Newsletter", "administrator", "NewsmanNewsletter", array($this, "includeAdminNewsletterPage"));
             //add_submenu_page("Newsman", "Templates", "Templates", "administrator", "NewsmanNewsletterTemplates", array($this, "includeNewsletterTemplatesPage"));
         }
