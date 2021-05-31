@@ -43,10 +43,9 @@ try
 				<label for="newsman_apikey">Widget</label>
 			</th>
 			<td>
-				<p>In the widget page you can set the messages to display when a visitor subscribes with a valid email
-					address as well as an invalid email address.</p>
-				<p>To use the widget go to Appearance > Widgets. Look for the widget called Newsman Form and drag it to
-					any of the page containers available. You can also edit the tile here.</p>
+				<p>
+				Log in to your Newsman account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget
+				</p>
 			</td>
 		</tr>
 	</table>

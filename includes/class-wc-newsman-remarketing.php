@@ -280,8 +280,6 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		{
 			return;
 		}
-
-		wp_enqueue_script('wc-google-analytics-admin-enhanced-settings', plugins_url('/assets/js/admin-enhanced-settings.js', dirname(__FILE__)));
 	}
 
 	/**
