@@ -263,6 +263,8 @@ class WC_Newsman_Remarketing_JS
 			'tax': '" . esc_js($order->get_total_tax()) . "',
 			'shipping': '" . esc_js($order->get_total_shipping()) . "'
 		} );";
+		
+				wc_enqueue_js($code);
 
 		return $code;
 	}

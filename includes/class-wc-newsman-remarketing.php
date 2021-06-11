@@ -300,7 +300,8 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		if (is_order_received_page() && 'yes' === $this->ga_ecommerce_tracking_enabled)
 		{
 			$order_id = isset($wp->query_vars['order-received']) ? $wp->query_vars['order-received'] : 0;
-			if (0 < $order_id && 1 != get_post_meta($order_id, '_ga_tracked', true))
+			
+			if (0 < $order_id)
 			{
 				$display_ecommerce_tracking = true;
 				echo $this->get_ecommerce_tracking_code($order_id);
