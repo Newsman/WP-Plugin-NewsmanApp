@@ -586,7 +586,7 @@ Author URI: https://www.newsman.com
             $list = explode("-", $list);
             $list = $list[1];        
 
-            $url = "https://ssl.newsman.app/api/1.2/rest/" . $this->userid . "/" . $this->apikey . "/ecommerce.setPurchaseStatus.json?list_id=" . $list . "&order_id=" . $order_id . "&status=" . $status;        
+            $url = "https://ssl.newsman.app/api/1.2/rest/" . $this->userid . "/" . $this->apikey . "/remarketing.setPurchaseStatus.json?list_id=" . $list . "&order_id=" . $order_id . "&status=" . $status;        
 
             $response = wp_remote_get(
                 esc_url_raw($url),

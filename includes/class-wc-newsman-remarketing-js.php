@@ -393,7 +393,7 @@ class WC_Newsman_Remarketing_JS
 					} );
 					" . self::tracker_var() . "( 'ec:setAction', 'add' );
 					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
-
+					" . self::tracker_var() . "( 'send', 'pageview' );
 			    });
 			  
 			});
@@ -416,6 +416,7 @@ class WC_Newsman_Remarketing_JS
 					} );
 					" . self::tracker_var() . "( 'ec:setAction', 'add' );
 					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
+					" . self::tracker_var() . "( 'send', 'pageview' );
 				});
 			})(jQuery);
 			</script>
@@ -492,7 +493,7 @@ class WC_Newsman_Remarketing_JS
 					$( '" . $selector . "' ).click( function() {				
 						" . $parameters['enhanced'] . "
 						" . self::tracker_var() . "( 'ec:setAction', 'add' );
-						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );					
+						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );										" . self::tracker_var() . "( 'send', 'pageview' );
 					});
 				");
 	}
