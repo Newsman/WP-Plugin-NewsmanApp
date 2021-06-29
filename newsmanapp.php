@@ -127,7 +127,7 @@ Author URI: https://www.newsman.com
         }
 
         public function newsmanFetchData()
-        {
+        {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
             $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
             $start = (!empty($_GET["start"]) && $_GET["start"] >= 0) ? $_GET["start"] : 1;
@@ -597,10 +597,79 @@ Author URI: https://www.newsman.com
             
         }
 
+        public function newsmanCheckout(){
+            
+            $checkout = get_option('newsman_checkoutnewsletter');
+            
+            if(!empty($checkout) && $checkout == "on")
+            {
+
+                woocommerce_form_field( 'newsmanCheckoutNewsletter', array(
+                    'type'          => 'checkbox',
+                    'class'         => array('form-row newsmanCheckoutNewsletter'),
+                    'label_class'   => array('woocommerce-form__label woocommerce-form__label-for-checkbox checkbox'),
+                    'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
+                    'required'      => true,
+                    'label'         => 'Subscribe to our newsletter',
+                    ));    
+
+            }
+
+        }
+
+        public function newsmanCheckoutAction($order_id){
+                   
+            if(!empty($_POST["newsmanCheckoutNewsletter"]) && $_POST["newsmanCheckoutNewsletter"] == 1)
+            {
+
+                $checkoutNewsletter = get_option('newsman_checkoutnewsletter');
+                $checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
+                $list = get_option('newsman_list');
+
+                $order = wc_get_order($order_id);            
+                $order_data = $order->get_data();                                    
+                
+                $email = $order_data["billing"]["email"];
+                $first_name =  $order_data["billing"]["first_name"];
+                $last_name = $order_data["billing"]["last_name"];
+                
+                $checkoutType = get_option('newsman_checkoutnewslettertype');            
+
+                if($checkoutType == "init")
+                {
+
+                    $ret = $this->client->subscriber->initSubscribe(
+                        $list,
+                        $email,
+                        $first_name,
+                        $last_name,
+                        $this->getUserIP(),
+                        null, 
+                        null
+                    );
+
+                }
+                elseif($checkoutType == "save"){
+
+                    $ret = $this->client->subscriber->saveSubscribe(
+                    $list,
+                    $email,
+                    $first_name,
+                    $last_name,
+                    $this->getUserIP(), 
+                    null);
+
+                }                                  
+
+            }
+            
+        }
+
         public function initHooks()
-        { 
+        {          
             add_action('init', array($this, 'newsmanFetchData'));
-        
+            add_action('woocommerce_review_order_before_submit', array($this, 'newsmanCheckout'));                   
+            add_action('woocommerce_checkout_order_processed', array($this, 'newsmanCheckoutAction'), 10, 2);
             //order status change hooks        
             add_action( 'woocommerce_order_status_pending', array($this, 'pending'));
             add_action( 'woocommerce_order_status_failed', array($this, 'failed'));
@@ -608,8 +677,7 @@ Author URI: https://www.newsman.com
             add_action( 'woocommerce_order_status_processing', array($this, 'processing'));
             add_action( 'woocommerce_order_status_completed', array($this, 'completed'));
             add_action( 'woocommerce_order_status_refunded', array($this, 'refunded'));
-            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));
-       
+            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));       
             #admin menu hook
             add_action('admin_menu', array($this, "adminMenu"));
             #add links to plugins page
@@ -641,14 +709,25 @@ Author URI: https://www.newsman.com
             add_action( 'init', array($this, 'init_widgets') );    
         }
 
-            function generateWidget($atts){
-            
-            return '<div id="' . $atts["formid"] . '"></div>';
-            }
+        function generateWidget($atts){
+        
+            $c = substr_count($atts["formid"], '-');
 
-            function init_widgets() {
-                    add_shortcode( "newsman_subscribe_widget", array($this,'generateWidget' ));                
+            //backwards compatible
+            if($c == 2)
+            {
+                return '<div id="' . $atts["formid"] . '"></div>';
             }
+            else{
+                $atts["formid"] = str_replace("nzm-container-", '', $atts["formid"]);
+
+                return '<script async src="https://jcdn.newsmanapp.com/js/forms/embed.js" data-nzmform="' . $atts["formid"] . '"></script>';
+            }
+        }
+
+        function init_widgets() {
+                add_shortcode( "newsman_subscribe_widget", array($this,'generateWidget' ));                
+        }
 
         /*
         * Adds a menu item for Newsman on the Admin page

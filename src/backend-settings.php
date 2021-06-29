@@ -8,6 +8,8 @@
 		$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
 		$segments = (isset($_POST['newsman_segments']) && !empty($_POST['newsman_segments'])) ? strip_tags(trim($_POST['newsman_segments'])) : "";
 		$allowAPI = (isset($_POST['newsman_api']) && !empty($_POST['newsman_api'])) ? strip_tags(trim($_POST['newsman_api'])) : "";
+		$checkoutNewsletter = (isset($_POST['newsman_checkoutnewsletter']) && !empty($_POST['newsman_checkoutnewsletter'])) ? strip_tags(trim($_POST['newsman_checkoutnewsletter'])) : "";
+		$checkoutNewsletterType = (isset($_POST['newsman_checkoutnewslettertype']) && !empty($_POST['newsman_checkoutnewslettertype'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettertype'])) : "";
 
 		$this->constructClient($userid, $apikey);
 
@@ -17,6 +19,8 @@
 		update_option("newsman_list", $list);
 		update_option("newsman_segments", $segments);
 		update_option("newsman_api", $allowAPI);
+		update_option("newsman_checkoutnewsletter", $checkoutNewsletter);
+		update_option("newsman_checkoutnewslettertype", $checkoutNewsletterType);
 
 		if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
 		{
@@ -63,6 +67,8 @@
 		$list = get_option('newsman_list');
 		$segments = get_option('newsman_segments');
 		$allowAPI = get_option('newsman_api');
+		$checkoutNewsletter = get_option('newsman_checkoutnewsletter');
+		$checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
 		try
 		{
 			$available_lists = $this->client->list->all();
@@ -169,13 +175,36 @@
 						<td>
 
 						<input name="newsman_api" type="checkbox" id="newsman_api" <?php echo (!empty($allowAPI) && $allowAPI == "on") ? "checked" : ""; ?>/>										
-						<p class="description">Check to enable API access</p>
+						
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">
+							<label for="newsman_checkoutnewsletter">Checkout newsletter subscribe checkbox</label>
+						</th>
+						<td>
+
+						<input name="newsman_checkoutnewsletter" type="checkbox" id="newsman_checkoutnewsletter" <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == "on") ? "checked" : ""; ?>/>																
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row">
+							<label for="newsman_checkoutnewslettertype">Checkout newsletter subscribe checkbox event type</label>
+						</th>
+						<td>
+
+						<select name="newsman_checkoutnewslettertype" id="">					
+								<option value="save" <?php echo $checkoutNewsletterType == "save" ? "selected = ''" : ""; ?>>Subscribes a subscriber to the list</option>
+								<option value="init" <?php echo $checkoutNewsletterType == "init" ? "selected = ''" : ""; ?>>Inits a confirmed opt in subscribe to the list</option>
+							</select>														
 						</td>
 					</tr>
 
 					<tr>
 					<th>
-					SYNC via CRON
+					SYNC via CRON Job (Task scheduler)
 					<br>
 					<br>
 					{{limit}} = Sync with newsman from latest number of records (ex: 2000)
@@ -185,9 +214,9 @@
 							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=2000&cronlast=true";
 							$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=2000&cronlast=true";
 
-							echo $url = "CRON Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
+							echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
 							echo "<br><br>";
-							echo $url = "CRON Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
+							echo $url = "CRON url Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
 						?>									
 					</td>
 					</tr>
