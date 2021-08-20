@@ -1,6 +1,7 @@
 (function ($) {
     $(function () {
 
+        /*
         $("#newsman_widget").click(function (e) {
             e.preventDefault();
 
@@ -101,7 +102,9 @@
             });
             $('#NewsmanModal').modal('show');
         });
+        */
 
+        /*
         //send newsletter
         $(".newsman-send-newsletter").on("click", function () {
             var errors = false;
@@ -158,6 +161,7 @@
                 }
             });
         });
+        
 
         getSelectedPosts = function () {
             var ids = "";
@@ -238,13 +242,14 @@
         }
 
         var handle = new newsletterPosts('.newsletter-posts');
-
+        */
 
         /*
          * Template editing
          */
 
         //template selection list
+        /*
         $(document).on('change', '.newsman-select-list', function () {
             var filename = $(this).val();
             $.post(ajaxurl, {
@@ -255,8 +260,10 @@
                 $('textarea[name="newsman_template_edit"]').val(response.source);
             });
         });
+        */
 
         //saving template editor changes
+        /*
         $(document).on('click', '#newsman-templates-editor-save', function () {
             var filename = $('select[name="newsman_templates_list"]').val();
             var source = $('textarea[name="newsman_template_edit"]').val();
@@ -290,8 +297,10 @@
                 }
             });
         })
+        */
 
         //templete editor preview
+        /*
         $(document).on('click', '#newsman-templates-editor-preview', function () {
             var filename = $('select[name="newsman_templates_list"]').val();
 
@@ -305,14 +314,18 @@
             });
             $('#NewsmanModal').modal('show');
         });
+        */
 
         //template variables
+        /*
         $(document).on('click', '.newsman-template-variables dt', function () {
             $('.newsman-template-variables dd').slideUp();
             $(this).next('dd').slideDown();
         });
+        */
 
         //sync extra Plugins
+        /*
         $('#newsman_mailPoetPanel').on('click', function () {
             $.post(ajaxurl, {
                     action: 'newsman_ajax_check_plugin',
@@ -442,5 +455,6 @@
         }
 
         //end - sync extra Plugins
+        */
     });
 }(jQuery));

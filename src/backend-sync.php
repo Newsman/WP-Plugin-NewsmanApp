@@ -1,306 +1,171 @@
 <?php
 
-if ($_POST['newsman_submit'] == 'Y')
-{
-	$userid = get_option("newsman_userid");
-	$apikey = get_option("newsman_apikey");
-	$list = get_option("newsman_list");
-	$segments = get_option("newsman_segments");
+if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
+{		
+	$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
+	$segments = (isset($_POST['newsman_segments']) && !empty($_POST['newsman_segments'])) ? strip_tags(trim($_POST['newsman_segments'])) : "";
+	
+	$this->constructClient($this->userid, $this->apikey);
+	
+	update_option("newsman_userid", $this->userid);
+	update_option("newsman_apikey", $this->apikey);
+	update_option("newsman_list", $list);
+	update_option("newsman_segments", $segments);	
 
-	$this->constructClient($userid, $apikey);
+	if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
+	{
+		if (class_exists('WooCommerce')) {
+			
+			$args = array(
+				'stock_status' => 'instock'
+			);
+			$products = wc_get_products($args);
 
-	if (isset($_POST['mailpoet_subscribeBtn']))
-	{
-		//import mailPoet
-		try
-		{
-			$available_lists = $this->client->list->all();
-			$this->importMailPoetSubscribers($list, $segments);
-		} catch (Exception $e)
-		{
-			$this->valid_credential = false;
-			$this->setMessageBackend('error', 'Invalid Credentials');
-		}
-	} elseif (isset($_POST['sendPress_subscribeBtn']))
-	{
-		//import sendPress
-		try
-		{
-			$available_lists = $this->client->list->all();
-			$this->importSendPressSubscribers($list, $segments);
-		} catch (Exception $e)
-		{
-			$this->valid_credential = false;
-			$this->setMessageBackend('error', 'Invalid Credentials');
-		}
-	} elseif (isset($_POST['wooCommerce_subscribeBtn']))
-	{
-		//woocommerce
-		try
-		{
-			$available_lists = $this->client->list->all();
-			$this->importWoocommerceSubscribers($list, $segments);
-		} catch (Exception $e)
-		{
-			$this->valid_credential = false;
-			$this->setMessageBackend('error', 'Invalid Credentials');
-		}
-	} else
-	{
-		//import wordpress
-		try
-		{
-			$available_lists = $this->client->list->all();
-		} catch (Exception $e)
-		{
-			$this->valid_credential = false;
-			$this->setMessageBackend('error', 'Invalid Credentials');
-		}
+			if(!empty($products)){
 
-		$this->importWPSubscribers($list, $segments);
-	}
+				$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
 
-} else
-{
+				try{
+					$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
+				}
+				catch(Exception $ex)
+				{			
+					$this->setMessageBackend('error', 'Could not update feed list');
+				}
+
+			}
+		}
+	}		
+
 	try
 	{
 		$available_lists = $this->client->list->all();
+
+		$available_segments = array();
+		if (!empty($list))
+		{
+			$available_segments = $this->client->segment->all($list);
+		}
+
+		$available_smslists = $this->client->sms->lists();
+		
+		$this->setMessageBackend("updated", "Options saved.");
+	} catch (Exception $e)
+	{
+		$this->valid_credential = false;
+		$this->setMessageBackend('error', 'Invalid Credentials');
+	}
+} else
+{
+	$list = get_option('newsman_list');
+	$segments = get_option('newsman_segments');
+
+	try
+	{
+		$available_lists = $this->client->list->all();
+
+		$available_segments = array();
+		if (!empty($list))
+		{
+			$available_segments = $this->client->segment->all($list);
+		}
+		
+		$available_smslists = $this->client->sms->lists();		
+
 	} catch (Exception $e)
 	{
 		$this->valid_credential = false;
 		$this->setMessageBackend('error', 'Invalid Credentials');
 	}
 }
+
 ?>
 
-<div class="wrap">
+<style>	
+.newsmanTable{
+	border: 1px solid #c7c7c7;		
+}
+
+.newsmanTable th{
+	padding: 20px 20px 20px 20px;
+}
+</style>
+
+<div class="wrap wrap-settings-admin-page">
 	<form method="post" enctype="multipart/form-data">
-		<div class="container" style="margin-top: 20px;">
-			<h2>Select source to sync with Newsman account:</h2>
-			<div class="pluginsItem">
-				<input type="button" name="newsman_Panel" id="newsman_Panel" value="Wordpress Sync"
-				       class="button button-primary pluginsItemBtn"/>
-			</div>
-			<div class="pluginsItem">
-				<input type="button" name="newsman_mailPoetPanel" id="newsman_mailPoetPanel" value="MailPoet Sync"
-				       class="button button-primary pluginsItemBtn"/>
-			</div>
-			<div class="pluginsItem">
-				<input type="button" name="newsman_sendPressPanel" id="newsman_sendPressPanel" value="SendPress Sync"
-				       class="button button-primary pluginsItemBtn"/>
-			</div>
-			<div class="pluginsItem">
-				<input type="button" name="newsman_wooCommercePanel" id="newsman_wooCommercePanel"
-				       value="WooCommerce Sync"
-				       class="button button-primary pluginsItemBtn"/>
-			</div>
-			<div class="pluginsHolder">
-				<div class="pluginsItem">
-					<ul id="submitNewsman" style="display: none;">
-						<li>
-							<input type="hidden" name="newsman_submit" value="Y"/>
-							<h2>Wordpress import subscribers</h2>
-						</li>
-						<li>
-							<div>
-								<label for="import_subscribers_from_wordpress">Clicking the button below automatically
-									imports
-									your wordpress subscribers into Newsman.</label>
-							</div>
-							<?php if (isset($list))
+		<input type="hidden" name="newsman_sync" value="Y"/>		
+
+		<h2>Sync</h2>
+
+		<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
+				</p></div>			
+		
+		<table class="form-table newsmanTable">			
+
+			<?php //if (isset($available_lists) && !empty($available_lists)) { ?>
+				<tr>
+					<th scope="row">
+						<label for="newsman_list">Select a list</label>
+					</th>
+					<td>
+						<select name="newsman_list" id="">
+							<option value="0">-- select list --</option>
+							<?php foreach ($available_lists as $l)
 							{ ?>
-							<table class="form-table">
-								<tr scope="row">
-									<?php if (isset($_POST['newsman_subscribeBtn'])) : ?>
-										<?php if ($_POST['newsman_submit'] == 'Y'): ?>
-											<?php if ($this->wpSync): ?>
-												<th>
-													<div id="nws-message" class="updated"><p><strong>Imported
-																Successfully from WordPress</strong></p>
-													</div>
-												</th>
-											<?php else: ?>
-												<th>
-													<div id="nws-message" class="error"><p><strong>
-																<?php
-																$arr = $this->getBackendMessage();
-																foreach ($arr as $array => $s)
-																	echo $s;
-																?></strong></p></div>
-												</th>
-											<?php endif; ?>
-										<?php endif; ?>
-									<?php endif; ?>
-								</tr>
-								<?php } ?>
-							</table>
-							<input type="submit" name="newsman_subscribeBtn" value="Import Subscribers"
-							       class="button button-primary"/>
-						</li>
-					</ul>
-				</div>
-				<div class="pluginsItem">
-					<ul id="submitMailPoet" style="display: none;">
-						<li><h2>MailPoet import subscribers</h2></li>
-						<li>
-							<div>
-								<label for="import_subscribers_from_wordpress">Clicking the button below automatically
-									imports
-									your mailpoet subscribers into Newsman.</label>
-							</div>
-							<?php if (isset($_POST['mailpoet_subscribeBtn']))
-							{ ?>
-								<?php if ($this->mailpoetSync): ?>
-								<table class="form-table">
-								<tr scope="row">
-								<th>
-									<div id="nws-message" class="updated"><p><strong>Imported Successfully from MailPoet
-												plugin</strong></p>
-									</div>
-								</th>
-							<?php else: ?>
-								<th>
-									<div id="nws-message" class="error"><p><strong>
-												<?php
-												$arr = $this->getBackendMessage();
-												foreach ($arr as $array => $s)
-													echo $s;
-												?></strong></p></div>
-								</th>
-								</tr>
-								</table>
-							<?php endif; ?>
+								<option
+									value="<?php echo $l['list_id'] ?>" <?php echo $l['list_id'] == $list ? "selected = ''" : ""; ?>><?php echo $l['list_name']; ?></option>
 							<?php } ?>
-							<input type="submit" name="mailpoet_subscribeBtn" value="Import MailPoet Subscribers"
-							       class="button button-primary"/>
-						</li>
-					</ul>
-				</div>
-				<div class="pluginsItem">
-					<ul id="submitSendPress" style="display: none;">
-						<li><h2>SendPress import subscribers</h2></li>
-						<li>
-							<div>
-								<label for="import_subscribers_from_wordpress">Clicking the button below automatically
-									imports
-									your sendpress subscribers into Newsman.</label>
-							</div>
-							<?php if (isset($_POST['sendPress_subscribeBtn']))
-							{ ?>
-								<?php if ($this->sendpressSync): ?>
-								<table class="form-table">
-								<tr scope="row">
-								<th>
-									<div id="nws-message" class="updated"><p><strong>Imported Successfully from
-												SendPress
-												plugin</strong></p>
-									</div>
-								</th>
-							<?php else: ?>
-								<th>
-									<div id="nws-message" class="error"><p><strong>
-												<?php
-												$arr = $this->getBackendMessage();
-												foreach ($arr as $array => $s)
-													echo $s;
-												?></strong></p></div>
-								</th>
-								</tr>
-								</table>
-							<?php endif; ?>
-							<?php } ?>
-							<input type="submit" name="sendPress_subscribeBtn" value="Import SendPress Subscribers"
-							       class="button button-primary"/>
-						</li>
-					</ul>
-				</div>
-				<div class="pluginsItem">
-					<ul id="submitWooCommerce" style="display: none;">
-						<h2>Select type of import:</h2>
-						<select name="woocommerceSelect">
-							<option value="customernewsletter">All customers who ordered and Subscribed to newsletter
-							</option>
-							<option value="customerscompleted">All customers with Completed order</option>
-							<option value="customers">All customers who ordered</option>
 						</select>
+						<p class="description">Select a list of subscribers</p>
+					</td>
+				</tr>
+			<?php //} ?>
 
-						<li><h2>WooCommerce import subscribers</h2></li>
-						<li>
-							<?php if (isset($_POST['wooCommerce_subscribeBtn']))
+			<?php //if (isset($available_segments) && !empty($available_segments)) { ?>
+				<tr>
+					<th scope="row">
+						<label for="newsman_segments">Select a segment</label>
+					</th>
+					<td>
+						<select name="newsman_segments" id="">
+							<option value="0">-- select segment (optional) --</option>
+							<?php foreach ($available_segments as $l)
 							{ ?>
-								<?php if ($this->wooCommerce): ?>
-								<table class="form-table">
-								<tr scope="row">
-								<th>
-									<div id="nws-message" class="updated"><p><strong>Imported Successfully from
-												WooCommerce
-												plugin</strong></p>
-									</div>
-								</th>
-							<?php else: ?>
-								<th>
-									<div id="nws-message" class="error"><p><strong>
-												<?php
-												$arr = $this->getBackendMessage();
-												foreach ($arr as $array => $s)
-													echo $s;
-												?></strong></p></div>
-								</th>
-								</tr>
-								</table>
-							<?php endif; ?>
+								<option
+									value="<?php echo $l['segment_id']; ?>" <?php echo $l['segment_id'] == $segments ? "selected = ''" : ""; ?>><?php echo $l['segment_name']; ?></option>
 							<?php } ?>
+						</select>
+						<p class="description">Select a segment</p>
+					</td>
+				</tr>
+			<?php //} ?>
 
-							Clicking the button below automatically imports your woocommerce subscribers into Newsman based on your selection.
-							<br>
-							<input type="submit" name="wooCommerce_subscribeBtn" value="Import WooCommerce Subscribers"
-							       class="button button-primary"/>
-						</li>
-					</ul>
-				</div>
-				<div class="pluginsItem">
-					<ul id="submitSendPress" style="display: none;">
-						<li><h2>SendPress import subscribers</h2></li>
-						<li>
-							<div>
-								<label for="import_subscribers_from_wordpress">Clicking the button below automatically
-									imports
-									your sendpress subscribers into Newsman.</label>
-							</div>
-							<?php if (isset($_POST['sendPress_subscribeBtn']))
-							{ ?>
-								<?php if ($this->sendpressSync): ?>
-								<table class="form-table">
-								<tr scope="row">
-								<th>
-									<div id="nws-message" class="updated"><p><strong>Imported Successfully from
-												SendPress
-												plugin</strong></p>
-									</div>
-								</th>
-							<?php else: ?>
-								<th>
-									<div id="nws-message" class="error"><p><strong>
-												<?php
-												$arr = $this->getBackendMessage();
-												foreach ($arr as $array => $s)
-													echo $s;
-												?></strong></p></div>
-								</th>
-								</tr>
-								</table>
-							<?php endif; ?>
-							<?php } ?>
-							<input type="submit" name="sendPress_subscribeBtn" value="Import SendPress Subscribers"
-							       class="button button-primary"/>
-						</li>
-					</ul>
-				</div>
-				<div id="activatedPluginMsg" class="error" style="display: none;">
-					<strong>
-					</strong>
-				</div>
-			</div>
+				<tr>
+					<th>
+					SYNC via CRON Job (Task scheduler)
+					<br>
+					<br>
+					{{limit}} = Sync with newsman from latest number of records (ex: 5000)
+					</th>
+					<td>
+						<?php 
+							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+							$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+
+							echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
+							echo "<br><br>";
+							echo $url = "CRON url Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
+						?>									
+					</td>
+				</tr>
+			
+			</table>
+				<th>
+				</th>
+
+		</table>
+		<div style="padding-top: 5px;">
+			<input type="submit" value="Save Changes" class="button button-primary"/>
 		</div>
 	</form>
 </div>

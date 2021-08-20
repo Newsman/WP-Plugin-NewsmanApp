@@ -57,7 +57,7 @@ if ($_POST['newsman_submit'] == 'Y')
 				<td>
 					<p class="description">
 						Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form.
-						Copy paste Shortcode `newsman_subscribe_widget`
+						Copy paste Shortcode `newsman_subscribe_widget` into wordpress pages/posts
 					</p>
 				</td>
 			</tr>
