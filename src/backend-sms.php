@@ -1,26 +1,28 @@
 <?php
 
-if(!empty($_POST["newsman_smsdevbtn"]))
+if(!empty($_POST["newsman_action"]) && $_POST["newsman_action"] == "newsman_smsdevbtn")
 {
-	$newsman_smsdevtest = (isset($_POST['newsman_smsdevtest']) && !empty($_POST['newsman_smsdevtest'])) ? strip_tags(trim($_POST['newsman_smsdevtest'])) : "";
+	$newsman_smsdevtest = '4' . (isset($_POST['newsman_smsdevtest']) && !empty($_POST['newsman_smsdevtest'])) ? strip_tags(trim($_POST['newsman_smsdevtest'])) : "";
 	$newsman_smsdevtestmsg = (isset($_POST['newsman_smsdevtestmsg']) && !empty($_POST['newsman_smsdevtestmsg'])) ? strip_tags(trim($_POST['newsman_smsdevtestmsg'])) : "";
 
-	$newsman_smslist = '4' . get_option('newsman_smslist');
+	$newsman_smslist = get_option('newsman_smslist');
 
 	try{
 		if(!empty($newsman_smsdevtest) && !empty($newsman_smsdevtestmsg) &&  !empty($newsman_smslist))
 		{                                                                                                
 			$this->client->sms->sendone($newsman_smslist, $newsman_smsdevtestmsg, $newsman_smsdevtest);                    
 		}   
+
+		$this->setMessageBackend('updated', "Test SMS was sent");
 	}
 	catch(Exception $e)
 	{
-		$this->setMessageBackend('error', "SMS-ul nu a fost trimis");
+		$this->setMessageBackend('error', "SMS did not send");
 		error_log($e->getMessage());
 	}
 }
 
-if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
+if (!empty($_POST['newsman_sms']))
 {	
 	$newsman_usesms = (isset($_POST['newsman_usesms']) && !empty($_POST['newsman_usesms'])) ? strip_tags(trim($_POST['newsman_usesms'])) : "";
 	$newsman_smstest = (isset($_POST['newsman_smstest']) && !empty($_POST['newsman_smstest'])) ? strip_tags(trim($_POST['newsman_smstest'])) : "";
@@ -109,24 +111,6 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 
 ?>
 
-<style>	
-.newsmanTable{
-	border: 1px solid #c7c7c7;		
-}
-
-.newsmanTable th{
-	padding: 20px 20px 20px 20px;
-}
-
-.nVariable{
-	background: rgba(0,0,0,0.8);
-	color: #fff;
-    padding: 0px;
-    margin: 5px;
-	cursor: pointer;
-}
-</style>
-
 <script>
 	jQuery(document).ready(function()
 	{
@@ -154,9 +138,32 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 	})	
 </script>
 
-<div class="wrap wrap-settings-admin-page">
-	<form method="post" enctype="multipart/form-data">
-		<input type="hidden" name="newsman_sms" value="Y"/>		
+<div class="tabsetImg">
+	<a href="https://newsman.com" target="_blank">
+		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" />
+	</a>
+</div>
+<div class="tabset">
+
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="newsmanBtn">Newsman</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="syncBtn">Sync</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="remarketingBtn">Remarketing</label>
+	<input type="radio" name="tabset" id="tabSms" aria-controls="" checked>
+	<label for="tabSms" id="smsBtn">SMS</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="settingsBtn">Settings</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>
+   
+  <div class="tab-panels">
+    <section id="tabSms" class="tab-panel">
+
+	<div class="wrap wrap-settings-admin-page">
+	<form method="post" enctype="multipart/form-data" id="mainForm">
+		<input type="hidden" name="newsman_action" value=""/>
 
 			<h2>SMS</h2>
 
@@ -172,28 +179,7 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 
 					<input name="newsman_usesms" type="checkbox" id="newsman_usesms" <?php echo (!empty($newsman_usesms) && $newsman_usesms == "on") ? "checked" : ""; ?>/>																
 					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						<label for="newsman_smstest">Activare mod de teste</label>
-					</th>
-					<td>
-
-					<input name="newsman_smstest" type="checkbox" id="newsman_smstest" <?php echo (!empty($newsman_smstest) && $newsman_smstest == "on") ? "checked" : ""; ?>/>																
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						<label for="newsman_smstestnr">Numar telefon pentru teste</label>						
-					</th>
-					<td>
-
-					
-
-					<input id="newsman_smstestnr" name="newsman_smstestnr" value="<?php echo $newsman_smstestnr; ?>" /> Ex: 0720998111
-
-					</td>
-				</tr>
+				</tr>			
 				<tr>
 					<th scope="row">
 						<label for="newsman_smslist">Select SMS List</label>
@@ -220,11 +206,8 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 						<label for="newsman_smstext">Order Status</label>						
 					</th>
 					<th scope="row">
-						<label for="newsman_smstext">Message</label>						
-					</th>
-					<th scope="row">
-						<label for="newsman_smstext">Variables</label>						
-					</th>
+						<label for="newsman_smstext">Message / Variables</label>						
+					</th>			
 				</tr>
 				<tr>
 					<td>
@@ -236,15 +219,11 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smspendingactivate" type="checkbox" id="newsman_smspendingactivate" <?php echo (!empty($newsman_smspendingactivate) && $newsman_smspendingactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smspendingtext" name="newsman_smspendingtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smspendingtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is pending
-						</p>
+					<td class="newsman_smspendingtextPanel" <?php echo (empty($newsman_smspendingtext) || $newsman_smspendingtext == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smspendingtext" name="newsman_smspendingtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smspendingtext)) ? $newsman_smspendingtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
+						
 						<p class="newsman_smspendingdescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
-					</td>
+					</td>		
 				</tr>
 				<tr>
 					<td>
@@ -256,15 +235,10 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smsfailedactivate" type="checkbox" id="newsman_smsfailedactivate" <?php echo (!empty($newsman_smsfailedactivate) && $newsman_smsfailedactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smsfailedtext" name="newsman_smsfailedtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smsfailedtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is failed
-						</p>
+					<td class="newsman_smsfailedtextPanel" <?php echo (empty($newsman_smsfailedtext) || $newsman_smsfailedtext == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smsfailedtext" name="newsman_smsfailedtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smsfailedtext)) ? $newsman_smsfailedtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
 						<p class="newsman_smsfaileddescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
-					</td>
+					</td>			
 				</tr>
 				<tr>
 					<td>
@@ -276,15 +250,10 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smsonholdactivate" type="checkbox" id="newsman_smsonholdactivate" <?php echo (!empty($newsman_smsonholdactivate) && $newsman_smsonholdactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smsonholdtext" name="newsman_smsonholdtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smsonholdtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is on hold
-						</p>
+					<td class="newsman_smsonholdtextPanel" <?php echo (empty($newsman_smsonholdtext) || $newsman_smsonholdtext == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smsonholdtext" name="newsman_smsonholdtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smsonholdtext)) ? $newsman_smsonholdtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
 						<p class="newsman_smsonholddescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
-					</td>
+					</td>		
 				</tr>
 				<tr>
 					<td>
@@ -296,15 +265,10 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smsprocessingactivate" type="checkbox" id="newsman_smsprocessingactivate" <?php echo (!empty($newsman_smsprocessingactivate) && $newsman_smsprocessingactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smsprocessingtext" name="newsman_smsprocessingtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smsprocessingtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is processing
-						</p>
+					<td class="newsman_smsprocessingtextPanel" <?php echo (empty($newsman_smsprocessingtext) || $newsman_smsprocessingtext == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smsprocessingtext" name="newsman_smsprocessingtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smsprocessingtext)) ? $newsman_smsprocessingtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
 						<p class="newsman_smsprocessingdescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
-					</td>
+					</td>	
 				</tr>
 				<tr>
 					<td>
@@ -316,15 +280,10 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smscompletedactivate" type="checkbox" id="newsman_smscompletedactivate" <?php echo (!empty($newsman_smscompletedactivate) && $newsman_smscompletedactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smscompletedtext" name="newsman_smscompletedtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smscompletedtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is completed
-						</p>
+					<td class="newsman_smscompletedtextPanel" <?php echo (empty($newsman_smscompletedactivate) || $newsman_smscompletedactivate == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smscompletedtext" name="newsman_smscompletedtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smscompletedtext)) ? $newsman_smscompletedtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
 						<p class="newsman_smscompleteddescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
-					</td>
+					</td>		
 				</tr>
 				<tr>
 					<td>
@@ -336,13 +295,8 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smsrefundedactivate" type="checkbox" id="newsman_smsrefundedactivate" <?php echo (!empty($newsman_smsrefundedactivate) && $newsman_smsrefundedactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smsrefundedtext" name="newsman_smsrefundedtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smsrefundedtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is refunded
-						</p>
+					<td class="newsman_smsrefundedtextPanel" <?php echo (empty($newsman_smsrefundedactivate) || $newsman_smsrefundedactivate == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smsrefundedtext" name="newsman_smsrefundedtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smsrefundedtext)) ? $newsman_smsrefundedtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
 						<p class="newsman_smsrefundeddescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
 					</td>
 				</tr>
@@ -356,25 +310,54 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 					<input name="newsman_smscancelledactivate" type="checkbox" id="newsman_smscancelledactivate" <?php echo (!empty($newsman_smscancelledactivate) && $newsman_smscancelledactivate == "on") ? "checked" : ""; ?>/>		
 
 					</td>
-					<td>
-						<textarea id="newsman_smscancelledtext" name="newsman_smscancelledtext" style="width: 100%; min-height: 100px;"><?php echo $newsman_smscancelledtext; ?></textarea>
-					</td>
-					<td>
-						<p>
-							Ex: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com is cancelled
-						</p>
+					<td class="newsman_smscancelledtextPanel" <?php echo (empty($newsman_smscancelledactivate) || $newsman_smscancelledactivate == "off") ? 'style="display: none;"' : ""; ?>>
+						<textarea id="newsman_smscancelledtext" name="newsman_smscancelledtext" style="width: 100%; min-height: 100px;"><?php echo (!empty($newsman_smscancelledtext)) ? $newsman_smscancelledtext : "Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com"; ?></textarea>
 						<p class="newsman_smscancelleddescription" style="padding: 5px;">Variables: <span class="nVariable">{{billing_first_name}}</span><span class="nVariable">{{billing_last_name}}</span><span class="nVariable">{{shipping_first_name}}</span><span class="nVariable">{{shipping_last_name}}</span><span class="nVariable">{{order_number}}</span><span class="nVariable">{{order_date}}</span><span class="nVariable">{{order_total}}</span><span class="nVariable">{{email}}</span></p>
 					</td>
 				</tr>
-
+				<!--
+				<tr>
+					<td>					
+					</td>
+					<td>						
+					</td>
+					<td>
+						<h4>Example message: Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com<h4>
+					</td>
+				</tr>
+				-->
 			</table>
 
-			<h2>SMS Test</h2>			
+			<h2>SMS production debug</h2>
 
-			<table class="form-table newsmanTable">				
+			<table class="form-table newsmanTable newsmanTblFixed">		
+			<tr>
+				<th scope="">
+					<label for="newsman_smstest">Activate test mode</label>
+					<p class="newsmanP">if checked, when an order status changes, the message will be sent on your specified phone, not client phone</p>
+				</th>
+				<td>
+
+				<input name="newsman_smstest" type="checkbox" id="newsman_smstest" <?php echo (!empty($newsman_smstest) && $newsman_smstest == "on") ? "checked" : ""; ?>/>																
+				</td>
+			</tr>
+			<tr>
+				<th scope="">
+					<label for="newsman_smstestnr">Phone for tests</label>						
+				</th>
+				<td>				
+				<input id="newsman_smstestnr" name="newsman_smstestnr" value="<?php echo $newsman_smstestnr; ?>" /> Ex: 0720998111
+
+				</td>
+			</tr>
+			</table>
+
+			<h2>SMS send test</h2>			
+
+			<table class="form-table newsmanTable newsmanTblFixed">								
 				<tr>
 					<th scope="row">
-						<label for="newsman_smsdevtest">Numar telefon</label>						
+						<label for="newsman_smsdevtest">Phone</label>						
 					</th>
 					<td>
 					
@@ -393,10 +376,10 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 				</tr>			
 				<tr>
 					<th scope="row">
-						<label for="newsman_smsdevtestbtn">Trimite</label>						
+						<label for="newsman_smsdevtestbtn">Send now</label>						
 					</th>		
-					<td>
-						<input type="submit" value="Trimite SMS-ul" name="newsman_smsdevbtn" class="button button-primary"/>
+					<td class="msg_smsdevbtn">
+						<input type="button" value="Send Now" name="newsman_smsdevbtn" class="button button-primary"/>
 					</td>
 				</tr>
 
@@ -405,9 +388,16 @@ if (!empty($_POST['newsman_sms']) && $_POST['newsman_sms'] == 'Y')
 			<th>
 			</th>
 
-		</table>
+		</table>		
+		
 		<div style="padding-top: 5px;">
-			<input type="submit" value="Save Changes" class="button button-primary"/>
+			<input type="submit" name="newsman_sms" value="Save Changes" class="button button-primary"/>
 		</div>
+
 	</form>
+</div>
+
+
+  	</section>  
+  </div>  
 </div>

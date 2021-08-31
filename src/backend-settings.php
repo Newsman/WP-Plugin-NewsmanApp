@@ -7,6 +7,7 @@
 		$allowAPI = (isset($_POST['newsman_api']) && !empty($_POST['newsman_api'])) ? strip_tags(trim($_POST['newsman_api'])) : "";
 		$checkoutNewsletter = (isset($_POST['newsman_checkoutnewsletter']) && !empty($_POST['newsman_checkoutnewsletter'])) ? strip_tags(trim($_POST['newsman_checkoutnewsletter'])) : "";
 		$checkoutNewsletterType = (isset($_POST['newsman_checkoutnewslettertype']) && !empty($_POST['newsman_checkoutnewslettertype'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettertype'])) : "";
+		$newsman_checkoutnewslettermessage = (isset($_POST['newsman_checkoutnewslettermessage']) && !empty($_POST['newsman_checkoutnewslettermessage'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettermessage'])) : "";		
 
 		$this->constructClient($userid, $apikey);
 
@@ -15,6 +16,7 @@
 		update_option("newsman_api", $allowAPI);
 		update_option("newsman_checkoutnewsletter", $checkoutNewsletter);
 		update_option("newsman_checkoutnewslettertype", $checkoutNewsletterType);				
+		update_option("newsman_checkoutnewslettermessage", $newsman_checkoutnewslettermessage);
 
 		try
 		{
@@ -39,6 +41,7 @@
 		$allowAPI = get_option('newsman_api');
 		$checkoutNewsletter = get_option('newsman_checkoutnewsletter');
 		$checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
+		$newsman_checkoutnewslettermessage = get_option('newsman_checkoutnewslettermessage');
 
 		try
 		{
@@ -59,23 +62,29 @@
 
 	?>
 
-	<style>	
-	.newsmanTable{
-		border: 1px solid #c7c7c7;		
-	}
+<div class="tabsetImg">
+	<a href="https://newsman.com" target="_blank">
+		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" />
+	</a>
+</div>
+<div class="tabset">
 
-	.newsmanTable th{
-		padding: 20px 20px 20px 20px;
-	}
-
-	.nVariable{
-		background: rgba(0,0,0,0.8);
-		color: #fff;
-		padding: 5px;
-		margin: 5px;
-	}
-	</style>
-
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="newsmanBtn">Newsman</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="syncBtn">Sync</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="remarketingBtn">Remarketing</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="smsBtn">SMS</label>
+	<input type="radio" name="tabset" id="tabSettings" aria-controls="" checked>
+	<label for="tabSettings" id="settingsBtn">Settings</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>
+   
+  <div class="tab-panels">
+    <section id="tabSettings" class="tab-panel">
+      
 	<div class="wrap wrap-settings-admin-page">
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="newsman_submit" value="Y"/>
@@ -85,7 +94,7 @@
 			</table>
 
 			<h2>Newsman Connection</h2>
-			<table class="form-table newsmanTable">
+			<table class="form-table newsmanTable newsmanTblFixed">
 				<tr>
 					<th scope="row">
 						<label for="newsman_apikey">API KEY</label>
@@ -108,7 +117,7 @@
 				</table>				
 
 				<h2>Settings</h2>
-				<table class="form-table newsmanTable">
+				<table class="form-table newsmanTable newsmanTblFixed">
 
 					<tr>
 						<th scope="row">
@@ -116,7 +125,7 @@
 						</th>
 						<td>
 
-						<input name="newsman_api" type="checkbox" id="newsman_api" <?php echo (!empty($allowAPI) && $allowAPI == "on") ? "checked" : ""; ?>/>										
+						<input name="newsman_api" type="checkbox" id="newsman_api" <?php echo (!empty($allowAPI) && $allowAPI == "on") ? "checked" : ""; ?>/>								
 						
 						</td>
 					</tr>
@@ -129,8 +138,7 @@
 						<input name="newsman_checkoutnewsletter" type="checkbox" id="newsman_checkoutnewsletter" <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == "on") ? "checked" : ""; ?>/>																
 						</td>
 					</tr>
-
-					<tr>
+					<tr class="newsman_checkoutnewslettertypePanel" style="display: <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == 'on') ? 'table-row' : 'none'; ?>;">
 						<th scope="row">
 							<label for="newsman_checkoutnewslettertype">Checkout newsletter subscribe checkbox event type</label>
 						</th>
@@ -142,6 +150,16 @@
 							</select>														
 						</td>
 					</tr>
+					<tr class="newsman_checkoutnewslettertypePanel" style="display: <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == 'on') ? 'table-row' : 'none'; ?>;">
+						<th scope="row">
+							<label for="newsman_checkoutnewslettermessage">Checkout newsletter subscribe checkbox message</label>
+						</th>
+						<td>
+
+						<input type="text" id="newsman_checkoutnewslettermessage" name="newsman_checkoutnewslettermessage" value="<?php echo (!empty($newsman_checkoutnewslettermessage)) ? $newsman_checkoutnewslettermessage : "Subscribe to our newsletter"; ?>"/>													
+						</td>
+					</tr>
+
 					<th>
 					</th>
 
@@ -151,3 +169,8 @@
 			</div>
 		</form>
 	</div>
+
+  	</section>  
+  </div>  
+</div>
+	

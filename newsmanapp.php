@@ -670,6 +670,7 @@ Author URI: https://www.newsman.com
             
             if(!empty($checkout) && $checkout == "on")
             {
+                $msg = get_option('newsman_checkoutnewslettermessage');
 
                 woocommerce_form_field( 'newsmanCheckoutNewsletter', array(
                     'type'          => 'checkbox',
@@ -677,9 +678,8 @@ Author URI: https://www.newsman.com
                     'label_class'   => array('woocommerce-form__label woocommerce-form__label-for-checkbox checkbox'),
                     'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
                     'required'      => true,
-                    'label'         => 'Subscribe to our newsletter',
+                    'label'         => $msg,
                     ));    
-
             }
 
         }
@@ -752,26 +752,18 @@ Author URI: https://www.newsman.com
             #enqueue plugin styles
             //add_action('wp_enqueue_scripts', array($this, 'registerPluginStyles'));
             #enqueue plugin styles in admin
-            //add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
+            add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
             #enqueue wordpress ajax library
             add_action('wp_head', array($this, 'addAjaxLibrary'));
             #enqueue plugin scripts
             //add_action('wp_enqueue_scripts', array($this, 'registerPluginScripts'));
             #enqueue plugin scripts in admin
-            //add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
+            add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
             #do ajax form subscribe
             add_action('wp_ajax_nopriv_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
-            add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
-            #preview template
-            //add_action('wp_ajax_newsman_ajax_preview_template', array($this, "newsmanAjaxTemplatePreview"));
+            add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe")); 
             #check if plugin is active
-            add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));
-            #send newsletter
-            //add_action('wp_ajax_newsman_ajax_send_newsletter', array($this, "newsmanAjaxSendNewsletter"));
-            #load template source code for editing
-            //add_action('wp_ajax_newsman_ajax_template_editor_selection', array($this, "newsmanAjaxTemplateEditorSelection"));
-            #save changes made to the source code of the template
-            //add_action('wp_ajax_newsman_ajax_template_editor_save', array($this, "newsmanAjaxTemplateEditorSave"));
+            add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));         
             #widget auto init        
             add_action( 'init', array($this, 'init_widgets') );    
         }
@@ -807,8 +799,6 @@ Author URI: https://www.newsman.com
             add_submenu_page("Newsman", "SMS", "SMS", "administrator", "NewsmanSMS", array($this, "includeAdminSMSPage"));
             add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
             add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
-            //add_submenu_page("Newsman", "Newsletter", "Newsletter", "administrator", "NewsmanNewsletter", array($this, "includeAdminNewsletterPage"));
-            //add_submenu_page("Newsman", "Templates", "Templates", "administrator", "NewsmanNewsletterTemplates", array($this, "includeNewsletterTemplatesPage"));
         }
 
         /*
@@ -891,10 +881,10 @@ Author URI: https://www.newsman.com
         */
         public function registerPluginStyles()
         {
-            wp_register_style('jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
+            //wp_register_style('jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
             wp_register_style('newsman_css', plugins_url('newsmanapp/src/css/style.css'));
-            wp_enqueue_style('bootstrap-css');
-            wp_enqueue_style('jquery-ui-css');
+            //wp_enqueue_style('bootstrap-css');
+            //wp_enqueue_style('jquery-ui-css');
             wp_enqueue_style('newsman_css');
         }
 
@@ -903,11 +893,11 @@ Author URI: https://www.newsman.com
         */
         public function registerPluginScripts()
         {
-            wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
+            //wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
             wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));  
             wp_enqueue_script('newsman_js');
-            wp_enqueue_script('bootstrap-js');
-            wp_enqueue_script('jquery-ui');
+            //wp_enqueue_script('bootstrap-js');
+            //wp_enqueue_script('jquery-ui');
         }
 
         /*

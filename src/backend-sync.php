@@ -81,91 +81,109 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 ?>
 
-<style>	
-.newsmanTable{
-	border: 1px solid #c7c7c7;		
-}
+<div class="tabsetImg">
+	<a href="https://newsman.com" target="_blank">
+		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" />
+	</a>
+</div>
+<div class="tabset">
 
-.newsmanTable th{
-	padding: 20px 20px 20px 20px;
-}
-</style>
+<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="newsmanBtn">Newsman</label>
+	<input type="radio" name="tabset" id="tabSync" aria-controls="" checked>
+	<label for="tabSync" id="syncBtn">Sync</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="remarketingBtn">Remarketing</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="smsBtn">SMS</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="settingsBtn">Settings</label>
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>
+   
+  <div class="tab-panels">
+    <section id="tabSync" class="tab-panel">
+      
+		<div class="wrap wrap-settings-admin-page">
+		<form method="post" enctype="multipart/form-data">
+			<input type="hidden" name="newsman_sync" value="Y"/>		
 
-<div class="wrap wrap-settings-admin-page">
-	<form method="post" enctype="multipart/form-data">
-		<input type="hidden" name="newsman_sync" value="Y"/>		
+			<h2>Sync</h2>
 
-		<h2>Sync</h2>
-
-		<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
-				</p></div>			
-		
-		<table class="form-table newsmanTable">			
-
-			<?php //if (isset($available_lists) && !empty($available_lists)) { ?>
-				<tr>
-					<th scope="row">
-						<label for="newsman_list">Select a list</label>
-					</th>
-					<td>
-						<select name="newsman_list" id="">
-							<option value="0">-- select list --</option>
-							<?php foreach ($available_lists as $l)
-							{ ?>
-								<option
-									value="<?php echo $l['list_id'] ?>" <?php echo $l['list_id'] == $list ? "selected = ''" : ""; ?>><?php echo $l['list_name']; ?></option>
-							<?php } ?>
-						</select>
-						<p class="description">Select a list of subscribers</p>
-					</td>
-				</tr>
-			<?php //} ?>
-
-			<?php //if (isset($available_segments) && !empty($available_segments)) { ?>
-				<tr>
-					<th scope="row">
-						<label for="newsman_segments">Select a segment</label>
-					</th>
-					<td>
-						<select name="newsman_segments" id="">
-							<option value="0">-- select segment (optional) --</option>
-							<?php foreach ($available_segments as $l)
-							{ ?>
-								<option
-									value="<?php echo $l['segment_id']; ?>" <?php echo $l['segment_id'] == $segments ? "selected = ''" : ""; ?>><?php echo $l['segment_name']; ?></option>
-							<?php } ?>
-						</select>
-						<p class="description">Select a segment</p>
-					</td>
-				</tr>
-			<?php //} ?>
-
-				<tr>
-					<th>
-					SYNC via CRON Job (Task scheduler)
-					<br>
-					<br>
-					{{limit}} = Sync with newsman from latest number of records (ex: 5000)
-					</th>
-					<td>
-						<?php 
-							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
-							$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
-
-							echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
-							echo "<br><br>";
-							echo $url = "CRON url Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
-						?>									
-					</td>
-				</tr>
+			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
+					</p></div>			
 			
-			</table>
-				<th>
-				</th>
+			<table class="form-table newsmanTable newsmanTblFixed">			
 
-		</table>
-		<div style="padding-top: 5px;">
-			<input type="submit" value="Save Changes" class="button button-primary"/>
+				<?php //if (isset($available_lists) && !empty($available_lists)) { ?>
+					<tr>
+						<th scope="row">
+							<label for="newsman_list">Select a list</label>
+						</th>
+						<td>
+							<select name="newsman_list" id="">
+								<option value="0">-- select list --</option>
+								<?php foreach ($available_lists as $l)
+								{ ?>
+									<option
+										value="<?php echo $l['list_id'] ?>" <?php echo $l['list_id'] == $list ? "selected = ''" : ""; ?>><?php echo $l['list_name']; ?></option>
+								<?php } ?>
+							</select>
+							<p class="description">Select a list of subscribers</p>
+						</td>
+					</tr>
+				<?php //} ?>
+
+				<?php //if (isset($available_segments) && !empty($available_segments)) { ?>
+					<tr>
+						<th scope="row">
+							<label for="newsman_segments">Select a segment</label>
+						</th>
+						<td>
+							<select name="newsman_segments" id="">
+								<option value="0">-- select segment (optional) --</option>
+								<?php foreach ($available_segments as $l)
+								{ ?>
+									<option
+										value="<?php echo $l['segment_id']; ?>" <?php echo $l['segment_id'] == $segments ? "selected = ''" : ""; ?>><?php echo $l['segment_name']; ?></option>
+								<?php } ?>
+							</select>
+							<p class="description">Select a segment</p>
+						</td>
+					</tr>
+				<?php //} ?>
+
+					<tr>
+						<th>
+						SYNC via CRON Job (Task scheduler)
+						<p class="newsmanP">click the links to begin Sync or setup task scheduler (cron) on your server/hosting<p>
+						<br>
+						<br>
+						<p class="newsmanP">{{limit}} = Sync with newsman from latest number of records (ex: 5000)</p>
+						</th>
+						<td>
+							<?php 
+								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+
+								echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
+								echo "<br><br>";
+								echo $url = "CRON url Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
+							?>									
+						</td>
+					</tr>
+				
+				</table>
+					<th>
+					</th>
+
+				</table>
+				<div style="padding-top: 5px;">
+					<input type="submit" value="Save Changes" class="button button-primary"/>
+				</div>
+			</form>
 		</div>
-	</form>
+
+  	</section>  
+  </div>  
 </div>
