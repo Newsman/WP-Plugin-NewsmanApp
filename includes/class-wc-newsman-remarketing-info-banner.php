@@ -54,12 +54,12 @@ class WC_Newsman_Remarketing_Info_Banner {
 		$integration_url = esc_url( admin_url( 'admin.php?page=wc-settings&tab=integration&section=newsman_remarketing' ) );
 		$dismiss_url = $this->dismiss_url();
 
-		$heading = __( 'Newsman Remarketing &amp; WooCommerce', 'woocommerce-google-analytics-integration' );
-		$configure = sprintf( __( '<a href="%s">Connect your Newsman Remarketing ID</a> to finish setting up this integration.', 'woocommerce-google-analytics-integration' ), $integration_url );
+		$heading = __( 'Newsman Remarketing &amp; WooCommerce', 'woocommerce-newsman-integration' );
+		$configure = sprintf( __( '<a href="%s">Connect your Newsman Remarketing ID</a> to finish setting up this integration.', 'woocommerce-newsman-integration' ), $integration_url );
 
 		// Display the message..
 		echo '<div class="updated fade"><p><strong>' . $heading . '</strong> ';
-		echo '<a href="' . esc_url( $dismiss_url ) . '" title="' . __( 'Dismiss this notice.', 'woocommerce-google-analytics-integration' ) . '"> ' . __( '(Dismiss)', 'woocommerce-google-analytics-integration' ) . '</a>';
+		echo '<a href="' . esc_url( $dismiss_url ) . '" title="' . __( 'Dismiss this notice.', 'woocommerce-newsman-integration' ) . '"> ' . __( '(Dismiss)', 'woocommerce-newsman-integration' ) . '</a>';
 		echo '<p>' . $configure . "</p></div>\n";
 	}
 

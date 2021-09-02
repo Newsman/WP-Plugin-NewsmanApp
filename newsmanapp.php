@@ -673,6 +673,15 @@ Author URI: https://www.newsman.com
             if(!empty($checkout) && $checkout == "on")
             {
                 $msg = get_option('newsman_checkoutnewslettermessage');                
+                $default = get_option('newsman_checkoutnewsletterdefault');     
+
+                if(!empty($default) && $default == "on")
+                {
+                    $default = 1;
+                }
+                else{
+                    $default = 0;
+                }                      
 
                 woocommerce_form_field( 'newsmanCheckoutNewsletter', array(
                     'type'          => 'checkbox',
@@ -681,6 +690,7 @@ Author URI: https://www.newsman.com
                     'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
                     'required'      => true,
                     'label'         => $msg,
+                    'default'       => $default
                     ));    
             }
 

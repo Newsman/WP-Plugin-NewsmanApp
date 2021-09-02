@@ -8,6 +8,7 @@
 		$checkoutNewsletter = (isset($_POST['newsman_checkoutnewsletter']) && !empty($_POST['newsman_checkoutnewsletter'])) ? strip_tags(trim($_POST['newsman_checkoutnewsletter'])) : "";
 		$checkoutNewsletterType = (isset($_POST['newsman_checkoutnewslettertype']) && !empty($_POST['newsman_checkoutnewslettertype'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettertype'])) : "";
 		$newsman_checkoutnewslettermessage = (isset($_POST['newsman_checkoutnewslettermessage']) && !empty($_POST['newsman_checkoutnewslettermessage'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettermessage'])) : "";		
+		$checkoutNewsletterDefault = (isset($_POST['newsman_checkoutnewsletterdefault']) && !empty($_POST['newsman_checkoutnewsletterdefault'])) ? strip_tags(trim($_POST['newsman_checkoutnewsletterdefault'])) : "";
 
 		$this->constructClient($userid, $apikey);
 
@@ -17,6 +18,7 @@
 		update_option("newsman_checkoutnewsletter", $checkoutNewsletter);
 		update_option("newsman_checkoutnewslettertype", $checkoutNewsletterType);				
 		update_option("newsman_checkoutnewslettermessage", $newsman_checkoutnewslettermessage);
+		update_option("newsman_checkoutnewsletterdefault", $checkoutNewsletterDefault);
 
 		try
 		{
@@ -42,6 +44,7 @@
 		$checkoutNewsletter = get_option('newsman_checkoutnewsletter');
 		$checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
 		$newsman_checkoutnewslettermessage = get_option('newsman_checkoutnewslettermessage');
+		$checkoutNewsletterDefault = get_option('newsman_checkoutnewsletterdefault');
 
 		try
 		{
@@ -157,6 +160,15 @@
 						<td>
 
 						<input type="text" id="newsman_checkoutnewslettermessage" name="newsman_checkoutnewslettermessage" value="<?php echo (!empty($newsman_checkoutnewslettermessage)) ? $newsman_checkoutnewslettermessage : "Subscribe to our newsletter"; ?>"/>													
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="newsman_checkoutnewsletterdefault">Checkout newsletter subscribe checkbox checked by default</label>
+						</th>
+						<td>
+
+						<input name="newsman_checkoutnewsletterdefault" type="checkbox" id="newsman_checkoutnewsletterdefault" <?php echo (!empty($checkoutNewsletterDefault) && $checkoutNewsletterDefault == "on") ? "checked" : ""; ?>/>																
 						</td>
 					</tr>
 
