@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 1.8.3
+Version: 1.8.4  
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -14,12 +14,6 @@ Author URI: https://www.newsman.com
     }
 
     require_once 'vendor/Newsman/Client.php';
-
-    $upload_dir = wp_upload_dir();
-
-    define('templates_dir', __DIR__ . "/src/email_templates/");
-    define('templates_default_dir', __DIR__ . "/src/email_templates/");
-    define('template_img_dir', "/wp-content/plugins/newsmanapp/src/email_templates/");
 
     class WP_Newsman
     {
@@ -59,13 +53,7 @@ Author URI: https://www.newsman.com
         * @var array
         * Array containing the names of the html files found in the templates directory (as defined by the templates_dir constant)
         */
-        public $templates = array();
-
-        /*
-        * @var TemplateFactory object
-        * object that renders a php template
-        */
-        public $engine;
+        public $templates = array();    
  
         public $batchSize = 9000;
 
@@ -77,11 +65,7 @@ Author URI: https://www.newsman.com
         public function __construct()
         {  
             $this->constructClient();
-            $this->initHooks();
-            $this->findTemplates();
-
-            require_once 'src/templating_engine/TemplateFactory.php';
-            $this->engine = new TemplateFactory();
+            $this->initHooks();    
         }
 
         /*
@@ -424,7 +408,7 @@ Author URI: https://www.newsman.com
             }
         }
 
-                /*
+        /*
         * Imports subscribers from Wordpress Into Newsman and creates a message
         * @param integer | string 	The id of the list into which to import the subscribers
         */
@@ -459,7 +443,8 @@ Author URI: https://www.newsman.com
                     $customers_to_import[] = array(
                         "email" => $user->data->user_email,
                         "firstname" => $user->data->display_name,
-                        "lastname" => ""
+                        "lastname" => "",
+                        "tel" => ""
                     );
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
                         $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers CRON");
@@ -510,19 +495,20 @@ Author URI: https://www.newsman.com
                 'offset' => $start
             );    
 
-            $allOrders = wc_get_orders($woocommerceFilter);                            
+            $allOrders = wc_get_orders($woocommerceFilter);                          
 
             try {
                 $_segments = (!empty($segments)) ? array($segments) : array();         
 
                 $customers_to_import = array();
 
-                foreach ($allOrders as $user) {         
+                foreach ($allOrders as $user) {                   
 
                     $customers_to_import[] = array(
                         "email" => $user->data["billing"]["email"],
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
-                        "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : ""
+                        "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : "",
+                        "tel" => ($user->get_billing_phone() != null) ? $user->get_billing_phone() : ""
                     );
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
@@ -582,6 +568,89 @@ Author URI: https://www.newsman.com
 
         public function saveOrderNewsman($order_id, $status){
 
+            $newsman_usesms = get_option('newsman_usesms');
+            $newsman_smslist = get_option('newsman_smslist');
+            $newsman_smstest = get_option('newsman_smstest');
+            $newsman_smstestnr = get_option('newsman_smstestnr');
+
+            $sendSms = false;
+            $newsman_smstext = "";
+            
+            $newsman_smspending = get_option('newsman_smspendingactivate');
+            if($status == "pending" && $newsman_smspending == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smspendingtext");
+            }
+            $newsman_smsfailed = get_option('newsman_smsfailedactivate');
+            if($status == "failed" && $newsman_smsfailed == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smsfailedtext");
+            }
+            $newsman_smsonhold = get_option('newsman_smsonholdactivate');
+            if($status == "on-hold" && $newsman_smsonhold == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smsonholdtext");
+            }
+            $newsman_smsprocessing = get_option('newsman_smsprocessingactivate');
+            if($status == "processing" && $newsman_smsprocessing == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smsprocessingtext");
+            }
+            $newsman_smscompleted = get_option('newsman_smscompletedactivate');
+            if($status == "completed" && $newsman_smscompleted == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smscompletedtext");
+            }
+            $newsman_smsrefunded = get_option('newsman_smsrefundedactivate');
+            if($status == "refunded" && $newsman_smsrefunded == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smsrefundedtext");
+            }
+            $newsman_smscancelled = get_option('newsman_smscancelledactivate');
+            if($status == "cancelled" && $newsman_smscancelled == "on")
+            {
+                $sendSms = true;
+                $newsman_smstext = get_option("newsman_smscancelledtext");
+            }
+
+            if($sendSms)
+            {
+                try{
+                    if(!empty($newsman_usesms) && $newsman_usesms == "on" && !empty($newsman_smslist))
+                    {                                                                                        
+                        $order = wc_get_order($order_id);  
+                        $itemData = $order->get_data(); 
+
+                        $date = $order->get_date_created()->date("F j, Y");         
+                                     
+                        $newsman_smstext = str_replace("{{billing_first_name}}", $itemData["billing"]["first_name"], $newsman_smstext);
+                        $newsman_smstext = str_replace("{{billing_last_name}}", $itemData["billing"]["last_name"], $newsman_smstext);
+                        $newsman_smstext = str_replace("{{shipping_first_name}}", $itemData["shipping"]["first_name"], $newsman_smstext);
+                        $newsman_smstext = str_replace("{{shipping_last_name}}", $itemData["shipping"]["last_name"], $newsman_smstext);
+                        $newsman_smstext = str_replace("{{email}}", $itemData["billing"]["email"], $newsman_smstext);                    
+                        $newsman_smstext = str_replace("{{order_number}}", $itemData["id"], $newsman_smstext);           
+                        $newsman_smstext = str_replace("{{order_date}}", $date, $newsman_smstext);       
+                        $newsman_smstext = str_replace("{{order_total}}", $itemData["total"], $newsman_smstext);       
+                        $phone = '4' . $itemData["billing"]["phone"];      
+                        
+                        if($newsman_smstest)
+                            $phone = '4' . $newsman_smstestnr;         
+
+                        $this->client->sms->sendone($newsman_smslist, $newsman_smstext, $phone);                    
+                    }   
+                }
+                catch(Exception $e)
+                {
+                    error_log($e->getMessage());
+                }
+            }                      
+
             $list = get_option("newsman_remarketingid");
             $list = explode("-", $list);
             $list = $list[1];        
@@ -603,6 +672,7 @@ Author URI: https://www.newsman.com
             
             if(!empty($checkout) && $checkout == "on")
             {
+                $msg = get_option('newsman_checkoutnewslettermessage');                
 
                 woocommerce_form_field( 'newsmanCheckoutNewsletter', array(
                     'type'          => 'checkbox',
@@ -610,9 +680,8 @@ Author URI: https://www.newsman.com
                     'label_class'   => array('woocommerce-form__label woocommerce-form__label-for-checkbox checkbox'),
                     'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
                     'required'      => true,
-                    'label'         => 'Subscribe to our newsletter',
+                    'label'         => $msg,
                     ));    
-
             }
 
         }
@@ -685,26 +754,18 @@ Author URI: https://www.newsman.com
             #enqueue plugin styles
             //add_action('wp_enqueue_scripts', array($this, 'registerPluginStyles'));
             #enqueue plugin styles in admin
-            //add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
+            add_action('admin_enqueue_scripts', array($this, 'registerPluginStyles'));
             #enqueue wordpress ajax library
             add_action('wp_head', array($this, 'addAjaxLibrary'));
             #enqueue plugin scripts
             //add_action('wp_enqueue_scripts', array($this, 'registerPluginScripts'));
             #enqueue plugin scripts in admin
-            //add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
+            add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
             #do ajax form subscribe
             add_action('wp_ajax_nopriv_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
-            add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
-            #preview template
-            //add_action('wp_ajax_newsman_ajax_preview_template', array($this, "newsmanAjaxTemplatePreview"));
+            add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe")); 
             #check if plugin is active
-            add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));
-            #send newsletter
-            //add_action('wp_ajax_newsman_ajax_send_newsletter', array($this, "newsmanAjaxSendNewsletter"));
-            #load template source code for editing
-            //add_action('wp_ajax_newsman_ajax_template_editor_selection', array($this, "newsmanAjaxTemplateEditorSelection"));
-            #save changes made to the source code of the template
-            //add_action('wp_ajax_newsman_ajax_template_editor_save', array($this, "newsmanAjaxTemplateEditorSave"));
+            add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));         
             #widget auto init        
             add_action( 'init', array($this, 'init_widgets') );    
         }
@@ -735,11 +796,11 @@ Author URI: https://www.newsman.com
         public function adminMenu()
         {
             add_menu_page("Newsman", "Newsman", "administrator", "Newsman", array($this, "includeAdminPage"), plugin_dir_url(__FILE__) . "src/img/newsman-mini.png");
+            add_submenu_page("Newsman", "Sync", "Sync", "administrator", "NewsmanSync", array($this, "includeAdminSyncPage"));
+            add_submenu_page("Newsman", "Remarketing", "Remarketing", "administrator", "NewsmanRemarketing", array($this, "includeAdminRemarketingPage"));
+            add_submenu_page("Newsman", "SMS", "SMS", "administrator", "NewsmanSMS", array($this, "includeAdminSMSPage"));
             add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
-            //add_submenu_page("Newsman", "Sync", "Sync", "administrator", "NewsmanSync", array($this, "includeAdminSyncPage"));
-            //add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
-            //add_submenu_page("Newsman", "Newsletter", "Newsletter", "administrator", "NewsmanNewsletter", array($this, "includeAdminNewsletterPage"));
-            //add_submenu_page("Newsman", "Templates", "Templates", "administrator", "NewsmanNewsletterTemplates", array($this, "includeNewsletterTemplatesPage"));
+            add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
         }
 
         /*
@@ -767,27 +828,27 @@ Author URI: https://www.newsman.com
         }
 
         /*
+        * Includes the html for the admin remarketing page
+        */
+        public function includeAdminRemarketingPage()
+        {
+            include 'src/backend-remarketing.php';
+        }
+
+        /*
+        * Includes the html for the admin SMS page
+        */
+        public function includeAdminSMSPage()
+        {
+            include 'src/backend-sms.php';
+        }
+
+        /*
         * Includes the html for the admin widget page
         */
         public function includeAdminWidgetPage()
         {
             include 'src/backend-widget.php';
-        }
-
-        /*
-        * Includes the html for the admin newsletter page
-        */
-        public function includeAdminNewsletterPage()
-        {
-            include 'src/backend-newsletter.php';
-        }
-
-        /*
-        *Includes the html for the templates page
-        */
-        public function includeNewsletterTemplatesPage()
-        {
-            include 'src/backend-templates.php';
         }
 
         /*
@@ -806,10 +867,10 @@ Author URI: https://www.newsman.com
         */
         public function registerPluginStyles()
         {
-            wp_register_style('jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
+            //wp_register_style('jquery-ui-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css');
             wp_register_style('newsman_css', plugins_url('newsmanapp/src/css/style.css'));
-            wp_enqueue_style('bootstrap-css');
-            wp_enqueue_style('jquery-ui-css');
+            //wp_enqueue_style('bootstrap-css');
+            //wp_enqueue_style('jquery-ui-css');
             wp_enqueue_style('newsman_css');
         }
 
@@ -818,12 +879,11 @@ Author URI: https://www.newsman.com
         */
         public function registerPluginScripts()
         {
-            wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
-            wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));
-            //wp_register_script('bootstrap-js', "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js", array('jquery'));
+            //wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
+            wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));  
             wp_enqueue_script('newsman_js');
-            wp_enqueue_script('bootstrap-js');
-            wp_enqueue_script('jquery-ui');
+            //wp_enqueue_script('bootstrap-js');
+            //wp_enqueue_script('jquery-ui');
         }
 
         /*
@@ -913,100 +973,7 @@ Author URI: https://www.newsman.com
             } catch (Exception $e) {
                 return $bool;
             }
-        }
-
-        /*
-        * Process ajax request for previewing templates
-        */
-        public function newsmanAjaxTemplatePreview()
-        {
-            if (isset($_POST['template'], $_POST['posts']) && !empty($_POST['template']) && !empty($_POST['posts'])) {
-
-                $template = $_POST['template'];
-                $posts = $_POST['posts'];
-
-                if (is_numeric($posts)) {
-                    $html = $this->constructTemplateEditorPreview($posts, $template);
-                } else {
-                    $html = $this->constructTemplate($posts, $template);
-                }
-                echo json_encode(array('html' => $html));
-            }
-            die();
-        }
-
-        /*
-        * Process ajax request for template selection for editing
-        */
-        public function newsmanAjaxTemplateEditorSelection()
-        {
-            if (isset($_POST['template']) && !empty($_POST['template'])) {
-                $template = $_POST['template'];
-                $source = $this->getTemplateSource($template);
-                echo json_encode(array('source' => $source));
-            }
-            die();
-        }
-
-        /*
-        * Process ajax request for template editor saving
-        */
-        public function newsmanAjaxTemplateEditorSave()
-        {
-            if (isset($_POST['template'], $_POST['source']) && !empty($_POST['template'])) {
-
-                $template = $_POST['template'];
-                $source = $_POST['source'];
-                $was_saved = $this->saveTemplateSource($template, $source);
-
-                if ($was_saved) {
-                    $response = array(
-                        "error" => false,
-                        'message' => '&#10003; Changes saved!'
-                    );
-                } else {
-                    $response = array(
-                        "error" => true,
-                        'message' => '&#x02717; Could not write to file!'
-                    );
-                }
-
-                echo json_encode(array('response' => $response));
-            }
-            die();
-        }
-
-        /*
-        * Process ajax request for sending a newsletter
-        * Creates a new newsletter and confirm it
-        */
-        public function newsmanAjaxSendNewsletter()
-        {
-            if (isset($_POST['template'], $_POST['subject'], $_POST['list'], $_POST['posts']) && !empty($_POST['template']) && !empty($_POST['subject']) && !empty($_POST['list']) && !empty($_POST['posts'])) {
-                //send newsletter
-
-                $html = $this->constructTemplate($_POST['posts'], $_POST['template']);
-
-                try {
-                    $newsletter_id = $this->client->newsletter->create(
-                        $_POST['list'], /* The list id */
-                        $html,/* The html content or false if no html present */
-                        false, /* The text alternative or false if no text present */
-                        array(
-                            "encoding" => "UTF-8",
-                            "subject" => $_POST['subject'] /* the newsletter subject. will be encoding using encoding. required */
-                        ));
-                    $this->client->newsletter->confirm(
-                        $newsletter_id
-                    );
-
-                    echo json_encode(array("status" => 1));
-                } catch (Exception $e) {
-                    echo json_encode(array("status" => 0));
-                }
-            }
-            die();
-        }
+        }      
 
         /*
         * Creates and return a message for frontend (because of the echo statement)
@@ -1087,336 +1054,7 @@ Author URI: https://www.newsman.com
             }
             echo json_encode(array("status" => 0));
             exit();
-        }    
-
-        public function importSendPressSubscribers($list, $segments)
-        {
-            global $wpdb;
-
-            $con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
-            $sql = "SELECT email, firstname FROM `" . $wpdb->prefix . "sendpress_subscribers`";
-            $result = $con->query($sql);
-
-            $sendpr = array();
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    //$email[] = $row['email'];
-                    //$firstname[] = $row['firstname'];
-
-                    $sendpr[] = array(
-                        "email" => $row["email"],
-                        "firstname" => $row["firstname"]
-                    );
-                }
-            } else {
-                $con->close();
-                $this->setMessageBackend("error ", "No SendPress subscribers found or plugin is not installed.");
-                return;
-            }
-            $con->close();
-
-            /*foreach ($email as $_email)
-            {
-                $sendpress_subscribers[]['email'] = $_email;
-            }
-
-            foreach ($firstname as $_firstname)
-            {
-                $sendpress_subscribers[]['first_name'] = $_firstname;
-            }
-
-            $subscribers = array();
-            foreach ($sendpress_subscribers as $k => $s)
-            {
-                $subscribers[$k]['first_name'] = $s['first_name'];
-                $subscribers[$k]['email'] = $s['email'];
-            }
-
-            $csv = "email, firstname" . PHP_EOL;
-            foreach ($subscribers as $s)
-            {
-                $csv .= $s['email'];
-                $csv .= ", ";
-                $csv .= $s['first_name'];
-                $csv .= PHP_EOL;
-            }
-
-            $csv = utf8_encode($csv);*/
-
-            try {
-                $_segments = (!empty($segments)) ? array($segments) : "";
-                $customers_to_import = array();
-
-                foreach ($sendpr as $user) {
-                    $customers_to_import[] = array(
-                        "email" => $user["email"],
-                        "firstname" => $user["firstname"],
-                        "lastname" => ""
-                    );
-                    if ((count($customers_to_import) % $this->batchSize) == 0) {
-                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress sendpress");
-                    }
-                }
-                if (count($customers_to_import) > 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress sendpress");
-                }
-                unset($customers_to_import);
-
-                $this->sendpressSync = true;
-                $this->setMessageBackend("updated ", 'SendPress subscribers synced with Newsman.');
-
-            } catch (Exception $e) {
-                $this->setMessageBackend("error ", "Failed to sync Sendpress subscribers with Newsman.");
-            }
-
-            if (empty($this->message)) {
-                $this->setMessageBackend("updated", 'Options saved.');
-            }
-        }
-
-        public function importMailPoetSubscribers($list, $segments)
-        {
-            global $wpdb;
-
-            //get mailpoet subscribers as array
-            $mailpoet_subscribers = array();
-
-            $email = array();
-            $firstname = array();
-
-            $con = mysqli_connect("localhost", DB_USER, DB_PASSWORD, DB_NAME);
-            $sql = "SELECT email, first_name FROM `" . $wpdb->prefix . "mailpoet_subscribers` where `status` = 'subscribed'";
-            $result = $con->query($sql);
-
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while ($row = $result->fetch_assoc()) {
-                    $mailpoet_subscribers[] = array(
-                        "email" => $row["email"],
-                        "firstname" => $row["firstname"]
-                    );
-
-                    //	$email[] = $row['email'];
-                    //	$firstname[] = $row['firstname'];
-                }
-            } else {
-                $con->close();
-                $this->setMessageBackend("error", "No MailPoet subscribers found or plugin is not installed.");
-                return;
-            }
-            $con->close();
-
-            /*foreach ($email as $_email)
-            {
-                $mailpoet_subscribers[]['email'] = $_email;
-            }
-
-            foreach ($firstname as $_firstname)
-            {
-                $mailpoet_subscribers[]['first_name'] = $_firstname;
-            }
-
-            $subscribers = array();
-            foreach ($mailpoet_subscribers as $k => $s)
-            {
-                $subscribers[$k]['first_name'] = $s['first_name'];
-                $subscribers[$k]['email'] = $s['email'];
-            }
-
-            //construct csv string
-            $csv = "email, firstname" . PHP_EOL;
-            foreach ($subscribers as $s)
-            {
-                $csv .= $s['email'];
-                $csv .= ", ";
-                $csv .= $s['first_name'];
-                $csv .= PHP_EOL;
-            }
-
-            $csv = utf8_encode($csv);*/
-
-            //sync with Newsman from mailpoet
-            try {
-                $_segments = (!empty($segments)) ? array($segments) : "";
-                $customers_to_import = array();
-
-                foreach ($mailpoet_subscribers as $user) {
-                    $customers_to_import[] = array(
-                        "email" => $user["email"],
-                        "firstname" => $user["firstname"],
-                        "lastname" => ""
-                    );
-                    if ((count($customers_to_import) % $this->batchSize) == 0) {
-                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress mailpoet");
-                    }
-                }
-                if (count($customers_to_import) > 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress mailpoet");
-                }
-                unset($customers_to_import);
-
-                $this->mailpoetSync = true;
-                $this->setMessageBackend("updated", 'MailPoet subscribers synced with Newsman.');
-
-            } catch (Exception $e) {
-                $this->setMessageBackend("error", "Failure to sync MailPoet subscribers with Newsman.");
-            }
-
-            if (empty($this->message)) {
-                $this->setMessageBackend("updated", 'Options saved.');
-            }
-        }
-
-        /*
-        * Loads templates from templates directory (filenames with .php extension)
-        */
-        public function findTemplates()
-        {
-
-            //check custom templates folder for templates
-            if (is_dir(templates_dir)) {
-                if ($handle = opendir(templates_dir)) {
-                    while (false !== ($entry = readdir($handle))) {
-                        if ($entry != "." && $entry != ".." && strtolower(substr($entry, strrpos($entry, '.') + 1)) == 'php') {
-                            $template = array();
-                            $template['name'] = ($r = explode('.', $entry)) ? $r[0] : "";
-                            $template['filename'] = $entry;
-                            $this->templates[] = $template;
-                        }
-                    }
-                    closedir($handle);
-                }
-            }
-
-            //check default templates folder for templates
-            //if the templates exists in the custom template folder, it is omitted
-            if ($handle = opendir(templates_default_dir)) {
-                while (false !== ($entry = readdir($handle))) {
-                    if ($entry != "." && $entry != ".." && strtolower(substr($entry, strrpos($entry, '.') + 1)) == 'php') {
-                        $template = array();
-                        $template['name'] = ($r = explode('.', $entry)) ? $r[0] : "";
-                        $template['filename'] = $entry;
-                        $exists = false;
-                        foreach ($this->templates as $item) {
-                            if ($item == $template) {
-                                $exists = true;
-                            }
-                        }
-                        if (!$exists) {
-                            $this->templates[] = $template;
-                        }
-                    }
-                }
-                closedir($handle);
-            }
-
-            sort($this->templates);
-        }
-
-        /*
-        * @return array The array of template filenames
-        */
-        public function getTemplates()
-        {
-            return $this->templates;
-        }
-
-        /*
-        * Merges the template with wordpress posts
-        * @param string $posts_ids 	the number of posts to use (starting with the lastest going backwards)
-        * @param string $template 		the filename of the template
-        * @return string 				The html of the template after including the posts
-        */
-        public function constructTemplate($posts_ids, $template)
-        {
-
-            $posts = array();
-
-            $posts_ids = explode(",", $posts_ids);
-            array_pop($posts_ids);
-
-            foreach ($posts_ids as $id) {
-                $posts[] = get_post($id);
-            }
-            foreach ($posts as $k => $post) {
-                $post->image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'single-post-thumbnail');
-                $post->image = $post->image[0];
-            }
-
-            $html = $this->engine->render($template, $posts);
-            return $html;
-        }
-
-        /*
-        * Build Template with a number of posts for previewing in template editor
-        * @param integer $posts 	the number of posts to use (starting with the lastest going backwards)
-        * @param string $template 		the filename of the template
-        * @return string 				The html of the template after including the posts
-        */
-        public function constructTemplateEditorPreview($post_nr, $template)
-        {
-            $posts = wp_get_recent_posts(array(
-                'numberposts' => $post_nr,
-                'post_type' => 'post',
-                'post_status' => 'publish'
-            ), OBJECT);
-
-            foreach ($posts as $k => $post) {
-                $post->image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'single-post-thumbnail');
-                $post->image = $post->image[0];
-                $post->post_author = get_userdata($post->post_author)->display_name;
-            }
-
-            $html = $this->engine->render($template, $posts);
-            return $html;
-        }
-
-        /*
-        * Return the source code of a template
-        * @param string $filename The filename of the template
-        * @return string $source The source of the file
-        */
-        protected function getTemplateSource($filename = null)
-        {
-            if ($filename) {
-                //look for the template in the upload dir, if it's not there look in plugins folder
-                if (file_exists(templates_dir . $filename)) {
-                    $filename = templates_dir . $filename;
-                } elseif (file_exists(templates_default_dir . $filename)) {
-                    $filename = templates_default_dir . $filename;
-                } else {
-                    return false;
-                }
-
-                $source = file_get_contents($filename);
-                return $source;
-            }
-        }
-
-
-        /*
-        * Saves changes made to the php template source code
-        * @param string $filename The name of the template (with the php extension)
-        * @param string $source The modified source of the template
-        */
-        protected function saveTemplateSource($filename = null, $source)
-        {
-            if ($filename) {
-                $upload_dir = wp_upload_dir();
-                //check if the upload directory exists if not create it
-                if (!is_dir(templates_dir)) {
-                    mkdir(templates_dir, 0755, true);
-                }
-
-                $status = file_put_contents(templates_dir . $filename, stripcslashes($source));
-                if ($status) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
+        }                  
 
         function safeForCsv($str)
         {
@@ -1425,13 +1063,14 @@ Author URI: https://www.newsman.com
 
         function _importData(&$data, $list, $segments = null, $client, $source)
         {
-            $csv = '"email","firstname","lastname","source"' . PHP_EOL;
+            $csv = '"email","firstname","lastname","tel","source"' . PHP_EOL;
             foreach ($data as $_dat) {
                 $csv .= sprintf(
                     "%s,%s,%s,%s",
                     $this->safeForCsv($_dat["email"]),
                     $this->safeForCsv($_dat["firstname"]),
                     $this->safeForCsv($_dat["lastname"]),
+                    $this->safeForCsv($_dat["tel"]),
                     $this->safeForCsv($source)
                 );
                 $csv .= PHP_EOL;
