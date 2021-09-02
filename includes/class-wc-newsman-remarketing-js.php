@@ -74,7 +74,7 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static function load_analytics($order = false)
 	{
-		$logged_in = is_user_logged_in() ? 'yes' : 'no';
+		//$logged_in = is_user_logged_in() ? 'yes' : 'no';
 		if(current_user_can('administrator')){
 			return "";		  
 		}	 
@@ -82,11 +82,11 @@ class WC_Newsman_Remarketing_JS
 		if (!empty(get_option('newsman_remarketingid')))
 		{
 			add_action('wp_footer', array('WC_Newsman_Remarketing_JS', 'universal_analytics_footer'));
-			return self::load_analytics_universal($logged_in);
+			return self::load_analytics_universal();
 		} else
 		{
 			add_action('wp_footer', array('WC_Newsman_Remarketing_JS', 'universal_analytics_footer'));
-			return self::load_analytics_universal($logged_in);
+			return self::load_analytics_universal();
 		}
 	}
 
@@ -178,7 +178,7 @@ class WC_Newsman_Remarketing_JS
 	 * @param  string $logged_in 'yes' if the user is logged in, no if not (this is a string so we can pass it to GA)
 	 * @return string Universal Analytics Code
 	 */
-	public static function load_analytics_universal($logged_in)
+	public static function load_analytics_universal()
 	{	  
 		$remarketingid = get_option('newsman_remarketingid');
 
@@ -264,7 +264,7 @@ class WC_Newsman_Remarketing_JS
 			'shipping': '" . esc_js($order->get_total_shipping()) . "'
 		} );";
 		
-				wc_enqueue_js($code);
+		wc_enqueue_js($code);
 
 		return $code;
 	}
@@ -493,7 +493,7 @@ class WC_Newsman_Remarketing_JS
 					$( '" . $selector . "' ).click( function() {				
 						" . $parameters['enhanced'] . "
 						" . self::tracker_var() . "( 'ec:setAction', 'add' );
-						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );										" . self::tracker_var() . "( 'send', 'pageview' );
+						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );" . self::tracker_var() . "( 'send', 'pageview' );
 					});
 				");
 	}

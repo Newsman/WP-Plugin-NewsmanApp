@@ -45,9 +45,9 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		}
 
 		// Admin Options
-		add_filter('woocommerce_tracker_data', array($this, 'track_options'));
-		add_action('woocommerce_update_options_integration_newsman_remarketing', array($this, 'process_admin_options'));
-		add_action('woocommerce_update_options_integration_newsman_remarketing', array($this, 'show_options_info'));
+		//add_filter('woocommerce_tracker_data', array($this, 'track_options'));
+		//add_action('woocommerce_update_options_integration_newsman_remarketing', array($this, 'process_admin_options'));
+		//add_action('woocommerce_update_options_integration_newsman_remarketing', array($this, 'show_options_info'));
 		add_action('admin_enqueue_scripts', array($this, 'load_admin_assets'));
 
 		// Tracking code
@@ -103,63 +103,8 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function init_form_fields()
 	{
-		$this->form_fields = array(
-			/*'ga_id' => array(
-				'title' => __('Newsman Remarketing ID', 'newsman-remarketing-translate'),
-				'description' => __('Log into your Newsman Account to find your Remarketing ID', 'newsman-remarketing-translate'),
-				'type' => 'text',
-				'placeholder' => 'XXXXX',
-				'default' => get_option('woocommerce_ga_id') // Backwards compat
-			),*/
-			/*'ga_set_domain_name' => array(
-				'title' 			=> __( 'Set Domain Name', 'newsman-remarketing-translate' ),
-				'description' 		=> sprintf( __( '(Optional) Sets the <code>_setDomainName</code> variable. <a href="%s">See here for more information</a>.', 'newsman-remarketing-translate' ), 'https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite#multipleDomains' ),
-				'type' 				=> 'text',
-				'default' 			=> ''
-			),*/
-			/*'ga_standard_tracking_enabled' => array(
-				'title'         => __( 'Tracking Options', 'newsman-remarketing-translate' ),
-				'label'         => __( 'Enable Standard Tracking', 'newsman-remarketing-translate' ),
-				'description'   =>  __( 'This tracks session data such as demographics, system, etc. You don\'t need to enable this if you are using a 3rd party Google analytics plugin.', 'newsman-remarketing-translate' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => 'start',
-				'default'       => get_option( 'woocommerce_ga_standard_tracking_enabled' ) ? get_option( 'woocommerce_ga_standard_tracking_enabled' ) : 'no'  // Backwards compat
-			),
-			'ga_support_display_advertising' => array(
-				'label'         => __( '"Display Advertising" Support', 'newsman-remarketing-translate' ),
-				'description'   => sprintf( __( 'Set the Google Analytics code to support Display Advertising. %sRead more about Display Advertising%s.', 'newsman-remarketing-translate' ), '<a href="https://support.google.com/analytics/answer/2700409" target="_blank">', '</a>' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'default'       => get_option( 'woocommerce_ga_support_display_advertising' ) ? get_option( 'woocommerce_ga_support_display_advertising' ) : 'no'  // Backwards compat
-			),
-			'ga_support_enhanced_link_attribution' => array(
-				'label'         => __( 'Use Enhanced Link Attribution', 'newsman-remarketing-translate' ),
-				'description'   => sprintf( __( 'Set the Google Analytics code to support Enhanced Link Attribution. %sRead more about Enhanced Link Attribution%s.', 'newsman-remarketing-translate' ), '<a href="https://support.google.com/analytics/answer/2558867?hl=en" target="_blank">', '</a>' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'default'       => get_option( 'woocommerce_ga_support_enhanced_link_attribution' ) ? get_option( 'woocommerce_ga_support_enhanced_link_attribution' ) : 'no'  // Backwards compat
-			),
-			'ga_use_universal_analytics' => array(
-				'label'         => __( 'Enable Universal Analytics', 'newsman-remarketing-translate' ),
-				'description'   => sprintf( __( 'Uses Universal Analytics instead of Classic Google Analytics. If you have <strong>not</strong> previously used Google Analytics on this site, check this box. Otherwise, %sfollow step 1 of the Universal Analytics upgrade guide.%s Enabling this setting will take care of step 2. %sRead more about Universal Analytics%s. Universal Analytics must be enabled to enable enhanced eCommerce.', 'newsman-remarketing-translate' ), '<a href="https://developers.google.com/analytics/devguides/collection/upgrade/guide" target="_blank">', '</a>', '<a href="https://support.google.com/analytics/answer/2790010?hl=en" target="_blank">', '</a>' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'default'       => get_option( 'woocommerce_ga_use_universal_analytics' ) ? get_option( 'woocommerce_ga_use_universal_analytics' ) : 'no'  // Backwards compat
-			),*/
-			/*'ga_anonymize_enabled' => array(
-				'label'         => __( 'Anonymize IP addresses.', 'newsman-remarketing-translate' ),
-				'description'   => sprintf( __( 'Enabling this option is mandatory in certain countries due to national privacy laws. %sRead more about IP Anonymization%s.', 'newsman-remarketing-translate' ), '<a href="https://support.google.com/analytics/answer/2763052" target="_blank">', '</a>' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'default'       => 'yes'
-			),
-			'ga_404_tracking_enabled' => array(
-				'label'         => __( 'Track 404 (Not found) Errors.', 'newsman-remarketing-translate' ),
-				'description'   => sprintf( __( 'Enable this to find broken or dead links. An "Event" with category "Error" and action "404 Not Found" will be created in Google Analytics for each incoming pageview to a non-existing page. By setting up a "Custom Goal" for these events within Google Analytics you can find out where broken links originated from (the referrer). %sRead how to set up a goal%s.', 'newsman-remarketing-translate' ), '<a href="https://support.google.com/analytics/answer/1032415" target="_blank">', '</a>' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'default'       => 'yes'
-			),*/
+		/*
+		$this->form_fields = array(		
 			'ga_ecommerce_tracking_enabled' => array(
 				'title' => __('Tracking Options', 'newsman-remarketing-translate'),
 				'label' => __('Purchase Transactions', 'newsman-remarketing-translate'),
@@ -173,18 +118,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 				'type' => 'checkbox',
 				'checkboxgroup' => '',
 				'default' => 'yes'
-			),
-
-			/*'ga_enhanced_ecommerce_tracking_enabled' => array(
-				'title'         => __( 'Enhanced eCommerce', 'newsman-remarketing-translate' ),
-				'label'         => __( 'Enable Enhanced eCommerce ', 'newsman-remarketing-translate' ),
-				'description'   => sprintf( __( 'Enhanced eCommerce allows you to measure more user interactions with your store, including: product impressions, product detail views, starting the checkout process, adding cart items, and removing cart items. Universal Analytics must be enabled for Enhanced eCommerce to work. Before enabling this setting, turn on Enhanced eCommerce in your Google Analytics dashboard. <a href="%s">See here for more information</a>.', 'newsman-remarketing-translate' ), 'https://support.google.com/analytics/answer/6032539?hl=en' ),
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'default'       => 'no'
-			),*/
-
-			// Enhanced eCommerce Settings
+			),		
 
 			'ga_enhanced_remove_from_cart_enabled' => array(
 				'label' => __('Remove from Cart Events', 'newsman-remarketing-translate'),
@@ -226,6 +160,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 				'class' => ''
 			),
 		);
+		*/
 	}
 
 	/**
@@ -333,25 +268,24 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			$scriptLogic .= "
 
 			function wait_to_load_and_identify() {
-	if (typeof _nzm.get_tracking_id === 'function') {
-		if (_nzm.get_tracking_id() == '') {
- _nzm.identify({ email: \"$current_user->user_email\", first_name: \"$current_user->user_firstname\", last_name: \"$current_user->user_lastname\" });
-		}
-	} else {
-		setTimeout(function() {wait_to_load_and_identify()}, 50)
-	}
-}
-wait_to_load_and_identify();
+				if (typeof _nzm.get_tracking_id === 'function') {
+					if (_nzm.get_tracking_id() == '') {
+			_nzm.identify({ email: \"$current_user->user_email\", first_name: \"$current_user->user_firstname\", last_name: \"$current_user->user_lastname\" });
+					}
+				} else {
+					setTimeout(function() {wait_to_load_and_identify()}, 50)
+				}
+			}
+			wait_to_load_and_identify();
 			";
 		}
 
-		return "<!-- Newsman Remarketing Integration -->
+		return "
 		" . WC_Newsman_Remarketing_JS::get_instance()->header() . "
 		<script type='text/javascript'>" . WC_Newsman_Remarketing_JS::get_instance()->load_analytics() .
 		$scriptLogic .
 		"</script>
-
-		<!-- /Newsman Remarketing Integration -->";
+		";
 	}
 
 	/**
@@ -399,7 +333,13 @@ wait_to_load_and_identify();
 	{
 		$remarketingid = get_option('newsman_remarketingid');
 
-		if (is_admin() || current_user_can('manage_options') || empty($remarketingid) || 'no' === $type || apply_filters('woocommerce_ga_disable_tracking', false, $type))
+		//obsolete
+		/*if (is_admin() || current_user_can('manage_options') || empty($remarketingid) || 'no' === $type || apply_filters('woocommerce_ga_disable_tracking', false, $type))
+		{
+			return true;
+		}*/
+
+		if (is_admin() || current_user_can('manage_options') || empty($remarketingid))
 		{
 			return true;
 		}

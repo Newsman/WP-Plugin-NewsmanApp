@@ -443,7 +443,8 @@ Author URI: https://www.newsman.com
                     $customers_to_import[] = array(
                         "email" => $user->data->user_email,
                         "firstname" => $user->data->display_name,
-                        "lastname" => ""
+                        "lastname" => "",
+                        "tel" => ""
                     );
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
                         $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers CRON");
@@ -494,19 +495,20 @@ Author URI: https://www.newsman.com
                 'offset' => $start
             );    
 
-            $allOrders = wc_get_orders($woocommerceFilter);                            
+            $allOrders = wc_get_orders($woocommerceFilter);                          
 
             try {
                 $_segments = (!empty($segments)) ? array($segments) : array();         
 
                 $customers_to_import = array();
 
-                foreach ($allOrders as $user) {         
+                foreach ($allOrders as $user) {                   
 
                     $customers_to_import[] = array(
                         "email" => $user->data["billing"]["email"],
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
-                        "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : ""
+                        "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : "",
+                        "tel" => ($user->get_billing_phone() != null) ? $user->get_billing_phone() : ""
                     );
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
@@ -670,7 +672,7 @@ Author URI: https://www.newsman.com
             
             if(!empty($checkout) && $checkout == "on")
             {
-                $msg = get_option('newsman_checkoutnewslettermessage');
+                $msg = get_option('newsman_checkoutnewslettermessage');                
 
                 woocommerce_form_field( 'newsmanCheckoutNewsletter', array(
                     'type'          => 'checkbox',
@@ -850,22 +852,6 @@ Author URI: https://www.newsman.com
         }
 
         /*
-        * Includes the html for the admin newsletter page
-        */
-        public function includeAdminNewsletterPage()
-        {
-            include 'src/backend-newsletter.php';
-        }
-
-        /*
-        *Includes the html for the templates page
-        */
-        public function includeNewsletterTemplatesPage()
-        {
-            include 'src/backend-templates.php';
-        }
-
-        /*
         * Binds the Newsman menu item to the menu
         */
         public function pluginLinks($links)
@@ -987,100 +973,7 @@ Author URI: https://www.newsman.com
             } catch (Exception $e) {
                 return $bool;
             }
-        }
-
-        /*
-        * Process ajax request for previewing templates
-        */
-        public function newsmanAjaxTemplatePreview()
-        {
-            if (isset($_POST['template'], $_POST['posts']) && !empty($_POST['template']) && !empty($_POST['posts'])) {
-
-                $template = $_POST['template'];
-                $posts = $_POST['posts'];
-
-                if (is_numeric($posts)) {
-                    $html = $this->constructTemplateEditorPreview($posts, $template);
-                } else {
-                    $html = $this->constructTemplate($posts, $template);
-                }
-                echo json_encode(array('html' => $html));
-            }
-            die();
-        }
-
-        /*
-        * Process ajax request for template selection for editing
-        */
-        public function newsmanAjaxTemplateEditorSelection()
-        {
-            if (isset($_POST['template']) && !empty($_POST['template'])) {
-                $template = $_POST['template'];
-                $source = $this->getTemplateSource($template);
-                echo json_encode(array('source' => $source));
-            }
-            die();
-        }
-
-        /*
-        * Process ajax request for template editor saving
-        */
-        public function newsmanAjaxTemplateEditorSave()
-        {
-            if (isset($_POST['template'], $_POST['source']) && !empty($_POST['template'])) {
-
-                $template = $_POST['template'];
-                $source = $_POST['source'];
-                $was_saved = $this->saveTemplateSource($template, $source);
-
-                if ($was_saved) {
-                    $response = array(
-                        "error" => false,
-                        'message' => '&#10003; Changes saved!'
-                    );
-                } else {
-                    $response = array(
-                        "error" => true,
-                        'message' => '&#x02717; Could not write to file!'
-                    );
-                }
-
-                echo json_encode(array('response' => $response));
-            }
-            die();
-        }
-
-        /*
-        * Process ajax request for sending a newsletter
-        * Creates a new newsletter and confirm it
-        */
-        public function newsmanAjaxSendNewsletter()
-        {
-            if (isset($_POST['template'], $_POST['subject'], $_POST['list'], $_POST['posts']) && !empty($_POST['template']) && !empty($_POST['subject']) && !empty($_POST['list']) && !empty($_POST['posts'])) {
-                //send newsletter
-
-                $html = $this->constructTemplate($_POST['posts'], $_POST['template']);
-
-                try {
-                    $newsletter_id = $this->client->newsletter->create(
-                        $_POST['list'], /* The list id */
-                        $html,/* The html content or false if no html present */
-                        false, /* The text alternative or false if no text present */
-                        array(
-                            "encoding" => "UTF-8",
-                            "subject" => $_POST['subject'] /* the newsletter subject. will be encoding using encoding. required */
-                        ));
-                    $this->client->newsletter->confirm(
-                        $newsletter_id
-                    );
-
-                    echo json_encode(array("status" => 1));
-                } catch (Exception $e) {
-                    echo json_encode(array("status" => 0));
-                }
-            }
-            die();
-        }
+        }      
 
         /*
         * Creates and return a message for frontend (because of the echo statement)
@@ -1170,13 +1063,14 @@ Author URI: https://www.newsman.com
 
         function _importData(&$data, $list, $segments = null, $client, $source)
         {
-            $csv = '"email","firstname","lastname","source"' . PHP_EOL;
+            $csv = '"email","firstname","lastname","tel","source"' . PHP_EOL;
             foreach ($data as $_dat) {
                 $csv .= sprintf(
                     "%s,%s,%s,%s",
                     $this->safeForCsv($_dat["email"]),
                     $this->safeForCsv($_dat["firstname"]),
                     $this->safeForCsv($_dat["lastname"]),
+                    $this->safeForCsv($_dat["tel"]),
                     $this->safeForCsv($source)
                 );
                 $csv .= PHP_EOL;
