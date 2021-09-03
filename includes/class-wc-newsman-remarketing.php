@@ -232,7 +232,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		}
 
 		// Check if is order received page and stop when the products and not tracked
-		if (is_order_received_page() && 'yes' === $this->ga_ecommerce_tracking_enabled)
+		if (is_order_received_page() && 'yes')
 		{
 			$order_id = isset($wp->query_vars['order-received']) ? $wp->query_vars['order-received'] : 0;
 			
