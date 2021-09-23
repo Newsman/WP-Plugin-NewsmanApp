@@ -24,7 +24,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	{
 		$this->id = 'newsman_remarketing';
 		$this->method_title = __('Newsman Remarketing', 'newsman-remarketing-translate');
-		$this->method_description = __('Newsman Remarketing is a free service offered by Newsman that generates detailed statistics about the visitors to a website.', 'newsman-remarketing-translate');
+		$this->method_description = __('Setup your Newsman Remarketing <a href="/wp-admin/admin.php?page=NewsmanRemarketing">here</a>.', 'newsman-remarketing-translate');
 		$this->dismissed_info_banner = get_option('woocommerce_dismissed_info_banner');
 
 		// Load the settings
@@ -37,12 +37,14 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		WC_Newsman_Remarketing_JS::get_instance($constructor);
 
 		// Display an info banner on how to configure WooCommerce
+		/*
 		if (is_admin())
 		{
 			include_once('class-wc-newsman-remarketing-info-banner.php');
 			$remarketingid = get_option('newsman_remarketingid');
 			WC_Newsman_Remarketing_Info_Banner::get_instance($this->dismissed_info_banner, $remarketingid);
 		}
+		*/
 
 		// Admin Options
 		//add_filter('woocommerce_tracker_data', array($this, 'track_options'));
@@ -73,7 +75,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		$options = array(
 			'remarketingid',
 			/*'ga_set_domain_name',*/
-			'ga_standard_tracking_enabled',
+			/*'ga_standard_tracking_enabled',
 			'ga_support_display_advertising',
 			'ga_support_enhanced_link_attribution',
 			'ga_use_universal_analytics',
@@ -86,7 +88,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			'ga_enhanced_product_click_enabled',
 			'ga_enhanced_checkout_process_enabled',
 			'ga_enhanced_product_detail_view_enabled',
-			'ga_event_tracking_enabled'
+			'ga_event_tracking_enabled'*/
 		);
 
 		$constructor = array();
@@ -168,21 +170,16 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	function show_options_info()
 	{
-		$this->method_description .= "<div class='notice notice-info'><p>" . __('Please allow time for Newsman Remarketing to start displaying results.', 'newsman-remarketing-translate') . "</p></div>";
+		/*$this->method_description .= "<div class='notice notice-info'><p>" . __('Please allow time for Newsman Remarketing to start displaying results.', 'newsman-remarketing-translate') . "</p></div>";*/
 
 		/*if ( isset( $_REQUEST['woocommerce_google_analytics_ga_ecommerce_tracking_enabled'] ) && true === (bool) $_REQUEST['woocommerce_google_analytics_ga_ecommerce_tracking_enabled'] ) {
 			$this->method_description .= "<div class='notice notice-info'><p>" . __( 'Please note, for transaction tracking to work properly, you will need to use a payment gateway that redirects the customer back to a WooCommerce order received/thank you page.', 'newsman-remarketing-translate' ) . "</div>";
 		}*/
 	}
 
-	/**
-	 * Hooks into woocommerce_tracker_data and tracks some of the analytic settings (just enabled|disabled status)
-	 * only if you have opted into WooCommerce tracking
-	 * http://www.woothemes.com/woocommerce/usage-tracking/
-	 */
 	function track_options($data)
 	{
-		$data['wc-google-analytics'] = array(
+		/*$data['wc-google-analytics'] = array(
 			'standard_tracking_enabled' => $this->ga_standard_tracking_enabled,
 			'support_display_advertising' => $this->ga_support_display_advertising,
 			'support_enhanced_link_attribution' => $this->ga_support_enhanced_link_attribution,
@@ -192,7 +189,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			'ecommerce_tracking_enabled' => $this->ga_ecommerce_tracking_enabled,
 			'event_tracking_enabled' => $this->ga_event_tracking_enabled
 		);
-		return $data;
+		return $data;*/
 	}
 
 	/**
@@ -226,7 +223,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		global $wp;
 		$display_ecommerce_tracking = false;
 
-		if ($this->disable_tracking('all'))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
@@ -248,11 +245,6 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			$display_ecommerce_tracking = true;
 			echo $this->get_standard_tracking_code();
 	//	}
-
-		if (!$display_ecommerce_tracking && 'yes' === $this->ga_standard_tracking_enabled)
-		{
-			echo $this->get_standard_tracking_code();
-		}
 	}
 
 	/**
@@ -270,13 +262,13 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			function wait_to_load_and_identify() {
 				if (typeof _nzm.get_tracking_id === 'function') {
 					if (_nzm.get_tracking_id() == '') {
-			_nzm.identify({ email: \"$current_user->user_email\", first_name: \"$current_user->user_firstname\", last_name: \"$current_user->user_lastname\" });
+						_nzm.identify({ email: \"$current_user->user_email\", first_name: \"$current_user->user_firstname\", last_name: \"$current_user->user_lastname\" });
 					}
 				} else {
 					setTimeout(function() {wait_to_load_and_identify()}, 50)
 				}
 			}
-			wait_to_load_and_identify();
+				wait_to_load_and_identify();
 			";
 		}
 
@@ -308,7 +300,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		$code .= WC_Newsman_Remarketing_JS::get_instance()->add_transaction($order);
 
 		// Mark the order as tracked.
-		update_post_meta($order_id, '_ga_tracked', 1);
+		//update_post_meta($order_id, '_ga_tracked', 1);
 
 		/*
 		return "
@@ -329,15 +321,9 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 *
 	 * @return bool True if tracking for a certain setting is disabled
 	 */
-	private function disable_tracking($type)
+	private function disable_tracking()
 	{
 		$remarketingid = get_option('newsman_remarketingid');
-
-		//obsolete
-		/*if (is_admin() || current_user_can('manage_options') || empty($remarketingid) || 'no' === $type || apply_filters('woocommerce_ga_disable_tracking', false, $type))
-		{
-			return true;
-		}*/
 
 		if (is_admin() || current_user_can('manage_options') || empty($remarketingid))
 		{
@@ -352,7 +338,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function add_to_cart()
 	{
-		if ($this->disable_tracking($this->ga_event_tracking_enabled))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
@@ -369,7 +355,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		$parameters['action'] = "'" . __('Add to Cart', 'newsman-remarketing-translate') . "'";
 		$parameters['label'] = "'" . esc_js($product->get_sku() ? __('ID:', 'newsman-remarketing-translate') . ' ' . $product->get_sku() : "#" . $product->get_id()) . "'";
 
-		if (!$this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
+		if (!$this->disable_tracking())
 		{
 			$code = "" . WC_Newsman_Remarketing_JS::get_instance()->tracker_var() . "( 'ec:addProduct', {";
 			//$code .= "'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',";
@@ -388,17 +374,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function remove_from_cart()
 	{
-		if ($this->disable_tracking($this->ga_use_universal_analytics))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_remove_from_cart_enabled))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
@@ -440,7 +416,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function loop_add_to_cart()
 	{
-		if ($this->disable_tracking($this->ga_event_tracking_enabled))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
@@ -451,7 +427,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 		$parameters['action'] = "'" . __('Add to Cart', 'newsman-remarketing-translate') . "'";
 		$parameters['label'] = "($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id'))"; // Product SKU or ID
 
-		if (!$this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
+		if (!$this->disable_tracking())
 		{
 			$code = "" . WC_Newsman_Remarketing_JS::get_instance()->tracker_var() . "( 'ec:addProduct', {";
 			//$code .= "'id': ($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id')),";
@@ -469,20 +445,10 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function listing_impression()
 	{
-	/*	if ($this->disable_tracking($this->ga_use_universal_analytics))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
-
-		if ($this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_product_impression_enabled))
-		{
-			return;
-		}*/
 
 		global $product, $woocommerce_loop;
 		WC_Newsman_Remarketing_JS::get_instance()->listing_impression($product, $woocommerce_loop['loop']);
@@ -493,20 +459,10 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function listing_click()
 	{
-		/*if ($this->disable_tracking($this->ga_use_universal_analytics))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
-
-		if ($this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_product_click_enabled))
-		{
-			return;
-		}*/
 
 		global $product, $woocommerce_loop;
 		WC_Newsman_Remarketing_JS::get_instance()->listing_click($product, $woocommerce_loop['loop']);
@@ -517,17 +473,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function product_detail()
 	{
-		if ($this->disable_tracking($this->ga_use_universal_analytics))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_product_detail_view_enabled))
+		if ($this->disable_tracking())
 		{
 			return;
 		}
@@ -541,17 +487,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 	 */
 	public function checkout_process($checkout)
 	{
-		if ($this->disable_tracking($this->ga_use_universal_analytics))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_ecommerce_tracking_enabled))
-		{
-			return;
-		}
-
-		if ($this->disable_tracking($this->ga_enhanced_checkout_process_enabled))
+		if ($this->disable_tracking())
 		{
 			return;
 		}

@@ -5,7 +5,7 @@
  * Description: Allows Newsman Remarketing code to be inserted into WooCommerce store pages.
  * Author: Newsman
  * Author URI: https://newsman.com
- * Version: 1.8.6
+ * Version: 1.8.7
  * WC requires at least: 2.1
  * WC tested up to: 4.1
  * License: GPLv2 or later
@@ -51,8 +51,8 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 			}
 
 			// Load plugin text domain
-			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-			add_action( 'init', array( $this, 'show_ga_pro_notices' ) );
+			//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+			//add_action( 'init', array( $this, 'show_ga_pro_notices' ) );
 
 			// Checks with WooCommerce is installed.
 			//if ( class_exists( 'WC_Integration' ) && defined( 'WOOCOMMERCE_VERSION' ) && version_compare( WOOCOMMERCE_VERSION, '2.1-beta-1', '>=' ) ) {

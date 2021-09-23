@@ -56,7 +56,8 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public static function tracker_var()
 	{	
-		return apply_filters('woocommerce_ga_tracker_variable', '_nzm.run');
+		//return apply_filters('woocommerce_ga_tracker_variable', '_nzm.run');
+		return '_nzm.run';
 	}
 
 	/**
@@ -183,7 +184,7 @@ class WC_Newsman_Remarketing_JS
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
-		var _nzmPluginInfo = '1.8.5:Wordpress-Woocommerce';
+		var _nzmPluginInfo = '1.8.7:Wordpress-Woocommerce';
 		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
 		_nzm_tracking_server = '" . self::$endpointHost . "';
@@ -201,11 +202,16 @@ class WC_Newsman_Remarketing_JS
 			$ga_snippet_require .= "" . self::tracker_var() . "( 'require', 'ec' );";
 		}
 
+		/*
 		$ga_snippet_head = apply_filters('woocommerce_ga_snippet_head', $ga_snippet_head);		
 		$ga_snippet_require = apply_filters('woocommerce_ga_snippet_require', $ga_snippet_require);
+		*/
 	
+		$ga_snippet_head = $ga_snippet_head;		
+		$ga_snippet_require = $ga_snippet_require;
+
 		$code = $ga_snippet_head . $ga_snippet_require;
-		$code = apply_filters('woocommerce_ga_snippet_output', $code);
+		//$code = apply_filters('woocommerce_ga_snippet_output', $code);
 
 		return $code;
 	}
@@ -487,7 +493,7 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public function event_tracking_code($parameters, $selector)
 	{
-		$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);	
+		//$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);	
 
 		wc_enqueue_js("		
 
