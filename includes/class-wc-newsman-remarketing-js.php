@@ -192,7 +192,7 @@ class WC_Newsman_Remarketing_JS
         }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
         s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
-        script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();
+        script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
         ";
 		
 		$ga_snippet_require = "";
@@ -242,7 +242,7 @@ class WC_Newsman_Remarketing_JS
 		function wait_to_load_and_identifypurchase() {
 			if (typeof _nzm.get_tracking_id === 'function') {
 				if (_nzm.get_tracking_id() == '') {
-		 _nzm.identify({ email: \"$email\", first_name: \"$f\", last_name: \"$l\" });
+		 _nzm.identify({ email: \"" . esc_attr($email) . "\", first_name: \"" . esc_attr($f) . "\", last_name: \"" . esc_attr($l) . "\" });
 				}
 			} else {
 				setTimeout(function() {wait_to_load_and_identifypurchase()}, 50)
@@ -251,7 +251,7 @@ class WC_Newsman_Remarketing_JS
 		wait_to_load_and_identifypurchase();
 		*/
 		
-		_nzm.identify({ email: \"$email\", first_name: \"$f\", last_name: \"$l\" });
+		_nzm.identify({ email: \"$email\", first_name: \"" . esc_attr($f) . "\", last_name: \"" . esc_attr($l) . "\" });
 		";
 
 		// Order items

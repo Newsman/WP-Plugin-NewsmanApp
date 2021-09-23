@@ -262,7 +262,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			function wait_to_load_and_identify() {
 				if (typeof _nzm.get_tracking_id === 'function') {
 					if (_nzm.get_tracking_id() == '') {
-						_nzm.identify({ email: \"$current_user->user_email\", first_name: \"$current_user->user_firstname\", last_name: \"$current_user->user_lastname\" });
+						_nzm.identify({ email: \"" . esc_attr($current_user->user_email) . "\", first_name: \"" . esc_attr($current_user->user_firstname) . "\", last_name: \"" . esc_attr($current_user->user_lastname) . "\" });
 					}
 				} else {
 					setTimeout(function() {wait_to_load_and_identify()}, 50)
