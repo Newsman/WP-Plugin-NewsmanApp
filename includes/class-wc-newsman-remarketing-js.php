@@ -184,7 +184,7 @@ class WC_Newsman_Remarketing_JS
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
-		var _nzmPluginInfo = '1.8.7:Wordpress-Woocommerce';
+		var _nzmPluginInfo = '1.8.8:Wordpress-Woocommerce';
 		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
 		_nzm_tracking_server = '" . self::$endpointHost . "';

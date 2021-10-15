@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 1.8.7
+Version: 1.9
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -13,11 +13,10 @@ Author URI: https://www.newsman.com
         exit;
     }
 
-    require_once 'vendor/Newsman/Client.php';
+    require_once 'vendor/Newsman/Client.php';   
 
     class WP_Newsman
-    {
-
+    {      
         /*
         * @var Newsman_Client
         * Instance of a Newsman_Client
@@ -349,8 +348,13 @@ Author URI: https://www.newsman.com
                         break;
 
                         case "version.json":                        
+                            
+                            $version = array(
+                                "version" => "Wordpress " . get_bloginfo('version')
+                            );                                                                                                       
 
-                            $this->_json(bloginfo('version'));
+                            echo json_encode($version, JSON_PRETTY_PRINT);
+                            exit;
                             return;
     
                         break;
