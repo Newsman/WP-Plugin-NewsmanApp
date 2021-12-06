@@ -192,7 +192,9 @@ class WC_Newsman_Remarketing_JS
         }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
         s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
-        script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
+        script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();	
+		
+		console.log(_nzm);
         ";
 		
 		$ga_snippet_require = "";
@@ -358,7 +360,7 @@ class WC_Newsman_Remarketing_JS
 	{
 		echo("
 			<script>
-
+			/*
 			(function($) {
 			
 			$('.remove').each(function(index) {
@@ -375,9 +377,11 @@ class WC_Newsman_Remarketing_JS
 			});						
 
 			})(jQuery);
+			*/
 			</script>
 
-				<script>
+			<script>
+			/*
 			(function($) {
 			//$( document.body ).on( 'updated_cart_totals', function(){
 			$('button[name=\"update_cart\"]').click(function(){
@@ -405,8 +409,8 @@ class WC_Newsman_Remarketing_JS
 			  
 			});
 			//});
-
 			})(jQuery);
+			*/
 			</script>
 		");
 	}
@@ -415,6 +419,7 @@ class WC_Newsman_Remarketing_JS
 	{
 		echo("
 			<script>
+			/*
 			(function($) {
 					$('button[name=\"update_cart\"]').click(function(){
 					" . self::tracker_var() . "( 'ec:addProduct', {
@@ -426,6 +431,7 @@ class WC_Newsman_Remarketing_JS
 					" . self::tracker_var() . "( 'send', 'pageview' );
 				});
 			})(jQuery);
+			*/
 			</script>
 		");
 	}
@@ -496,12 +502,13 @@ class WC_Newsman_Remarketing_JS
 		//$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);	
 
 		wc_enqueue_js("		
-
+					/*
 					$( '" . $selector . "' ).click( function() {				
 						" . $parameters['enhanced'] . "
 						" . self::tracker_var() . "( 'ec:setAction', 'add' );
 						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );" . self::tracker_var() . "( 'send', 'pageview' );
 					});
+					*/
 				");
 	}
 

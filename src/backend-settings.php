@@ -162,7 +162,7 @@
 						<input type="text" id="newsman_checkoutnewslettermessage" name="newsman_checkoutnewslettermessage" value="<?php echo (!empty($newsman_checkoutnewslettermessage)) ? $newsman_checkoutnewslettermessage : "Subscribe to our newsletter"; ?>"/>													
 						</td>
 					</tr>
-					<tr>
+					<tr class="newsman_checkoutnewslettertypePanel" style="display: <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == 'on') ? 'table-row' : 'none'; ?>;">
 						<th scope="row">
 							<label for="newsman_checkoutnewsletterdefault">Checkout newsletter subscribe checkbox checked by default</label>
 						</th>

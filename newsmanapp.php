@@ -109,6 +109,37 @@ Author URI: https://www.newsman.com
             exit;
         }
 
+        public function newsmanGetCart()
+        {    
+            $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];                              
+            
+            if (!empty($newsman)) {              
+
+                if (!class_exists('WooCommerce')) {
+                    require ABSPATH . 'wp-content/plugins/woocommerce/woocommerce.php';
+
+                    wp_send_json(array("error" => "WooCommerce is not installed"));
+                }
+            
+                switch ($_GET["newsman"]) {
+                    case "getCart.json":                        
+
+                        //require('wp-blog-header.php'); require_once('wp-load.php'); require_once('wp-config.php');require_once('wp-settings.php');
+
+                        $cart = array();
+
+                        global $woocommerce;
+                        $cart = $woocommerce->cart->cart_contents_count;
+
+                        $this->_json($cart);
+                        return;
+
+                        break;                   
+                }
+
+            }    
+        }
+
         public function newsmanFetchData()
         {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
@@ -718,39 +749,48 @@ Author URI: https://www.newsman.com
                 
                 $checkoutType = get_option('newsman_checkoutnewslettertype');            
 
-                if($checkoutType == "init")
-                {
+                try{             
 
-                    $ret = $this->client->subscriber->initSubscribe(
+                    if($checkoutType == "init")
+                    {
+
+                        $ret = $this->client->subscriber->initSubscribe(
+                            $list,
+                            $email,
+                            $first_name,
+                            $last_name,
+                            $this->getUserIP(),
+                            null, 
+                            null
+                        );
+
+                    }
+                    elseif($checkoutType == "save"){
+
+                        $ret = $this->client->subscriber->saveSubscribe(
                         $list,
                         $email,
                         $first_name,
                         $last_name,
-                        $this->getUserIP(),
-                        null, 
-                        null
-                    );
+                        $this->getUserIP(), 
+                        null);
+
+                    }     
+                
+                }
+                catch (Exception $e)
+                {
+                    //non relevant error occurred
+                }
 
                 }
-                elseif($checkoutType == "save"){
-
-                    $ret = $this->client->subscriber->saveSubscribe(
-                    $list,
-                    $email,
-                    $first_name,
-                    $last_name,
-                    $this->getUserIP(), 
-                    null);
-
-                }                                  
-
-            }
             
         }
 
         public function initHooks()
         {          
             add_action('init', array($this, 'newsmanFetchData'));
+            add_action('init', array($this, 'newsmanGetCart'));
             add_action('woocommerce_review_order_before_submit', array($this, 'newsmanCheckout'));                   
             add_action('woocommerce_checkout_order_processed', array($this, 'newsmanCheckoutAction'), 10, 2);
             //order status change hooks        
