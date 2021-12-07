@@ -109,37 +109,6 @@ Author URI: https://www.newsman.com
             exit;
         }
 
-        public function newsmanGetCart()
-        {    
-            $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];                              
-            
-            if (!empty($newsman)) {              
-
-                if (!class_exists('WooCommerce')) {
-                    require ABSPATH . 'wp-content/plugins/woocommerce/woocommerce.php';
-
-                    wp_send_json(array("error" => "WooCommerce is not installed"));
-                }
-            
-                switch ($_GET["newsman"]) {
-                    case "getCart.json":                        
-
-                        //require('wp-blog-header.php'); require_once('wp-load.php'); require_once('wp-config.php');require_once('wp-settings.php');
-
-                        $cart = array();
-
-                        global $woocommerce;
-                        $cart = $woocommerce->cart->cart_contents_count;
-
-                        $this->_json($cart);
-                        return;
-
-                        break;                   
-                }
-
-            }    
-        }
-
         public function newsmanFetchData()
         {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
@@ -537,13 +506,22 @@ Author URI: https://www.newsman.com
 
                 $customers_to_import = array();
 
-                foreach ($allOrders as $user) {                   
+                foreach ($allOrders as $user) { 
+                    
+                    $tel = "";
+
+                    try{
+                        $tel = $user->get_billing_phone();
+                    }catch(Exception $e)
+                    {
+                        //old woocommerce version
+                    }
 
                     $customers_to_import[] = array(
                         "email" => $user->data["billing"]["email"],
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
                         "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : "",
-                        "tel" => ($user->get_billing_phone() != null) ? $user->get_billing_phone() : ""
+                        "tel" => $tel
                     );
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
@@ -783,14 +761,13 @@ Author URI: https://www.newsman.com
                     //non relevant error occurred
                 }
 
-                }
+            }
             
         }
 
         public function initHooks()
         {          
-            add_action('init', array($this, 'newsmanFetchData'));
-            add_action('init', array($this, 'newsmanGetCart'));
+            add_action('init', array($this, 'newsmanFetchData'));     
             add_action('woocommerce_review_order_before_submit', array($this, 'newsmanCheckout'));                   
             add_action('woocommerce_checkout_order_processed', array($this, 'newsmanCheckoutAction'), 10, 2);
             //order status change hooks        
@@ -821,8 +798,8 @@ Author URI: https://www.newsman.com
             #check if plugin is active
             add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));         
             #widget auto init        
-            add_action( 'init', array($this, 'init_widgets') );    
-        }
+            add_action( 'init', array($this, 'init_widgets') );            
+        }      
 
         function generateWidget($atts){
         

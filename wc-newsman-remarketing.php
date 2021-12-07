@@ -42,6 +42,63 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		/**
 		 * Initialize the plugin.
 		 */
+
+		public function newsmanAjaxGetCart(){
+
+            echo json_encode(array("status" => 5));
+            exit();
+
+        }
+
+        public function newsmanGetCart()
+        {    			         			
+            $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];                              
+            
+            if (!empty($newsman) &&  (bool)$_POST["post"] == true && !empty(get_option('newsman_remarketingid'))) {              
+
+                if (!class_exists('WooCommerce')) {
+                    require ABSPATH . 'wp-content/plugins/woocommerce/woocommerce.php';
+
+                    $this->_json(array("status" => 0, "message" => "WooCommerce is not installed"));
+                }
+            
+                switch ($_GET["newsman"]) {
+                    case "getCart.json":                        
+
+						$cart = WC()->cart;	
+						
+						$prod = array();
+
+						foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+
+							$prod[] = array(
+								"id" => $cart_item['product_id'],
+								"name" => $cart_item["data"]->get_name(),
+								"price" => $cart_item["data"]->get_price(),						
+								"quantity" => $cart_item['quantity']
+							);							
+													
+						 }									 						
+
+                        $this->_json($prod);
+                        return;
+
+                        break; 
+					default:
+						echo $this->_json(array("status" => 0, "message" => "bad url"));
+					break;
+                }
+
+            }			
+        }
+
+		public function _json($obj)
+        {
+            header('Content-Type: application/json');
+            echo json_encode($obj, JSON_PRETTY_PRINT);
+			exit;           
+        }
+		 
 		public function __construct() {
 			//Allow non ecommerce pages
 			if ( ! class_exists( 'WooCommerce' ) ) {
@@ -49,6 +106,8 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 				return;
 				
 			}
+			 
+			add_action('wp_loaded', array($this, 'newsmanGetCart'));
 
 			// Load plugin text domain
 			//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );

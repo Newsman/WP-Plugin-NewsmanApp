@@ -194,7 +194,50 @@ class WC_Newsman_Remarketing_JS
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();	
 		
-		console.log(_nzm);
+		NewsmanAutoEvents();			
+		setInterval(NewsmanAutoEvents, 5000);
+		
+		let lastCart = {};	
+
+		function NewsmanAutoEvents(){		
+
+			var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';
+
+			jQuery.post(ajaxurl, {  
+	           post: true,
+            }, function (response) {				
+
+				//check cache
+				if(lastCart.length > 0 && lastCart != null && lastCart != undefined && response.length > 0 && response != null && response != undefined)
+				{				
+					if(JSON.stringify(lastCart) === JSON.stringify(response))
+					{
+						console.log('newsman remarketing: cache loaded, cart is unchanged');
+						return false;
+					}							
+				}
+
+				_nzm.run('ec:setAction', 'clear_cart');
+				_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');				
+
+				for (var item in response) {				
+
+					_nzm.run( 'ec:addProduct', 
+						response[item]
+					);				
+
+				}	
+				
+				_nzm.run( 'ec:setAction', 'add' );
+				_nzm.run( 'send', 'event', 'UX', 'click', 'add to cart' );
+
+				lastCart = response;
+
+				console.log('newsman remarketing: cart sent');
+				
+            });
+
+		}
         ";
 		
 		$ga_snippet_require = "";
