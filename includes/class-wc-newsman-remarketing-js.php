@@ -219,13 +219,12 @@ class WC_Newsman_Remarketing_JS
 					else{
 						lastCartFlag = false;
 					}
-				}
-
-				_nzm.run('ec:setAction', 'clear_cart');
-				_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');				
+				}			
 
 				if(response.length > 0 && lastCartFlag == false)
 				{
+				_nzm.run('ec:setAction', 'clear_cart');
+				_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');	
 
 					for (var item in response) {				
 
