@@ -543,7 +543,7 @@ Author URI: https://www.newsman.com
                         "email" => $user->data["billing"]["email"],
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
                         "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : "",
-                        "tel" => ($user->get_billing_phone() != null) ? $user->get_billing_phone() : ""
+                        "tel" => ($user->data["billing"]["phone"] != null) ? $user->data["billing"]["phone"] : ""
                     );
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
