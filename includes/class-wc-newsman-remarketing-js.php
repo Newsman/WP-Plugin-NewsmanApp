@@ -196,8 +196,11 @@ class WC_Newsman_Remarketing_JS
 		
 		NewsmanAutoEvents();			
 		setInterval(NewsmanAutoEvents, 5000);
-		
-		let lastCart = {};	
+
+		let lastCart = sessionStorage.getItem('lastCart');			
+		if(lastCart === null)
+			lastCart = {};			
+
 		let lastCartFlag = false;
 
 		function NewsmanAutoEvents(){		
@@ -207,6 +210,13 @@ class WC_Newsman_Remarketing_JS
 			jQuery.post(ajaxurl, {  
 	           post: true,
             }, function (response) {				
+
+				lastCart = JSON.parse(sessionStorage.getItem('lastCart'));
+				
+				console.log(lastCart);
+
+				if(lastCart === null)
+					lastCart = {};	
 
 				//check cache
 				if(lastCart.length > 0 && lastCart != null && lastCart != undefined && response.length > 0 && response != null && response != undefined)
@@ -223,8 +233,9 @@ class WC_Newsman_Remarketing_JS
 
 				if(response.length > 0 && lastCartFlag == false)
 				{
-				_nzm.run('ec:setAction', 'clear_cart');
-				_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');	
+
+					_nzm.run('ec:setAction', 'clear_cart');
+					_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');	
 
 					for (var item in response) {				
 
@@ -237,7 +248,7 @@ class WC_Newsman_Remarketing_JS
 					_nzm.run( 'ec:setAction', 'add' );
 					_nzm.run( 'send', 'event', 'UX', 'click', 'add to cart' );
 
-					lastCart = response;
+					sessionStorage.setItem('lastCart', JSON.stringify(response));					
 
 					console.log('newsman remarketing: cart sent');				
 
