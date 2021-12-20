@@ -194,7 +194,74 @@ class WC_Newsman_Remarketing_JS
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();	
 		
-		console.log(_nzm);
+		NewsmanAutoEvents();			
+		setInterval(NewsmanAutoEvents, 5000);
+
+		let lastCart = sessionStorage.getItem('lastCart');			
+		if(lastCart === null)
+			lastCart = {};			
+
+		let lastCartFlag = false;
+
+		function NewsmanAutoEvents(){		
+
+			var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';
+
+			jQuery.post(ajaxurl, {  
+	           post: true,
+            }, function (response) {				
+
+				lastCart = JSON.parse(sessionStorage.getItem('lastCart'));
+				
+				console.log(lastCart);
+
+				if(lastCart === null)
+					lastCart = {};	
+
+				//check cache
+				if(lastCart.length > 0 && lastCart != null && lastCart != undefined && response.length > 0 && response != null && response != undefined)
+				{				
+					if(JSON.stringify(lastCart) === JSON.stringify(response))
+					{
+						console.log('newsman remarketing: cache loaded, cart is unchanged');
+						lastCartFlag = true;					
+					}
+					else{
+						lastCartFlag = false;
+					}
+				}			
+
+				if(response.length > 0 && lastCartFlag == false)
+				{
+
+					_nzm.run('ec:setAction', 'clear_cart');
+					_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');	
+
+					for (var item in response) {				
+
+						_nzm.run( 'ec:addProduct', 
+							response[item]
+						);				
+
+					}	
+					
+					_nzm.run( 'ec:setAction', 'add' );
+					_nzm.run( 'send', 'event', 'UX', 'click', 'add to cart' );
+
+					sessionStorage.setItem('lastCart', JSON.stringify(response));					
+
+					console.log('newsman remarketing: cart sent');				
+
+				}
+				else{
+
+					console.log('newsman remarketing: request not sent');
+
+				}
+				
+            });
+
+		}
         ";
 		
 		$ga_snippet_require = "";
