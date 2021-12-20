@@ -513,7 +513,7 @@ Author URI: https://www.newsman.com
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
                         "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : "",
                         "tel" => ($user->data["billing"]["phone"] != null) ? $user->data["billing"]["phone"] : "",
-                    );            
+                    );                             
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
                         $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce CRON");
