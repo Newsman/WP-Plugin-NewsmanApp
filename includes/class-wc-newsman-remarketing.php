@@ -259,6 +259,9 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 			$current_user = wp_get_current_user();
 			$scriptLogic .= "
 
+			/*
+			//obsolete
+
 			function wait_to_load_and_identify() {
 				if (typeof _nzm.get_tracking_id === 'function') {
 					if (_nzm.get_tracking_id() == '') {
@@ -268,7 +271,11 @@ class WC_Class_Newsman_Remarketing extends WC_Integration
 					setTimeout(function() {wait_to_load_and_identify()}, 50)
 				}
 			}
-				wait_to_load_and_identify();
+		    
+			wait_to_load_and_identify();
+			*/
+
+			_nzm.identify({ email: \"" . esc_attr($current_user->user_email) . "\", first_name: \"" . esc_attr($current_user->user_firstname) . "\", last_name: \"" . esc_attr($current_user->user_lastname) . "\" });
 			";
 		}
 

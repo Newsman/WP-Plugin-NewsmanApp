@@ -211,9 +211,7 @@ class WC_Newsman_Remarketing_JS
 	           post: true,
             }, function (response) {				
 
-				lastCart = JSON.parse(sessionStorage.getItem('lastCart'));
-				
-				console.log(lastCart);
+				lastCart = JSON.parse(sessionStorage.getItem('lastCart'));						
 
 				if(lastCart === null)
 					lastCart = {};	
@@ -308,6 +306,7 @@ class WC_Newsman_Remarketing_JS
 		$code .= "
 		/*
 		//obsolete
+		
 		function wait_to_load_and_identifypurchase() {
 			if (typeof _nzm.get_tracking_id === 'function') {
 				if (_nzm.get_tracking_id() == '') {
