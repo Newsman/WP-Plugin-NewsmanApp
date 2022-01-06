@@ -194,7 +194,7 @@ class WC_Newsman_Remarketing_JS
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
 
-		var isProd = false;
+		var isProd = true;
 
 		let lastCart = sessionStorage.getItem('lastCart');			
 		if(lastCart === null)
