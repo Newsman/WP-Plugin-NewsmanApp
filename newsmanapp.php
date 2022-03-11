@@ -113,7 +113,7 @@ Author URI: https://www.newsman.com
         {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
             $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
-	    $start = (!empty($_GET["start"]) || $_GET["start"] == 0) ? $_GET["start"] : 1;
+    	    $start = (!empty($_GET["start"]) && $_GET["start"] == 0) ? $_GET["start"] : 1;
             $limit = (empty($_GET["limit"])) ? 1000 : $_GET["limit"];
             $order_id = (empty($_GET["order_id"])) ? "" : $_GET["order_id"];
             $product_id = (empty($_GET["product_id"])) ? "" : $_GET["product_id"];
@@ -710,12 +710,42 @@ Author URI: https://www.newsman.com
                 $list = get_option('newsman_list');
 
                 $order = wc_get_order($order_id);            
-                $order_data = $order->get_data();                                    
+                $order_data = $order->get_data();    
+                $metadata = $order->get_meta_data();                                      
+               
+                $extraProps = array(
+                "functia" => null,
+                "sex" => null
+                );
+
+                foreach($metadata as $_metadata)
+                {
+                    if($_metadata->key == "_billing_functia")
+                    {
+                        $extraProps["functia"] = $_metadata->value;
+                    }
+                    if($_metadata->key == "_billing_sex")
+                    {
+                        $extraProps["sex"] = $_metadata->value;
+                    }
+                }                            
                 
                 $email = $order_data["billing"]["email"];
                 $first_name =  $order_data["billing"]["first_name"];
                 $last_name = $order_data["billing"]["last_name"];
-                
+
+                $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";
+
+                $props = array(
+                    "sex" => $extraProps["sex"],
+                    "telefon" => $phone,
+                    "functia" => $extraProps["functia"]
+                );
+
+                $segments = get_option('newsman_segments');
+                if(!empty($segments))
+                    $segments = array("segments" => array($segments));         
+
                 $checkoutType = get_option('newsman_checkoutnewslettertype');            
 
                 try{             
@@ -729,26 +759,34 @@ Author URI: https://www.newsman.com
                             $first_name,
                             $last_name,
                             $this->getUserIP(),
-                            null, 
-                            null
+                            $props, 
+                            $segments
                         );
 
                     }
                     elseif($checkoutType == "save"){
 
-                        $ret = $this->client->subscriber->saveSubscribe(
+                        $subId = $this->client->subscriber->saveSubscribe(
                         $list,
                         $email,
                         $first_name,
                         $last_name,
                         $this->getUserIP(), 
-                        null);
+                        $props);
+                        
+                        if(!empty($segments))
+                        {
+                            $segments = $segments["segments"][0];
+                        }
+
+                        $ret = $this->client->segment->addSubscriber($segments, $subId);
 
                     }     
                 
                 }
                 catch (Exception $e)
                 {
+                    var_dump($e->getMessage());die('');
                     //non relevant error occurred
                 }
 
