@@ -720,15 +720,17 @@ Author URI: https://www.newsman.com
 
                 foreach($metadata as $_metadata)
                 {
-                    if($_metadata->key == "_billing_functia")
+                    if($_metadata->key == "_billing_functia" || $_metadata->key == "billing_functia")
                     {
                         $extraProps["functia"] = $_metadata->value;
                     }
-                    if($_metadata->key == "_billing_sex")
+                    if($_metadata->key == "_billing_sex" || $_metadata->key == "billing_sex")
                     {
                         $extraProps["sex"] = $_metadata->value;
                     }
-                }                            
+                }                
+                
+                $extraProps["functia"] = "test functie";
                 
                 $email = $order_data["billing"]["email"];
                 $first_name =  $order_data["billing"]["first_name"];
@@ -740,7 +742,7 @@ Author URI: https://www.newsman.com
                     "sex" => $extraProps["sex"],
                     "telefon" => $phone,
                     "functia" => $extraProps["functia"]
-                );
+                );     
 
                 $segments = get_option('newsman_segments');
                 if(!empty($segments))
