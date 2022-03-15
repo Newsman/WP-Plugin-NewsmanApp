@@ -711,7 +711,7 @@ Author URI: https://www.newsman.com
 
                 $order = wc_get_order($order_id);            
                 $order_data = $order->get_data();    
-                $metadata = $order->get_meta_data();                                      
+                $metadata = $order->get_meta_data();                        
                
                 $extraProps = array(
                 "functia" => null,
@@ -727,23 +727,21 @@ Author URI: https://www.newsman.com
                     if($_metadata->key == "_billing_sex" || $_metadata->key == "billing_sex")
                     {
                         $extraProps["sex"] = $_metadata->value;
-                    }
-                }                
-                
-                $extraProps["functia"] = "test functie";
-                
+                    }                         
+                }                                     
+
                 $email = $order_data["billing"]["email"];
                 $first_name =  $order_data["billing"]["first_name"];
                 $last_name = $order_data["billing"]["last_name"];
 
-                $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";
+                $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";                
 
                 $props = array(
                     "sex" => $extraProps["sex"],
                     "telefon" => $phone,
                     "functia" => $extraProps["functia"]
                 );     
-
+        
                 $segments = get_option('newsman_segments');
                 if(!empty($segments))
                     $segments = array("segments" => array($segments));         
