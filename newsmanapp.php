@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.2.2
+Version: 2.2.3
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -711,24 +711,28 @@ Author URI: https://www.newsman.com
 
                 $order = wc_get_order($order_id);            
                 $order_data = $order->get_data();    
-                $metadata = $order->get_meta_data();                        
-               
-                $extraProps = array(
-                "functia" => null,
-                "sex" => null
-                );
 
-                foreach($metadata as $_metadata)
+                $props = array();
+
+                try{
+                    $metadata = $order->get_meta_data();                                       
+
+                    foreach($metadata as $_metadata)
+                    {
+                        if($_metadata->key == "_billing_functia" || $_metadata->key == "billing_functia")
+                        {
+                            $props["functia"] = $_metadata->value;
+                        }
+                        if($_metadata->key == "_billing_sex" || $_metadata->key == "billing_sex")
+                        {
+                            $props["sex"] = $_metadata->value;
+                        }                         
+                    }                     
+                }
+                catch (Exception $e)
                 {
-                    if($_metadata->key == "_billing_functia" || $_metadata->key == "billing_functia")
-                    {
-                        $extraProps["functia"] = $_metadata->value;
-                    }
-                    if($_metadata->key == "_billing_sex" || $_metadata->key == "billing_sex")
-                    {
-                        $extraProps["sex"] = $_metadata->value;
-                    }                         
-                }                                     
+                    error_log($e->getMessage());
+                }
 
                 $email = $order_data["billing"]["email"];
                 $first_name =  $order_data["billing"]["first_name"];
@@ -736,11 +740,7 @@ Author URI: https://www.newsman.com
 
                 $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";                
 
-                $props = array(
-                    "sex" => $extraProps["sex"],
-                    "telefon" => $phone,
-                    "functia" => $extraProps["functia"]
-                );     
+                $props["phone"] = $phone;  
         
                 $segments = get_option('newsman_segments');
                 if(!empty($segments))
@@ -749,7 +749,6 @@ Author URI: https://www.newsman.com
                 $checkoutType = get_option('newsman_checkoutnewslettertype');            
 
                 try{             
-
                     if($checkoutType == "init")
                     {
 
@@ -786,7 +785,7 @@ Author URI: https://www.newsman.com
                 }
                 catch (Exception $e)
                 {
-                    var_dump($e->getMessage());die('');
+                    error_log($e->getMessage());
                     //non relevant error occurred
                 }
 
