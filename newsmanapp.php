@@ -113,7 +113,7 @@ Author URI: https://www.newsman.com
         {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
             $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
-    	    $start = (!empty($_GET["start"]) && $_GET["start"] == 0) ? $_GET["start"] : 1;
+    	    $start = (!empty($_GET["start"]) && $_GET["start"] > 0) ? $_GET["start"] : 1;
             $limit = (empty($_GET["limit"])) ? 1000 : $_GET["limit"];
             $order_id = (empty($_GET["order_id"])) ? "" : $_GET["order_id"];
             $product_id = (empty($_GET["product_id"])) ? "" : $_GET["product_id"];
@@ -238,6 +238,7 @@ Author URI: https://www.newsman.com
                         }
 
                         $this->_json($ordersObj);
+                        exit;
                         return;
 
                         break;
@@ -250,7 +251,7 @@ Author URI: https://www.newsman.com
                             'stock_status' => 'instock',
                             'limit' => $limit,
                             'offset' => $start
-                        );
+                        );  
 
                         if(!empty($product_id))
                         {
@@ -301,6 +302,7 @@ Author URI: https://www.newsman.com
                         }
 
                         $this->_json($productsJson);
+                        exit;
                         return;
 
                         break;
@@ -322,6 +324,7 @@ Author URI: https://www.newsman.com
                         }
 
                         $this->_json($custs);
+                        exit;
                         return;
 
                         break;
@@ -343,6 +346,7 @@ Author URI: https://www.newsman.com
                         }
 
                         $this->_json($subs);
+                        exit;
                         return;
 
                         break;
@@ -384,6 +388,7 @@ Author URI: https://www.newsman.com
                                          $this->_json(array("status" => "woocommerce is not installed"));
                                      }
 
+                                    exit;
                                     return;
                                      
                                 break;
@@ -398,6 +403,7 @@ Author URI: https://www.newsman.com
             
                                 $this->_json($json);
 
+                                exit;
                                 return;
 
                                 break;
