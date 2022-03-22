@@ -194,20 +194,26 @@ class WC_Newsman_Remarketing_JS
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
 
-		var isProd = true;
+		var isProd = false;
 
 		let lastCart = sessionStorage.getItem('lastCart');			
 		if(lastCart === null)
 			lastCart = {};			
 
 		let lastCartFlag = false;
-		let bufferedClick = false;
+		let bufferedClick = true;
 		let firstLoad = true;
 
 		NewsmanAutoEvents();			
+		/*obsolete
 		setInterval(NewsmanAutoEvents, 5000);
+		obsolete*/
 
+		/*obsolete
 		BufferClick();
+		obsolete*/
+
+		detectXHR();
 
 		function NewsmanAutoEvents(){		
 
@@ -271,12 +277,40 @@ class WC_Newsman_Remarketing_JS
 					}
 
 					firstLoad = false;
+					/*obsolete
 					bufferedClick = false;
+					obsolete*/
 					
 				});
 
 			}
 
+		}
+
+		function detectXHR() {	
+			var proxied = window.XMLHttpRequest.prototype.send;
+			window.XMLHttpRequest.prototype.send = function() {		
+
+				var pointer = this
+				var intervalId = window.setInterval(function(){
+						if(pointer.readyState != 4){
+								return;
+						}
+
+						if(pointer.getResponseHeader('access-control-allow-origin') == window.location.origin)
+						{
+							if(!isProd)
+								console.log('newsman remarketing: ajax request fired and catched from same domain');
+
+							NewsmanAutoEvents();
+						}
+			
+						clearInterval(intervalId);
+		
+				}, 1);
+
+				return proxied.apply(this, [].slice.call(arguments));
+			};
 		}
 
 		function BufferClick(){
