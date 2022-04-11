@@ -293,11 +293,14 @@ class WC_Newsman_Remarketing_JS
 
 				var pointer = this
 				var intervalId = window.setInterval(function(){
+
 						if(pointer.readyState != 4){
 								return;
 						}
 
-						if(pointer.getResponseHeader('access-control-allow-origin') == window.location.origin)
+					        var _location = pointer.getResponseHeader('access-control-allow-origin');
+
+						if(!_location || _location == window.location.origin)
 						{
 							if(!isProd)
 								console.log('newsman remarketing: ajax request fired and catched from same domain');
