@@ -205,6 +205,7 @@ class WC_Newsman_Remarketing_JS
 		let firstLoad = true;
 		let bufferedXHR = false;
 					
+		NewsmanAutoEvents();
 		setInterval(NewsmanAutoEvents, 5000);		
 
 		detectXHR();
