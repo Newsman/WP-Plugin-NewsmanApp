@@ -194,14 +194,14 @@ class WC_Newsman_Remarketing_JS
         script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
         script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
 
-		var isProd = false;
+		var isProd = true;
 
 		let lastCart = sessionStorage.getItem('lastCart');			
 		if(lastCart === null)
 			lastCart = {};			
 
 		let lastCartFlag = false;
-		let bufferedClick = true;
+		let bufferedClick = false;
 		let firstLoad = true;
 		let bufferedXHR = false;
 					
@@ -292,9 +292,7 @@ class WC_Newsman_Remarketing_JS
 								return;
 						}
 
-						var _location = pointer.getResponseHeader('access-control-allow-origin');
-
-						console.log(pointer.responseURL);
+						var _location = pointer.getResponseHeader('access-control-allow-origin');				
 
 						if(pointer.responseURL.indexOf('newsman=getCart.json') >= 0)
 						{							
