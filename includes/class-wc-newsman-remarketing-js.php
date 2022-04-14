@@ -184,7 +184,7 @@ class WC_Newsman_Remarketing_JS
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
-		var _nzmPluginInfo = '1.8.8:Wordpress-Woocommerce';
+		var _nzmPluginInfo = '2.2.8:Wordpress-Woocommerce';
 		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
 		_nzm_tracking_server = '" . self::$endpointHost . "';
@@ -203,23 +203,17 @@ class WC_Newsman_Remarketing_JS
 		let lastCartFlag = false;
 		let bufferedClick = true;
 		let firstLoad = true;
-
-		NewsmanAutoEvents();			
-		/*obsolete
-		setInterval(NewsmanAutoEvents, 5000);
-		obsolete*/
-
-		/*obsolete
-		BufferClick();
-		obsolete*/
+		let bufferedXHR = false;
+					
+		setInterval(NewsmanAutoEvents, 5000);		
 
 		detectXHR();
 
-		function NewsmanAutoEvents(){		
+		function NewsmanAutoEvents(){							
 
 			var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';
 
-			if(bufferedClick || firstLoad)
+			if(bufferedXHR || firstLoad)
 			{
 
 				jQuery.post(ajaxurl, {  
@@ -276,10 +270,8 @@ class WC_Newsman_Remarketing_JS
 
 					}
 
-					firstLoad = false;
-					/*obsolete
-					bufferedClick = false;
-					obsolete*/
+					firstLoad = false;				
+					bufferedXHR = false;
 					
 				});
 
@@ -288,20 +280,34 @@ class WC_Newsman_Remarketing_JS
 		}
 
 		function detectXHR() {	
+			
 			var proxied = window.XMLHttpRequest.prototype.send;
 			window.XMLHttpRequest.prototype.send = function() {		
 
-				var pointer = this
+				var pointer = this;
+				var validate = true;
 				var intervalId = window.setInterval(function(){
 
 						if(pointer.readyState != 4){
 								return;
 						}
 
-					        var _location = pointer.getResponseHeader('access-control-allow-origin');
+						var _location = pointer.getResponseHeader('access-control-allow-origin');
 
-						if(!_location || _location == window.location.origin)
+						console.log(pointer.responseURL);
+
+						if(pointer.responseURL.indexOf('newsman=getCart.json') >= 0)
+						{							
+							validate = false;												
+						}
+						else{
+							validate = true;
+						}
+
+						if(validate && !_location || _location == window.location.origin)
 						{
+							bufferedXHR = true;
+
 							if(!isProd)
 								console.log('newsman remarketing: ajax request fired and catched from same domain');
 
@@ -313,7 +319,8 @@ class WC_Newsman_Remarketing_JS
 				}, 1);
 
 				return proxied.apply(this, [].slice.call(arguments));
-			};
+			};	
+
 		}
 
 		function BufferClick(){
