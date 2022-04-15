@@ -141,26 +141,7 @@ class WC_Newsman_Remarketing_JS
 			$remarketingid = get_option('newsman_remarketingid');
 			if(!empty($remarketingid))
 			{
-				echo("
-					<script>
-					(function($) {
-						$( '.products .post-" . esc_js($product->get_id()) . " a' ).click( function() {
-							if ( true === $(this).hasClass( 'add_to_cart_button' ) ) {
-								return;
-							}
-
-							" . self::tracker_var() . "( 'ec:addProduct', {
-								'id': '" . esc_js($product->get_id()) . "',
-								'name': '" . esc_js($product->get_title()) . "',
-								'category': " . self::product_get_category_line($product) . "
-								'position': '" . esc_js($position) . "'
-							});
-
-							" . self::tracker_var() . "( 'send', 'pageview', '_ecommerce', 'pageview', ' " . esc_js($list) . "' );
-						});
-					})(jQuery);
-					</script>
-				");
+				echo("");
 			}
 
 		}
@@ -188,11 +169,11 @@ class WC_Newsman_Remarketing_JS
 		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
 		_nzm_tracking_server = '" . self::$endpointHost . "';
-        (function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
-        }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
-        s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
-        script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
-        script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
+		(function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
+		}};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
+		s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
+		script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
+		script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
 
 		var isProd = true;
 
@@ -347,17 +328,11 @@ class WC_Newsman_Remarketing_JS
 		{
 			$ga_snippet_require .= "" . self::tracker_var() . "( 'require', 'ec' );";
 		}
-
-		/*
-		$ga_snippet_head = apply_filters('woocommerce_ga_snippet_head', $ga_snippet_head);		
-		$ga_snippet_require = apply_filters('woocommerce_ga_snippet_require', $ga_snippet_require);
-		*/
 	
 		$ga_snippet_head = $ga_snippet_head;		
 		$ga_snippet_require = $ga_snippet_require;
 
 		$code = $ga_snippet_head . $ga_snippet_require;
-		//$code = apply_filters('woocommerce_ga_snippet_output', $code);
 
 		return $code;
 	}
@@ -383,21 +358,6 @@ class WC_Newsman_Remarketing_JS
 		$l = $order->get_billing_last_name();
 
 		$code .= "
-		/*
-		//obsolete
-		
-		function wait_to_load_and_identifypurchase() {
-			if (typeof _nzm.get_tracking_id === 'function') {
-				if (_nzm.get_tracking_id() == '') {
-		 _nzm.identify({ email: \"" . esc_attr($email) . "\", first_name: \"" . esc_attr($f) . "\", last_name: \"" . esc_attr($l) . "\" });
-				}
-			} else {
-				setTimeout(function() {wait_to_load_and_identifypurchase()}, 50)
-			}
-		}
-		wait_to_load_and_identifypurchase();
-		*/
-		
 		_nzm.identify({ email: \"$email\", first_name: \"" . esc_attr($f) . "\", last_name: \"" . esc_attr($l) . "\" });
 		";
 
@@ -503,82 +463,12 @@ class WC_Newsman_Remarketing_JS
 	 */
 	function remove_from_cart()
 	{
-		echo("
-			<script>
-			/*
-			(function($) {
-			
-			$('.remove').each(function(index) {
-  		   		 $(this).unbind('click').click( function(){					 
-
-			        " . self::tracker_var() . "( 'ec:addProduct', {
-						'id': ($(this).data('product_id')) ? ($(this).data('product_id')) : ($(this).data('product_sku')),
-						'quantity': $(this).parent().parent().find( '.qty' ).val() ? $(this).parent().parent().find( '.qty' ).val() : '1',
-					} );
-					" . self::tracker_var() . "( 'ec:setAction', 'remove' );
-					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'remove from cart' );
-	 
-				});
-			});						
-
-			})(jQuery);
-			*/
-			</script>
-
-			<script>
-			/*
-			(function($) {
-			//$( document.body ).on( 'updated_cart_totals', function(){
-			$('button[name=\"update_cart\"]').click(function(){
-
-  			 	$('.shop_table tr.cart_item').each(function () {
-
-					var id = $(this).find('.product-remove a').attr('data-product_id');
-					var qty = $(this).find('.product-quantity input').val();
-
-        				" . self::tracker_var() . "( 'ec:addProduct', {
-						'id': id,
-					} );
-					" . self::tracker_var() . "( 'ec:setAction', 'remove' );
-					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'remove from cart' );
-
-
-						" . self::tracker_var() . "( 'ec:addProduct', {
-						'id': id,
-						'quantity': qty,
-					} );
-					" . self::tracker_var() . "( 'ec:setAction', 'add' );
-					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
-					" . self::tracker_var() . "( 'send', 'pageview' );
-			    });
-			  
-			});
-			//});
-			})(jQuery);
-			*/
-			</script>
-		");
+		echo("");
 	}
 
 	function add_cart($id, $qty)
 	{
-		echo("
-			<script>
-			/*
-			(function($) {
-					$('button[name=\"update_cart\"]').click(function(){
-					" . self::tracker_var() . "( 'ec:addProduct', {
-						'id': '" . $id . "',
-						'quantity': '" . $qty . "',
-					} );
-					" . self::tracker_var() . "( 'ec:setAction', 'add' );
-					" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );
-					" . self::tracker_var() . "( 'send', 'pageview' );
-				});
-			})(jQuery);
-			*/
-			</script>
-		");
+		echo("");
 	}
 
 	/**
@@ -605,7 +495,6 @@ class WC_Newsman_Remarketing_JS
 	/**
 	 * Tracks when the checkout process is started
 	 */
-	//	'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',
 	function checkout_process($cart)
 	{
 		$code = "";
@@ -644,8 +533,6 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public function event_tracking_code($parameters, $selector)
 	{
-		//$parameters = apply_filters('woocommerce_ga_event_tracking_parameters', $parameters);	
-
 		wc_enqueue_js("		
 					/*
 					$( '" . $selector . "' ).click( function() {				
