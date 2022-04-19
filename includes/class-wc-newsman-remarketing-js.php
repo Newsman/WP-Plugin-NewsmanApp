@@ -165,7 +165,7 @@ class WC_Newsman_Remarketing_JS
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
-		var _nzmPluginInfo = '2.2.8:Wordpress-Woocommerce';
+		var _nzmPluginInfo = '2.2.9:Wordpress-Woocommerce';
 		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
 		_nzm_tracking_server = '" . self::$endpointHost . "';
@@ -181,10 +181,11 @@ class WC_Newsman_Remarketing_JS
 		if(lastCart === null)
 			lastCart = {};			
 
-		let lastCartFlag = false;
-		let bufferedClick = false;
-		let firstLoad = true;
-		let bufferedXHR = false;
+		var lastCartFlag = false;
+		var bufferedClick = false;
+		var firstLoad = true;
+		var bufferedXHR = false;
+		var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';	
 					
 		NewsmanAutoEvents();
 		setInterval(NewsmanAutoEvents, 5000);		
@@ -192,8 +193,6 @@ class WC_Newsman_Remarketing_JS
 		detectXHR();
 
 		function NewsmanAutoEvents(){							
-
-			var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';
 
 			if(bufferedXHR || firstLoad)
 			{
@@ -224,25 +223,27 @@ class WC_Newsman_Remarketing_JS
 
 					if(response.length > 0 && lastCartFlag == false)
 					{
-
-						_nzm.run('ec:setAction', 'clear_cart');
-						_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');	
-
-						for (var item in response) {				
-
-							_nzm.run( 'ec:addProduct', 
-								response[item]
-							);				
-
-						}	
 						
-						_nzm.run( 'ec:setAction', 'add' );
-						_nzm.run( 'send', 'event', 'UX', 'click', 'add to cart' );
+						_nzm.run('ec:setAction', 'clear_cart');										
+						_nzm.run( 'send', 'event', 'detail view', 'click', 'clearCart', null, _nzm.createFunctionWithTimeout(function() {												
 
-						sessionStorage.setItem('lastCart', JSON.stringify(response));					
+							for (var item in response) {				
 
-						if(!isProd)
-							console.log('newsman remarketing: cart sent');				
+								_nzm.run( 'ec:addProduct', 
+									response[item]
+								);				
+	
+							}	
+
+							_nzm.run( 'ec:setAction', 'add' );
+							_nzm.run( 'send', 'event', 'UX', 'click', 'add to cart' );
+
+							sessionStorage.setItem('lastCart', JSON.stringify(response));					
+
+							if(!isProd)
+								console.log('newsman remarketing: cart sent');
+
+						}));										
 
 					}
 					else{
@@ -273,10 +274,10 @@ class WC_Newsman_Remarketing_JS
 						if(pointer.readyState != 4){
 								return;
 						}
-
+						
 						var _location = pointer.getResponseHeader('access-control-allow-origin');				
 
-						if(pointer.responseURL.indexOf('newsman=getCart.json') >= 0)
+						if(pointer.responseURL.indexOf('getCart.json') >= 0)
 						{							
 							validate = false;												
 						}
