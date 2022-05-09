@@ -3,6 +3,7 @@
 if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 {		
 	$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
+	$smslist = (isset($_POST['newsman_smslist']) && !empty($_POST['newsman_smslist'])) ? strip_tags(trim($_POST['newsman_smslist'])) : "";
 	$segments = (isset($_POST['newsman_segments']) && !empty($_POST['newsman_segments'])) ? strip_tags(trim($_POST['newsman_segments'])) : "";
 	
 	$this->constructClient($this->userid, $this->apikey);
@@ -10,6 +11,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	update_option("newsman_userid", $this->userid);
 	update_option("newsman_apikey", $this->apikey);
 	update_option("newsman_list", $list);
+	update_option("newsman_smslist", $smslist);
 	update_option("newsman_segments", $segments);	
 
 	if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
@@ -58,6 +60,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 } else
 {
 	$list = get_option('newsman_list');
+	$smslist = get_option('newsman_smslist');
 	$segments = get_option('newsman_segments');
 
 	try
@@ -130,6 +133,25 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 								<?php } ?>
 							</select>
 							<p class="description">Select a list of subscribers</p>
+						</td>
+					</tr>
+				<?php //} ?>
+
+				<?php //if (isset($available_lists) && !empty($available_lists)) { ?>
+					<tr>
+						<th scope="row">
+							<label for="newsman_smslist">Select an SMS list</label>
+						</th>
+						<td>
+							<select name="newsman_smslist" id="">
+								<option value="0">-- select list --</option>
+								<?php foreach ($available_smslists as $l)
+								{ ?>
+									<option
+										value="<?php echo $l['list_id'] ?>" <?php echo $l['list_id'] == $smslist ? "selected = ''" : ""; ?>><?php echo $l['list_name']; ?></option>
+								<?php } ?>
+							</select>
+							<p class="description">Select a list of SMS to be synced with phone numbers</p>
 						</td>
 					</tr>
 				<?php //} ?>

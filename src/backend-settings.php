@@ -5,6 +5,7 @@
 		$userid = (isset($_POST['newsman_userid']) && !empty($_POST['newsman_userid'])) ? strip_tags(trim($_POST['newsman_userid'])) : "";
 		$apikey = (isset($_POST['newsman_apikey']) && !empty($_POST['newsman_apikey'])) ? strip_tags(trim($_POST['newsman_apikey'])) : "";	
 		$allowAPI = (isset($_POST['newsman_api']) && !empty($_POST['newsman_api'])) ? strip_tags(trim($_POST['newsman_api'])) : "";
+		$checkoutSMS = (isset($_POST['newsman_checkoutsms']) && !empty($_POST['newsman_checkoutsms'])) ? strip_tags(trim($_POST['newsman_checkoutsms'])) : "";
 		$checkoutNewsletter = (isset($_POST['newsman_checkoutnewsletter']) && !empty($_POST['newsman_checkoutnewsletter'])) ? strip_tags(trim($_POST['newsman_checkoutnewsletter'])) : "";
 		$checkoutNewsletterType = (isset($_POST['newsman_checkoutnewslettertype']) && !empty($_POST['newsman_checkoutnewslettertype'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettertype'])) : "";
 		$newsman_checkoutnewslettermessage = (isset($_POST['newsman_checkoutnewslettermessage']) && !empty($_POST['newsman_checkoutnewslettermessage'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettermessage'])) : "";		
@@ -15,6 +16,7 @@
 		update_option("newsman_userid", $this->userid);
 		update_option("newsman_apikey", $this->apikey);
 		update_option("newsman_api", $allowAPI);
+		update_option("newsman_checkoutsms", $checkoutSMS);
 		update_option("newsman_checkoutnewsletter", $checkoutNewsletter);
 		update_option("newsman_checkoutnewslettertype", $checkoutNewsletterType);				
 		update_option("newsman_checkoutnewslettermessage", $newsman_checkoutnewslettermessage);
@@ -41,6 +43,7 @@
 		$userid = get_option('newsman_userid');
 		$apikey = get_option('newsman_apikey');
 		$allowAPI = get_option('newsman_api');
+		$checkoutSMS = get_option('newsman_checkoutsms');
 		$checkoutNewsletter = get_option('newsman_checkoutnewsletter');
 		$checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
 		$newsman_checkoutnewslettermessage = get_option('newsman_checkoutnewslettermessage');
@@ -139,6 +142,15 @@
 						<td>
 
 						<input name="newsman_checkoutnewsletter" type="checkbox" id="newsman_checkoutnewsletter" <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == "on") ? "checked" : ""; ?>/>																
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="newsman_checkoutsms">Checkout SMS, sync phone numbers to your SMS list</label>
+						</th>
+						<td>
+
+						<input name="newsman_checkoutsms" type="checkbox" id="newsman_checkoutsms" <?php echo (!empty($checkoutSMS) && $checkoutSMS == "on") ? "checked" : ""; ?>/>																
 						</td>
 					</tr>
 					<tr class="newsman_checkoutnewslettertypePanel" style="display: <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == 'on') ? 'table-row' : 'none'; ?>;">

@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.3.0
+Version: 2.3.1
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -712,8 +712,10 @@ Author URI: https://www.newsman.com
             {
 
                 $checkoutNewsletter = get_option('newsman_checkoutnewsletter');
+                $checkoutSMS = get_option('newsman_checkoutsms');
                 $checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
                 $list = get_option('newsman_list');
+                $smslist = get_option('newsman_smslist');
 
                 $order = wc_get_order($order_id);            
                 $order_data = $order->get_data();    
@@ -786,7 +788,16 @@ Author URI: https://www.newsman.com
 
                         $ret = $this->client->segment->addSubscriber($segments, $subId);
 
-                    }     
+                    }   
+                    
+                    //SMS sync
+                    if(!empty($checkoutSMS) && $checkoutSMS == "on")
+                    {
+
+                        if(!empty($phone))
+                            $ret = $this->client->sms->saveSubscribe($smslist, $phone, $first_name, $last_name, $this->getUserIP(), $props);
+
+                    }
                 
                 }
                 catch (Exception $e)
