@@ -185,12 +185,17 @@ class WC_Newsman_Remarketing_JS
 		var bufferedClick = false;
 		var firstLoad = true;
 		var bufferedXHR = false;
-		var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';	
-					
-		NewsmanAutoEvents();
-		setInterval(NewsmanAutoEvents, 5000);		
+		var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';
+        var documentComparer = '" . get_site_url() . "/';
+        var documentUrl = document.URL;
+                    
+        if(documentComparer == documentUrl)
+        {
+            NewsmanAutoEvents();
+            setInterval(NewsmanAutoEvents, 5000);
 
-		detectXHR();
+            detectXHR();
+        }
 
 		function NewsmanAutoEvents(){							
 
