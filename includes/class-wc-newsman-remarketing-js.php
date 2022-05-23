@@ -12,12 +12,6 @@ if (!defined('ABSPATH'))
 class WC_Newsman_Remarketing_JS
 {
 
-	/**
-	 * @var string
-	 */
-	public static $endpoint = "https://retargeting.newsmanapp.com/js/retargeting/track.js";
-	public static $endpointHost = "https://retargeting.newsmanapp.com";
-
 	/** @var object Class Instance */
 	private static $instance;
 
@@ -165,182 +159,217 @@ class WC_Newsman_Remarketing_JS
 		$remarketingid = get_option('newsman_remarketingid');
 
 		$ga_snippet_head = "
-		var _nzmPluginInfo = '2.3.2:Wordpress-Woocommerce';
-		var _nzm = _nzm || []; var _nzm_config = _nzm_config || [];
+		//Newsman remarketing tracking code             
+		var endpoint = 'https://retargeting.newsmanapp.com';
+		var remarketingEndpoint = endpoint + '/js/retargeting/track.js';
+		var remarketingid = '$remarketingid';
+
+		var _nzmPluginInfo = '2.3.3:woocommerce';
+		var _nzm = _nzm || [];
+		var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
-		_nzm_tracking_server = '" . self::$endpointHost . "';
-		(function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
-		}};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
-		s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
-		script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js($remarketingid) . "');
-		script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();			
+		_nzm_tracking_server = endpoint;
+		(function() {
+		    var a, methods, i;
+		    a = function(f) {
+		        return function() {
+		            _nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
+		        }
+		    };
+		    methods = ['identify', 'track', 'run'];
+		    for (i = 0; i < methods.length; i++) {
+		        _nzm[methods[i]] = a(methods[i])
+		    };
+		    s = document.getElementsByTagName('script')[0];
+		    var script_dom = document.createElement('script');
+		    script_dom.async = true;
+		    script_dom.id = 'nzm-tracker';
+		    script_dom.setAttribute('data-site-id', remarketingid);
+		    script_dom.src = remarketingEndpoint;
+		    s.parentNode.insertBefore(script_dom, s);
+		})();
+		_nzm.run('require', 'ec');
+
+		//Newsman remarketing tracking code     
+
+		//Newsman remarketing auto events
 
 		var isProd = true;
 
-		let lastCart = sessionStorage.getItem('lastCart');			
-		if(lastCart === null)
-			lastCart = {};			
+		let lastCart = sessionStorage.getItem('lastCart');
+		if (lastCart === null)
+		    lastCart = {};
 
 		var lastCartFlag = false;
-		var bufferedClick = false;
 		var firstLoad = true;
 		var bufferedXHR = false;
+		var unlockClearCart = true;
 		var ajaxurl = '" . get_site_url() . "?newsman=getCart.json';
 		var documentComparer = '" . get_site_url() . "/';
 		var documentUrl = document.URL;
-		var sameOrigin = (documentUrl.indexOf(documentComparer) !== -1);			
-					
-		if(sameOrigin)		
-		{
-			NewsmanAutoEvents();
-			setInterval(NewsmanAutoEvents, 5000);		
+		var sameOrigin = (documentUrl.indexOf(documentComparer) !== -1);
 
-			detectXHR();
+		if (sameOrigin) {
+		    NewsmanAutoEvents();
+		    setInterval(NewsmanAutoEvents, 5000);
+
+		    detectXHR();
 		}
 
-		function NewsmanAutoEvents(){							
+		function NewsmanAutoEvents() {
 
-				  let postObj = { 
-					post: true
-				}
+		    let xhr = new XMLHttpRequest()
 
-				let post = JSON.stringify(postObj)
+		    if (bufferedXHR || firstLoad) {
 
-				let xhr = new XMLHttpRequest()
+		        xhr.open('GET', ajaxurl, true);
+		        xhr.onload = function() {
 
-				if (bufferedClick || firstLoad) {
+		            if (xhr.status == 200 || xhr.status == 201) {
 
-				xhr.open('GET', ajaxurl, true);
-				xhr.onload = function() {
-				
-					if(xhr.status == 200 || xhr.status == 201)
-      				{
-					
-						var response = JSON.parse(xhr.responseText); 
+		                var response = JSON.parse(xhr.responseText);
 
-						lastCart = JSON.parse(sessionStorage.getItem('lastCart'));						
+		                lastCart = JSON.parse(sessionStorage.getItem('lastCart'));
 
-						if(lastCart === null)
-							lastCart = {};	
+		                if (lastCart === null)
+		                    lastCart = {};
 
-						//check cache
-						if(lastCart.length > 0 && lastCart != null && lastCart != undefined && response.length > 0 && response != null && response != undefined)
-						{				
-							if(JSON.stringify(lastCart) === JSON.stringify(response))
-							{
-								if(!isProd)
-									console.log('newsman remarketing: cache loaded, cart is unchanged');
+		                //check cache
+		                if (lastCart.length > 0 && lastCart != null && lastCart != undefined && response.length > 0 && response != null && response != undefined) {
+		                    if (JSON.stringify(lastCart) === JSON.stringify(response)) {
+		                        if (!isProd)
+		                            console.log('newsman remarketing: cache loaded, cart is unchanged');
 
-								lastCartFlag = true;					
-							}
-							else{
-								lastCartFlag = false;
-							}
-						}			
+		                        lastCartFlag = true;
+		                    } else {
+		                        lastCartFlag = false;
 
-						if(response.length > 0 && lastCartFlag == false)
-						{
+		                        if (!isProd)
+		                            console.log('newsman remarketing: cache loaded, cart is changed');
+		                    }
+		                }		             
 
-							_nzm.run('ec:setAction', 'clear_cart');										
-							_nzm.run( 'send', 'event', 'detail view', 'click', 'clearCart', null, _nzm.createFunctionWithTimeout(function() {												
+		                if (response.length > 0 && lastCartFlag == false) {
 
-								for (var item in response) {				
+		                    addToCart(response);
 
-									_nzm.run( 'ec:addProduct', 
-										response[item]
-									);				
+		                }
+		                //send only when on last request, products existed
+		                else if (response.length == 0 && lastCart.length > 0 && unlockClearCart) {
 
-								}	
+		                    clearCart();
 
-								_nzm.run( 'ec:setAction', 'add' );
-								_nzm.run( 'send', 'event', 'UX', 'click', 'add to cart' );
+		                    if (!isProd)
+		                        console.log('newsman remarketing: clear cart sent');
 
-								sessionStorage.setItem('lastCart', JSON.stringify(response));					
+		                } else {
 
-								if(!isProd)
-									console.log('newsman remarketing: cart sent');
+		                    if (!isProd)
+		                        console.log('newsman remarketing: request not sent');
 
-							}));										
+		                }
 
-						}
-						else{
+		                firstLoad = false;
+		                bufferedXHR = false;
 
-							if(!isProd)
-								console.log('newsman remarketing: request not sent');
+		            }
 
-						}
+		        }
 
-						firstLoad = false;				
-						bufferedXHR = false;
-						}
-				
-				}	
-				
-				   xhr.send(null);
-				
-			}
-		  
+		        xhr.send(null);
+
+		    } else {
+		        if (!isProd)
+		            console.log('newsman remarketing: !buffered xhr || first load');
+		    }
+
 		}
 
-		function detectXHR() {	
+		function clearCart() {
+
+		    _nzm.run('ec:setAction', 'clear_cart');
+		    _nzm.run('send', 'event', 'detail view', 'click', 'clearCart');
+
+			sessionStorage.setItem('lastCart', JSON.stringify([]));
 			
-			var proxied = window.XMLHttpRequest.prototype.send;
-			window.XMLHttpRequest.prototype.send = function() {		
-
-				var pointer = this;
-				var validate = true;
-				var intervalId = window.setInterval(function(){
-
-						if(pointer.readyState != 4){
-								return;
-						}
-						
-						var _location = pointer.getResponseHeader('access-control-allow-origin');				
-
-						if(pointer.responseURL.indexOf('getCart.json') >= 0)
-						{							
-							validate = false;												
-						}
-						else{
-							validate = true;
-						}
-
-						if(validate && !_location || _location == window.location.origin)
-						{
-							bufferedXHR = true;
-
-							if(!isProd)
-								console.log('newsman remarketing: ajax request fired and catched from same domain');
-
-							NewsmanAutoEvents();
-						}
-			
-						clearInterval(intervalId);
-		
-				}, 1);
-
-				return proxied.apply(this, [].slice.call(arguments));
-			};	
+			unlockClearCart = false;
 
 		}
 
-		function BufferClick(){
+		function addToCart(response) {
 
-			window.onclick = function (e) {
-				const origin = ['a', 'input', 'span', 'i', 'button'];
-	
-				var click = e.target.localName;			
+		    _nzm.run('ec:setAction', 'clear_cart');
+		    _nzm.run('send', 'event', 'detail view', 'click', 'clearCart', null, _nzm.createFunctionWithTimeout(function() {
 
-				if(!isProd)
-					console.log('newsman remarketing element clicked: ' + click);
+		        for (var item in response) {
 
-				for (const element of origin) {
-					if(click == element)
-						bufferedClick = true;
-				}
-			}
+		            _nzm.run('ec:addProduct',
+		                response[item]
+		            );
+
+		        }
+
+		        _nzm.run('ec:setAction', 'add');
+		        _nzm.run('send', 'event', 'UX', 'click', 'add to cart');
+
+		        sessionStorage.setItem('lastCart', JSON.stringify(response));
+				unlockClearCart = true;
+
+		        if (!isProd)
+		            console.log('newsman remarketing: cart sent');
+
+		    }));
 
 		}
+
+		function detectXHR() {
+
+		    var proxied = window.XMLHttpRequest.prototype.send;
+		    window.XMLHttpRequest.prototype.send = function() {
+
+		        var pointer = this;
+		        var validate = false;
+		        var intervalId = window.setInterval(function() {
+
+		            if (pointer.readyState != 4) {
+		                return;
+		            }
+
+		            var _location = pointer.responseURL;
+
+		            //own request exclusion
+		            if (
+		                pointer.responseURL.indexOf('getCart.json') >= 0 ||
+		                //magento
+		                pointer.responseURL.indexOf('/static/') >= 0 ||
+		                pointer.responseURL.indexOf('/pub/static') >= 0 ||
+		                pointer.responseURL.indexOf('/customer/section') >= 0
+		            ) {
+		                validate = false;
+		            } else {
+						if(_location.indexOf(window.location.origin) !== -1)						
+		                	validate = true;
+		            }
+
+		            if (validate) {
+		                bufferedXHR = true;
+
+		                if (!isProd)
+		                    console.log('newsman remarketing: ajax request fired and catched from same domain');
+
+		                NewsmanAutoEvents();
+		            }
+
+		            clearInterval(intervalId);
+
+		        }, 1);
+
+		        return proxied.apply(this, [].slice.call(arguments));
+		    };
+
+		}
+
+		//Newsman remarketing auto events
         ";
 		
 		$ga_snippet_require = "";
@@ -415,7 +444,6 @@ class WC_Newsman_Remarketing_JS
 		$variant = self::product_get_variant_line($_product);
 
 		$code = "" . self::tracker_var() . "( 'ec:addProduct', {";
-		//$code .= "'id': '" . esc_js($_product->get_sku() ? $_product->get_sku() : $_product->get_id()) . "',";
 		$code .= "'id': '" . esc_js($_product->get_id() ? $_product->get_id() : $_product->get_sku()) . "',";
 		$code .= "'name': '" . esc_js($item['name']) . "',";
 		$code .= "'category': " . self::product_get_category_line($_product);
@@ -467,7 +495,6 @@ class WC_Newsman_Remarketing_JS
 	 */
 	private static function product_get_variant_line($_product)
 	{
-
 		$out = '';
 		$variation_data = version_compare(WC_VERSION, '3.0', '<') ? $_product->variation_data : ($_product->is_type('variation') ? wc_get_product_variation_attributes($_product->get_id()) : '');
 
@@ -510,7 +537,7 @@ class WC_Newsman_Remarketing_JS
 				'price': '" . esc_js($product->get_price()) . "',
 			} );
 
-			" . self::tracker_var() . "( 'ec:setAction', 'detail' );");
+		" . self::tracker_var() . "( 'ec:setAction', 'detail' );");
 	}
 
 	/**
@@ -519,27 +546,6 @@ class WC_Newsman_Remarketing_JS
 	function checkout_process($cart)
 	{
 		$code = "";
-
-		foreach ($cart as $cart_item_key => $cart_item)
-		{
-			$product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-			$variant = self::product_get_variant_line($product);
-			$code .= "" . self::tracker_var() . "( 'ec:addProduct', {
-				'id': '" . esc_js($product->get_id() ? $product->get_id() : ($product->get_sku())) . "',
-				'name': '" . esc_js($product->get_title()) . "',
-				'category': " . self::product_get_category_line($product);
-
-			if ('' !== $variant)
-			{
-				$code .= "'variant': " . $variant;
-			}
-
-			$code .= "'price': '" . esc_js($product->get_price()) . "',
-				'quantity': '" . esc_js($cart_item['quantity']) . "'
-			} );";
-		}
-
-		$code .= "" . self::tracker_var() . "( 'ec:setAction','checkout' );";
 
 		wc_enqueue_js($code);
 	}
@@ -554,15 +560,7 @@ class WC_Newsman_Remarketing_JS
 	 */
 	public function event_tracking_code($parameters, $selector)
 	{
-		wc_enqueue_js("		
-					/*
-					$( '" . $selector . "' ).click( function() {				
-						" . $parameters['enhanced'] . "
-						" . self::tracker_var() . "( 'ec:setAction', 'add' );
-						" . self::tracker_var() . "( 'send', 'event', 'UX', 'click', 'add to cart' );" . self::tracker_var() . "( 'send', 'pageview' );
-					});
-					*/
-				");
+		wc_enqueue_js("");
 	}
 
 }
