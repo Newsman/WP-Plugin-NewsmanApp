@@ -164,7 +164,7 @@ class WC_Newsman_Remarketing_JS
 		var remarketingEndpoint = endpoint + '/js/retargeting/track.js';
 		var remarketingid = '$remarketingid';
 
-		var _nzmPluginInfo = '2.3.3:woocommerce';
+		var _nzmPluginInfo = '2.3.4:woocommerce';
 		var _nzm = _nzm || [];
 		var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
@@ -209,6 +209,33 @@ class WC_Newsman_Remarketing_JS
 		var documentUrl = document.URL;
 		var sameOrigin = (documentUrl.indexOf(documentComparer) !== -1);
 
+        let startTime, endTime;
+
+        function startTimePassed() {
+            startTime = new Date();
+        };
+
+        startTimePassed();
+
+        function endTimePassed() {
+            var flag = false;
+
+            endTime = new Date();
+            var timeDiff = endTime - startTime;
+
+            timeDiff /= 1000;
+
+            var seconds = Math.round(timeDiff);
+
+            if (firstLoad)
+                flag = true;
+
+            if (seconds >= 5)
+                flag = true;
+
+            return flag;
+        }
+        
 		if (sameOrigin) {
 		    NewsmanAutoEvents();
 		    setInterval(NewsmanAutoEvents, 5000);
@@ -217,12 +244,18 @@ class WC_Newsman_Remarketing_JS
 		}
 
 		function NewsmanAutoEvents() {
+        
+            if (!endTimePassed())
+                return;
 
 		    let xhr = new XMLHttpRequest()
 
 		    if (bufferedXHR || firstLoad) {
 
 		        xhr.open('GET', ajaxurl, true);
+        
+                startTimePassed();
+        
 		        xhr.onload = function() {
 
 		            if (xhr.status == 200 || xhr.status == 201) {
@@ -339,11 +372,13 @@ class WC_Newsman_Remarketing_JS
 
 		            //own request exclusion
 		            if (
-		                pointer.responseURL.indexOf('getCart.json') >= 0 ||
-		                //magento
-		                pointer.responseURL.indexOf('/static/') >= 0 ||
-		                pointer.responseURL.indexOf('/pub/static') >= 0 ||
-		                pointer.responseURL.indexOf('/customer/section') >= 0
+                            pointer.responseURL.indexOf('getCart.json') >= 0 ||
+                            //magento 2-2.3.x
+                            pointer.responseURL.indexOf('/static/') >= 0 ||
+                            pointer.responseURL.indexOf('/pub/static') >= 0 ||
+                            pointer.responseURL.indexOf('/customer/section') >= 0 ||
+                            //opencart 1
+                            pointer.responseURL.indexOf('getCart=true') >= 0
 		            ) {
 		                validate = false;
 		            } else {
