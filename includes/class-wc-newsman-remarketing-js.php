@@ -164,7 +164,7 @@ class WC_Newsman_Remarketing_JS
 		var remarketingEndpoint = endpoint + '/js/retargeting/track.js';
 		var remarketingid = '$remarketingid';
 
-		var _nzmPluginInfo = '2.3.4:woocommerce';
+		var _nzmPluginInfo = '2.3.5:woocommerce';
 		var _nzm = _nzm || [];
 		var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
