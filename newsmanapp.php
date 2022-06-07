@@ -858,7 +858,7 @@ Author URI: https://www.newsman.com
             else{
                 $atts["formid"] = str_replace("nzm-container-", '', $atts["formid"]);
 
-                return '<script async src="https://jcdn.newsmanapp.com/js/forms/embed.js" data-nzmform="' . $atts["formid"] . '"></script>';
+                return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' . $atts["formid"] . '-v2"></script>';
             }
         }
 
