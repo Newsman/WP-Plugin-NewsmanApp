@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.3.5
+Version: 2.3.6
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -858,7 +858,7 @@ Author URI: https://www.newsman.com
             else{
                 $atts["formid"] = str_replace("nzm-container-", '', $atts["formid"]);
 
-                return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' . $atts["formid"] . '-v2"></script>';
+                return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' . $atts["formid"] . '"></script>';
             }
         }
 

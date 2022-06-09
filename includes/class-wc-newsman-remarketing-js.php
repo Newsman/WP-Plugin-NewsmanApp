@@ -164,29 +164,29 @@ class WC_Newsman_Remarketing_JS
 		var remarketingEndpoint = endpoint + '/js/retargeting/track.js';
 		var remarketingid = '$remarketingid';
 
-		var _nzmPluginInfo = '2.3.5:woocommerce';
+		var _nzmPluginInfo = '2.3.6:woocommerce';
 		var _nzm = _nzm || [];
 		var _nzm_config = _nzm_config || [];
 		_nzm_config['disable_datalayer'] = 1;
 		_nzm_tracking_server = endpoint;
 		(function() {
-		    var a, methods, i;
-		    a = function(f) {
-		        return function() {
-		            _nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
-		        }
-		    };
-		    methods = ['identify', 'track', 'run'];
-		    for (i = 0; i < methods.length; i++) {
-		        _nzm[methods[i]] = a(methods[i])
-		    };
-		    s = document.getElementsByTagName('script')[0];
-		    var script_dom = document.createElement('script');
-		    script_dom.async = true;
-		    script_dom.id = 'nzm-tracker';
-		    script_dom.setAttribute('data-site-id', remarketingid);
-		    script_dom.src = remarketingEndpoint;
-		    s.parentNode.insertBefore(script_dom, s);
+			var a, methods, i;
+			a = function(f) {
+				return function() {
+					_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
+				}
+			};
+			methods = ['identify', 'track', 'run'];
+			for (i = 0; i < methods.length; i++) {
+				_nzm[methods[i]] = a(methods[i])
+			};
+			s = document.getElementsByTagName('script')[0];
+			var script_dom = document.createElement('script');
+			script_dom.async = true;
+			script_dom.id = 'nzm-tracker';
+			script_dom.setAttribute('data-site-id', remarketingid);
+			script_dom.src = remarketingEndpoint;
+			s.parentNode.insertBefore(script_dom, s);
 		})();
 		_nzm.run('require', 'ec');
 
