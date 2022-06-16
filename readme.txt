@@ -64,6 +64,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
  * Patch
 = 1.8.2 = 
  * Patch
+= 2.3.7 =
+ * Remarketing improvements
 
  
 == Upgrade Notice ==
