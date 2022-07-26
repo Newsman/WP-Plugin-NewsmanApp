@@ -163,7 +163,7 @@ class WC_Newsman_Remarketing_JS
 		//Newsman remarketing tracking code REPLACEABLE
 
 		var remarketingid = '$remarketingid';
-		var _nzmPluginInfo = '2.3.8:woocommerce';
+		var _nzmPluginInfo = '2.3.9:woocommerce';
 		
 		//Newsman remarketing tracking code REPLACEABLE
 
@@ -193,6 +193,13 @@ class WC_Newsman_Remarketing_JS
 			script_dom.id = 'nzm-tracker';
 			script_dom.setAttribute('data-site-id', remarketingid);
 			script_dom.src = remarketingEndpoint;
+			//check for engine name
+			if (_nzmPluginInfo.indexOf('shopify') !== -1) {
+				script_dom.onload = function(){
+					if (typeof newsmanRemarketingLoad === 'function')
+						newsmanRemarketingLoad();
+				}
+			}
 			s.parentNode.insertBefore(script_dom, s);
 		})();
 		_nzm.run('require', 'ec');
@@ -256,7 +263,7 @@ class WC_Newsman_Remarketing_JS
 			detectXHR();
 		}
 
-		function timestamp(min, max) {
+		function timestampGenerator(min, max) {
 			min = Math.ceil(min);
 			max = Math.floor(max);
 			return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -265,7 +272,12 @@ class WC_Newsman_Remarketing_JS
 		function NewsmanAutoEvents() {
 
 			if (!endTimePassed())
+			{
+				if (!isProd)
+					console.log('newsman remarketing: execution stopped at the beginning, 5 seconds didn\"t pass between requests');
+
 				return;
+			}
 
 			if (isError && isProd == true) {
 				console.log('newsman remarketing: an error occurred, set isProd = false in console, script execution stopped;');
@@ -277,14 +289,22 @@ class WC_Newsman_Remarketing_JS
 
 			if (bufferedXHR || firstLoad) {
 
-				var paramChar = '?t=';
+			var paramChar = '?t=';
 
-				if (ajaxurl.indexOf('?') >= 0)
-					paramChar = '&t=';
+			if (ajaxurl.indexOf('?') >= 0)
+				paramChar = '&t=';
 
-				var timestamp = paramChar + Date.now() + this.timestamp(999, 999999999);
+			var timestamp = paramChar + Date.now() + timestampGenerator(999, 999999999);
 
+			try{
 				xhr.open('GET', ajaxurl + timestamp, true);
+			}
+			catch(ex){
+				if (!isProd)
+				console.log('newsman remarketing: malformed XHR url');
+
+				isError = true;
+			}
 
 				startTimePassed();
 
@@ -301,6 +321,30 @@ class WC_Newsman_Remarketing_JS
 							isError = true;
 
 							return;
+						}
+
+						//check for engine name
+						if (_nzmPluginInfo.indexOf('shopify') !== -1) {
+
+							var products = [];
+
+							if(response.item_count > 0)
+							{
+								response.items.forEach(function(item){
+								
+									products.push(
+										{
+											'id': item.id,
+											'name': item.product_title,
+											'quantity': item.quantity,
+											'price': item.price
+										}
+									);
+
+								});
+							}
+
+							response = products;
 						}
 
 						lastCart = JSON.parse(sessionStorage.getItem('lastCart'));
@@ -355,7 +399,15 @@ class WC_Newsman_Remarketing_JS
 
 				}
 
-				xhr.send(null);
+				try{
+					xhr.send(null);
+				}
+				catch(ex){
+					if (!isProd)
+					console.log('newsman remarketing: error on xhr send');
+
+				isError = true;
+				}
 
 			} else {
 				if (!isProd)
@@ -418,18 +470,26 @@ class WC_Newsman_Remarketing_JS
 
 					//own request exclusion
 					if (
-									pointer.responseURL.indexOf('getCart.json') >= 0 ||
+									_location.indexOf('getCart.json') >= 0 ||
 									//magento 2.x
-									pointer.responseURL.indexOf('/static/') >= 0 ||
-									pointer.responseURL.indexOf('/pub/static') >= 0 ||
-									pointer.responseURL.indexOf('/customer/section') >= 0 ||
+									_location.indexOf('/static/') >= 0 ||
+									_location.indexOf('/pub/static') >= 0 ||
+									_location.indexOf('/customer/section') >= 0 ||
 									//opencart 1
-									pointer.responseURL.indexOf('getCart=true') >= 0
+									_location.indexOf('getCart=true') >= 0 ||
+									//shopify
+									_location.indexOf('cart.js') >= 0
 					) {
 						validate = false;
 					} else {
-						if (_location.indexOf(window.location.origin) !== -1)
+						//check for engine name
+						if (_nzmPluginInfo.indexOf('shopify') !== -1) {
 							validate = true;
+						}
+						else{
+							if (_location.indexOf(window.location.origin) !== -1)
+							validate = true;
+						}
 					}
 
 					if (validate) {
