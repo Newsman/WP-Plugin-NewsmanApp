@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.3.9
+Version: 2.4.0
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -684,10 +684,12 @@ Author URI: https://www.newsman.com
             {
                 $msg = get_option('newsman_checkoutnewslettermessage');                
                 $default = get_option('newsman_checkoutnewsletterdefault');     
-
+                $checked = '';
+                
                 if(!empty($default) && $default == "on")
                 {
                     $default = 1;
+                    $checked = 'checked';
                 }
                 else{
                     $default = 0;
@@ -700,8 +702,9 @@ Author URI: https://www.newsman.com
                     'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
                     'required'      => true,
                     'label'         => $msg,
-                    'default'       => $default
-                    ));    
+                    'default'       => $default,
+                    'checked'       => $checked
+                    ));
             }
 
         }
