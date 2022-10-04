@@ -10,6 +10,7 @@
 		$checkoutNewsletterType = (isset($_POST['newsman_checkoutnewslettertype']) && !empty($_POST['newsman_checkoutnewslettertype'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettertype'])) : "";
 		$newsman_checkoutnewslettermessage = (isset($_POST['newsman_checkoutnewslettermessage']) && !empty($_POST['newsman_checkoutnewslettermessage'])) ? strip_tags(trim($_POST['newsman_checkoutnewslettermessage'])) : "";		
 		$checkoutNewsletterDefault = (isset($_POST['newsman_checkoutnewsletterdefault']) && !empty($_POST['newsman_checkoutnewsletterdefault'])) ? strip_tags(trim($_POST['newsman_checkoutnewsletterdefault'])) : "";
+		$form_id = (isset($_POST['newsman_form_id']) && !empty($_POST['newsman_form_id'])) ? strip_tags(trim($_POST['newsman_form_id'])) : "";
 
 		$this->constructClient($userid, $apikey);
 
@@ -21,6 +22,7 @@
 		update_option("newsman_checkoutnewslettertype", $checkoutNewsletterType);				
 		update_option("newsman_checkoutnewslettermessage", $newsman_checkoutnewslettermessage);
 		update_option("newsman_checkoutnewsletterdefault", $checkoutNewsletterDefault);
+		update_option("newsman_form_id", $form_id);
 
 		try
 		{
@@ -48,6 +50,7 @@
 		$checkoutNewsletterType = get_option('newsman_checkoutnewslettertype');
 		$newsman_checkoutnewslettermessage = get_option('newsman_checkoutnewslettermessage');
 		$checkoutNewsletterDefault = get_option('newsman_checkoutnewsletterdefault');
+		$form_id = get_option('newsman_form_id');
 
 		try
 		{
@@ -181,6 +184,15 @@
 						<td>
 
 						<input name="newsman_checkoutnewsletterdefault" type="checkbox" id="newsman_checkoutnewsletterdefault" <?php echo (!empty($checkoutNewsletterDefault) && $checkoutNewsletterDefault == "on") ? "checked" : ""; ?>/>																
+						</td>
+					</tr>
+					<tr class="newsman_checkoutnewslettertypePanel" style="display: <?php echo (!empty($checkoutNewsletter) && $checkoutNewsletter == 'on') ? 'table-row' : 'none'; ?>;">
+						<th scope="row">
+							<label for="newsman_form_id">Form_id: the form of the form used for the confirmation email / form settings. Forms can be created admin.</label>
+						</th>
+						<td>
+
+						<input type="text" id="newsman_form_id" name="newsman_form_id" value="<?php echo (!empty($form_id)) ? $form_id : ""; ?>" placeholder="form id"/>													
 						</td>
 					</tr>
 

@@ -186,7 +186,7 @@ class Newsman_Client
 		curl_setopt($cu, CURLOPT_RETURNTRANSFER, true);
 		
 		$ret = curl_exec($cu);				
-		
+
 		$http_status = curl_getinfo($cu, CURLINFO_HTTP_CODE);
 		if ($http_status != 200)
 		{

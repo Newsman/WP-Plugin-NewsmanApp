@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.4.0
+Version: 2.4.1
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -742,7 +742,7 @@ Author URI: https://www.newsman.com
                 }
                 catch (Exception $e)
                 {
-                    error_log($e->getMessage());
+                    //custom fields not found
                 }
 
                 $email = $order_data["billing"]["email"];
@@ -751,13 +751,22 @@ Author URI: https://www.newsman.com
 
                 $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";                
 
-                $props["phone"] = $phone;  
+                $props["phone"] = $phone; 
+
+                $options = array();
         
                 $segments = get_option('newsman_segments');
+                $rawSegments = $segments;
                 if(!empty($segments))
-                    $segments = array("segments" => array($segments));         
+                    $segments = array("segments" => array($segments));       
+                    
+                $options["segments"] = array($rawSegments);
+                
+                $form_id = get_option('newsman_form_id');
+                if(!empty($form_id))
+                    $options["form_id"] = $form_id;
 
-                $checkoutType = get_option('newsman_checkoutnewslettertype');            
+                $checkoutType = get_option('newsman_checkoutnewslettertype'); 
 
                 try{             
                     if($checkoutType == "init")
@@ -770,7 +779,7 @@ Author URI: https://www.newsman.com
                             $last_name,
                             $this->getUserIP(),
                             $props, 
-                            $segments
+                            $options
                         );
 
                     }
