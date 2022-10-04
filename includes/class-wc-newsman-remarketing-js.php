@@ -163,7 +163,7 @@ class WC_Newsman_Remarketing_JS
 		//Newsman remarketing tracking code REPLACEABLE
 
 		var remarketingid = '$remarketingid';
-		var _nzmPluginInfo = '2.3.9:woocommerce';
+		var _nzmPluginInfo = '2.4.1:woocommerce';
 		
 		//Newsman remarketing tracking code REPLACEABLE
 
