@@ -6,6 +6,8 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 
 # Instalation
 
+If you're using woocommerce you will also need to activate also Newsman Remarketing
+
 ## Automatically
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
 
@@ -15,8 +17,6 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 
 - Activate the plugin
 - Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
-
-3. if the site uses woocommerce then NewsmanApp Remarketing must be activated
 
 ## Newsman plugin settings
 ![image](https://user-images.githubusercontent.com/28097949/202709174-ad4d4c85-2776-4fad-8ce3-71e11673b22b.png)
