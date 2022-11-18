@@ -43,6 +43,8 @@ Some quick screenshots of the Newsman Remarketing plugin features.
 	
 ## Newsman Remarketing plugin settings
 ![newsletter plugin settings](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/1.jpg)
+![image](https://user-images.githubusercontent.com/28097949/202667966-9cc2d667-0951-47d4-a61f-5385d9aff9db.png)
+
 
 # License
 
