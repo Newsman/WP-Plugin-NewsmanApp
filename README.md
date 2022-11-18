@@ -19,10 +19,10 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 3. if the site uses woocommerce then NewsmanApp Remarketing must be activated
 
 ## Newsman plugin settings
-![newsletter plugin settings](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_settings.png)
+![image](https://user-images.githubusercontent.com/28097949/202709174-ad4d4c85-2776-4fad-8ce3-71e11673b22b.png)
 
 ## Import subscribers to NewsmanApp
-![newsletter import subscribers](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_newsman_import_subscribers.png)
+![image](https://user-images.githubusercontent.com/28097949/202711427-ac09a029-e438-4385-92fa-f65b40ee8ddc.png)
 
 
 # Newsman Remarketing
