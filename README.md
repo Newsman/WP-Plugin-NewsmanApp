@@ -24,6 +24,8 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 ## Import subscribers to NewsmanApp
 ![image](https://user-images.githubusercontent.com/28097949/202711427-ac09a029-e438-4385-92fa-f65b40ee8ddc.png)
 
+# SMS
+![image](https://user-images.githubusercontent.com/28097949/202712465-6f051951-0852-46af-bac0-0ac97729ce1a.png)
 
 # Newsman Remarketing
 
