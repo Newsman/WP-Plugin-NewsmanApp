@@ -33,12 +33,16 @@ If you're using woocommerce you will also need to activate Newsman Remarketing p
 
 ## Widget
 
-- Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
+- Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form ->  select landing page -> Activate for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
+
+- If selected modal window -> Activate for newsletter subscription -> it will automatically be displayed on the website.
 
 NewsmanApp plugin for Woocommerce allows you to track your shop customers.
 
 1. Activate the plugin NewsmanApp Remarketing
 2. Go to *Woocommerce > Integrations* and paste your Newsman Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
+
+After the plugin is installed, you will also have: feed products, events (product impressions, AddToCart, purchase) automatically implemented. 
 
 # Newsman Remarketing Screenshots
 Some quick screenshots of the Newsman Remarketing plugin features.
