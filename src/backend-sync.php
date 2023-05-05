@@ -190,16 +190,11 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 								echo "<br><br>";
 								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='".$woocommerceUrl."'target='_blank'>".$woocommerceUrl . "</a>";
 
-								$link=$_GET['link'];
-							if ($link == $woocommerceUrl)
-							{
-								echo "nice";
-								$parsed = parse_url($wordpressUrl);
-								$query = $parsed['query'];
-								parse_str($query, $params);
-								unset($params['apikey']);
-								$string = http_build_query($params);
-			 }
+								if (isset($_GET['apikey'])) {
+		 echo "good";
+		} else {
+		 $test = $_GET['something'];
+		}
 							?>
 						</td>
 					</tr>
