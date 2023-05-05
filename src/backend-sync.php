@@ -186,22 +186,24 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 
-								echo $url = "Cron Sync url (setup on task scheduler/hosting) - Subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";
+								echo $url = "Cron Sync url (setup on task scheduler/hosting) - Subscribers: <a name='link' href='?link=".$woocommerceUrl."'target='_blank'>".$wordpressUrl . "</a>";
 								echo "<br><br>";
-								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";
+								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='".$woocommerceUrl."'target='_blank'>".$woocommerceUrl . "</a>";
 
 								$link=$_GET['link'];
-			        if ($link == $wordpressUrl)
+							if ($link == $woocommerceUrl)
 							{
-			            echo "nice";
-
-									$parsed = parse_url($wordpressUrl);
-									$query = $parsed['query'];
-									parse_str($query, $params);
-									unset($params['apikey']);
-									$string = http_build_query($params);
-			        }
+								echo "nice";
+								$parsed = parse_url($wordpressUrl);
+								$query = $parsed['query'];
+								parse_str($query, $params);
+								unset($params['apikey']);
+								$string = http_build_query($params);
+			 }
 							?>
+							<ul>
+							 <li><a href="?link=".$woocommerceUrl."" name="link".$woocommerceUrl."">link 1</a></li>
+					 </ul>
 						</td>
 					</tr>
 
