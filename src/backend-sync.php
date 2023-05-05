@@ -25,10 +25,10 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			if(!empty($products)){
 
-				$url = get_site_url() . "/?newsman=products.json";					
+				//$url = get_site_url() . "/?newsman=products.json";					
 
 				try{
-					$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
+					$ret = $this->client->feeds->setFeedOnList($list,get_site_url() . "/?newsman=products.json", get_site_url(), "NewsMAN");	
 				}
 				catch(Exception $ex)
 				{			
@@ -183,12 +183,12 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 						</th>
 						<td>
 							<?php 
-								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&start=1&limit=5000&cronlast=true";
-								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&start=1&limit=5000&cronlast=true";
+								//$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&start=1&limit=5000&cronlast=true";
+								//$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&start=1&limit=5000&cronlast=true";
 
-								echo $url = "Cron Sync url (setup on task scheduler/hosting) - Subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
+								echo $url = "Cron Sync url (setup on task scheduler/hosting) - Subscribers: <a href='".get_site_url() . "/?newsman=cron.json&method=wordpress&start=1&limit=5000&cronlast=true"."' target='_blank'>".get_site_url()."/?newsman=cron.json&method=wordpress&start=1&limit=5000&cronlast=true"."</a>";	
 								echo "<br><br>";
-								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
+								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='".get_site_url() . "/?newsman=cron.json&method=woocommerce&start=1&limit=5000&cronlast=true"."' target='_blank'>".get_site_url()."/?newsman=cron.json&method=woocommerce&start=1&limit=5000&cronlast=true"."</a>";		
 							?>									
 						</td>
 					</tr>
