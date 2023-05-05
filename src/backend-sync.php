@@ -25,7 +25,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			if(!empty($products)){
 
-				$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
+				$url = get_site_url() . "/?newsman=products.json";					
 
 				try{
 					$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
