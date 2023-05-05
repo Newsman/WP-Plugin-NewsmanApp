@@ -19,7 +19,7 @@ If you're using woocommerce you will also need to activate Newsman Remarketing p
 - Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
 
 ## Newsman plugin settings
-![image](https://github.com/savuandreea/WP-Plugin-NewsmanApp/blob/master/assets/wp_newsman_settings.png)
+![image](https://user-images.githubusercontent.com/28097949/202709174-ad4d4c85-2776-4fad-8ce3-71e11673b22b.png)
 
 ## Import subscribers to NewsmanApp
 ![image](https://user-images.githubusercontent.com/28097949/202711427-ac09a029-e438-4385-92fa-f65b40ee8ddc.png)
