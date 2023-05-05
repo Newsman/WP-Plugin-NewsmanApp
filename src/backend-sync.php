@@ -182,6 +182,12 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 						<p class="newsmanP">{{limit}} = Sync with newsman from latest number of records (ex: 5000)</p>
 						</th>
 						<td>
+							<style>
+							.abc
+							{
+								display: none;
+							}
+							</style>
 							<?php
 							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
@@ -190,12 +196,20 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 								echo "<br><br>";
 								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='".$woocommerceUrl."'target='_blank'>".$woocommerceUrl . "</a>";
 
-								if (isset($_GET['apikey'])) {
-		 echo "good";
-		} else {
-		 $test = $_GET['something'];
-		}
-							?>
+								$slide = ($_GET["apikey"]);
+								if($slide == 'apikey')
+								{
+  								$slide = "<span class='abc'>".$slide."</span>";
+ 										}
+ 								if(strpos($wordpressUrl, $this->apikey) !== false)
+								{
+									$this->apikey = "<span class='abc'>".$this->apikey."</span>";
+								}
+								if (strpos($_SERVER['REQUEST_URI'], $this->apikey) !== false)
+								{
+									$this->apikey = "<span class='abc'>".$this->apikey."</span>";
+								}
+ 						?>
 						</td>
 					</tr>
 
