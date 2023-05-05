@@ -29,7 +29,6 @@ try
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
    
   <div class="tab-panels">
     <section id="tabNewsman" class="tab-panel">
@@ -85,17 +84,6 @@ try
 							will be added.</p>
 					</td>
 				</tr>		
-				<tr>
-					<th scope="row">
-						<label for="">Widget</label>
-					</th>
-					<td>
-						<p>Transform your website visitors into subscribers and customers. Generate easy to integrate pop-ups, embedded signup forms and web layers to convert more.</p>
-						<p>
-						Log in to your Newsman account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget
-						</p>
-					</td>
-				</tr>
 			</table>
 		</div>
 
