@@ -101,8 +101,6 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
    
   <div class="tab-panels">
     <section id="tabSync" class="tab-panel">
@@ -185,8 +183,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 						</th>
 						<td>
 							<?php 
-								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
-								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&start=1&limit=5000&cronlast=true";
+								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&start=1&limit=5000&cronlast=true";
 
 								echo $url = "Cron Sync url (setup on task scheduler/hosting) - Subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
 								echo "<br><br>";
