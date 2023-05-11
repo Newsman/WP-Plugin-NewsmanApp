@@ -854,11 +854,11 @@ Author URI: https://www.newsman.com
             add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe")); 
             #check if plugin is active
             add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));         
-            //widget auto init        
-            //add_action( 'init', array($this, 'init_widgets') );            
+            #widget auto init        
+            add_action( 'init', array($this, 'init_widgets') );            
         }      
 
-        /*function generateWidget($atts){
+        function generateWidget($atts){
         
             $c = substr_count($atts["formid"], '-');
 
@@ -877,7 +877,7 @@ Author URI: https://www.newsman.com
         function init_widgets() {
                 add_shortcode( "newsman_subscribe_widget", array($this,'generateWidget' ));                
         }
-*/
+
         /*
         * Adds a menu item for Newsman on the Admin page
         */
@@ -888,7 +888,7 @@ Author URI: https://www.newsman.com
             add_submenu_page("Newsman", "Remarketing", "Remarketing", "administrator", "NewsmanRemarketing", array($this, "includeAdminRemarketingPage"));
             add_submenu_page("Newsman", "SMS", "SMS", "administrator", "NewsmanSMS", array($this, "includeAdminSMSPage"));
             add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
-            //add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
+            add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
         }
 
         /*
@@ -933,12 +933,11 @@ Author URI: https://www.newsman.com
 
         /*
         * Includes the html for the admin widget page
-       
+        */
         public function includeAdminWidgetPage()
         {
             include 'src/backend-widget.php';
         }
-        */
 
         /*
         * Binds the Newsman menu item to the menu
