@@ -89,6 +89,7 @@
 	<input type="radio" name="tabset" id="tabSettings" aria-controls="" checked>
 	<label for="tabSettings" id="settingsBtn">Settings</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>
    
   <div class="tab-panels">
     <section id="tabSettings" class="tab-panel">
