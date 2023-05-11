@@ -1,23 +1,23 @@
 <?php
 
 if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
-{
+{		
 	$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
 	$smslist = (isset($_POST['newsman_smslist']) && !empty($_POST['newsman_smslist'])) ? strip_tags(trim($_POST['newsman_smslist'])) : "";
 	$segments = (isset($_POST['newsman_segments']) && !empty($_POST['newsman_segments'])) ? strip_tags(trim($_POST['newsman_segments'])) : "";
-
+	
 	$this->constructClient($this->userid, $this->apikey);
-
+	
 	update_option("newsman_userid", $this->userid);
 	update_option("newsman_apikey", $this->apikey);
 	update_option("newsman_list", $list);
 	update_option("newsman_smslist", $smslist);
-	update_option("newsman_segments", $segments);
+	update_option("newsman_segments", $segments);	
 
 	if(isset($_POST['newsman_list']) && !empty($_POST['newsman_list']))
 	{
 		if (class_exists('WooCommerce')) {
-
+			
 			$args = array(
 				'stock_status' => 'instock'
 			);
@@ -25,19 +25,19 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			if(!empty($products)){
 
-				//$url = get_site_url() . "/?newsman=products.json";
+				$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
 
 				try{
-					$ret = $this->client->feeds->setFeedOnList($list,get_site_url() . "/?newsman=products.json", get_site_url(), "NewsMAN");
+					$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
 				}
 				catch(Exception $ex)
-				{
+				{			
 					$this->setMessageBackend('error', 'Could not update feed list');
 				}
 
 			}
 		}
-	}
+	}		
 
 	try
 	{
@@ -50,7 +50,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 		}
 
 		$available_smslists = $this->client->sms->lists();
-
+		
 		$this->setMessageBackend("updated", "Options saved.");
 	} catch (Exception $e)
 	{
@@ -72,8 +72,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 		{
 			$available_segments = $this->client->segment->all($list);
 		}
-
-		$available_smslists = $this->client->sms->lists();
+		
+		$available_smslists = $this->client->sms->lists();		
 
 	} catch (Exception $e)
 	{
@@ -101,20 +101,22 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-
+	<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>
+   
   <div class="tab-panels">
     <section id="tabSync" class="tab-panel">
-
+      
 		<div class="wrap wrap-settings-admin-page">
 		<form method="post" enctype="multipart/form-data">
-			<input type="hidden" name="newsman_sync" value="Y"/>
+			<input type="hidden" name="newsman_sync" value="Y"/>		
 
 			<h2>Sync</h2>
 
 			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
-					</p></div>
-
-			<table class="form-table newsmanTable newsmanTblFixed">
+					</p></div>			
+			
+			<table class="form-table newsmanTable newsmanTblFixed">			
 
 				<?php //if (isset($available_lists) && !empty($available_lists)) { ?>
 					<tr>
@@ -182,44 +184,17 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 						<p class="newsmanP">{{limit}} = Sync with newsman from latest number of records (ex: 5000)</p>
 						</th>
 						<td>
-							<style>
-							.abc
-							{
-								display: none;
-							}
-							</style>
-							<?php
-							$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+							<?php 
+								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 
-<<<<<<< HEAD
-								echo $url = "Cron Sync url (setup on task scheduler/hosting) - Subscribers: <a href=".$woocommerceUrl."'target='_blank'>".$wordpressUrl . "</a>";
-								echo "<br><br>";
-								echo $url = "CRON url Sync (setup on task scheduler/hosting) customers with orders completed: <a href='".$woocommerceUrl."'target='_blank'>".$woocommerceUrl . "</a>";
-
-								$slide = ($_GET["apikey"]);
-								if($slide == 'apikey')
-								{
-  								$slide = "<span class='abc'>".$slide."</span>";
- 										}
- 								if(strpos($wordpressUrl, $this->apikey) !== false)
-								{
-									$this->apikey = "<span class='abc'>".$this->apikey."</span>";
-								}
-								if (strpos($_SERVER['REQUEST_URI'], $this->apikey) !== false)
-								{
-									$this->apikey = "<span class='abc'>".$this->apikey."</span>";
-								}
- 						?>
-=======
 								echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
 								echo "<br><br>";
 								echo $url = "CRON url Sync customers with orders completed: <a href='" . $woocommerceUrl . "' target='_blank'>" . $woocommerceUrl . "</a>";		
 							?>									
->>>>>>> parent of 300dea5 (No widget)
 						</td>
 					</tr>
-
+				
 				</table>
 					<th>
 					</th>
@@ -231,6 +206,6 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 			</form>
 		</div>
 
-  	</section>
-  </div>
+  	</section>  
+  </div>  
 </div>

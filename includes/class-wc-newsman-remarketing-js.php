@@ -428,30 +428,40 @@ class WC_Newsman_Remarketing_JS
 		}
 
 		function addToCart(response) {
-
+		
 			_nzm.run('ec:setAction', 'clear_cart');
-			_nzm.run('send', 'event', 'detail view', 'click', 'clearCart', null, _nzm.createFunctionWithTimeout(function() {
 
+			
+			
+			if (typeof _nzm.createFunctionWithTimeout === 'function') {	
+				detailviewEvent(response);
+				
+			}
+		}
+		
+		function detailviewEvent(response) {
+			_nzm.run('send', 'event', 'detail view', 'click', 'clearCart', null, _nzm.createFunctionWithTimeout(function () {
+		
 				for (var item in response) {
-
+		
 					_nzm.run('ec:addProduct',
 						response[item]
 					);
-
+		
 				}
-
+		
 				_nzm.run('ec:setAction', 'add');
 				_nzm.run('send', 'event', 'UX', 'click', 'add to cart');
-
+		
 				sessionStorage.setItem('lastCart', JSON.stringify(response));
 				unlockClearCart = true;
-
+		
 				if (!isProd)
 					console.log('newsman remarketing: cart sent');
-
+		
 			}));
-
 		}
+		
 
 		function detectXHR() {
 
