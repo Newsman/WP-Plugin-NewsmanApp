@@ -571,13 +571,26 @@ class WC_Newsman_Remarketing_JS
 			}
 		}
 
-		$code .= "" . self::tracker_var() . "( 'ec:setAction', 'purchase', {
-			'id': '" . esc_js($order->get_order_number()) . "',
-			'affiliation': '" . esc_js(get_bloginfo('name')) . "',
-			'revenue': '" . esc_js($order->get_total()) . "',
-			'tax': '" . esc_js($order->get_total_tax()) . "',
-			'shipping': '" . esc_js($order->get_total_shipping()) . "'
-		} );";
+		$code .= "
+
+		var orderV = localStorage.getItem('" . esc_js($order->get_order_number()) . "');
+
+		var orderN = '" . esc_js($order->get_order_number()) . "';
+		localStorage.setItem(orderN, 'true');
+
+			if(orderV == undefined || orderV == null)
+			{
+			" . self::tracker_var() . "( 'ec:setAction', 'purchase', {
+				'id': '" . esc_js($order->get_order_number()) . "',
+				'affiliation': '" . esc_js(get_bloginfo('name')) . "',
+				'revenue': '" . esc_js($order->get_total()) . "',
+				'tax': '" . esc_js($order->get_total_tax()) . "',
+				'shipping': '" . esc_js($order->get_total_shipping()) . "'
+			} );
+		
+		}
+		
+		";
 		
 		wc_enqueue_js($code);
 
