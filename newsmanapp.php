@@ -700,7 +700,7 @@ Author URI: https://www.newsman.com
                     'class'         => array('form-row newsmanCheckoutNewsletter'),
                     'label_class'   => array('woocommerce-form__label woocommerce-form__label-for-checkbox checkbox'),
                     'input_class'   => array('woocommerce-form__input woocommerce-form__input-checkbox input-checkbox'),
-                    'required'      => true,
+                    'required'      => false,
                     'label'         => $msg,
                     'default'       => $default,
                     'checked'       => $checked
