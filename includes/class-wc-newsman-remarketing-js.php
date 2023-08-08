@@ -163,7 +163,7 @@ class WC_Newsman_Remarketing_JS
 		//Newsman remarketing tracking code REPLACEABLE
 
 		var remarketingid = '$remarketingid';
-		var _nzmPluginInfo = '2.4.3:woocommerce';
+		var _nzmPluginInfo = '2.4.4:woocommerce';
 		
 		//Newsman remarketing tracking code REPLACEABLE
 
@@ -340,10 +340,10 @@ class WC_Newsman_Remarketing_JS
 							}
 						}
 						if (response.length > 0 && lastCartFlag == false) {
-							addToCart(response);
+							nzmAddToCart(response);
 						}//send only when on last request, products existed
 						else if (response.length == 0 && lastCart.length > 0 && unlockClearCart) {
-							clearCart();
+							nzmClearCart();
 							if (!isProd)
 								console.log('newsman remarketing: clear cart sent');
 						} else {
@@ -370,13 +370,13 @@ class WC_Newsman_Remarketing_JS
 					console.log('newsman remarketing: !buffered xhr || first load');
 			}
 		}
-		function clearCart() {
+		function nzmClearCart() {
 			_nzm.run('ec:setAction', 'clear_cart');
 			_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');
 			sessionStorage.setItem('lastCart', JSON.stringify([]));
 			unlockClearCart = false;
 		}
-		function addToCart(response) {
+		function nzmAddToCart(response) {
 			_nzm.run('ec:setAction', 'clear_cart');
 			if (!isProd)
 				console.log('newsman remarketing: clear cart sent, add to cart function');
@@ -422,10 +422,8 @@ class WC_Newsman_Remarketing_JS
 					var timeDiff = msClickPassed.getTime() - msClick.getTime();
 					if (timeDiff > 1000) {
 						validate = false;
-						console.log('time over 1 sec');
 					} else {
 						timeValidate = true;
-						console.log('time under 1 sec');
 					}
 					var _location = pointer.responseURL;
 					//own request exclusion
@@ -495,10 +493,6 @@ class WC_Newsman_Remarketing_JS
 		$email = $order->get_billing_email();
 		$f = $order->get_billing_first_name();
 		$l = $order->get_billing_last_name();
-
-		$code .= "
-		_nzm.identify({ email: \"$email\", first_name: \"" . esc_attr($f) . "\", last_name: \"" . esc_attr($l) . "\" });
-		";
 
 		// Order items
 		if ($order->get_items())
