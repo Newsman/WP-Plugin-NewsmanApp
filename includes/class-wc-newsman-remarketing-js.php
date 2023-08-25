@@ -214,7 +214,7 @@ class WC_Newsman_Remarketing_JS
 
 		//Newsman remarketing auto events
 
-		var isProd = false;
+		var isProd = true;
 		let lastCart = sessionStorage.getItem('lastCart');
 		if (lastCart === null)
 			lastCart = {};
