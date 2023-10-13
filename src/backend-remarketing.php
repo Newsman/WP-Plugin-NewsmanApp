@@ -61,8 +61,8 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 			<input type="hidden" name="newsman_remarketing" value="Y"/>
 			<h2>Remarketing</h2>
 
-			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
-					</p></div>			
+			<div class="<?php echo (array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
+				</p></div>		
 
 			<?php if (!$this->valid_credentials)
 			{ ?>

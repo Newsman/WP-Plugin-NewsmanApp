@@ -98,9 +98,8 @@
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="newsman_submit" value="Y"/>
 
-			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
+			<div class="<?php echo (array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
 				</p></div>			
-			</table>
 
 			<h2>Newsman Connection</h2>
 			<table class="form-table newsmanTable newsmanTblFixed">
