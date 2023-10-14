@@ -5,7 +5,7 @@
  * Description: Allows Newsman Remarketing code to be inserted into WooCommerce store pages.
  * Author: Newsman
  * Author URI: https://newsman.com
- * Version: 2.4.9
+ * Version: 2.5.1
  * WC requires at least: 2.1
  * WC tested up to: 4.1
  * License: GPLv2 or later
