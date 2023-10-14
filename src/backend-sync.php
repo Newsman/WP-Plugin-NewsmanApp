@@ -113,7 +113,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			<h2>Sync</h2>
 
-			<div class="<?php echo (array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
+			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
 				</p></div>				
 			
 			<table class="form-table newsmanTable newsmanTblFixed">			
