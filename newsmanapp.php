@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.5.1
+Version: 2.5.2
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -512,14 +512,16 @@ Author URI: https://www.newsman.com
 
                 $customers_to_import = array();
 
-                foreach ($allOrders as $user) {                                        
-
-                    if (!isset($user->data)) 
+                foreach ($allOrders as $user) {     
+                    
+                    $data = json_decode(json_encode($user->data));
+                    
+                    if (empty($data)) 
                         continue;
 
-                    if(!array_key_exists($user->data["billing"], $user->data))
+                    if(!array_key_exists("billing", $user->data))
                         continue;
-
+                          
                     $customers_to_import[] = array(
                         "email" => $user->data["billing"]["email"],
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
