@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.5.2
+Version: 2.5.3
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -141,8 +141,6 @@ Author URI: https://www.newsman.com
                 }
 
                 if (!class_exists('WooCommerce')) {
-                    require ABSPATH . 'wp-content/plugins/woocommerce/woocommerce.php';
-
                     wp_send_json(array("error" => "WooCommerce is not installed"));
                 }
 
