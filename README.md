@@ -43,7 +43,7 @@ After the plugin is installed, you will also have: feed products, events (produc
 
 Go to Remarketing Tab and paste your Newsman Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_remarketingId.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_remarketingId.jpg)
 
 # Widget
 
