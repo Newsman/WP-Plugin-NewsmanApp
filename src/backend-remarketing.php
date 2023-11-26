@@ -1,5 +1,7 @@
 <?php
 
+$this->isOauth();
+
 if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y')
 {
 	$remarketingid = (isset($_POST['newsman_remarketingid']) && !empty($_POST['newsman_remarketingid'])) ? strip_tags(trim($_POST['newsman_remarketingid'])) : "";

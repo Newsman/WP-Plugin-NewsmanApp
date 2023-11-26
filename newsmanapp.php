@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.5.3
+Version: 2.6.0
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -67,6 +67,20 @@ Author URI: https://www.newsman.com
             $this->initHooks();    
         }
 
+        public function isOauth($insideOauth = false){
+
+            if($insideOauth)
+            {
+                if(!empty(get_option('newsman_userid')))
+                    wp_redirect("https://" . $_SERVER["HTTP_HOST"] . "/wp-admin/admin.php?page=NewsmanSettings");
+                
+                return;
+            }
+
+            if(empty(get_option('newsman_userid')))
+                wp_redirect("https://" . $_SERVER["HTTP_HOST"] . "/wp-admin/admin.php?page=NewsmanOauth");
+        }
+
         /*
         * Set's up the Newsman_Client instance
         * @param integer | string $userid The user id for Newsman (default's to null)
@@ -75,7 +89,6 @@ Author URI: https://www.newsman.com
         */
         public function constructClient($userid = null, $apikey = null)
         {
-
             $this->userid = (!is_null($userid)) ? $userid : get_option('newsman_userid');
             $this->apikey = (!is_null($apikey)) ? $apikey : get_option('newsman_apikey');
 
@@ -128,7 +141,7 @@ Author URI: https://www.newsman.com
                 $allowAPI = get_option('newsman_api');  
 
                 if ($allowAPI != "on") {
-                    $this->_json(array("status" => 403));
+                    $this->_json(array("status" => 403, "message" => "API setting is not enabled in plugin"));
                     return;
                 }
 
@@ -288,8 +301,20 @@ Author URI: https://www.newsman.com
                                 $_price_old = $prod->get_regular_price();
                             }
 
+                            $cat_ids = $prod->get_category_ids();
+                            $category = "";
+                        
+                            foreach ( (array) $cat_ids as $cat_id) {
+                                $cat_term = get_term_by('id', (int)$cat_id, 'product_cat');
+                                if($cat_term){
+                                    $category = $cat_term->name; 
+                                    break;
+                                }
+                            }
+                            
                             $productsJson[] = array(
                                 "id" => (string)$prod->get_id(),
+                                "category" => $category,
                                 "name" => $prod->get_name(),
                                 "stock_quantity" => (empty($prod->get_stock_quantity())) ? null : (float)$prod->get_stock_quantity(),
                                 "price" => (float)$_price,
@@ -455,11 +480,11 @@ Author URI: https://www.newsman.com
                         "tel" => ""
                     );
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
-                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers CRON");
+                        $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress subscribers CRON", $_segments);
                     }
                 }
                 if (count($customers_to_import) > 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress subscribers CRON");
+                    $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress subscribers CRON", $_segments);
                 }
                               
                 unset($customers_to_import);
@@ -528,11 +553,11 @@ Author URI: https://www.newsman.com
                     );                             
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
-                        $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce CRON");
+                        $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress woocommerce CRON", $_segments);
                     }
                 }
                 if (count($customers_to_import) > 0) {
-                    $this->_importData($customers_to_import, $list, $_segments, $this->client, "newsman plugin wordpress woocommerce CRON");
+                    $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress woocommerce CRON", $_segments);
                 }          
 
                 unset($customers_to_import);
@@ -900,6 +925,7 @@ Author URI: https://www.newsman.com
             add_submenu_page("Newsman", "SMS", "SMS", "administrator", "NewsmanSMS", array($this, "includeAdminSMSPage"));
             add_submenu_page("Newsman", "Settings", "Settings", "administrator", "NewsmanSettings", array($this, "includeAdminSettingsPage"));
             add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "includeAdminWidgetPage"));
+            add_submenu_page("Newsman", "Oauth", "Oauth", "administrator", "NewsmanOauth", array($this, "includeOauthPage"));
         }
 
         /*
@@ -924,6 +950,10 @@ Author URI: https://www.newsman.com
         public function includeAdminSyncPage()
         {
             include 'src/backend-sync.php';
+        }
+
+        public function includeOauthPage(){
+            include 'src/backend-oauth.php';
         }
 
         /*
@@ -1160,7 +1190,7 @@ Author URI: https://www.newsman.com
             return '"' . str_replace('"', '""', $str) . '"';
         }
 
-        function _importData(&$data, $list, $segments = null, $client, $source)
+        function _importData(&$data, $list, $client, $source, $segments = null)
         {
             $csv = '"email","firstname","lastname","tel","source"' . PHP_EOL;
             foreach ($data as $_dat) {

@@ -1,3 +1,10 @@
+<?php
+
+$this->isOauth();
+
+?>
+
+
 <div class="tabsetImg">
 	<a href="https://newsman.com" target="_blank">
 		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" />

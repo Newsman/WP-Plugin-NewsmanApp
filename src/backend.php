@@ -1,5 +1,7 @@
 <?php
-//Check if credentials are valid
+
+$this->isOauth();
+
 try
 {
 	$available_lists = $this->client->list->all();

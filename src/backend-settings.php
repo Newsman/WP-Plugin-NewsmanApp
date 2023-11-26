@@ -1,5 +1,7 @@
 	<?php
 
+$this->isOauth();
+
 	if (!empty($_POST['newsman_submit']) && $_POST['newsman_submit'] == 'Y')
 	{		
 		$userid = (isset($_POST['newsman_userid']) && !empty($_POST['newsman_userid'])) ? strip_tags(trim($_POST['newsman_userid'])) : "";
@@ -23,6 +25,8 @@
 		update_option("newsman_checkoutnewslettermessage", $newsman_checkoutnewslettermessage);
 		update_option("newsman_checkoutnewsletterdefault", $checkoutNewsletterDefault);
 		update_option("newsman_form_id", $form_id);
+
+		$this->isOauth();
 
 		try
 		{

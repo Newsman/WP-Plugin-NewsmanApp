@@ -1,5 +1,7 @@
 <?php
 
+$this->isOauth();
+
 if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 {		
 	$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
@@ -78,7 +80,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	} catch (Exception $e)
 	{
 		$this->valid_credential = false;
-		$this->setMessageBackend('error', 'Invalid Credentials');
+		$this->setMessageBackend('error', $e->getMessage());
 	}
 }
 
