@@ -5,7 +5,7 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/newsmanBr.jpg)
 
-# Instalation
+# Installation
 
 ## Automatically
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
