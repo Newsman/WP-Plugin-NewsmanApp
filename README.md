@@ -20,7 +20,11 @@ If you're using woocommerce you will also need to activate Newsman Remarketing p
 
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_activation.png)
 
-- Go to *Newsman > Settings* and paste your API key and User ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
+# Settings
+
+The initial setup is automated, you can login via OAuth with Newsman, follow the steps, installation will be ready in no time
+
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_oauth.png)
 
 # Newsman plugin settings
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_settings.png)
