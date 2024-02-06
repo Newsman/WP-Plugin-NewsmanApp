@@ -1,7 +1,7 @@
 # NewsmanApp plugin for WordPress & Remarketing
-[NewsmanApp](https://www.newsman.com) plugin for WordPress allows you to place a newsletter signup form on your blog (widget), to sync your subscribers via API and to send newsletters based on the blog posts via [NewsmanApp](https://www.newsman.com).
+[NewsmanApp](https://www.newsman.com) plugin for WordPress allows you to place a newsletter signup form on your blog (widget), to sync your subscribers via API and to send newsletters based on the blog posts via NewsmanApp.
 
-This is the easiest way to connect your Blog with Newsman.com. Generate an API KEY in your [NewsmanApp](https://www.newsman.com) account, install this plugin and you will be able to collect and sync subscribers, remarketing and forms. 
+This is the easiest way to connect your Blog with Newsman.com. Generate an API KEY in your NewsmanApp account, install this plugin and you will be able to collect and sync subscribers, remarketing and forms. 
 
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/newsmanBr.jpg)
 
