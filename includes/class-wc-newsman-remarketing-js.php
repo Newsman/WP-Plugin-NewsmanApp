@@ -163,7 +163,7 @@ class WC_Newsman_Remarketing_JS
 		//Newsman remarketing tracking code REPLACEABLE
 
 		var remarketingid = '$remarketingid';
-		var _nzmPluginInfo = '2.6.0:woocommerce';
+		var _nzmPluginInfo = '2.6.4:woocommerce';
 		
 		//Newsman remarketing tracking code REPLACEABLE
 
@@ -193,7 +193,7 @@ class WC_Newsman_Remarketing_JS
 			script_dom.id = 'nzm-tracker';
 			script_dom.setAttribute('data-site-id', remarketingid);
 			script_dom.src = remarketingEndpoint;
-			//check for engine name
+
 			if (_nzmPluginInfo.indexOf('shopify') !== -1) {
 				script_dom.onload = function(){
 					if (typeof newsmanRemarketingLoad === 'function')
@@ -204,7 +204,7 @@ class WC_Newsman_Remarketing_JS
 		})();
 		_nzm.run('require', 'ec');
 
-		//Newsman remarketing tracking code     
+		//Newsman remarketing tracking code 
 
 		//Newsman remarketing auto events REPLACEABLE
 
@@ -212,7 +212,7 @@ class WC_Newsman_Remarketing_JS
 
 		//Newsman remarketing auto events REPLACEABLE
 
-		//Newsman remarketing auto events
+		/Newsman remarketing auto events
 
 		var isProd = true;
 		let lastCart = sessionStorage.getItem('lastCart');
@@ -420,7 +420,7 @@ class WC_Newsman_Remarketing_JS
 					}
 					var msClickPassed = new Date();
 					var timeDiff = msClickPassed.getTime() - msClick.getTime();
-					if (timeDiff > 1000) {
+					if (timeDiff > 5000) {
 						validate = false;
 					} else {
 						timeValidate = true;
