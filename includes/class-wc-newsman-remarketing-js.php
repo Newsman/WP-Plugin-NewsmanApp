@@ -212,7 +212,7 @@ class WC_Newsman_Remarketing_JS
 
 		//Newsman remarketing auto events REPLACEABLE
 
-		/Newsman remarketing auto events
+		//Newsman remarketing auto events
 
 		var isProd = true;
 		let lastCart = sessionStorage.getItem('lastCart');
