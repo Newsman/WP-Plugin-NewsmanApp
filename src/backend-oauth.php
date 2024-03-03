@@ -91,7 +91,9 @@ if(!empty($_POST["oauthstep2"]) && $_POST['oauthstep2'] == 'Y')
 		$url = get_site_url() . "/?newsman=products.json&apikey=" . $creds->newsman_apikey;					
 
 		try{
-			$ret = $this->client->feeds->setFeedOnList($_POST["newsman_list"], $url, get_site_url(), "NewsMAN");	
+			if (class_exists('WooCommerce')) {
+				$ret = $this->client->feeds->setFeedOnList($_POST["newsman_list"], $url, get_site_url(), "NewsMAN");
+			}	
 		}
 		catch(Exception $ex)
 		{			
