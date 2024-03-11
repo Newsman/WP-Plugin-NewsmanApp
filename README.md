@@ -105,7 +105,7 @@ With the NewsMAN Plugin, you have the power to streamline your email and SMS mar
 
 * Custom Flows: Personalize interactions by providing exclusive offers or reminders based on users' behavior or preferences, fostering a sense of exclusivity and engagement.
 
-# SMTP Transactional Email & SMS:
+# SMTP Transactional Emails:
 
 * Transactional Emails: Guarantee the prompt and reliable delivery of critical messages, such as order confirmations or shipping notifications, through SMTP. This ensures users consistently receive important communications without delay.
 
