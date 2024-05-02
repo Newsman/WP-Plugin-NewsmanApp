@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.6.6
+Version: 2.6.7
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -261,7 +261,7 @@ Author URI: https://www.newsman.com
                         $args = array(
                             'stock_status' => 'instock',
                             'limit' => $limit,
-                            'offset' => $start
+                            'offset' => $start - 1
                         );  
 
                         if(!empty($product_id))
