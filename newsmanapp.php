@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.6.7
+Version: 2.6.8
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -436,6 +436,105 @@ Author URI: https://www.newsman.com
         
                             return;
         
+                        break;
+                        
+                        case "coupons.json":
+
+                        try{
+
+                            if ( !class_exists( 'WC_Coupon' ) )
+                                include_once( WC()->plugin_path() . '/includes/class-wc-coupon.php' );
+                            
+                            $discountType = (empty((int)$_GET["type"])) ? -1 : (int)$_GET["type"];
+                            $value = (empty((int)$_GET["value"])) ? -1 : (int)$_GET["value"];
+                            $batch_size = !isset($_GET["batch_size"]) ? 1 : (int)$_GET["batch_size"];
+                            $prefix = !isset($_GET["prefix"]) ? "" : $_GET["prefix"];
+                            $expire_date = isset($_GET['expire_date']) ? $_GET['expire_date'] : null;
+                            $min_amount = !isset($_GET["min_amount"]) ? -1 : (float)$_GET["min_amount"];
+                            $currency = isset($_GET['currency']) ? $_GET['currency'] : "";
+
+                            if($discountType == -1)
+                            {
+                                $this->_json(
+                                    array(
+                                        "status" => 0,
+                                        "msg" => "Missing type param"
+                                    )
+                                );
+                            }
+                            elseif($value == -1)
+                            {
+                                $this->_json(
+                                    array(
+                                        "status" => 0,
+                                        "msg" => "Missing value param"
+                                    )
+                                );
+                            }
+
+                            $couponsList = array();
+
+                            for($int = 0; $int < $batch_size; $int++)
+                            {
+                                $coupon = new WC_Coupon();
+
+                                switch($discountType)
+                                {
+                                    case 1:
+                                        $coupon->set_discount_type('percent');
+                                        break;
+                                    case 0:
+                                        $coupon->set_discount_type('fixed_cart');
+                                        break;
+                                }
+
+                                $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                $coupon_code = '';
+                            
+                                for ($i = 0; $i < 8; $i++) {
+                                    $coupon_code .= $characters[rand(0, strlen($characters) - 1)];
+                                }
+                        
+                                $coupon->set_code($prefix . $coupon_code); 
+                                $coupon->set_description( 'NewsMAN generated coupon code' );
+                                $coupon->set_amount($value); 
+
+                                if($expire_date != null)
+                                { 
+                                    $formatted_expire_date = date('Y-m-d H:i:s', strtotime($expire_date));
+                                    $coupon->set_date_expires(strtotime($formatted_expire_date));
+                                }
+
+                                if($min_amount != -1)
+                                    $coupon->set_minimum_amount($min_amount);
+
+                                if(!empty($currency))
+                                    $coupon->set_discount_currency($currency);
+                                
+                                //usage limit denied for now
+                                //$coupon->set_usage_limit( 1 );
+                        
+                                $coupon->save();
+
+                                array_push($couponsList, $coupon->get_code());
+                            }
+
+                            $this->_json(
+                                array(
+                                    "status" => 1,
+                                    "codes" => $couponsList
+                                )
+                            );
+                        }
+                        catch(Exception $exception){
+                            $this->_json(
+                                array(
+                                    "status" => 0,
+                                    "msg" => $exception->getMessage()
+                                )
+                            );
+                        }
+
                         break;
                 }
             }
