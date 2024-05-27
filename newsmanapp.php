@@ -445,8 +445,8 @@ Author URI: https://www.newsman.com
                             if ( !class_exists( 'WC_Coupon' ) )
                                 include_once( WC()->plugin_path() . '/includes/class-wc-coupon.php' );
                             
-                            $discountType = (empty((int)$_GET["type"])) ? -1 : (int)$_GET["type"];
-                            $value = (empty((int)$_GET["value"])) ? -1 : (int)$_GET["value"];
+                            $discountType = !isset($_GET["type"]) ? -1 : (int)$_GET["type"];
+                            $value = !isset($_GET["value"]) ? -1 : (int)$_GET["value"];
                             $batch_size = !isset($_GET["batch_size"]) ? 1 : (int)$_GET["batch_size"];
                             $prefix = !isset($_GET["prefix"]) ? "" : $_GET["prefix"];
                             $expire_date = isset($_GET['expire_date']) ? $_GET['expire_date'] : null;
@@ -508,8 +508,11 @@ Author URI: https://www.newsman.com
                                 if($min_amount != -1)
                                     $coupon->set_minimum_amount($min_amount);
 
-                                if(!empty($currency))
-                                    $coupon->set_discount_currency($currency);
+                                //set default
+                                /*if(empty($currency))
+                                    $currency = "RON";
+
+                                $coupon->set_discount_currency($currency);*/
                                 
                                 //usage limit denied for now
                                 //$coupon->set_usage_limit( 1 );
