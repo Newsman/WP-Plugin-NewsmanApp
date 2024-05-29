@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.6.8
+Version: 2.6.9
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -491,11 +491,16 @@ Author URI: https://www.newsman.com
                                 $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                                 $coupon_code = '';
                             
-                                for ($i = 0; $i < 8; $i++) {
-                                    $coupon_code .= $characters[rand(0, strlen($characters) - 1)];
-                                }
+                                do {
+                                    $coupon_code = '';
+                                    for ($i = 0; $i < 8; $i++) {
+                                        $coupon_code .= $characters[rand(0, strlen($characters) - 1)];
+                                    }
+                                    $full_coupon_code = $prefix . $coupon_code;
+                                    $existing_coupon_id = wc_get_coupon_id_by_code($full_coupon_code);
+                                } while ($existing_coupon_id != 0);
                         
-                                $coupon->set_code($prefix . $coupon_code); 
+                                $coupon->set_code($full_coupon_code); 
                                 $coupon->set_description( 'NewsMAN generated coupon code' );
                                 $coupon->set_amount($value); 
 
