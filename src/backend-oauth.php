@@ -88,7 +88,7 @@ if(!empty($_POST["oauthstep2"]) && $_POST['oauthstep2'] == 'Y')
 		$remarketingId = $ret["site_id"] . "-" . $ret["list_id"] . "-" . $ret["form_id"] . "-" . $ret["control_list_hash"];
 
 		//set feed
-		$url = get_site_url() . "/?newsman=products.json&apikey=" . $creds->newsman_apikey;					
+		$url = get_site_url() . "/?newsman=products.json&nzmhash=" . $creds->newsman_apikey;					
 
 		try{
 			if (class_exists('WooCommerce')) {
