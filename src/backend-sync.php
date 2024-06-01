@@ -27,7 +27,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			if(!empty($products)){
 
-				$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
+				$url = get_site_url() . "/?newsman=products.json&nzmhash=" . $this->apikey;					
 
 				try{
 					$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
@@ -187,8 +187,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 						</th>
 						<td>
 							<?php 
-								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
-								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&nzmhash=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&nzmhash=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 
 								echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
 								echo "<br><br>";

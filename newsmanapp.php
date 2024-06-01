@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.6.9
+Version: 2.7.0
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -125,7 +125,13 @@ Author URI: https://www.newsman.com
         public function newsmanFetchData()
         {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
-            $apikey = (empty($_GET["apikey"])) ? "" : $_GET["apikey"];
+            $apikey = (empty($_GET["nzmhash"])) ? "" : $_GET["nzmhash"];
+
+            $authorizationHeader = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
+            if (strpos($authorizationHeader, 'Bearer') !== false) {
+                $apikey = trim(str_replace('Bearer', '', $authorizationHeader));
+            }
+
     	    $start = (!empty($_GET["start"]) && $_GET["start"] > 0) ? $_GET["start"] : 1;
             $limit = (empty($_GET["limit"])) ? 1000 : $_GET["limit"];
             $order_id = (empty($_GET["order_id"])) ? "" : $_GET["order_id"];
@@ -145,7 +151,6 @@ Author URI: https://www.newsman.com
                     return;
                 }
 
-                $apikey = $_GET["apikey"];
                 $currApiKey = get_option('newsman_apikey');
 
                 if ($apikey != $currApiKey) {
