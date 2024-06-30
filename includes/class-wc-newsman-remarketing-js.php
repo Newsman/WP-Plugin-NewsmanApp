@@ -83,6 +83,13 @@ class WC_Newsman_Remarketing_JS
 			add_action('wp_footer', array('WC_Newsman_Remarketing_JS', 'universal_analytics_footer'));
 			return self::load_analytics_universal();
 		}
+
+		add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
+		function before_woocommerce_hpos() { 
+			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) { 
+			   \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true ); 
+		   } 
+		}
 	}
 
 	/**
@@ -489,6 +496,16 @@ class WC_Newsman_Remarketing_JS
 	 */
 	function add_transaction_enhanced($order)
 	{		
+		if (defined('WC_VERSION') && version_compare(WC_VERSION, '7.1.0', '>=')) {
+			if (function_exists('wc_get_container') && class_exists('Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore')) {
+				$order_data_store = wc_get_container()->get(\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore::class);
+			} else {
+				$order_data_store = WC_Data_Store::load('order');
+			}
+		} else {
+			$order_data_store = WC_Data_Store::load('order');
+		}
+
 		$code = "" . self::tracker_var() . "( 'set', 'currencyCode', '" . esc_js(version_compare(WC_VERSION, '3.0', '<') ? $order->get_order_currency() : $order->get_currency()) . "' );";
 		$email = $order->get_billing_email();
 		$f = $order->get_billing_first_name();

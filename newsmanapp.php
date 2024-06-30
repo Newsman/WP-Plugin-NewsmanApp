@@ -4,7 +4,7 @@
 Plugin Name: NewsmanApp for Wordpress
 Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
 Description: NewsmanApp for Wordpress (sign up widget, subscribers sync, create and send newsletters from blog posts)
-Version: 2.7.1
+Version: 2.7.2
 Author: Newsman
 Author URI: https://www.newsman.com
 */
@@ -186,7 +186,15 @@ Author URI: https://www.newsman.com
                             }
                         }
                         else{
-                            $orders = wc_get_orders($args);
+                            if (class_exists('\Automattic\WooCommerce\Utilities\OrderUtil') && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled()) {
+                                $query = new WC_Order_Query(array(
+                                    'limit' => $limit,
+                                    'offset' => $start
+                                ));
+                                $orders = $query->get_orders();
+                            } else {
+                                $orders = wc_get_orders($args);
+                            }
                         }                        
 
                         $ordersObj = array();
@@ -977,7 +985,13 @@ Author URI: https://www.newsman.com
             add_action( 'woocommerce_order_status_processing', array($this, 'processing'));
             add_action( 'woocommerce_order_status_completed', array($this, 'completed'));
             add_action( 'woocommerce_order_status_refunded', array($this, 'refunded'));
-            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));       
+            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));  
+            add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
+            function before_woocommerce_hpos() { 
+                if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) { 
+                   \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true ); 
+               } 
+            }   
             #admin menu hook
             add_action('admin_menu', array($this, "adminMenu"));
             #add links to plugins page

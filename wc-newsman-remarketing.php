@@ -5,9 +5,9 @@
  * Description: Allows Newsman Remarketing code to be inserted into WooCommerce store pages.
  * Author: Newsman
  * Author URI: https://newsman.com
- * Version: 2.7.1
+ * Version: 2.7.2
  * WC requires at least: 2.1
- * WC tested up to: 8.8.3
+ * WC tested up to: 9.0.2
  * License: GPLv2 or later
  * Text Domain: newsman-remarketing
  * Domain Path: languages/
@@ -61,6 +61,28 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 
                     $this->_json(array("status" => 0, "message" => "WooCommerce is not installed"));
                 }
+
+				if (defined('WC_VERSION') && version_compare(WC_VERSION, '7.1.0', '>=')) {
+					if (class_exists('\Automattic\WooCommerce\Utilities\OrderUtil') && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled()) {
+						$query = new WC_Order_Query(array(
+							'limit' => $limit,
+							'offset' => $start
+						));
+						$orders = $query->get_orders();
+					} else {
+						$order_data_store = WC_Data_Store::load('order');
+						$orders = wc_get_orders(array(
+							'limit' => $limit,
+							'offset' => $start
+						));
+					}
+				} else {
+					$order_data_store = WC_Data_Store::load('order');
+					$orders = wc_get_orders(array(
+						'limit' => $limit,
+						'offset' => $start
+					));
+				}
             
                 switch ($_GET["newsman"]) {
                     case "getCart.json":                        
@@ -112,6 +134,12 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 			}
 			 
 			add_action('wp_loaded', array($this, 'newsmanGetCart'));
+
+			add_action( 'before_woocommerce_init', function() {
+				if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+					\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+				}
+			} );
 
 			// Load plugin text domain
 			//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
