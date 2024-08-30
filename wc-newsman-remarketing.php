@@ -5,7 +5,7 @@
  * Description: Allows Newsman Remarketing code to be inserted into WooCommerce store pages.
  * Author: Newsman
  * Author URI: https://newsman.com
- * Version: 2.7.2
+ * Version: 2.7.3
  * WC requires at least: 2.1
  * WC tested up to: 9.0.2
  * License: GPLv2 or later
@@ -61,28 +61,6 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 
                     $this->_json(array("status" => 0, "message" => "WooCommerce is not installed"));
                 }
-
-				if (defined('WC_VERSION') && version_compare(WC_VERSION, '7.1.0', '>=')) {
-					if (class_exists('\Automattic\WooCommerce\Utilities\OrderUtil') && \Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled()) {
-						$query = new WC_Order_Query(array(
-							'limit' => $limit,
-							'offset' => $start
-						));
-						$orders = $query->get_orders();
-					} else {
-						$order_data_store = WC_Data_Store::load('order');
-						$orders = wc_get_orders(array(
-							'limit' => $limit,
-							'offset' => $start
-						));
-					}
-				} else {
-					$order_data_store = WC_Data_Store::load('order');
-					$orders = wc_get_orders(array(
-						'limit' => $limit,
-						'offset' => $start
-					));
-				}
             
                 switch ($_GET["newsman"]) {
                     case "getCart.json":                        
