@@ -125,8 +125,15 @@ Author URI: https://www.newsman.com
         public function newsmanFetchData()
         {    
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
+	        if(empty($newsman))
+	        {
+	            $newsman = empty($_POST['newsman']) ? '' : $_POST['newsman'];
+	        }		
             $apikey = (empty($_GET["nzmhash"])) ? "" : $_GET["nzmhash"];
-
+	        if(empty($apikey))
+	        {
+	            $apikey = empty($_POST['nzmhash']) ? '' : $_POST['nzmhash'];
+	        }	
             $authorizationHeader = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
             if (strpos($authorizationHeader, 'Bearer') !== false) {
                 $apikey = trim(str_replace('Bearer', '', $authorizationHeader));
@@ -465,6 +472,35 @@ Author URI: https://www.newsman.com
                             $expire_date = isset($_GET['expire_date']) ? $_GET['expire_date'] : null;
                             $min_amount = !isset($_GET["min_amount"]) ? -1 : (float)$_GET["min_amount"];
                             $currency = isset($_GET['currency']) ? $_GET['currency'] : "";
+
+			if(empty($discountType))
+			{
+			    $discountType = empty($_POST['type']) ? '' : $_POST['type'];
+			}			    
+			if(empty($value))
+			{
+			    $value = empty($_POST['value']) ? '' : $_POST['value'];
+			}			    
+			if(empty($batch_size))
+			{
+			    $batch_size = empty($_POST['batch_size']) ? '' : $_POST['batch_size'];
+			}			    
+			if(empty($prefix))
+			{
+			    $prefix = empty($_POST['prefix']) ? '' : $_POST['prefix'];
+			}			    
+			if(empty($expire_date))
+			{
+			    $expire_date = empty($_POST['expire_date']) ? '' : $_POST['expire_date'];
+			}			    
+			if(empty($min_amount))
+			{
+			    $min_amount = empty($_POST['min_amount']) ? '' : $_POST['min_amount'];
+			}			    
+			if(empty($currency))
+			{
+			    $currency = empty($_POST['currency']) ? '' : $_POST['currency'];
+			}				
 
                             if($discountType == -1)
                             {
