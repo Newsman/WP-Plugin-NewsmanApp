@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter, create, form
 Requires at least: 3.7
-Tested up to: 6.4.1
+Tested up to: 6.6.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
