@@ -103,8 +103,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
+	<!--<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>-->
    
   <div class="tab-panels">
     <section id="tabSync" class="tab-panel">
