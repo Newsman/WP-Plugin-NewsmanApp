@@ -13,10 +13,10 @@ Author URI: https://www.newsman.com
         exit;
     }
 
-    require_once 'vendor/Newsman/Client.php';   
+    require_once 'vendor/Newsman/Client.php';
 
     class WP_Newsman
-    {      
+    {
         /*
         * @var Newsman_Client
         * Instance of a Newsman_Client
@@ -52,8 +52,8 @@ Author URI: https://www.newsman.com
         * @var array
         * Array containing the names of the html files found in the templates directory (as defined by the templates_dir constant)
         */
-        public $templates = array();    
- 
+        public $templates = array();
+
         public $batchSize = 9000;
 
         public $wpSync, $mailpoetSync, $sendpressSync, $wooCommerce = false;
@@ -62,9 +62,9 @@ Author URI: https://www.newsman.com
         public static $endpointHost = "https://retargeting.newsmanapp.com";
 
         public function __construct()
-        {  
+        {
             $this->constructClient();
-            $this->initHooks();    
+            $this->initHooks();
         }
 
         public function isOauth($insideOauth = false){
@@ -73,7 +73,7 @@ Author URI: https://www.newsman.com
             {
                 if(!empty(get_option('newsman_userid')))
                     wp_redirect("https://" . $_SERVER["HTTP_HOST"] . "/wp-admin/admin.php?page=NewsmanSettings");
-                
+
                 return;
             }
 
@@ -123,17 +123,17 @@ Author URI: https://www.newsman.com
         }
 
         public function newsmanFetchData()
-        {    
+        {
             $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
 	        if(empty($newsman))
 	        {
 	            $newsman = empty($_POST['newsman']) ? '' : $_POST['newsman'];
-	        }		
+	        }
             $apikey = (empty($_GET["nzmhash"])) ? "" : $_GET["nzmhash"];
 	        if(empty($apikey))
 	        {
 	            $apikey = empty($_POST['nzmhash']) ? '' : $_POST['nzmhash'];
-	        }	
+	        }
             $authorizationHeader = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
             if (strpos($authorizationHeader, 'Bearer') !== false) {
                 $apikey = trim(str_replace('Bearer', '', $authorizationHeader));
@@ -144,14 +144,14 @@ Author URI: https://www.newsman.com
             $order_id = (empty($_GET["order_id"])) ? "" : $_GET["order_id"];
             $product_id = (empty($_GET["product_id"])) ? "" : $_GET["product_id"];
             $method = (empty($_GET["method"])) ? "" : $_GET["method"];
-            
+
             $cronLast = (empty($_GET["cronlast"])) ? "" : $_GET["cronlast"];
             if(!empty($cronLast))
 	        $cronLast = ($cronLast == "true") ? true : false;
 
             if (!empty($newsman) && !empty($apikey)) {
 
-                $allowAPI = get_option('newsman_api');  
+                $allowAPI = get_option('newsman_api');
 
                 if ($allowAPI != "on") {
                     $this->_json(array("status" => 403, "message" => "API setting is not enabled in plugin"));
@@ -184,7 +184,7 @@ Author URI: https://www.newsman.com
                             $orders = wc_get_order($order_id);
                             $orders = array(
                                 $orders
-                            );                
+                            );
 
                             if(empty($orders[0]))
                             {
@@ -202,7 +202,7 @@ Author URI: https://www.newsman.com
                             } else {
                                 $orders = wc_get_orders($args);
                             }
-                        }                        
+                        }
 
                         $ordersObj = array();
 
@@ -219,11 +219,11 @@ Author URI: https://www.newsman.com
 
                                 $image_id  = $_prod->get_image_id();
                                 $image_url = wp_get_attachment_image_url( $image_id, 'full' );
-                                $url = get_permalink( $_prod->get_id() );   
+                                $url = get_permalink( $_prod->get_id() );
 
                                 $_price = 0;
                                 $_price_old = 0;
-    
+
                                 if(empty($_prod->get_sale_price()))
                                 {
                                     $_price = $_prod->get_price();
@@ -237,15 +237,16 @@ Author URI: https://www.newsman.com
                                     "id" => (string)$prod['product_id'],
                                     "name" => $prod['name'],
                                     "quantity" => (int)$prod['quantity'],
+                                    "variation_id" => (string)$prod['variation_id'],
                                     "price" => (float)$_price,
                                     "price_old" => (float)$_price_old,
                                     "image_url" => $image_url,
                                     "url" => $url
                                 );
-                            }                         
+                            }
 
                             $date = $item->get_date_created();
-                            $date = $date->getTimestamp();                       
+                            $date = $date->getTimestamp();
 
                             $ordersObj[] = array(
                                 "order_no" => $item->get_order_number(),
@@ -274,7 +275,7 @@ Author URI: https://www.newsman.com
 
                         break;
 
-                    case "products.json":                        
+                    case "products.json":
 
                         $products = null;
 
@@ -282,14 +283,14 @@ Author URI: https://www.newsman.com
                             'stock_status' => 'instock',
                             'limit' => $limit,
                             'offset' => $start - 1
-                        );  
+                        );
 
                         if(!empty($product_id))
                         {
                             $products = wc_get_product($product_id);
                             $products = array(
                                 $products
-                            );                
+                            );
 
                             if(empty($products[0]))
                             {
@@ -299,7 +300,7 @@ Author URI: https://www.newsman.com
                         }
                         else{
                             $products = wc_get_products($args);
-                        }                        
+                        }
 
                         $productsJson = array();
 
@@ -307,7 +308,7 @@ Author URI: https://www.newsman.com
 
                             $image_id  = $prod->get_image_id();
                             $image_url = wp_get_attachment_image_url( $image_id, 'full' );
-                            $url = get_permalink( $prod->get_id() );                        
+                            $url = get_permalink( $prod->get_id() );
 
                             $_price = 0;
                             $_price_old = 0;
@@ -323,15 +324,15 @@ Author URI: https://www.newsman.com
 
                             $cat_ids = $prod->get_category_ids();
                             $category = "";
-                        
+
                             foreach ( (array) $cat_ids as $cat_id) {
                                 $cat_term = get_term_by('id', (int)$cat_id, 'product_cat');
                                 if($cat_term){
-                                    $category = $cat_term->name; 
+                                    $category = $cat_term->name;
                                     break;
                                 }
                             }
-                            
+
                             $productsJson[] = array(
                                 "id" => (string)$prod->get_id(),
                                 "category" => $category,
@@ -394,22 +395,22 @@ Author URI: https://www.newsman.com
 
                         break;
 
-                        case "version.json":                        
-                            
+                        case "version.json":
+
                             $version = array(
                                 "version" => "Wordpress " . get_bloginfo('version')
-                            );                                                                                                       
+                            );
 
                             echo json_encode($version, JSON_PRETTY_PRINT);
                             exit;
                             return;
-    
+
                         break;
 
                         case "cron.json":
 
                             $list = get_option("newsman_list");
-                            $segments = get_option("newsman_segments");                  
+                            $segments = get_option("newsman_segments");
 
                             if(empty($list))
                                 $this->_json(array("status" => "List setup incomplete"));
@@ -418,13 +419,13 @@ Author URI: https://www.newsman.com
                             {
                                 case "woocommerce":
 
-                                    if (class_exists( 'WooCommerce' )) {         
-                                        $this->importWoocommerceSubscribers($list, $segments, $start, $limit, $cronLast);                            
+                                    if (class_exists( 'WooCommerce' )) {
+                                        $this->importWoocommerceSubscribers($list, $segments, $start, $limit, $cronLast);
 
                                         $json = array(
                                             "status" => "success"
                                         );
-                    
+
                                         $this->_json($json);
                                      }
                                      else{
@@ -433,38 +434,38 @@ Author URI: https://www.newsman.com
 
                                     exit;
                                     return;
-                                     
+
                                 break;
 
                                 case "wordpress":
-                           
+
                                    $this->importWPSubscribers($list, $segments, $start, $limit, $cronLast);
 
                                    $json = array(
                                     "status" => "success"
                                 );
-            
+
                                 $this->_json($json);
 
                                 exit;
                                 return;
 
                                 break;
-                            }     
-                            
+                            }
+
                             $this->_json(array("status" => "method does not exist"));
-        
+
                             return;
-        
+
                         break;
-                        
+
                         case "coupons.json":
 
                         try{
 
                             if ( !class_exists( 'WC_Coupon' ) )
                                 include_once( WC()->plugin_path() . '/includes/class-wc-coupon.php' );
-                            
+
                             $discountType = !isset($_GET["type"]) ? -1 : (int)$_GET["type"];
                             $value = !isset($_GET["value"]) ? -1 : (int)$_GET["value"];
                             $batch_size = !isset($_GET["batch_size"]) ? 1 : (int)$_GET["batch_size"];
@@ -476,31 +477,31 @@ Author URI: https://www.newsman.com
 			if(empty($discountType))
 			{
 			    $discountType = empty($_POST['type']) ? '' : $_POST['type'];
-			}			    
+			}
 			if(empty($value))
 			{
 			    $value = empty($_POST['value']) ? '' : $_POST['value'];
-			}			    
+			}
 			if(empty($batch_size))
 			{
 			    $batch_size = empty($_POST['batch_size']) ? '' : $_POST['batch_size'];
-			}			    
+			}
 			if(empty($prefix))
 			{
 			    $prefix = empty($_POST['prefix']) ? '' : $_POST['prefix'];
-			}			    
+			}
 			if(empty($expire_date))
 			{
 			    $expire_date = empty($_POST['expire_date']) ? '' : $_POST['expire_date'];
-			}			    
+			}
 			if(empty($min_amount))
 			{
 			    $min_amount = empty($_POST['min_amount']) ? '' : $_POST['min_amount'];
-			}			    
+			}
 			if(empty($currency))
 			{
 			    $currency = empty($_POST['currency']) ? '' : $_POST['currency'];
-			}				
+			}
 
                             if($discountType == -1)
                             {
@@ -539,7 +540,7 @@ Author URI: https://www.newsman.com
 
                                 $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                                 $coupon_code = '';
-                            
+
                                 do {
                                     $coupon_code = '';
                                     for ($i = 0; $i < 8; $i++) {
@@ -548,13 +549,13 @@ Author URI: https://www.newsman.com
                                     $full_coupon_code = $prefix . $coupon_code;
                                     $existing_coupon_id = wc_get_coupon_id_by_code($full_coupon_code);
                                 } while ($existing_coupon_id != 0);
-                        
-                                $coupon->set_code($full_coupon_code); 
+
+                                $coupon->set_code($full_coupon_code);
                                 $coupon->set_description( 'NewsMAN generated coupon code' );
-                                $coupon->set_amount($value); 
+                                $coupon->set_amount($value);
 
                                 if($expire_date != null)
-                                { 
+                                {
                                     $formatted_expire_date = date('Y-m-d H:i:s', strtotime($expire_date));
                                     $coupon->set_date_expires(strtotime($formatted_expire_date));
                                 }
@@ -567,10 +568,10 @@ Author URI: https://www.newsman.com
                                     $currency = "RON";
 
                                 $coupon->set_discount_currency($currency);*/
-                                
+
                                 //usage limit denied for now
                                 //$coupon->set_usage_limit( 1 );
-                        
+
                                 $coupon->save();
 
                                 array_push($couponsList, $coupon->get_code());
@@ -608,7 +609,7 @@ Author URI: https://www.newsman.com
             if($cronLast)
             {
                 $args = array("role" => "subscriber");
-                $wp_subscribers = get_users($args); 
+                $wp_subscribers = get_users($args);
 
                 $data = count($wp_subscribers);
 
@@ -617,11 +618,11 @@ Author URI: https://www.newsman.com
                 if($start < 1)
                 {
                     $start = 1;
-                }             
+                }
             }
 
             $args = array("role" => "subscriber", "offset" => $start, "number" => $limit);
-            $wp_subscribers = get_users($args);    
+            $wp_subscribers = get_users($args);
 
             //sync with newsman
             try {
@@ -642,7 +643,7 @@ Author URI: https://www.newsman.com
                 if (count($customers_to_import) > 0) {
                     $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress subscribers CRON", $_segments);
                 }
-                              
+
                 unset($customers_to_import);
 
                 $this->wpSync = true;
@@ -665,7 +666,7 @@ Author URI: https://www.newsman.com
             {
                 $woocommerceFilter = array(
                     'status' => 'completed',
-                );    
+                );
 
                 $allOrders = wc_get_orders($woocommerceFilter);
                 $data = count($allOrders);
@@ -675,38 +676,38 @@ Author URI: https://www.newsman.com
                 if($start < 1)
                 {
                     $start = 1;
-                }             
+                }
             }
 
             $woocommerceFilter = array(
                 'status' => 'completed',
                 'limit' => $limit,
                 'offset' => $start
-            );    
+            );
 
-            $allOrders = wc_get_orders($woocommerceFilter);                          
+            $allOrders = wc_get_orders($woocommerceFilter);
 
             try {
-                $_segments = (!empty($segments)) ? array($segments) : array();         
+                $_segments = (!empty($segments)) ? array($segments) : array();
 
                 $customers_to_import = array();
 
-                foreach ($allOrders as $user) {     
-                    
+                foreach ($allOrders as $user) {
+
                     $data = json_decode(json_encode($user->data));
-                    
-                    if (empty($data)) 
+
+                    if (empty($data))
                         continue;
 
                     if(!array_key_exists("billing", $user->data))
                         continue;
-                          
+
                     $customers_to_import[] = array(
                         "email" => $user->data["billing"]["email"],
                         "firstname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["first_name"] : "",
                         "lastname" => ($user->data["billing"]["first_name"] != null) ? $user->data["billing"]["last_name"] : "",
                         "tel" => ($user->data["billing"]["phone"] != null) ? $user->data["billing"]["phone"] : "",
-                    );                             
+                    );
 
                     if ((count($customers_to_import) % $this->batchSize) == 0) {
                         $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress woocommerce CRON", $_segments);
@@ -714,7 +715,7 @@ Author URI: https://www.newsman.com
                 }
                 if (count($customers_to_import) > 0) {
                     $this->_importData($customers_to_import, $list, $this->client, "newsman plugin wordpress woocommerce CRON", $_segments);
-                }          
+                }
 
                 unset($customers_to_import);
 
@@ -728,11 +729,11 @@ Author URI: https://www.newsman.com
             if (empty($this->message)) {
                 $this->setMessageBackend("updated", 'Options saved.');
             }
-        }        
+        }
 
         /*
         * Initializes wordpress hooks
-        */   
+        */
 
         public function pending($order_id){
             $this->saveOrderNewsman($order_id, 'pending');
@@ -761,7 +762,7 @@ Author URI: https://www.newsman.com
 
         public function cancelled($order_id){
             $this->saveOrderNewsman($order_id, 'cancelled');
-        } 
+        }
 
         public function saveOrderNewsman($order_id, $status){
 
@@ -772,7 +773,7 @@ Author URI: https://www.newsman.com
 
             $sendSms = false;
             $newsman_smstext = "";
-            
+
             $newsman_smspending = get_option('newsman_smspendingactivate');
             if($status == "pending" && $newsman_smspending == "on")
             {
@@ -820,59 +821,59 @@ Author URI: https://www.newsman.com
             {
                 try{
                     if(!empty($newsman_usesms) && $newsman_usesms == "on" && !empty($newsman_smslist))
-                    {                                                                                        
-                        $order = wc_get_order($order_id);  
-                        $itemData = $order->get_data(); 
+                    {
+                        $order = wc_get_order($order_id);
+                        $itemData = $order->get_data();
 
-                        $date = $order->get_date_created()->date("F j, Y");         
-                                     
+                        $date = $order->get_date_created()->date("F j, Y");
+
                         $newsman_smstext = str_replace("{{billing_first_name}}", $itemData["billing"]["first_name"], $newsman_smstext);
                         $newsman_smstext = str_replace("{{billing_last_name}}", $itemData["billing"]["last_name"], $newsman_smstext);
                         $newsman_smstext = str_replace("{{shipping_first_name}}", $itemData["shipping"]["first_name"], $newsman_smstext);
                         $newsman_smstext = str_replace("{{shipping_last_name}}", $itemData["shipping"]["last_name"], $newsman_smstext);
-                        $newsman_smstext = str_replace("{{email}}", $itemData["billing"]["email"], $newsman_smstext);                    
-                        $newsman_smstext = str_replace("{{order_number}}", $itemData["id"], $newsman_smstext);           
-                        $newsman_smstext = str_replace("{{order_date}}", $date, $newsman_smstext);       
-                        $newsman_smstext = str_replace("{{order_total}}", $itemData["total"], $newsman_smstext);       
-                        $phone = '4' . $itemData["billing"]["phone"];      
-                        
-                        if($newsman_smstest)
-                            $phone = '4' . $newsman_smstestnr;         
+                        $newsman_smstext = str_replace("{{email}}", $itemData["billing"]["email"], $newsman_smstext);
+                        $newsman_smstext = str_replace("{{order_number}}", $itemData["id"], $newsman_smstext);
+                        $newsman_smstext = str_replace("{{order_date}}", $date, $newsman_smstext);
+                        $newsman_smstext = str_replace("{{order_total}}", $itemData["total"], $newsman_smstext);
+                        $phone = '4' . $itemData["billing"]["phone"];
 
-                        $this->client->sms->sendone($newsman_smslist, $newsman_smstext, $phone);                    
-                    }   
+                        if($newsman_smstest)
+                            $phone = '4' . $newsman_smstestnr;
+
+                        $this->client->sms->sendone($newsman_smslist, $newsman_smstext, $phone);
+                    }
                 }
                 catch(Exception $e)
                 {
                     error_log($e->getMessage());
                 }
-            }                      
+            }
 
             $list = get_option("newsman_remarketingid");
             $list = explode("-", $list);
-            $list = $list[1];        
+            $list = $list[1];
 
-            $url = "https://ssl.newsman.app/api/1.2/rest/" . $this->userid . "/" . $this->apikey . "/remarketing.setPurchaseStatus.json?list_id=" . $list . "&order_id=" . $order_id . "&status=" . $status;        
+            $url = "https://ssl.newsman.app/api/1.2/rest/" . $this->userid . "/" . $this->apikey . "/remarketing.setPurchaseStatus.json?list_id=" . $list . "&order_id=" . $order_id . "&status=" . $status;
 
             $response = wp_remote_get(
                 esc_url_raw($url),
                 array(
-             
+
                 )
-            );           
-            
+            );
+
         }
 
         public function newsmanCheckout(){
-            
+
             $checkout = get_option('newsman_checkoutnewsletter');
-            
+
             if(!empty($checkout) && $checkout == "on")
             {
-                $msg = get_option('newsman_checkoutnewslettermessage');                
-                $default = get_option('newsman_checkoutnewsletterdefault');     
+                $msg = get_option('newsman_checkoutnewslettermessage');
+                $default = get_option('newsman_checkoutnewsletterdefault');
                 $checked = '';
-                
+
                 if(!empty($default) && $default == "on")
                 {
                     $default = 1;
@@ -880,7 +881,7 @@ Author URI: https://www.newsman.com
                 }
                 else{
                     $default = 0;
-                }                      
+                }
 
                 woocommerce_form_field( 'newsmanCheckoutNewsletter', array(
                     'type'          => 'checkbox',
@@ -897,7 +898,7 @@ Author URI: https://www.newsman.com
         }
 
         public function newsmanCheckoutAction($order_id){
-                   
+
             if(!empty($_POST["newsmanCheckoutNewsletter"]) && $_POST["newsmanCheckoutNewsletter"] == 1)
             {
 
@@ -907,13 +908,13 @@ Author URI: https://www.newsman.com
                 $list = get_option('newsman_list');
                 $smslist = get_option('newsman_smslist');
 
-                $order = wc_get_order($order_id);            
-                $order_data = $order->get_data();    
+                $order = wc_get_order($order_id);
+                $order_data = $order->get_data();
 
                 $props = array();
 
                 try{
-                    $metadata = $order->get_meta_data();                                       
+                    $metadata = $order->get_meta_data();
 
                     foreach($metadata as $_metadata)
                     {
@@ -924,8 +925,8 @@ Author URI: https://www.newsman.com
                         if($_metadata->key == "_billing_sex" || $_metadata->key == "billing_sex")
                         {
                             $props["sex"] = $_metadata->value;
-                        }                         
-                    }                     
+                        }
+                    }
                 }
                 catch (Exception $e)
                 {
@@ -936,26 +937,26 @@ Author URI: https://www.newsman.com
                 $first_name =  $order_data["billing"]["first_name"];
                 $last_name = $order_data["billing"]["last_name"];
 
-                $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";                
+                $phone = (!empty($order_data["billing"]["phone"])) ? $order_data["billing"]["phone"] : "";
 
-                $props["phone"] = $phone; 
+                $props["phone"] = $phone;
 
                 $options = array();
-        
+
                 $segments = get_option('newsman_segments');
                 $rawSegments = $segments;
                 if(!empty($segments))
-                    $segments = array("segments" => array($segments));       
-                    
+                    $segments = array("segments" => array($segments));
+
                 $options["segments"] = array($rawSegments);
-                
+
                 $form_id = get_option('newsman_form_id');
                 if(!empty($form_id))
                     $options["form_id"] = $form_id;
 
-                $checkoutType = get_option('newsman_checkoutnewslettertype'); 
+                $checkoutType = get_option('newsman_checkoutnewslettertype');
 
-                try{             
+                try{
                     if($checkoutType == "init")
                     {
 
@@ -965,7 +966,7 @@ Author URI: https://www.newsman.com
                             $first_name,
                             $last_name,
                             $this->getUserIP(),
-                            $props, 
+                            $props,
                             $options
                         );
 
@@ -977,9 +978,9 @@ Author URI: https://www.newsman.com
                         $email,
                         $first_name,
                         $last_name,
-                        $this->getUserIP(), 
+                        $this->getUserIP(),
                         $props);
-                        
+
                         if(!empty($segments))
                         {
                             $segments = $segments["segments"][0];
@@ -987,8 +988,8 @@ Author URI: https://www.newsman.com
 
                         $ret = $this->client->segment->addSubscriber($segments, $subId);
 
-                    }   
-                    
+                    }
+
                     //SMS sync
                     if(!empty($checkoutSMS) && $checkoutSMS == "on")
                     {
@@ -997,7 +998,7 @@ Author URI: https://www.newsman.com
                             $ret = $this->client->sms->saveSubscribe($smslist, $phone, $first_name, $last_name, $this->getUserIP(), $props);
 
                     }
-                
+
                 }
                 catch (Exception $e)
                 {
@@ -1006,28 +1007,28 @@ Author URI: https://www.newsman.com
                 }
 
             }
-            
+
         }
 
         public function initHooks()
-        {          
-            add_action('init', array($this, 'newsmanFetchData'));     
-            add_action('woocommerce_review_order_before_submit', array($this, 'newsmanCheckout'));                   
+        {
+            add_action('init', array($this, 'newsmanFetchData'));
+            add_action('woocommerce_review_order_before_submit', array($this, 'newsmanCheckout'));
             add_action('woocommerce_checkout_order_processed', array($this, 'newsmanCheckoutAction'), 10, 2);
-            //order status change hooks        
+            //order status change hooks
             add_action( 'woocommerce_order_status_pending', array($this, 'pending'));
             add_action( 'woocommerce_order_status_failed', array($this, 'failed'));
             add_action( 'woocommerce_order_status_on-hold', array($this, 'hold'));
             add_action( 'woocommerce_order_status_processing', array($this, 'processing'));
             add_action( 'woocommerce_order_status_completed', array($this, 'completed'));
             add_action( 'woocommerce_order_status_refunded', array($this, 'refunded'));
-            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));  
+            add_action( 'woocommerce_order_status_cancelled', array($this, 'cancelled'));
             add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
-            function before_woocommerce_hpos() { 
-                if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) { 
-                   \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true ); 
-               } 
-            }   
+            function before_woocommerce_hpos() {
+                if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+                   \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+               }
+            }
             #admin menu hook
             add_action('admin_menu', array($this, "adminMenu"));
             #add links to plugins page
@@ -1044,15 +1045,15 @@ Author URI: https://www.newsman.com
             add_action('admin_enqueue_scripts', array($this, 'registerPluginScripts'));
             #do ajax form subscribe
             add_action('wp_ajax_nopriv_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
-            add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe")); 
+            add_action('wp_ajax_newsman_ajax_subscribe', array($this, "newsmanAjaxSubscribe"));
             #check if plugin is active
-            add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));         
-            #widget auto init        
-            add_action( 'init', array($this, 'init_widgets') );            
-        }      
+            add_action('wp_ajax_newsman_ajax_check_plugin', array($this, "newsmanAjaxCheckPlugin"));
+            #widget auto init
+            add_action( 'init', array($this, 'init_widgets') );
+        }
 
         function generateWidget($atts){
-        
+
 			if(empty($atts) || !is_array($atts) || !array_key_exists("formid", $atts))
 			{
 				return '';
@@ -1073,7 +1074,7 @@ Author URI: https://www.newsman.com
         }
 
         function init_widgets() {
-                add_shortcode( "newsman_subscribe_widget", array($this,'generateWidget' ));                
+                add_shortcode( "newsman_subscribe_widget", array($this,'generateWidget' ));
         }
 
         /*
@@ -1173,7 +1174,7 @@ Author URI: https://www.newsman.com
         public function registerPluginScripts()
         {
             //wp_register_script('jquery-ui', "//code.jquery.com/ui/1.11.4/jquery-ui.js", array('jquery'));
-            wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));  
+            wp_register_script('newsman_js', plugins_url('newsmanapp/src/js/script.js'), array('jquery'));
             wp_enqueue_script('newsman_js');
             //wp_enqueue_script('bootstrap-js');
             //wp_enqueue_script('jquery-ui');
@@ -1188,7 +1189,7 @@ Author URI: https://www.newsman.com
             $html .= 'var ajaxurl = "' . admin_url('admin-ajax.php') . '"';
             $html .= '</script>';
 
-            if ( ! class_exists( 'WooCommerce' ) ) {         
+            if ( ! class_exists( 'WooCommerce' ) ) {
                 $remarketingid = get_option('newsman_remarketingid');
                 if(!empty($remarketingid))
                     $html .= "
@@ -1201,7 +1202,7 @@ Author URI: https://www.newsman.com
                     script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();
                     </script>
                     ";
-            }            
+            }
 
             echo $html;
         }
@@ -1266,7 +1267,7 @@ Author URI: https://www.newsman.com
             } catch (Exception $e) {
                 return $bool;
             }
-        }      
+        }
 
         /*
         * Creates and return a message for frontend (because of the echo statement)
@@ -1347,7 +1348,7 @@ Author URI: https://www.newsman.com
             }
             echo json_encode(array("status" => 0));
             exit();
-        }                  
+        }
 
         function safeForCsv($str)
         {
