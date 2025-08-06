@@ -1,0 +1,12 @@
+0000000000000000000000000000000000000000 8930abc89b262c332486929095eadcb5e57f5c49 Savu Andreea <andreea@dazoot.ro> 1754495560 +0300	clone: from https://github.com/savuandreea/Wordpress_modificari.git
+8930abc89b262c332486929095eadcb5e57f5c49 92f94dd0857a2891095496bca383fde76905457d Savu Andreea <andreea@dazoot.ro> 1754495683 +0300	commit: add basic id + category
+92f94dd0857a2891095496bca383fde76905457d 09327e178ddcd2889552f27bc10e21bf3eed8f46 Savu Andreea <andreea@dazoot.ro> 1754496220 +0300	commit: no widget
+09327e178ddcd2889552f27bc10e21bf3eed8f46 96067117c9b2f738fb2b3837ca2aee78bf906a8a Savu Andreea <andreea@dazoot.ro> 1754497257 +0300	commit: add variation id
+96067117c9b2f738fb2b3837ca2aee78bf906a8a 6d84e9636a9f8b7a09c50dd0f7e025bf8fbaea57 Savu Andreea <andreea@dazoot.ro> 1754497394 +0300	commit: ignore
+6d84e9636a9f8b7a09c50dd0f7e025bf8fbaea57 ddfb0aaf64b5dbb5ce316968dec98994522bcd87 Savu Andreea <andreea@dazoot.ro> 1754497406 +0300	commit: ignore
+ddfb0aaf64b5dbb5ce316968dec98994522bcd87 79a22170df15046a3f468676f8589765bc3a0bb6 Savu Andreea <andreea@dazoot.ro> 1754497417 +0300	commit: ignore
+79a22170df15046a3f468676f8589765bc3a0bb6 b8f4ea30310cc181d15a69ae2010fd75c5f3800e Savu Andreea <andreea@dazoot.ro> 1754497430 +0300	commit: delete
+b8f4ea30310cc181d15a69ae2010fd75c5f3800e 79a22170df15046a3f468676f8589765bc3a0bb6 Savu Andreea <andreea@dazoot.ro> 1754497444 +0300	reset: moving to 79a22170df15046a3f468676f8589765bc3a0bb6
+79a22170df15046a3f468676f8589765bc3a0bb6 ddfb0aaf64b5dbb5ce316968dec98994522bcd87 Savu Andreea <andreea@dazoot.ro> 1754497448 +0300	reset: moving to ddfb0aaf64b5dbb5ce316968dec98994522bcd87
+ddfb0aaf64b5dbb5ce316968dec98994522bcd87 6d84e9636a9f8b7a09c50dd0f7e025bf8fbaea57 Savu Andreea <andreea@dazoot.ro> 1754497453 +0300	reset: moving to 6d84e9636a9f8b7a09c50dd0f7e025bf8fbaea57
+6d84e9636a9f8b7a09c50dd0f7e025bf8fbaea57 fda3a33724255e46d8725c48afa98b35ef524b4b Savu Andreea <andreea@dazoot.ro> 1754497852 +0300	commit: id variation
