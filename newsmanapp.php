@@ -237,7 +237,7 @@ Author URI: https://www.newsman.com
                                     "id" => (string)$prod['product_id'],
                                     "name" => $prod['name'],
                                     "quantity" => (int)$prod['quantity'],
-                                    "variation_id" => (string)$prod['variation_id'],
+                                    "variation_id" => (int)$prod['variation_id'],
                                     "price" => (float)$_price,
                                     "price_old" => (float)$_price_old,
                                     "image_url" => $image_url,
