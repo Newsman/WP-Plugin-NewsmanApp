@@ -1,7 +1,7 @@
 <?php
 
 // Creating the widget
-class Newsman_subscribe_widget extends WP_Widget
+/*class Newsman_subscribe_widget extends WP_Widget
 {
 
 	function __construct()
@@ -74,4 +74,4 @@ function wpb_load_widget()
 	register_widget('Newsman_subscribe_widget');
 }
 
-add_action('widgets_init', 'wpb_load_widget');
+add_action('widgets_init', 'wpb_load_widget');*/

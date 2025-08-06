@@ -1,5 +1,5 @@
 <?php
-
+/*
 $this->isOauth();
 
 ?>
@@ -24,7 +24,7 @@ $this->isOauth();
 	<label for="" id="settingsBtn">Settings</label>
 	<input type="radio" name="tabset" id="tabWidget" aria-controls="" checked>
 	<label for="tabWidget" id="widgetBtn">Widget</label>
-   
+
   <div class="tab-panels">
     <section id="tabWidget" class="tab-panel">
 
@@ -34,7 +34,7 @@ $this->isOauth();
 			<h2>Newsman Widget setup</h2>
 
 			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
-				</p></div>			
+				</p></div>
 
 				<table class="form-table">
 				<tr>
@@ -51,6 +51,6 @@ $this->isOauth();
 			</form>
 		</div>
 
-  	</section>  
-  </div>  
-</div>
+  	</section>
+  </div>
+</div>*/
