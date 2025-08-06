@@ -5,9 +5,9 @@
  * Description: Allows Newsman Remarketing code to be inserted into WooCommerce store pages.
  * Author: Newsman
  * Author URI: https://newsman.com
- * Version: 2.4.1
+ * Version: 2.7.7
  * WC requires at least: 2.1
- * WC tested up to: 4.1
+ * WC tested up to: 9.0.2
  * License: GPLv2 or later
  * Text Domain: newsman-remarketing
  * Domain Path: languages/
@@ -51,22 +51,22 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
         }
 
         public function newsmanGetCart()
-        {    	         			
-            $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];                              
-            
-            if (!empty($newsman) && !empty(get_option('newsman_remarketingid'))) {              
+        {
+            $newsman = (empty($_GET["newsman"])) ? "" : $_GET["newsman"];
+
+            if (!empty($newsman) && !empty(get_option('newsman_remarketingid'))) {
 
                 if (!class_exists('WooCommerce')) {
                     require ABSPATH . 'wp-content/plugins/woocommerce/woocommerce.php';
 
                     $this->_json(array("status" => 0, "message" => "WooCommerce is not installed"));
                 }
-            
-                switch ($_GET["newsman"]) {
-                    case "getCart.json":                        
 
-						$cart = WC()->cart;	
-						
+                switch ($_GET["newsman"]) {
+                    case "getCart.json":
+
+						$cart = WC()->cart;
+
 						$prod = array();
 
 						foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
@@ -74,11 +74,13 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 							$prod[] = array(
 								"id" => $cart_item['product_id'],
 								"name" => $cart_item["data"]->get_name(),
-								"price" => $cart_item["data"]->get_price(),						
-								"quantity" => $cart_item['quantity']
-							);							
-													
-						 }									 						
+								"price" => $cart_item["data"]->get_price(),
+								"quantity" => $cart_item['quantity'],
+								"category_ids" = $cart_item['data']->get_category_ids(), // array
+								"variation_id" = $cart_item['variation_id']
+							);
+
+						 }
 
 						 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 						 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -87,31 +89,37 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 						 echo json_encode($prod, JSON_PRETTY_PRINT);
 						 exit;
 
-                        break; 
+                        break;
 					default:
 						echo $this->_json(array("status" => 0, "message" => "bad url"));
 					break;
                 }
 
-            }			
+            }
         }
 
 		public function _json($obj)
         {
             header('Content-Type: application/json');
             echo json_encode($obj, JSON_PRETTY_PRINT);
-			exit;           
+			exit;
         }
-		 
+
 		public function __construct() {
 			//Allow non ecommerce pages
 			if ( ! class_exists( 'WooCommerce' ) ) {
-	
+
 				return;
-				
+
 			}
-			 
+
 			add_action('wp_loaded', array($this, 'newsmanGetCart'));
+
+			add_action( 'before_woocommerce_init', function() {
+				if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+					\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+				}
+			} );
 
 			// Load plugin text domain
 			//add_action( 'init', array( $this, 'load_plugin_textdomain' ) );

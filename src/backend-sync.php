@@ -1,5 +1,7 @@
 <?php
 
+$this->isOauth();
+
 if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 {		
 	$list = (isset($_POST['newsman_list']) && !empty($_POST['newsman_list'])) ? strip_tags(trim($_POST['newsman_list'])) : "";
@@ -25,7 +27,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			if(!empty($products)){
 
-				$url = get_site_url() . "/?newsman=products.json&apikey=" . $this->apikey;					
+				$url = get_site_url() . "/?newsman=products.json&nzmhash=" . $this->apikey;					
 
 				try{
 					$ret = $this->client->feeds->setFeedOnList($list, $url, get_site_url(), "NewsMAN");	
@@ -78,7 +80,7 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	} catch (Exception $e)
 	{
 		$this->valid_credential = false;
-		$this->setMessageBackend('error', 'Invalid Credentials');
+		$this->setMessageBackend('error', $e->getMessage());
 	}
 }
 
@@ -101,8 +103,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
+	<!--<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>-->
    
   <div class="tab-panels">
     <section id="tabSync" class="tab-panel">
@@ -113,8 +115,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 
 			<h2>Sync</h2>
 
-			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
-					</p></div>			
+			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
+				</p></div>				
 			
 			<table class="form-table newsmanTable newsmanTblFixed">			
 
@@ -185,8 +187,8 @@ if (!empty($_POST['newsman_sync']) && $_POST['newsman_sync'] == 'Y')
 						</th>
 						<td>
 							<?php 
-								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
-								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&apikey=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+								$wordpressUrl = get_site_url() . "/?newsman=cron.json&method=wordpress&nzmhash=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
+								$woocommerceUrl = get_site_url() . "/?newsman=cron.json&method=woocommerce&nzmhash=" . $this->apikey . "&start=1&limit=5000&cronlast=true";
 
 								echo $url = "CRON url Sync wordpress subscribers: <a href='" . $wordpressUrl . "' target='_blank'>" . $wordpressUrl . "</a>";	
 								echo "<br><br>";

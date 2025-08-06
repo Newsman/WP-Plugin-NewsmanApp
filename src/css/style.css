@@ -11,6 +11,10 @@
   table-layout: fixed;
 }
 
+.newsmanOauth td {
+  padding: 3px 10px;
+}
+
 .nVariable{
 	background: rgba(0,0,0,0.8);
 	color: #fff;
@@ -104,8 +108,17 @@
   }
 
   .tabsetImg{
-    text-align: left;
+    text-align: center;
     padding: 20px 0px;
+  }
+
+  #tabOauth{
+    text-align: center;
+  }
+
+  #tabOauth .button{
+    padding: 10px;
+    margin: 10px;
   }
 
   .tab-panels input[type="text"]{

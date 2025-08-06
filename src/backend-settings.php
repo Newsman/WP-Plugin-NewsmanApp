@@ -1,5 +1,7 @@
 	<?php
 
+$this->isOauth();
+
 	if (!empty($_POST['newsman_submit']) && $_POST['newsman_submit'] == 'Y')
 	{		
 		$userid = (isset($_POST['newsman_userid']) && !empty($_POST['newsman_userid'])) ? strip_tags(trim($_POST['newsman_userid'])) : "";
@@ -23,6 +25,8 @@
 		update_option("newsman_checkoutnewslettermessage", $newsman_checkoutnewslettermessage);
 		update_option("newsman_checkoutnewsletterdefault", $checkoutNewsletterDefault);
 		update_option("newsman_form_id", $form_id);
+
+		$this->isOauth();
 
 		try
 		{
@@ -88,8 +92,8 @@
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="tabSettings" aria-controls="" checked>
 	<label for="tabSettings" id="settingsBtn">Settings</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
+	<!--<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>-->
    
   <div class="tab-panels">
     <section id="tabSettings" class="tab-panel">
@@ -98,9 +102,8 @@
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="newsman_submit" value="Y"/>
 
-			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
+			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
 				</p></div>			
-			</table>
 
 			<h2>Newsman Connection</h2>
 			<table class="form-table newsmanTable newsmanTblFixed">

@@ -1,10 +1,13 @@
 <?php
-//Check if credentials are valid
+
+$this->isOauth();
+
 try
 {
 	$available_lists = $this->client->list->all();
 	$credentials_status = "credentials-valid";
-} catch (Exception $e)
+}
+catch (Exception $e)
 {
 	$this->valid_credential = false;
 	$credentials_status = "credentials-invalid";
@@ -28,12 +31,10 @@ try
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
-   
+
   <div class="tab-panels">
     <section id="tabNewsman" class="tab-panel">
-      
+
 		<div class="wrap">
 			<h2>Newsman Info</h2>
 			<table class="form-table">
@@ -58,7 +59,7 @@ try
 					<td>
 						<p>You will be able to sync your shop customers and newsletter subscribers with Newsman list / segments</p>
 					</td>
-				</tr>	
+				</tr>
 				<tr>
 					<th scope="row">
 						<label for="">Remarketing</label>
@@ -66,7 +67,7 @@ try
 					<td>
 						<p>Provide a valuable experience to your customer by automating communication with them. Create automatic email flows based on their actions on the site, such as product viewed, added to cart, completed order etc.</p>
 					</td>
-				</tr>	
+				</tr>
 				<tr>
 					<th scope="row">
 						<label for="">SMS</label>
@@ -74,7 +75,7 @@ try
 					<td>
 						<p>SMS (short messages) is one of the most effective ways to get users’ attention. Create and manage campaigns or send transactional SMS directly from NewsMAN platform.</p>
 					</td>
-				</tr>	
+				</tr>
 				<tr>
 					<th scope="row">
 						<label for="">Settings</label>
@@ -84,7 +85,7 @@ try
 						<p>After entering and saving valid credentials you will be able to select a list to which subscribers
 							will be added.</p>
 					</td>
-				</tr>		
+				</tr>
 				<tr>
 					<th scope="row">
 						<label for="">Widget</label>
@@ -99,6 +100,6 @@ try
 			</table>
 		</div>
 
-  	</section>  
-  </div>  
+  	</section>
+  </div>
 </div>

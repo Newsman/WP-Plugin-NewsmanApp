@@ -1,5 +1,7 @@
 <?php
 
+$this->isOauth();
+
 if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y')
 {
 	$remarketingid = (isset($_POST['newsman_remarketingid']) && !empty($_POST['newsman_remarketingid'])) ? strip_tags(trim($_POST['newsman_remarketingid'])) : "";
@@ -50,8 +52,8 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>
+	<!--<input type="radio" name="tabset" id="" aria-controls="">
+	<label for="" id="widgetBtn">Widget</label>-->
    
   <div class="tab-panels">
     <section id="tabRemarketing" class="tab-panel">
@@ -61,8 +63,8 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 			<input type="hidden" name="newsman_remarketing" value="Y"/>
 			<h2>Remarketing</h2>
 
-			<div class="<?php echo $this->message['status'] ?>"><p><strong><?php _e($this->message['message']); ?></strong>
-					</p></div>			
+			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
+				</p></div>	
 
 			<?php if (!$this->valid_credentials)
 			{ ?>
