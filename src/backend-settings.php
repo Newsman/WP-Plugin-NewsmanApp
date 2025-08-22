@@ -1,9 +1,13 @@
-	<?php
+<?php
 
 $this->isOauth();
 
 	if (!empty($_POST['newsman_submit']) && $_POST['newsman_submit'] == 'Y')
-	{		
+	{
+		check_admin_referer('newsman_settings_action', 'newsman_settings_nonce');
+		if ( ! current_user_can('manage_options') ) {
+			wp_die(__('Unauthorized user', 'newsman'));
+		}
 		$userid = (isset($_POST['newsman_userid']) && !empty($_POST['newsman_userid'])) ? strip_tags(trim($_POST['newsman_userid'])) : "";
 		$apikey = (isset($_POST['newsman_apikey']) && !empty($_POST['newsman_apikey'])) ? strip_tags(trim($_POST['newsman_apikey'])) : "";	
 		$allowAPI = (isset($_POST['newsman_api']) && !empty($_POST['newsman_api'])) ? strip_tags(trim($_POST['newsman_api'])) : "";
@@ -100,6 +104,7 @@ $this->isOauth();
       
 	<div class="wrap wrap-settings-admin-page">
 		<form method="post" enctype="multipart/form-data">
+		<?php wp_nonce_field('newsman_settings_action', 'newsman_settings_nonce'); ?>
 			<input type="hidden" name="newsman_submit" value="Y"/>
 
 			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
