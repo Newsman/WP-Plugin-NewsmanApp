@@ -14,7 +14,16 @@ if (!defined('ABSPATH'))
  */
 class WC_Class_Newsman_Remarketing extends WC_Integration
 {
-
+    /**
+     * @var string
+     */
+    protected $remarketingid;
+    
+    /**
+     * @var string
+     */
+    protected $dismissed_info_banner;
+    
 	/**
 	 * Init and hook in the integration.
 	 *
