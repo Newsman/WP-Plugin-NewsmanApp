@@ -1,35 +1,57 @@
 <?php
+/**
+ * Title: Newsman ReMarketing admin options
+ *
+ * @package NewsmanApp for WordPress
+ */
 
-$this->isOauth();
+$this->is_oauth();
 
-if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y')
-{
-	$remarketingid = (isset($_POST['newsman_remarketingid']) && !empty($_POST['newsman_remarketingid'])) ? strip_tags(trim($_POST['newsman_remarketingid'])) : "";
+$nonce_action = 'newsman-settings-remarketing';
+$test_nonce   = '';
+if ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
+	$test_nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
+}
 
-	update_option("newsman_remarketingid", $remarketingid);
-
-	try
-	{
-		$available_lists = $this->client->list->all();
-		
-		$this->setMessageBackend("updated", "Options saved.");
-	} catch (Exception $e)
-	{
-		$this->valid_credential = false;
-		$this->setMessageBackend('error', 'Invalid Credentials');
+if ( ! empty( $test_nonce ) || isset( $_POST['newsman_remarketing'] ) ) {
+	if ( ! wp_verify_nonce( $test_nonce, $nonce_action ) ) {
+		wp_nonce_ays( $nonce_action );
+		return;
 	}
-} else
-{
-	$remarketingid = get_option('newsman_remarketingid');
+}
 
-	try
-	{
+$local_nonce = wp_create_nonce( $nonce_action );
+wp_nonce_field( $nonce_action, '_wpnonce', false );
+
+$local_newsman_remarketing = '';
+if ( isset( $_POST['newsman_remarketing'] ) && ! empty( $_POST['newsman_remarketing'] ) ) {
+	$local_newsman_remarketing = sanitize_text_field( wp_unslash( $_POST['newsman_remarketing'] ) );
+}
+if ( 'Y' === $local_newsman_remarketing ) {
+	$remarketingid = '';
+	if ( isset( $_POST['newsman_remarketingid'] ) && ! empty( $_POST['newsman_remarketingid'] ) ) {
+		$remarketingid = sanitize_text_field( wp_unslash( $_POST['newsman_remarketingid'] ) );
+	}
+
+	update_option( 'newsman_remarketingid', $remarketingid );
+
+	try {
 		$available_lists = $this->client->list->all();
-		
-	} catch (Exception $e)
-	{
+
+		$this->set_message_backend( 'updated', 'Options saved.' );
+	} catch ( Exception $e ) {
 		$this->valid_credential = false;
-		$this->setMessageBackend('error', 'Invalid Credentials');
+		$this->set_message_backend( 'error', 'Invalid Credentials' );
+	}
+} else {
+	$remarketingid = get_option( 'newsman_remarketingid' );
+
+	try {
+		$available_lists = $this->client->list->all();
+
+	} catch ( Exception $e ) {
+		$this->valid_credential = false;
+		$this->set_message_backend( 'error', 'Invalid Credentials' );
 	}
 }
 
@@ -42,7 +64,7 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 </div>
 <div class="tabset">
 
-<input type="radio" name="tabset" id="" aria-controls="">
+	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="newsmanBtn">Newsman</label>
 	<input type="radio" name="tabset" id="tabSync" aria-controls="">
 	<label for="tabSync" id="syncBtn">Sync</label>
@@ -55,20 +77,21 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 	<!--<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="widgetBtn">Widget</label>-->
    
-  <div class="tab-panels">
-    <section id="tabRemarketing" class="tab-panel">
-      
+	<div class="tab-panels">
+	<section id="tabRemarketing" class="tab-panel">
+	  
 		<div class="wrap wrap-settings-admin-page">
 		<form method="post" enctype="multipart/form-data">
+			<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $local_nonce ); ?>" />
 			<input type="hidden" name="newsman_remarketing" value="Y"/>
 			<h2>Remarketing</h2>
 
-			<div class="<?php echo (is_array($this->message) && array_key_exists("status", $this->message)) ? $this->message["status"] : ""; ?>"><p><strong><?php echo (is_array($this->message) && array_key_exists("message", $this->message)) ? $this->message["message"] : ""; ?></strong>
-				</p></div>	
+			<div class="<?php echo ( is_array( $this->message ) && isset( $this->message['status'] ) ) ? esc_attr( $this->message['status'] ) : ''; ?>"><p><strong><?php echo ( is_array( $this->message ) && isset( $this->message['message'] ) ) ? esc_html( $this->message['message'] ) : ''; ?></strong></p></div>
 
-			<?php if (!$this->valid_credentials)
-			{ ?>
-				<div class="error"><p><strong><?php _e('Invalid credentials!'); ?></strong></p></div>
+			<?php
+			if ( ! $this->valid_credentials ) {
+				?>
+				<div class="error"><p><strong><?php esc_html_e( 'Invalid credentials!' ); ?></strong></p></div>
 			<?php } ?>
 
 			<table class="form-table newsmanTable newsmanTblFixed">
@@ -77,7 +100,7 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 						<label for="newsman_remarketingid">REMARKETING ID</label>
 					</th>
 					<td>
-						<input type="text" name="newsman_remarketingid" value="<?php echo $remarketingid; ?>"/>
+						<input type="text" name="newsman_remarketingid" value="<?php echo esc_html( $remarketingid ); ?>"/>
 						<p class="description">Your Newsman Remarketing ID</p>
 					</td>
 				</tr>
@@ -92,6 +115,6 @@ if (!empty($_POST['newsman_remarketing']) && $_POST['newsman_remarketing'] == 'Y
 			</form>
 		</div>
 
-  	</section>  
-  </div>  
+		</section>  
+	</div>  
 </div>

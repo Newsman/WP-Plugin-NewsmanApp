@@ -1,30 +1,58 @@
 <?php
+/**
+ * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ * Title: Newsman info banner class.
+ * Author: Newsman
+ * Author URI: https://newsman.com
+ * License: GPLv2 or later
+ *
+ * @package NewsmanApp for WordPress
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
  * WC_Newsman_Remarketing_Info_Banner class
- *
- * Displays a message after install (if not dismissed and GA is not already configured) about how to configure the analytics plugin
+ * Displays a message after install (if not dismissed and GA is not already configured) about how to configure the analytics plugin.
  */
 class WC_Newsman_Remarketing_Info_Banner {
 
-	/** @var object Class Instance */
+	/**
+	 * Self singleton instance
+	 *
+	 * @var self
+	 */
 	private static $instance;
 
-	/** @var boolean If the banner has been dismissed */
+	/**
+	 * Is banner dismissed
+	 *
+	 * @var bool
+	 */
 	private $is_dismissed = false;
 
 	/**
-	 * Get the class instance
+	 * Get the class instance.
+	 *
+	 * @param bool   $dismissed Is banner dismissed.
+	 * @param string $ga_id GA ID.
+	 * @return self
 	 */
 	public static function get_instance( $dismissed = false, $ga_id = '' ) {
-		return null === self::$instance ? ( self::$instance = new self( $dismissed, $ga_id ) ) : self::$instance;
+		if ( null === self::$instance ) {
+			self::$instance = new self( $dismissed, $ga_id );
+		}
+
+		return self::$instance;
 	}
 
 	/**
 	 * Constructor
+	 *
+	 * @param bool   $dismissed Is banner dismissed.
+	 * @param string $ga_id GA ID.
 	 */
 	public function __construct( $dismissed = false, $ga_id = '' ) {
 		$this->is_dismissed = (bool) $dismissed;
@@ -32,7 +60,7 @@ class WC_Newsman_Remarketing_Info_Banner {
 			$this->is_dismissed = true;
 		}
 
-		// Don't bother setting anything else up if we are not going to show the notice
+		// Don't bother setting anything else up if we are not going to show the notice.
 		if ( true === $this->is_dismissed ) {
 			return;
 		}
@@ -47,42 +75,51 @@ class WC_Newsman_Remarketing_Info_Banner {
 	public function banner() {
 		$screen = get_current_screen();
 
-		if ( ! in_array( $screen->base, array( 'woocommerce_page_wc-settings', 'plugins' ) ) || $screen->is_network || $screen->action ) {
+		if ( ! in_array( $screen->base, array( 'woocommerce_page_wc-settings', 'plugins' ), true ) || $screen->is_network || $screen->action ) {
 			return;
 		}
 
 		$integration_url = esc_url( admin_url( 'admin.php?page=wc-settings&tab=integration&section=newsman_remarketing' ) );
-		$dismiss_url = $this->dismiss_url();
+		$dismiss_url     = $this->dismiss_url();
 
+		// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 		$heading = __( 'Newsman Remarketing &amp; WooCommerce', 'woocommerce-newsman-integration' );
+		// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 		$configure = sprintf( __( '<a href="%s">Connect your Newsman Remarketing ID</a> to finish setting up this integration.', 'woocommerce-newsman-integration' ), $integration_url );
 
-		// Display the message..
-		echo '<div class="updated fade"><p><strong>' . $heading . '</strong> ';
-		echo '<a href="' . esc_url( $dismiss_url ) . '" title="' . __( 'Dismiss this notice.', 'woocommerce-newsman-integration' ) . '"> ' . __( '(Dismiss)', 'woocommerce-newsman-integration' ) . '</a>';
+		// Display the message.
+		echo '<div class="updated fade"><p><strong>' . esc_html( $heading ) . '</strong> ';
+		echo '<a href="' . esc_url( $dismiss_url ) . '" title="' . esc_attr( __( 'Dismiss this notice.', 'woocommerce-newsman-integration' ) ) . '"> ' . esc_html( __( '(Dismiss)', 'woocommerce-newsman-integration' ) ) . '</a>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p>' . $configure . "</p></div>\n";
 	}
 
 	/**
 	 * Returns the url that the user clicks to remove the info banner
+	 *
 	 * @return (string)
 	 */
-	function dismiss_url() {
+	public function dismiss_url() {
 		$url = admin_url( 'admin.php' );
 
-		$url = add_query_arg( array(
-			'page'      => 'wc-settings',
-			'tab'       => 'integration',
-			'wc-notice' => 'dismiss-info-banner',
-		), $url );
+		$url = add_query_arg(
+			array(
+				'page'      => 'wc-settings',
+				'tab'       => 'integration',
+				'wc-notice' => 'dismiss-info-banner',
+			),
+			$url
+		);
 
 		return wp_nonce_url( $url, 'woocommerce_info_banner_dismiss' );
 	}
 
 	/**
 	 * Handles the dismiss action so that the banner can be permanently hidden
+	 *
+	 * @return void
 	 */
-	function dismiss_banner() {
+	public function dismiss_banner() {
 		if ( ! isset( $_GET['wc-notice'] ) ) {
 			return;
 		}
@@ -103,5 +140,4 @@ class WC_Newsman_Remarketing_Info_Banner {
 			wp_safe_redirect( admin_url( 'admin.php?page=wc-settings&tab=integration' ) );
 		}
 	}
-
 }

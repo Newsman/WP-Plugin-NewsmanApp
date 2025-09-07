@@ -1,15 +1,18 @@
 <?php
+/**
+ * Title: Newsman admin settings
+ *
+ * @package NewsmanApp for WordPress
+ */
 
-$this->isOauth();
+$this->is_oauth();
 
-try
-{
-	$available_lists = $this->client->list->all();
-	$credentials_status = "credentials-valid";
-} catch (Exception $e)
-{
+try {
+	$available_lists    = $this->client->list->all();
+	$credentials_status = 'credentials-valid';
+} catch ( Exception $e ) {
 	$this->valid_credential = false;
-	$credentials_status = "credentials-invalid";
+	$credentials_status     = 'credentials-invalid';
 }
 ?>
 
@@ -31,9 +34,9 @@ try
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
    
-  <div class="tab-panels">
-    <section id="tabNewsman" class="tab-panel">
-      
+	<div class="tab-panels">
+	<section id="tabNewsman" class="tab-panel">
+	  
 		<div class="wrap">
 			<h2>Newsman Info</h2>
 			<table class="form-table">
@@ -42,8 +45,8 @@ try
 						<label for="">Credentials Status</label>
 					</th>
 					<td>
-						<div class="credentials-status <?php echo $credentials_status ?>"></div>
-						<span><?php echo ($credentials_status == "credentials-valid") ? "valid" : "invalid" ?></span>
+						<div class="credentials-status <?php echo esc_html( $credentials_status ); ?>"></div>
+						<span><?php echo ( 'credentials-valid' === $credentials_status ) ? 'valid' : 'invalid'; ?></span>
 					</td>
 				</tr>
 				<tr>
@@ -99,6 +102,6 @@ try
 			</table>
 		</div>
 
-  	</section>  
-  </div>  
+		</section>  
+	</div>  
 </div>
