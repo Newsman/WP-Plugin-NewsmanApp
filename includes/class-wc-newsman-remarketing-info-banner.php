@@ -83,13 +83,13 @@ class WC_Newsman_Remarketing_Info_Banner {
 		$dismiss_url     = $this->dismiss_url();
 
 		// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-		$heading = __( 'Newsman Remarketing &amp; WooCommerce', 'woocommerce-newsman-integration' );
+		$heading = __( 'Newsman Remarketing &amp; WooCommerce', 'newsman' );
 		// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-		$configure = sprintf( __( '<a href="%s">Connect your Newsman Remarketing ID</a> to finish setting up this integration.', 'woocommerce-newsman-integration' ), $integration_url );
+		$configure = sprintf( __( '<a href="%s">Connect your Newsman Remarketing ID</a> to finish setting up this integration.', 'newsman' ), $integration_url );
 
 		// Display the message.
 		echo '<div class="updated fade"><p><strong>' . esc_html( $heading ) . '</strong> ';
-		echo '<a href="' . esc_url( $dismiss_url ) . '" title="' . esc_attr( __( 'Dismiss this notice.', 'woocommerce-newsman-integration' ) ) . '"> ' . esc_html( __( '(Dismiss)', 'woocommerce-newsman-integration' ) ) . '</a>';
+		echo '<a href="' . esc_url( $dismiss_url ) . '" title="' . esc_attr( __( 'Dismiss this notice.', 'newsman' ) ) . '"> ' . esc_html( __( '(Dismiss)', 'newsman' ) ) . '</a>';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p>' . $configure . "</p></div>\n";
 	}

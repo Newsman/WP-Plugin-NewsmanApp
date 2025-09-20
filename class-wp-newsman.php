@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp for WordPress
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 2.7.7
+ * Version: 3.0.0
  * Author: Newsman
  * Author URI: https://www.newsman.com
  *
@@ -14,18 +14,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once 'vendor/Newsman/class-newsman-client.php';
+define( 'NEWSMAN_VERSION', '3.0.0' );
+
+// Included before autoload.php and checks for dependencies in vendor.
+require_once __DIR__ . '/includes/class-wp-newsman-php.php';
+
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	add_action( 'all_admin_notices', 'WP_Newsman_PHP::vendor_check_and_notify' );
+	return;
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
+	return;
+}
 
 /**
  * Newsman WP main class
  */
 class WP_Newsman {
 	/**
-	 * Instance of a Newsman_Client.
+	 * Newsman config
 	 *
-	 * @var Newsman_Client
+	 * @var Newsman_Config
 	 */
-	public $client;
+	protected $config;
+
+	/**
+	 * Newsman logger
+	 *
+	 * @var Newsman_WC_Logger
+	 */
+	protected $logger;
 
 	/**
 	 * First element in array is the type of message (success or error).
@@ -50,40 +71,12 @@ class WP_Newsman {
 	public $apikey;
 
 	/**
-	 * If credentials (combination of user id and api key) are correct true, else false.
-	 *
-	 * @var bool
-	 */
-	public $valid_credentials = true;
-
-	/**
 	 * Array containing the names of the html files found in the templates directory.
 	 * (as defined by the templates_dir constant).
 	 *
 	 * @var array
 	 */
 	public $templates = array();
-
-	/**
-	 * Bulk operations batch size.
-	 *
-	 * @var int
-	 */
-	public $batch_size = 9000;
-
-	/**
-	 * WP was synchronized.
-	 *
-	 * @var bool
-	 */
-	public $wp_sync = false;
-
-	/**
-	 * Woo Commerce customers synchronized with Newsman.
-	 *
-	 * @var bool
-	 */
-	public $woo_commerce_sync = false;
 
 	/**
 	 * Retargeting JS endpoint
@@ -103,67 +96,23 @@ class WP_Newsman {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->construct_client();
-		$this->init_hooks();
+		$this->config = Newsman_Config::init();
+		$this->logger = Newsman_WC_Logger::init();
 	}
 
 	/**
-	 * Is OAuth allow or redirect.
+	 * Get class instance
 	 *
-	 * @param bool $inside_oauth In OAuth process than redirect.
-	 * @return void
+	 * @return self WP_Newsman
 	 */
-	public function is_oauth( $inside_oauth = false ) {
+	public static function init() {
+		static $instance = null;
 
-		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-			return;
+		if ( ! $instance ) {
+			$instance = new WP_Newsman();
 		}
 
-		$host = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
-		if ( $inside_oauth ) {
-			if ( ! empty( get_option( 'newsman_userid' ) ) ) {
-				wp_safe_redirect( 'https://' . $host . '/wp-admin/admin.php?page=NewsmanSettings' );
-			}
-
-			return;
-		}
-
-		if ( empty( get_option( 'newsman_userid' ) ) ) {
-			wp_safe_redirect( 'https://' . $host . '/wp-admin/admin.php?page=NewsmanOauth' );
-		}
-	}
-
-	/**
-	 * Set's up the Newsman_Client instance.
-	 *
-	 * @param integer | string $userid The user id for Newsman (default's to null).
-	 * @param string           $apikey The api key for Newsman (default's to null).
-	 * @return void
-	 */
-	public function construct_client( $userid = null, $apikey = null ) {
-		$this->userid = ( ! is_null( $userid ) ) ? $userid : get_option( 'newsman_userid' );
-		$this->apikey = ( ! is_null( $apikey ) ) ? $apikey : get_option( 'newsman_apikey' );
-
-		try {
-			$this->client = new Newsman_Client( $this->userid, $this->apikey );
-			$this->client->setCallType( 'rest' );
-		} catch ( Exception $e ) {
-			$this->valid_credentials = false;
-		}
-	}
-
-	/**
-	 * Tests the Newsman Client Instance for valid credentials
-	 *
-	 * @return boolean
-	 */
-	public function show_on_front() {
-		try {
-			$test = $this->client->list->all();
-			return true;
-		} catch ( Exception $e ) {
-			return false;
-		}
+		return $instance;
 	}
 
 	/**
@@ -172,10 +121,19 @@ class WP_Newsman {
 	 * @param array|Object $obj Array or object to encode.
 	 * @return void
 	 */
-	public function display_json( $obj ) {
+	public function display_json_as_page( $obj ) {
+		// Prevent WordPress from loading the theme.
+		if ( ! defined( 'WP_USE_THEMES' ) ) {
+			define( 'WP_USE_THEMES', false );
+		}
+
 		header( 'Content-Type: application/json' );
-		echo wp_json_encode( $obj, JSON_PRETTY_PRINT );
-		exit;
+
+		// Disable caching.
+		nocache_headers();
+
+		echo wp_json_encode( $obj );
+		exit( 0 );
 	}
 
 	/**
@@ -184,12 +142,52 @@ class WP_Newsman {
 	 * @return void
 	 * @throws Exception Throws standard exception on errors.
 	 */
-	public function newsman_fetch_data() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		$newsman = ( empty( $_GET['newsman'] ) ) ? '' : sanitize_text_field( wp_unslash( $_GET['newsman'] ) );
-		if ( empty( $newsman ) ) {
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			$newsman = empty( $_POST['newsman'] ) ? '' : sanitize_text_field( wp_unslash( $_POST['newsman'] ) );
+	public function newsman_export_data() {
+		$export_request = new Newsman_Export_Request();
+		if ( ! $export_request->is_export_request() ) {
+			return;
+		}
+
+		if ( ! $this->config->is_enabled_with_api() ) {
+			$result = array(
+				'status'  => 403,
+				'message' => 'API setting is not enabled in plugin',
+			);
+			$this->display_json_as_page( $result );
+		}
+
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			wp_send_json( array( 'error' => 'WooCommerce is not installed' ) );
+		}
+
+		try {
+			$parameters = $export_request->get_request_parameters();
+			$processor  = new Newsman_Export_Retriever_Processor();
+			$result     = $processor->process(
+				$processor->get_code_by_data( $parameters ),
+				null,
+				$parameters
+			);
+
+			$this->display_json_as_page( $result );
+		} catch ( \OutOfBoundsException $e ) {
+			$this->logger->critical( $e->getCode() . ' ' . $e->getMessage() );
+			$result = array(
+				'status'  => 403,
+				'message' => $e->getMessage(),
+			);
+
+			$this->display_json_as_page( $result );
+			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			// wp_die('Access Forbidden', 'Forbidden', array('response' => 403)); .
+		} catch ( \Exception $e ) {
+			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$result = array(
+				'status'  => 0,
+				'message' => $e->getMessage(),
+			);
+
+			$this->display_json_as_page( $result );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
@@ -1097,7 +1095,7 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function init_hooks() {
-		add_action( 'init', array( $this, 'newsman_fetch_data' ) );
+		add_action( 'init', array( $this, 'newsman_export_data' ) );
 		add_action( 'woocommerce_review_order_before_submit', array( $this, 'newsman_checkout' ) );
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'newsman_checkout_action' ), 10, 2 );
 		// Order status change hooks.
@@ -1184,38 +1182,20 @@ class WP_Newsman {
 	 */
 	public function admin_menu() {
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_menu_page( 'Newsman', 'Newsman', 'administrator', 'Newsman', array( $this, 'include_admin_page' ), plugin_dir_url( __FILE__ ) . 'src/img/newsman-mini.png' );
+		add_menu_page( 'Newsman', 'Newsman', 'administrator', 'Newsman', array( new Newsman_Admin_Settings_Newsman(), 'include_page' ), plugin_dir_url( __FILE__ ) . 'src/img/newsman-mini.png' );
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
 		add_submenu_page( 'Newsman', 'Sync', 'Sync', 'administrator', 'NewsmanSync', array( $this, 'include_admin_sync_page' ) );
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'Remarketing', 'Remarketing', 'administrator', 'NewsmanRemarketing', array( $this, 'include_admin_remarketing_page' ) );
+		add_submenu_page( 'Newsman', 'Remarketing', 'Remarketing', 'administrator', 'NewsmanRemarketing', array( new Newsman_Admin_Settings_Remarketing(), 'include_page' ) );
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'SMS', 'SMS', 'administrator', 'NewsmanSMS', array( $this, 'include_admin_sms_page' ) );
+		add_submenu_page( 'Newsman', 'SMS', 'SMS', 'administrator', 'NewsmanSMS', array( new Newsman_Admin_Settings_Sms(), 'include_page' ) );
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'Settings', 'Settings', 'administrator', 'NewsmanSettings', array( $this, 'include_admin_settings_page' ) );
+		add_submenu_page( 'Newsman', 'Settings', 'Settings', 'administrator', 'NewsmanSettings', array( new Newsman_Admin_Settings_Settings(), 'include_page' ) );
 		/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "include_admin_widget_page"));
 		*/
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
 		add_submenu_page( 'Newsman', 'Oauth', 'Oauth', 'administrator', 'NewsmanOauth', array( $this, 'include_oauth_page' ) );
-	}
-
-	/**
-	 * Includes the html for the admin page..
-	 *
-	 * @return void
-	 */
-	public function include_admin_page() {
-		include 'src/backend.php';
-	}
-
-	/**
-	 * Includes the html for the admin settings page.
-	 *
-	 * @return void
-	 */
-	public function include_admin_settings_page() {
-		include 'src/backend-settings.php';
 	}
 
 	/**
@@ -1234,24 +1214,6 @@ class WP_Newsman {
 	 */
 	public function include_oauth_page() {
 		include 'src/backend-oauth.php';
-	}
-
-	/**
-	 * Includes the html for the admin remarketing page.
-	 *
-	 * @return void
-	 */
-	public function include_admin_remarketing_page() {
-		include 'src/backend-remarketing.php';
-	}
-
-	/**
-	 * Includes the html for the admin SMS page.
-	 *
-	 * @retnr void
-	 */
-	public function include_admin_sms_page() {
-		include 'src/backend-sms.php';
 	}
 
 	/**
@@ -1422,29 +1384,6 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Creates and return a message for backend.
-	 *
-	 * @param string $status       The status of the message (the css class of the message).
-	 * @param string $message      The actual message.
-	 * @return void
-	 */
-	public function set_message_backend( $status, $message ) {
-		$this->message = array(
-			'status'  => $status,
-			'message' => $message,
-		);
-	}
-
-	/**
-	 * Returns the current message for the backend.
-	 *
-	 * @return array The message array
-	 */
-	public function get_backend_message() {
-		return $this->message;
-	}
-
-	/**
 	 * Get the subscriber ip address. (Necessary for Newsman subscription).
 	 *
 	 * @return string The ip address.
@@ -1543,7 +1482,5 @@ class WP_Newsman {
 	}
 }
 
-	$wp_newsman = new WP_Newsman();
-
-	// include the widget.
-	// include 'class-newsman-subscribe-widget.php';.
+$wp_newsman = WP_Newsman::init();
+$wp_newsman->init_hooks();

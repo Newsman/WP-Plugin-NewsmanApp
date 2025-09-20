@@ -43,8 +43,8 @@ class WC_Class_Newsman_Remarketing extends WC_Integration {
 	 */
 	public function __construct() {
 		$this->id                    = 'newsman_remarketing';
-		$this->method_title          = __( 'Newsman Remarketing', 'newsman-remarketing-translate' );
-		$this->method_description    = __( 'Setup your Newsman Remarketing <a href="/wp-admin/admin.php?page=NewsmanRemarketing">here</a>.', 'newsman-remarketing-translate' );
+		$this->method_title          = __( 'Newsman Remarketing', 'newsman' );
+		$this->method_description    = __( 'Setup your Newsman Remarketing <a href="/wp-admin/admin.php?page=NewsmanRemarketing">here</a>.', 'newsman' );
 		$this->dismissed_info_banner = get_option( 'woocommerce_dismissed_info_banner' );
 
 		// Load the settings.
@@ -52,7 +52,6 @@ class WC_Class_Newsman_Remarketing extends WC_Integration {
 		$constructor = $this->init_options();
 
 		// Contains snippets/JS tracking code.
-		include_once 'class-wc-newsman-remarketing-js.php';
 		WC_Newsman_Remarketing_JS::get_instance( $constructor );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_assets' ) );
@@ -244,9 +243,9 @@ class WC_Class_Newsman_Remarketing extends WC_Integration {
 
 		// Add single quotes to allow jQuery to be substituted into _trackEvent parameters.
 		$parameters             = array();
-		$parameters['category'] = "'" . __( 'Products', 'newsman-remarketing-translate' ) . "'";
-		$parameters['action']   = "'" . __( 'Add to Cart', 'newsman-remarketing-translate' ) . "'";
-		$parameters['label']    = "'" . esc_js( $product->get_sku() ? __( 'ID:', 'newsman-remarketing-translate' ) . ' ' . $product->get_sku() : '#' . $product->get_id() ) . "'";
+		$parameters['category'] = "'" . __( 'Products', 'newsman' ) . "'";
+		$parameters['action']   = "'" . __( 'Add to Cart', 'newsman' ) . "'";
+		$parameters['label']    = "'" . esc_js( $product->get_sku() ? __( 'ID:', 'newsman' ) . ' ' . $product->get_sku() : '#' . $product->get_id() ) . "'";
 
 		if ( ! $this->disable_tracking() ) {
 			$code = '' . WC_Newsman_Remarketing_JS::get_instance()->tracker_var() . "( 'ec:addProduct', {";
@@ -312,8 +311,8 @@ class WC_Class_Newsman_Remarketing extends WC_Integration {
 
 		// Add single quotes to allow jQuery to be substituted into _trackEvent parameters.
 		$parameters             = array();
-		$parameters['category'] = "'" . __( 'Products', 'newsman-remarketing-translate' ) . "'";
-		$parameters['action']   = "'" . __( 'Add to Cart', 'newsman-remarketing-translate' ) . "'";
+		$parameters['category'] = "'" . __( 'Products', 'newsman' ) . "'";
+		$parameters['action']   = "'" . __( 'Add to Cart', 'newsman' ) . "'";
 		// Product SKU or ID.
 		$parameters['label'] = "($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id'))";
 

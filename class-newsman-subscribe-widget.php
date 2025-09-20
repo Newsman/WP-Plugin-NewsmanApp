@@ -26,9 +26,9 @@ class Newsman_subscribe_widget extends WP_Widget {
 			// Base ID of your widget.
 			'Newsman_Subscribe_Widget',
 			// Widget name will appear in UI.
-			__( 'Newsman Form', 'Newsman_subscribe_widget_domain' ),
+			__( 'Newsman Form', 'newsman' ),
 			// Widget description.
-			array( 'description' => __( 'Display newsman subscription form on site', 'Newsman_subscribe_widget_domain' ) )
+			array( 'description' => __( 'Display newsman subscription form on site', 'newsman' ) )
 		);
 	}
 
@@ -53,9 +53,7 @@ class Newsman_subscribe_widget extends WP_Widget {
 
 		// This is where you run the code and display the output.
 		$wp_newsman = new WP_Newsman();
-		if ( $wp_newsman->show_on_front() ) {
-			$wp_newsman->newsman_display_form();
-		}
+		$wp_newsman->newsman_display_form();
 	}
 
 	/**
@@ -69,7 +67,7 @@ class Newsman_subscribe_widget extends WP_Widget {
 		if ( isset( $instance['title'] ) ) {
 			$title = $instance['title'];
 		} else {
-			$title = __( 'New title', 'Newsman_subscribe_widget_domain' );
+			$title = __( 'New title', 'newsman' );
 		}
 		// Widget admin form.
 		?>

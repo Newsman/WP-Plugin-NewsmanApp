@@ -1,0 +1,235 @@
+<?php
+/**
+ * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ * Title: Newsman remarketing class.
+ * Author: Newsman
+ * Author URI: https://newsman.com
+ * License: GPLv2 or later
+ *
+ * @package NewsmanApp for WordPress
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Client API Client
+ *
+ * @class Newsman_Api_Client
+ */
+class Newsman_Api_Client implements Newsman_Api_ClientInterface {
+	/**
+	 * Newsman Config
+	 *
+	 * @var Newsman_Config
+	 */
+	protected $config;
+
+	/**
+	 * Newsman Logger
+	 *
+	 * @var Newsman_WC_Logger
+	 */
+	protected $logger;
+
+	/**
+	 * HTTP status code
+	 *
+	 * @var int|string|null
+	 */
+	protected $status;
+
+	/**
+	 * API error code
+	 *
+	 * @var string
+	 */
+	protected $error_code;
+
+	/**
+	 * API error message
+	 *
+	 * @var string
+	 */
+	protected $error_message;
+
+	/**
+	 * Class constructor
+	 */
+	public function __construct() {
+		$this->config = Newsman_Config::init();
+		$this->logger = Newsman_WC_Logger::init();
+	}
+
+	/**
+	 * Make API GET request
+	 *
+	 * @param Newsman_Api_ContextInterface $context API request context.
+	 * @param array                        $params GET parameters.
+	 * @return array Response from API
+	 */
+	public function get( $context, $params = array() ) {
+		return $this->request( $context, 'GET', $params );
+	}
+
+	/**
+	 * Make API POST request
+	 *
+	 * @param Newsman_Api_ContextInterface $context API request context.
+	 * @param array                        $get_params GET parameters.
+	 * @param array                        $post_params POST parameters.
+	 * @return array Response from API
+	 */
+	public function post( $context, $get_params = array(), $post_params = array() ) {
+		return $this->request( $context, 'POST', $get_params, $post_params );
+	}
+
+	/**
+	 * Make API request
+	 *
+	 * @param Newsman_Api_ContextInterface $context API request context.
+	 * @param string                       $method GET or POST request type.
+	 * @param array                        $get_params GET parameters.
+	 * @param array                        $post_params POST parameters.
+	 * @return array
+	 *
+	 * phpcs:ignore Squiz.Commenting.FunctionCommentThrowTag.Missing
+	 */
+	public function request( $context, $method, $get_params = array(), $post_params = array() ) {
+		$this->status        = null;
+		$this->error_message = null;
+		$this->error_code    = null;
+		$result              = array();
+		$args                = array();
+
+		$url  = $this->config->get_api_url();
+		$url .= sprintf(
+			'%s/rest/%s/%s/%s.json',
+			$this->config->get_api_version(),
+			$context->get_user_id(),
+			$context->get_api_key(),
+			$context->get_endpoint()
+		);
+		if ( is_array( $get_params ) && ! empty( $get_params ) ) {
+			$url .= '?' . http_build_query( $get_params );
+		}
+		$this->logger->debug( str_replace( $context->get_api_key(), '****', $url ) );
+
+		$args['timeout'] = $this->config->get_api_timeout( $context->get_blog_id() );
+		$args['headers'] = array(
+			'Content-Type' => 'application/json',
+		);
+
+		try {
+			if ( 'POST' === $method ) {
+				$args['body']  = $post_params;
+				$remote_result = wp_remote_post( $url, $args );
+
+				$this->logger->debug( wp_json_encode( $post_params ) );
+			} else {
+				$remote_result = wp_remote_get( $url, $args );
+			}
+
+			if ( $remote_result instanceof WP_Error ) {
+				throw new \Exception( $remote_result->get_error_message(), $remote_result->get_error_code() );
+			}
+
+			$this->status = (int) $remote_result['response']['code'];
+			if ( 200 === $this->status ) {
+				try {
+					$result    = json_decode( $remote_result['body'], true );
+					$api_error = $this->parse_api_error( $result );
+					if ( false !== $api_error ) {
+						$this->error_code    = $api_error['code'];
+						$this->error_message = $api_error['message'];
+						$this->logger->warning( $this->error_code . ' | ' . $this->error_message );
+					} else {
+						$this->logger->notice( wp_json_encode( $result ) );
+					}
+				} catch ( \Exception $e ) {
+					$this->error_code    = 1;
+					$this->error_message = $e->getMessage();
+					$this->logger->critical( $e->getMessage() );
+					return array();
+				}
+			} else {
+				$this->error_code = $this->status;
+				try {
+					if ( stripos( $remote_result['body'], '{' ) !== false ) {
+						$body      = json_decode( $remote_result['body'], true );
+						$api_error = $this->parse_api_error( $body );
+						if ( false !== $api_error ) {
+							$this->error_code    = $api_error['code'];
+							$this->error_message = $api_error['message'];
+						} else {
+							$this->error_message = 'Error: ' . $this->error_code;
+						}
+					}
+				} catch ( \Exception $e ) {
+					$this->error_message = 'Error: ' . $this->error_code;
+				}
+				$this->logger->error( $this->status . ' | ' . $remote_result['body'] );
+			}
+		} catch ( \Exception $e ) {
+			$this->error_code    = $e->getCode();
+			$this->error_message = $e->getMessage();
+			$this->logger->critical( $e->getMessage() );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Parse API returned error
+	 *
+	 * @param array $result API result from response.
+	 * @return array|false
+	 */
+	protected function parse_api_error( $result ) {
+		if ( ! ( is_array( $result ) && isset( $result['err'] ) ) ) {
+			return false;
+		}
+
+		return array(
+			'code'    => isset( $result['code'] ) ? $result['code'] : 0,
+			'message' => $result['message'] ?? '',
+		);
+	}
+
+	/**
+	 * Get HTTP response status code
+	 *
+	 * @return int|string
+	 */
+	public function get_status() {
+		return $this->status;
+	}
+
+	/**
+	 * Get error code from API, HTTP Error Code or JSON error == 1
+	 *
+	 * @return string
+	 */
+	public function get_error_code() {
+		return $this->error_code;
+	}
+
+	/**
+	 * Get error message from API, HTTP error body message or JSON parse error
+	 *
+	 * @return string
+	 */
+	public function get_error_message() {
+		return $this->error_message;
+	}
+
+	/**
+	 * API error check
+	 *
+	 * @return bool
+	 */
+	public function has_error() {
+		return $this->error_code > 0;
+	}
+}

@@ -132,6 +132,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
  * Patch
 = 2.3.7 =
  * Remarketing improvements
+ = 3.0.0 =
+ * General improvements
+ * WordPress Codding standards
 
 == Upgrade Notice ==
 

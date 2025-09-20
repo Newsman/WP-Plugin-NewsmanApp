@@ -1,0 +1,55 @@
+{
+	"name": "newsman/newsmanapp",
+	"description": "Newsman plugin for WordPress and WooCommerce.",
+	"license": "GPL-2.0-or-later",
+	"type": "wordpress-plugin",
+	"authors": [
+		{
+			"name": "Newsman",
+			"homepage": "https://www.newsman.ro/"
+		}
+	],
+	"homepage": "https://www.newsman.ro/",
+	"support": {
+		"issues": "https://github.com/Newsman/WP-Plugin-NewsmanApp/issues",
+		"wiki": "https://kb.newsman.ro/api/",
+		"docs": "https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/master/README.md",
+		"source": "https://github.com/Newsman/WP-Plugin-NewsmanApp",
+		"chat": "https://www.newsman.ro/",
+		"email": "info@newsman.ro"
+	},
+	"keywords": [
+		"newsman",
+		"wordpress",
+		"woocommerce",
+		"newsletter",
+		"search",
+		"remarketing",
+		"marketing",
+		"email",
+		"subscriber"
+	],
+	"require": {
+		"php": ">=7.4.0",
+		"composer/installers": "^1.0 || ^2.0"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "*"
+	},
+	"autoload": {
+		"classmap": [
+			"includes"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"roots/wordpress-core-installer": true,
+			"composer/installers": true
+		},
+		"classmap-authoritative": true,
+		"preferred-install": "dist",
+		"prepend-autoloader": false,
+		"sort-packages": true
+	}
+}

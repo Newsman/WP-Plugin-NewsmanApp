@@ -19,8 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * JS for recording Google Analytics info
  */
 class WC_Newsman_Remarketing_JS {
-
-
 	/**
 	 * Singleton self instance
 	 *
@@ -196,7 +194,7 @@ class WC_Newsman_Remarketing_JS {
 		//Newsman remarketing tracking code REPLACEABLE
 
 		var remarketingid = '$remarketingid';
-		var _nzmPluginInfo = '2.7.6:woocommerce';
+		var _nzmPluginInfo = '3.0.0:woocommerce';
 		
 		//Newsman remarketing tracking code REPLACEABLE
 

@@ -5,6 +5,12 @@
  * @package NewsmanApp for WordPress
  */
 
+/**
+ * Current class for output
+ *
+ * @var Newsman_Admin_Settings_Oauth $this
+ */
+
 $this->is_oauth( true );
 
 $nonce_action = 'newsman-settings-oauth';
@@ -222,8 +228,8 @@ if ( ! empty( $_POST['oauthstep2'] ) && 'Y' === $_POST['oauthstep2'] ) {
 										<?php
 										foreach ( $data_lists as $l ) {
 											?>
-											<option
-													value="<?php echo esc_attr( $l['id'] ); ?>"><?php echo esc_html( $l['name'] ); ?></option>
+											<option 
+												value="<?php echo esc_attr( $l['id'] ); ?>"><?php echo esc_html( $l['name'] ); ?></option>
 										<?php } ?>
 									</select>
 								</td>

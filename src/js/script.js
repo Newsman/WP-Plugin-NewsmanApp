@@ -596,6 +596,15 @@
 					}
 				}
 			);
+			jQuery( '#newsman_api' ).click(
+				function (e) {
+					if (jQuery( '#newsman_api' ).is( ':checked' )) {
+						jQuery( '.newsman_apiPanel' ).css( 'display', 'table-row' );
+					} else {
+						jQuery( '.newsman_apiPanel' ).css( 'display', 'none' );
+					}
+				}
+			);
 
 		}
 	);
