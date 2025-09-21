@@ -1,0 +1,73 @@
+<?php
+/**
+ * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
+ * Title: Newsman remarketing class.
+ * Author: Newsman
+ * Author URI: https://newsman.com
+ * License: GPLv2 or later
+ *
+ * @package NewsmanApp for WordPress
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * API Client Service Configuration Get Segment All
+ *
+ * @class Newsman_Service_Configuration_SetFeedOnList
+ */
+class Newsman_Service_Configuration_SetFeedOnList extends Newsman_Service_Abstract_Service {
+	/**
+	 * Installs a feed via API in Newsman
+	 *
+	 * @see https://kb.newsman.com/api/1.2/feeds.setFeedOnList
+	 */
+	public const ENDPOINT = 'feeds.setFeedOnList';
+
+	/**
+	 * Get all segments by list ID
+	 *
+	 * @param Newsman_Service_Context_Configuration_SetFeedOnList $context List context.
+	 * @return array
+	 * @throws Exception Throw exception on errors.
+	 */
+	public function execute( $context ) {
+		if ( empty( $context->get_list_id() ) ) {
+			$e = new Exception( esc_html__( 'List ID is required.', 'newsman' ) );
+			$this->logger->error( $e );
+			throw $e;
+		}
+
+		$api_context = $this->create_api_context()
+			->set_list_id( $context->get_list_id() )
+			->set_blog_id( $context->get_blog_id() )
+			->set_endpoint( self::ENDPOINT );
+
+		/* translators: 1: Phone number */
+		$this->logger->info( sprintf( esc_html__( 'Try to install products feed %s', 'newsman' ), $context->get_url() ) );
+
+		$client = $this->create_api_client();
+		$result = $client->post(
+			$api_context,
+			array(
+				'list_id'   => $api_context->get_list_id(),
+				'url'       => $context->get_url(),
+				'website'   => $context->get_website(),
+				'type'      => $context->get_type(),
+				'return_id' => $context->get_return_id(),
+			)
+		);
+
+		if ( $client->has_error() ) {
+			// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( esc_html__( $client->get_error_message(), 'newsman' ), $client->get_error_code() );
+		}
+
+		/* translators: 1: Phone number */
+		$this->logger->info( sprintf( esc_html__( 'Installed products feed %s', 'newsman' ), $context->get_url() ) );
+
+		return $result;
+	}
+}

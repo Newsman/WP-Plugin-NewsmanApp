@@ -34,6 +34,48 @@ class Newsman_Admin_Settings {
 	protected $logger;
 
 	/**
+	 * Page nonce action
+	 *
+	 * @var string
+	 */
+	public $nonce_action = 'newsman-settings';
+
+	/**
+	 * New nonce for the page
+	 *
+	 * @var string
+	 */
+	public $new_nonce = '';
+
+	/**
+	 * Form ID. The HTML hidden input name.
+	 *
+	 * @var string
+	 */
+	public $form_id = '';
+
+	/**
+	 * Form fields
+	 *
+	 * @var array
+	 */
+	public $form_fields = array();
+
+	/**
+	 * Form values
+	 *
+	 * @var array
+	 */
+	public $form_values = array();
+
+	/**
+	 * Is valid credentials
+	 *
+	 * @var bool
+	 */
+	public $valid_credentials = true;
+
+	/**
 	 * Messages
 	 *
 	 * @var array
@@ -181,5 +223,148 @@ class Newsman_Admin_Settings {
 			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
 			return false;
 		}
+	}
+
+	/**
+	 * Call API set feed on list
+	 *
+	 * @param string $list_id List ID.
+	 * @param string $url URL of feed.
+	 * @param string $website Website URL.
+	 * @param string $type Type of the feed.
+	 * @param bool   $return_id Is return the ID of the feed.
+	 * @return array|false
+	 */
+	public function set_feed_on_list( $list_id, $url, $website, $type = 'fixed', $return_id = false ) {
+		try {
+			if ( null === $list_id ) {
+				$list_id = $this->get_config()->get_list_id();
+			}
+
+			$context = new Newsman_Service_Context_Configuration_SetFeedOnList();
+			$context->set_list_id( $list_id )
+				->set_url( $url )
+				->set_website( $website )
+				->set_type( $type )
+				->set_return_id( $return_id );
+			$set_feed = new Newsman_Service_Configuration_SetFeedOnList();
+			$result   = $set_feed->execute( $context );
+			return $result;
+		} catch ( Exception $e ) {
+			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			return false;
+		}
+	}
+
+	/**
+	 * Is valid API credentials
+	 *
+	 * @param null|int|string $user_id API user ID.
+	 * @param null|string     $api_key API key.
+	 *
+	 * @return bool
+	 */
+	public function is_valid_credentials( $user_id = null, $api_key = null ) {
+		return ( false !== $this->retrieve_api_all_lists( $user_id, $api_key ) );
+	}
+
+	/**
+	 * Get page's current nonce
+	 *
+	 * @return string
+	 */
+	public function get_current_nonce() {
+		$nonce = '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
+		}
+		return $nonce;
+	}
+
+	/**
+	 * Validate current nonce on page
+	 *
+	 * @param array $post_parameters List of not empty POST parameters that triggers the nonce validation.
+	 * @return bool
+	 */
+	public function validate_nonce( $post_parameters = array() ) {
+		$has_parameters = false;
+		foreach ( $post_parameters as $key => $value ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				$has_parameters = true;
+				break;
+			}
+		}
+
+		$nonce = $this->get_current_nonce();
+		if ( ! empty( $nonce ) || $has_parameters ) {
+			return wp_verify_nonce( $nonce, $this->nonce_action ) ? true : false;
+		}
+		return true;
+	}
+
+	/**
+	 * Create a new nonce for page (current rendered page)
+	 *
+	 * @return string
+	 */
+	public function create_nonce() {
+		$this->new_nonce = wp_create_nonce( $this->nonce_action );
+		wp_nonce_field( $this->nonce_action, '_wpnonce', false );
+		return $this->new_nonce;
+	}
+
+	/**
+	 * Initialize form values from POST variable
+	 *
+	 * @return void
+	 */
+	public function init_form_values_from_post() {
+		foreach ( $this->form_fields as $name ) {
+			$this->form_values[ $name ] = '';
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			if ( isset( $_POST[ $name ] ) && ! empty( $_POST[ $name ] ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$this->form_values[ $name ] = sanitize_text_field( wp_unslash( $_POST[ $name ] ) );
+			}
+		}
+	}
+
+	/**
+	 * Initialize form values from configuration options
+	 *
+	 * @return void
+	 */
+	public function init_form_values_from_option() {
+		foreach ( $this->form_fields as $name ) {
+			$this->form_values[ $name ] = get_option( $name );
+		}
+	}
+
+	/**
+	 * Save admin configuration from form fields
+	 *
+	 * @return array
+	 */
+	public function save_form_values() {
+		foreach ( $this->form_fields as $name ) {
+			if ( isset( $this->form_values[ $name ] ) ) {
+				update_option( $name, $this->form_values[ $name ] );
+			}
+		}
+
+		return $this->form_values;
+	}
+
+	/**
+	 * Get Newsman_Config
+	 *
+	 * @return Newsman_Config|null Newsman config.
+	 */
+	public function get_config() {
+		return $this->config;
 	}
 }

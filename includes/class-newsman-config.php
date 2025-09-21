@@ -136,9 +136,9 @@ class Newsman_Config {
 	 * @return int
 	 */
 	public function get_api_timeout( $blog_id = null ) {
-		$timeout = (int) $this->get_blog_option( $blog_id, 'newsman_developerapitimeout', 60 );
+		$timeout = (int) $this->get_blog_option( $blog_id, 'newsman_developerapitimeout', 5 );
 		if ( $timeout <= 0 ) {
-			$timeout = 60;
+			$timeout = 1;
 		}
 		return $timeout;
 	}
@@ -186,7 +186,7 @@ class Newsman_Config {
 			$sites = get_sites( $args );
 		} elseif ( function_exists( 'wp_get_sites' ) ) {
 			// Keep compatibility with WordPress 3.7.
-			//phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_get_sitesFound
+			// phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_get_sitesFound
 			$sites = wp_get_sites( $args );
 		}
 		// @see wp_get_sites() for empty array return value.

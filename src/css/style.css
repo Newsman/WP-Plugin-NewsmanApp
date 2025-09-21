@@ -1,31 +1,53 @@
-.newsmanTable{
+.newsman-table {
 	border: 1px solid #efefef;
 	box-shadow: 3px 2px 2px #f4f4f4;
 }
 
-.newsmanTable th{
+.newsman-table th {
 	padding: 20px 20px 20px 20px;
 }
 
-.newsmanTblFixed{
+.newsman-tbl-fixed {
 	table-layout: fixed;
 }
 
-.newsmanOauth td {
+.newsman-oauth td {
 	padding: 3px 10px;
 }
 
-.nVariable{
-	background: rgba(0,0,0,0.8);
+.newsman-table td.newsman-sms-status {
+	vertical-align: top;
+}
+
+.newsman-table td.newsman-sms-status label {
+	display: inline-block;
+	margin-right: 5px;
+	cursor: pointer;
+}
+
+.nzm-variable {
+	background: rgba(0, 0, 0, 0.8);
 	color: #fff;
-	padding: 0px;
+	padding: 0;
 	margin: 5px;
 	cursor: pointer;
 }
 
-.newsmanP{
+.nzm-label {
+	cursor: pointer;
+}
+
+.newsman-paragraph {
 	font-size: 11px;
 	color: #6e6e6e;
+}
+
+.credentials-valid {
+	color: #008000;
+}
+
+.credentials-invalid {
+	color: #b72524;
 }
 
 /*tabs*/
@@ -33,28 +55,27 @@
 .tabset > input[type="radio"] {
 	position: absolute;
 	left: -200vw;
-	}
+}
 
-.tab-panels input[type="submit"], .tab-panels input[type="button"]
-{
-	margin: 10px 0px;
+.tab-panels input[type="submit"], .tab-panels input[type="button"] {
+	margin: 10px 0;
 	background: #ad0100;
 }
 
-	.tabset .tab-panel {
+.tabset .tab-panel {
 	display: block;
-	}
+}
 
-	.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-	.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-	.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-	.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-	.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-	.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
 	display: block;
-	}
+}
 
-	.tabset > label {
+.tabset > label {
 	position: relative;
 	display: inline-block;
 	padding: 21px 21px 25px;
@@ -62,9 +83,9 @@
 	border-bottom: 0;
 	cursor: pointer;
 	font-weight: 600;
-	}
+}
 
-	.tabset > label::after {
+.tabset > label::after {
 	content: "";
 	position: absolute;
 	left: 15px;
@@ -72,65 +93,65 @@
 	width: 22px;
 	height: 4px;
 	background: #8d8d8d;
-	}
+}
 
-	.tabset > label:hover,
-	.tabset > input:focus + label {
+.tabset > label:hover,
+.tabset > input:focus + label {
 	color: #b72524;
-	}
+}
 
-	.tabset > label:hover::after,
-	.tabset > input:focus + label::after,
-	.tabset > input:checked + label::after {
+.tabset > label:hover::after,
+.tabset > input:focus + label::after,
+.tabset > input:checked + label::after {
 	background: #b72524;
-	}
+}
 
-	.tabset > input:checked + label {
+.tabset > input:checked + label {
 	border-color: #ccc;
 	border-bottom: 1px solid #fff;
 	margin-bottom: -1px;
 	background: #fff;
-	}
+}
 
-	.tab-panel {
+.tab-panel {
 	padding: 30px 0;
 	border-top: 1px solid #ccc;
-	}
+}
 
-	.tabset {
-		text-align: left;
-	}
+.tabset {
+	text-align: left;
+}
 
-	.tab-panels{
+.tab-panels {
 	text-align: left;
 	background: #fff;
 	padding: 15px;
-	}
+}
 
-	.tabsetImg{
+.tabset-img {
 	text-align: center;
-	padding: 20px 0px;
-	}
+	padding: 20px 0;
+}
 
-	#tabOauth{
+#tab-oauth {
 	text-align: center;
-	}
+}
 
-	#tabOauth .button{
+#tab-oauth .button {
 	padding: 10px;
 	margin: 10px;
-	}
+}
 
-	.tab-panels input[type="text"]{
+.tab-panels input[type="text"] {
 	min-width: 50%;
-	}
+}
 
-	.tab-panels .form-table th{
-		width: auto !important;
-	}
+.tab-panels .form-table th {
+	width: auto !important;
+}
 
-	.tab-panels .newsmanTblFixed th{
+.tab-panels .newsman-tbl-fixed th {
 	width: 200px !important;
-	}
+}
 
 /*tabs*/

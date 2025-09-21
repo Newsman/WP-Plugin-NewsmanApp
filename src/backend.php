@@ -12,14 +12,9 @@
  */
 
 $this->is_oauth();
-
-$available_lists    = $this->retrieve_api_all_lists();
-$credentials_status = 'credentials-valid';
-if ( false === $available_lists ) {
-	$credentials_status = 'credentials-invalid';
-}
+$is_valid_credentials = $this->is_valid_credentials();
 ?>
-<div class="tabsetImg">
+<div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
 		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png"/>
 	</a>
@@ -42,21 +37,22 @@ if ( false === $available_lists ) {
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="">Credentials Status</label>
+							<strong>Credentials Status</strong>
 						</th>
 						<td>
-							<div class="credentials-status <?php echo esc_html( $credentials_status ); ?>"></div>
-							<span><?php echo ( 'credentials-valid' === $credentials_status ) ? 'valid' : 'invalid'; ?></span>
+							<div class="credentials-status <?php echo esc_html( $is_valid_credentials ? 'credentials-valid' : 'credentials-invalid' ); ?>">
+								<span><?php echo $is_valid_credentials ? esc_html__( 'Valid', 'newsman' ) : esc_html__( 'Invalid', 'newsman' ); ?></span>
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="">Newsman Menus</label>
+							<strong>Newsman Menus:</strong>
 						</th>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="">Sync</label>
+							<strong>Sync</strong>
 						</th>
 						<td>
 							<p>You will be able to sync your shop customers and newsletter subscribers with Newsman list
@@ -65,7 +61,7 @@ if ( false === $available_lists ) {
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="">Remarketing</label>
+							<strong>Remarketing</strong>
 						</th>
 						<td>
 							<p>Provide a valuable experience to your customer by automating communication with them.
@@ -75,7 +71,7 @@ if ( false === $available_lists ) {
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="">SMS</label>
+							<strong>SMS</strong>
 						</th>
 						<td>
 							<p>SMS (short messages) is one of the most effective ways to get users’ attention. Create
@@ -84,7 +80,7 @@ if ( false === $available_lists ) {
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="">Settings</label>
+							<strong>Settings</strong>
 						</th>
 						<td>
 							<p>In the settings page enter your API Key and User id provided by Newsman.</p>
@@ -95,7 +91,7 @@ if ( false === $available_lists ) {
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="">Widget</label>
+							<strong>Widget</strong>
 						</th>
 						<td>
 							<p>Transform your website visitors into subscribers and customers. Generate easy to

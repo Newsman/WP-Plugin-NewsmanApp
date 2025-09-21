@@ -96,7 +96,7 @@ class Newsman_Export_Retriever_Processor {
 		$retriever = $this->pool->get_retriever_by_code( $code );
 		unset( $data[ Newsman_Export_Retriever_Authenticator::API_KEY_PARAM ] );
 
-		//phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		// if ( $retriever instanceof Newsman_Export_Retriever_Config ) {
 		// $retriever->set_request_apy_key( $api_key );
 		// }.

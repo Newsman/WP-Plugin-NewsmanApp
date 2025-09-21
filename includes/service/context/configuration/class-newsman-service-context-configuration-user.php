@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class Newsman_Service_Context_Configuration_User
  */
-class Newsman_Service_Context_Configuration_User extends Newsman_Service_Context_Abstract_Context {
+class Newsman_Service_Context_Configuration_User extends Newsman_Service_Context_Blog {
 	/**
 	 * API user ID
 	 *

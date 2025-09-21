@@ -83,7 +83,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		 * @return void
 		 */
 		public function newsman_get_cart() {
-			//phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$newsman = ( empty( $_GET['newsman'] ) ) ? '' : sanitize_text_field( wp_unslash( $_GET['newsman'] ) );
 
 			if ( ! empty( $newsman ) && ! empty( get_option( 'newsman_remarketingid' ) ) ) {
@@ -99,7 +99,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 					);
 				}
 
-				//phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				switch ( $_GET['newsman'] ) {
 					case 'getCart.json':
 						$cart = WC()->cart;
@@ -124,7 +124,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 						echo wp_json_encode( $prod, JSON_PRETTY_PRINT );
 						exit;
 					default:
-						//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						$this->display_json(
 							array(
 								'status'  => 0,

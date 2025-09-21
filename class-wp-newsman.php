@@ -926,7 +926,7 @@ class WP_Newsman {
 					$this->client->sms->sendone( $newsman_smslist, $newsman_smstext, $phone );
 				}
 			} catch ( Exception $e ) {
-				//phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( $e->getMessage() );
 			}
 		}
@@ -1181,48 +1181,69 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function admin_menu() {
-		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_menu_page( 'Newsman', 'Newsman', 'administrator', 'Newsman', array( new Newsman_Admin_Settings_Newsman(), 'include_page' ), plugin_dir_url( __FILE__ ) . 'src/img/newsman-mini.png' );
-		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'Sync', 'Sync', 'administrator', 'NewsmanSync', array( $this, 'include_admin_sync_page' ) );
-		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'Remarketing', 'Remarketing', 'administrator', 'NewsmanRemarketing', array( new Newsman_Admin_Settings_Remarketing(), 'include_page' ) );
-		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'SMS', 'SMS', 'administrator', 'NewsmanSMS', array( new Newsman_Admin_Settings_Sms(), 'include_page' ) );
-		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'Settings', 'Settings', 'administrator', 'NewsmanSettings', array( new Newsman_Admin_Settings_Settings(), 'include_page' ) );
+		add_menu_page(
+			'Newsman',
+			'Newsman',
+			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+			'Newsman',
+			array( new Newsman_Admin_Settings_Newsman(), 'include_page' ),
+			plugin_dir_url( __FILE__ ) . 'src/img/newsman-mini.png'
+		);
+
+		add_submenu_page(
+			'Newsman',
+			'Sync',
+			'Sync',
+			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+			'NewsmanSync',
+			array( new Newsman_Admin_Settings_Sync(), 'include_page' )
+		);
+
+		add_submenu_page(
+			'Newsman',
+			'Remarketing',
+			'Remarketing',
+			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+			'NewsmanRemarketing',
+			array( new Newsman_Admin_Settings_Remarketing(), 'include_page' )
+		);
+
+		add_submenu_page(
+			'Newsman',
+			'SMS',
+			'SMS',
+			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+			'NewsmanSMS',
+			array( new Newsman_Admin_Settings_Sms(), 'include_page' )
+		);
+
+		add_submenu_page(
+			'Newsman',
+			'Settings',
+			'Settings',
+			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+			'NewsmanSettings',
+			array( new Newsman_Admin_Settings_Settings(), 'include_page' )
+		);
+
 		/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		add_submenu_page("Newsman", "Widget", "Widget", "administrator", "NewsmanWidget", array($this, "include_admin_widget_page"));
-		*/
-		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
-		add_submenu_page( 'Newsman', 'Oauth', 'Oauth', 'administrator', 'NewsmanOauth', array( $this, 'include_oauth_page' ) );
-	}
+		add_submenu_page(
+			'Newsman',
+			'Widget',
+			'Widget',
+			'administrator',
+			'NewsmanWidget',
+			array(new Newsman_Admin_Settings_Widget(), "include_page")
+		);*/
 
-	/**
-	 * Includes the html for the admin sync page.
-	 *
-	 * @return void
-	 */
-	public function include_admin_sync_page() {
-		include 'src/backend-sync.php';
-	}
-
-	/**
-	 * Include OAuth page.
-	 *
-	 * @return void
-	 */
-	public function include_oauth_page() {
-		include 'src/backend-oauth.php';
-	}
-
-	/**
-	 * Includes the html for the admin widget page.
-	 *
-	 * @return void
-	 */
-	public function include_admin_widget_page() {
-		include 'src/backend-widget.php';
+		add_submenu_page(
+			'Newsman',
+			'Oauth',
+			'Oauth',
+			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+			'NewsmanOauth',
+			array( new Newsman_Admin_Settings_Oauth(), 'include_page' )
+		);
 	}
 
 	/**

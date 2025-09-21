@@ -5,119 +5,28 @@
  * @package NewsmanApp for WordPress
  */
 
+/**
+ * Current class for output
+ *
+ * @var Newsman_Admin_Settings_Sync $this
+ */
+
 $this->is_oauth();
 
-$nonce_action = 'newsman-settings-sync';
-$test_nonce   = '';
-if ( isset( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['_wpnonce'] ) ) {
-	$test_nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
+if ( ! $this->validate_nonce( array( $this->form_id ) ) ) {
+	wp_nonce_ays( $this->nonce_action );
+	return;
 }
+$this->create_nonce();
 
-if ( ! empty( $test_nonce ) || isset( $_POST['newsman_sync'] ) ) {
-	if ( ! wp_verify_nonce( $test_nonce, $nonce_action ) ) {
-		wp_nonce_ays( $nonce_action );
-		return;
-	}
-}
-
-$local_nonce = wp_create_nonce( $nonce_action );
-wp_nonce_field( $nonce_action, '_wpnonce', false );
-
-$local_newsman_sync = '';
-if ( isset( $_POST['newsman_sync'] ) && ! empty( $_POST['newsman_sync'] ) ) {
-	$local_newsman_sync = sanitize_text_field( wp_unslash( $_POST['newsman_sync'] ) );
-}
-
-$local_options       = array();
-$local_options_names = array(
-	'newsman_list',
-	'newsman_smslist',
-	'newsman_segments',
-);
-
-if ( 'Y' === $local_newsman_sync ) {
-	foreach ( $local_options_names as $local_option_name ) {
-		$local_options[ $local_option_name ] = '';
-		if ( isset( $_POST[ $local_option_name ] ) ) {
-			$local_options[ $local_option_name ] = sanitize_text_field( wp_unslash( $_POST[ $local_option_name ] ) );
-		}
-	}
-
-	$this->construct_client( $this->userid, $this->apikey );
-
-	foreach ( $local_options as $local_option_name => $local_option_value ) {
-		if ( 'newsman_userid' === $local_option_name ) {
-			update_option( 'newsman_userid', $this->userid );
-		} elseif ( 'newsman_apikey' === $local_option_name ) {
-			update_option( 'newsman_apikey', $this->apikey );
-		} else {
-			update_option( $local_option_name, $local_option_value );
-		}
-	}
-
-	if ( ! empty( $local_options['newsman_list'] ) && class_exists( 'WooCommerce' ) ) {
-		$args     = array(
-			'stock_status' => 'instock',
-		);
-		$products = wc_get_products( $args );
-
-		if ( ! empty( $products ) ) {
-
-			$url = get_site_url() . '/?newsman=products.json&nzmhash=' . $this->apikey;
-
-			try {
-				$ret = $this->client->feeds->setFeedOnList( $local_options['newsman_list'], $url, get_site_url(), 'NewsMAN' );
-			} catch ( Exception $ex ) {
-				$this->set_message_backend( 'error', 'Could not update feed list' );
-			}
-		}
-	}
-
-	try {
-		$available_lists = $this->client->list->all();
-
-		$available_segments = array();
-		if ( ! empty( $local_options['newsman_list'] ) ) {
-			$available_segments = $this->client->segment->all( $local_options['newsman_list'] );
-		}
-
-		$available_smslists = $this->client->sms->lists();
-
-		$this->set_message_backend( 'updated', 'Options saved.' );
-	} catch ( Exception $e ) {
-		$this->valid_credential = false;
-		$this->set_message_backend( 'error', 'Invalid Credentials' );
-	}
-} else {
-	foreach ( $local_options_names as $local_option_name ) {
-		$local_options[ $local_option_name ] = get_option( $local_option_name );
-	}
-
-	try {
-		$available_lists = $this->client->list->all();
-
-		$available_segments = array();
-		if ( ! empty( $local_options['newsman_list'] ) ) {
-			$available_segments = $this->client->segment->all( $local_options['newsman_list'] );
-		}
-
-		$available_smslists = $this->client->sms->lists();
-
-	} catch ( Exception $e ) {
-		$this->valid_credential = false;
-		$this->set_message_backend( 'error', $e->getMessage() );
-	}
-}
-
+$this->process_form();
 ?>
-
-<div class="tabsetImg">
+<div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" />
+		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" alt="NewsMAN" />
 	</a>
 </div>
 <div class="tabset">
-
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="newsmanBtn">Newsman</label>
 	<input type="radio" name="tabset" id="tabSync" aria-controls="" checked>
@@ -128,89 +37,88 @@ if ( 'Y' === $local_newsman_sync ) {
 	<label for="" id="smsBtn">SMS</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
-	<!--<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="widgetBtn">Widget</label>-->
-   
 	<div class="tab-panels">
 		<section id="tabSync" class="tab-panel">
-	  
 			<div class="wrap wrap-settings-admin-page">
 				<form method="post" enctype="multipart/form-data">
-					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $local_nonce ); ?>" />
-					<input type="hidden" name="newsman_sync" value="Y"/>		
-		
+					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>" />
+					<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />
 					<h2>Sync</h2>
-		
 					<div class="<?php echo ( is_array( $this->message ) && isset( $this->message['status'] ) ) ? esc_attr( $this->message['status'] ) : ''; ?>"><p><strong><?php echo ( is_array( $this->message ) && isset( $this->message['message'] ) ) ? esc_html( $this->message['message'] ) : ''; ?></strong>
-						</p></div>				
-					
-					<table class="form-table newsmanTable newsmanTblFixed">			
-		
+						</p></div>
+					<table class="form-table newsman-table newsman-tbl-fixed">
 						<tr>
 							<th scope="row">
-								<label for="newsman_list">Select a list</label>
+								<label class="nzm-label" for="newsman_list">Select a list</label>
 							</th>
 							<td>
-								<select name="newsman_list" id="">
+								<select name="newsman_list" id="newsman_list">
 									<option value="0">-- select list --</option>
 									<?php
-									foreach ( $available_lists as $l ) {
-										?>
-										<option
-											value="<?php echo esc_attr( $l['list_id'] ); ?>" <?php echo ( strval( $l['list_id'] ) === strval( $local_options['newsman_list'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $l['list_name'] ); ?></option>
-									<?php } ?>
+									if ( ! empty( $this->available_lists ) ) {
+										foreach ( $this->available_lists as $item ) {
+											?>
+										<option value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === strval( $this->form_values['newsman_list'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
+											<?php
+										}
+									}
+									?>
 								</select>
-								<p class="description">Select a list of subscribers</p>
+								<p class="description"><?php echo esc_html__( 'Select a list of subscribers.', 'newsman' ); ?></p>
 							</td>
 						</tr>
-		
 						<tr>
 							<th scope="row">
-								<label for="newsman_smslist">Select an SMS list</label>
+								<label class="nzm-label" for="newsman_segments">Select a segment</label>
 							</th>
 							<td>
-								<select name="newsman_smslist" id="">
+								<select name="newsman_segments" id="newsman_segments">
+									<option value="0">-- select segment (optional) --</option>
+									<?php
+									if ( ! empty( $this->available_segments ) ) {
+										foreach ( $this->available_segments as $item ) {
+											?>
+										<option value="<?php echo esc_attr( $item['segment_id'] ); ?>" <?php echo ( strval( $item['segment_id'] ) === strval( $this->form_values['newsman_segments'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['segment_name'] ); ?></option>
+											<?php
+										}
+									}
+									?>
+								</select>
+								<p class="description"><?php echo esc_html__( 'Select a segment of subscribers.', 'newsman' ); ?> <?php echo esc_html__( 'The dropdown has the updated segments as options after the new list was saved.', 'newsman' ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Please save the segment after the list ID was changed.' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_smslist">Select an SMS list</label>
+							</th>
+							<td>
+								<select name="newsman_smslist" id="newsman_smslist">
 									<option value="0">-- select list --</option>
 									<?php
-									foreach ( $available_smslists as $l ) {
-										?>
-										<option
-											value="<?php echo esc_attr( $l['list_id'] ); ?>" <?php echo ( strval( $l['list_id'] ) === $local_options['newsman_smslist'] ) ? "selected = ''" : ''; ?>><?php echo esc_html( $l['list_name'] ); ?></option>
-									<?php } ?>
+									if ( ! empty( $this->available_sms_lists ) ) {
+										foreach ( $this->available_sms_lists as $item ) {
+											?>
+										<option value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === $this->form_values['newsman_smslist'] ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
+											<?php
+										}
+									}
+									?>
 								</select>
 								<p class="description">Select a list of SMS to be synced with phone numbers</p>
 							</td>
 						</tr>
-		
-						<tr>
-							<th scope="row">
-								<label for="newsman_segments">Select a segment</label>
-							</th>
-							<td>
-								<select name="newsman_segments" id="">
-									<option value="0">-- select segment (optional) --</option>
-									<?php
-									foreach ( $available_segments as $l ) {
-										?>
-										<option
-											value="<?php echo esc_attr( $l['segment_id'] ); ?>" <?php echo ( strval( $l['segment_id'] ) === strval( $local_options['newsman_segments'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $l['segment_name'] ); ?></option>
-									<?php } ?>
-								</select>
-								<p class="description">Select a segment</p>
-							</td>
-						</tr>
-		
 						<tr>
 							<th>
 								SYNC via CRON Job (Task scheduler)
-								<p class="newsmanP">click the links to begin Sync or setup task scheduler (cron) on your server/hosting<p>
+								<p class="newsman-paragraph">click the links to begin Sync or setup task scheduler (cron) on your server/hosting<p>
 								<br><br>
-								<p class="newsmanP">{{limit}} = Sync with newsman from latest number of records (ex: 5000)</p>
+								<p class="newsman-paragraph">{{limit}} = Sync with newsman from latest number of records (ex: 5000)</p>
 							</th>
 							<td>
 								<?php
-									$wordpress_url   = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->apikey . '&start=1&limit=5000&cronlast=true';
-									$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->apikey . '&start=1&limit=5000&cronlast=true';
+									$wordpress_url   = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
+									$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
 
 									echo "CRON url Sync WordPress subscribers: <a href='" . esc_url( $wordpress_url ) . "' target='_blank'>" . esc_html( $wordpress_url ) . '</a>';
 									echo '<br><br>';
@@ -218,15 +126,12 @@ if ( 'Y' === $local_newsman_sync ) {
 								?>
 							</td>
 						</tr>
-						<th>
-						</th>
 					</table>
 					<div style="padding-top: 5px;">
 						<input type="submit" value="Save Changes" class="button button-primary"/>
 					</div>
 				</form>
 			</div>
-
 		</section>  
 	</div>  
 </div>

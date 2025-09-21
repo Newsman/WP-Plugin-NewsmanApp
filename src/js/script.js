@@ -4,7 +4,7 @@
  * @package NewsmanApp for WordPress
  */
 
-(function ($) {
+( function ($) {
 	$(
 		function () {
 
@@ -505,10 +505,10 @@
 			jQuery( 'input[name="newsman_smsdevbtn"]' ).on(
 				'click',
 				function () {
-					var phone = jQuery( '#newsman_smsdevtest' ).val();
+					var phone = jQuery( '#newsman_smsdevtestnr' ).val();
 					var msg   = jQuery( '#newsman_smsdevtestmsg' ).val();
 
-					if (phone == '' || msg == '') {
+					if (phone === '' || msg === '') {
 						jQuery( '<p class="">Phone and Message cannot be empty</p>' ).appendTo( '.msg_smsdevbtn' );
 
 						return false;
@@ -534,7 +534,7 @@
 			);
 
 			jQuery( '#newsman_smsrefundedactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smsrefundedactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smsrefundedtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -543,7 +543,7 @@
 				}
 			);
 			jQuery( '#newsman_smscancelledactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smscancelledactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smscancelledtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -552,7 +552,7 @@
 				}
 			);
 			jQuery( '#newsman_smscompletedactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smscompletedactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smscompletedtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -561,7 +561,7 @@
 				}
 			);
 			jQuery( '#newsman_smsprocessingactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smsprocessingactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smsprocessingtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -570,7 +570,7 @@
 				}
 			);
 			jQuery( '#newsman_smsonholdactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smsonholdactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smsonholdtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -579,7 +579,7 @@
 				}
 			);
 			jQuery( '#newsman_smsfailedactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smsfailedactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smsfailedtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -588,7 +588,7 @@
 				}
 			);
 			jQuery( '#newsman_smspendingactivate' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_smspendingactivate' ).is( ':checked' )) {
 						jQuery( '.newsman_smspendingtextPanel' ).css( 'display', 'block' );
 					} else {
@@ -597,7 +597,7 @@
 				}
 			);
 			jQuery( '#newsman_api' ).click(
-				function (e) {
+				function () {
 					if (jQuery( '#newsman_api' ).is( ':checked' )) {
 						jQuery( '.newsman_apiPanel' ).css( 'display', 'table-row' );
 					} else {
@@ -608,4 +608,4 @@
 
 		}
 	);
-}(jQuery));
+} (jQuery));
