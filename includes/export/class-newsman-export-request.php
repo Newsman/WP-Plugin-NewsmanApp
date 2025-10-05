@@ -61,6 +61,19 @@ class Newsman_Export_Request {
 	 * @var array
 	 */
 	protected $known_post_parameters = array(
+		// Retriever code.
+		'newsman',
+		// Lists export in general.
+		'start',
+		'limit',
+		// Orders export.
+		'order_id',
+		// Products export.
+		'product_id',
+		// Method whether WordPress or WooCommerce.
+		'method',
+		// Cron last.
+		'cronlast',
 		// Coupons export.
 		'type',
 		'value',

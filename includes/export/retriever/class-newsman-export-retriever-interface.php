@@ -22,9 +22,9 @@ interface Newsman_Export_Retriever_Interface {
 	/**
 	 * Process retriever
 	 *
-	 * @param array $data Data to filter entities, to save entities, other.
-	 * @param array $blog_ids WP blog IDs.
+	 * @param array    $data Data to filter entities, to save entities, other.
+	 * @param null|int $blog_id WP blog ID.
 	 * @return array
 	 */
-	public function process( $data = array(), $blog_ids = array() );
+	public function process( $data = array(), $blog_id = null );
 }

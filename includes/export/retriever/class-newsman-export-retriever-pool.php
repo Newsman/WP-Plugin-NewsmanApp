@@ -53,6 +53,14 @@ class Newsman_Export_Retriever_Pool {
 			'code'  => 'coupons',
 			'class' => 'Newsman_Export_Retriever_Coupons',
 		),
+		'wordpress'   => array(
+			'code'  => 'wordpress',
+			'class' => 'Newsman_Export_Retriever_SubscribersWordpress',
+		),
+		'woocommerce' => array(
+			'code'  => 'woocommerce',
+			'class' => 'Newsman_Export_Retriever_SubscribersWoocommerce',
+		),
 	);
 
 	/**
@@ -100,10 +108,17 @@ class Newsman_Export_Retriever_Pool {
 	 * Get retriever by code instantiated
 	 *
 	 * @param string $code Code of retriever.
+	 * @param array  $data Request data parameters.
 	 * @return Newsman_Export_Retriever_Interface
 	 * @throws \InvalidArgumentException Throws invalid argument code retriever exception.
 	 */
-	public function get_retriever_by_code( $code ) {
+	public function get_retriever_by_code( $code, $data ) {
+		$code = strtolower( $code );
+
+		if ( 'cron' === $code ) {
+			$code = $data['method'];
+		}
+
 		if ( isset( $this->retriever_instances[ $code ] ) ) {
 			return $this->retriever_instances[ $code ];
 		}

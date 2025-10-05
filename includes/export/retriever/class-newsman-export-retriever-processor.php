@@ -85,15 +85,7 @@ class Newsman_Export_Retriever_Processor {
 			throw $e;
 		}
 
-		// Get list ID by specified blog ID (usually the current blog ID).
-		$list_id  = $this->config->get_list_id( $blog_id );
-		$blog_ids = $this->config->get_blog_ids_by_list_id( $list_id );
-		if ( empty( $blog_ids ) ) {
-			$this->logger->notice( esc_html__( 'No blog IDs found for retriever', 'newsman' ) );
-			return array();
-		}
-
-		$retriever = $this->pool->get_retriever_by_code( $code );
+		$retriever = $this->pool->get_retriever_by_code( $code, $data );
 		unset( $data[ Newsman_Export_Retriever_Authenticator::API_KEY_PARAM ] );
 
 		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
@@ -101,7 +93,7 @@ class Newsman_Export_Retriever_Processor {
 		// $retriever->set_request_apy_key( $api_key );
 		// }.
 
-		return $retriever->process( $data, $blog_ids );
+		return $retriever->process( $data, $blog_id );
 	}
 
 	/**

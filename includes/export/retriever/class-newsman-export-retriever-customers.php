@@ -14,19 +14,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Version
+ * Client Export Retriever Customers
  *
- * @class Newsman_Export_Retriever_Version
+ * @class Newsman_Export_Retriever_Customers
  */
-class Newsman_Export_Retriever_Version implements Newsman_Export_Retriever_Interface {
+class Newsman_Export_Retriever_Customers extends Newsman_Export_Retriever_Users {
 	/**
-	 * Process version retriever
+	 * User role
+	 */
+	public const USER_ROLE = 'customer';
+
+	/**
+	 * Process customers retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
+	 * @throws Exception On errors.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		return array( 'version' => 'Wordpress ' . get_bloginfo( 'version' ) );
+		$data['wp_newsman_internal_role'] = self::USER_ROLE;
+		return parent::process( $data, $blog_id );
 	}
 }
