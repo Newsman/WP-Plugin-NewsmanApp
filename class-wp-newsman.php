@@ -322,7 +322,12 @@ class WP_Newsman {
 						$phone = '4' . $newsman_smstestnr;
 					}
 
-					$this->client->sms->sendone( $newsman_smslist, $newsman_smstext, $phone );
+					$context = new Newsman_Service_Context_Sms_SendOne();
+					$context->set_list_id( $newsman_smslist )
+						->set_text( $newsman_smstext )
+						->set_to( $phone );
+					$send_one = new Newsman_Service_Sms_SendOne();
+					$send_one->execute( $context );
 				}
 			} catch ( Exception $e ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -334,7 +339,9 @@ class WP_Newsman {
 		$list_id = explode( '-', $list_id );
 		$list_id = $list_id[1];
 
-		$url = 'https://ssl.newsman.app/api/1.2/rest/' . $this->userid . '/' . $this->apikey . '/remarketing.setPurchaseStatus.json?list_id=' . $list_id . '&order_id=' . $order_id . '&status=' . $status;
+		$url = 'https://ssl.newsman.app/api/1.2/rest/' . $this->config->get_user_id() . '/'
+			. $this->config->get_api_key() . '/remarketing.setPurchaseStatus.json?list_id='
+			. $list_id . '&order_id=' . $order_id . '&status=' . $status;
 
 		$response = wp_remote_get(
 			esc_url_raw( $url ),
@@ -561,7 +568,8 @@ class WP_Newsman {
 			$attributes['formid'] = str_replace( 'nzm-container-', '', $attributes['formid'] );
 
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-			return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' . esc_attr( $attributes['formid'] ) . '"></script>';
+			return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' .
+				esc_attr( $attributes['formid'] ) . '"></script>';
 		}
 	}
 
@@ -624,16 +632,6 @@ class WP_Newsman {
 			'NewsmanSettings',
 			array( new Newsman_Admin_Settings_Settings(), 'include_page' )
 		);
-
-		/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		add_submenu_page(
-			'Newsman',
-			'Widget',
-			'Widget',
-			'administrator',
-			'NewsmanWidget',
-			array(new Newsman_Admin_Settings_Widget(), "include_page")
-		);*/
 
 		add_submenu_page(
 			'Newsman',
@@ -809,9 +807,12 @@ class WP_Newsman {
 	 * @return string The ip address.
 	 */
 	public function get_user_ip() {
-		$cl      = isset( $_SERVER['HTTP_CLIENT_IP'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) ) : '';
-		$forward = isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) : '';
-		$remote  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+		$cl      = isset( $_SERVER['HTTP_CLIENT_IP'] ) ?
+			sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) ) : '';
+		$forward = isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ?
+			sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) : '';
+		$remote  = isset( $_SERVER['REMOTE_ADDR'] ) ?
+			sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 
 		if ( filter_var( $cl, FILTER_VALIDATE_IP ) ) {
 			$ip = $cl;
@@ -824,16 +825,7 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Includes the html for the subscription form.
-	 *
-	 * @return void
-	 */
-	public function newsman_display_form() {
-		include 'src/frontend.php';
-	}
-
-	/**
-	 * Check is newsman plugin active with AJAX..
+	 * Check is newsman plugin active with AJAX.
 	 *
 	 * @return void
 	 */
@@ -849,56 +841,6 @@ class WP_Newsman {
 		}
 		echo wp_json_encode( array( 'status' => 0 ) );
 		exit();
-	}
-
-	/**
-	 * Format string safe for CSV.
-	 *
-	 * @param string $str String to format.
-	 * @return string
-	 */
-	public function safe_for_csv( $str ) {
-		return '"' . str_replace( '"', '""', $str ) . '"';
-	}
-
-	/**
-	 * Execute import to Newsman API.
-	 *
-	 * @param array          $data Array with data for CSV file.
-	 * @param string         $list_id List ID.
-	 * @param Newsman_Client $client API client.
-	 * @param string         $source Source.
-	 * @param array          $segments Segments.
-	 * @return void
-	 * @throws Exception     Throw standard exception.
-	 */
-	public function import_data( &$data, $list_id, $client, $source, $segments = null ) {
-		$csv = '"email","firstname","lastname","tel","source"' . PHP_EOL;
-		foreach ( $data as $_dat ) {
-			$csv .= sprintf(
-				'%s,%s,%s,%s',
-				$this->safe_for_csv( $_dat['email'] ),
-				$this->safe_for_csv( $_dat['firstname'] ),
-				$this->safe_for_csv( $_dat['lastname'] ),
-				$this->safe_for_csv( $_dat['tel'] ),
-				$this->safe_for_csv( $source )
-			);
-			$csv .= PHP_EOL;
-		}
-		$ret = null;
-		try {
-			if ( is_array( $segments ) && count( $segments ) > 0 ) {
-				$ret = $client->import->csv( $list_id, $segments, $csv );
-			} else {
-				$ret = $client->import->csv( $list_id, array(), $csv );
-			}
-			if ( empty( $ret ) ) {
-				throw new Exception( 'Import failed' );
-			}
-		} catch ( Exception $e ) {
-			throw new Exception( 'Import failed' );
-		}
-		$data = array();
 	}
 }
 

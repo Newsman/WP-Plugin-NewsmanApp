@@ -65,7 +65,7 @@ class Newsman_Service_ExportCsvSubscribers extends Newsman_Service_Abstract_Serv
 
 		$this->logger->info(
 			sprintf(
-			/* translators: 1: Count subscribers */
+				/* translators: 1: Count subscribers */
 				esc_html__( 'Sent export CSV with %s subscribers', 'newsman' ),
 				count( $context->get_csv_data() )
 			)
