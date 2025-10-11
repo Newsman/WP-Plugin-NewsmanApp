@@ -92,7 +92,7 @@ class Newsman_Api_Client implements Newsman_Api_ClientInterface {
 	 * @param string                       $method GET or POST request type.
 	 * @param array                        $get_params GET parameters.
 	 * @param array                        $post_params POST parameters.
-	 * @return array
+	 * @return array|string|mixed
 	 *
 	 * phpcs:ignore Squiz.Commenting.FunctionCommentThrowTag.Missing
 	 */
@@ -150,7 +150,7 @@ class Newsman_Api_Client implements Newsman_Api_ClientInterface {
 				} catch ( \Exception $e ) {
 					$this->error_code    = 1;
 					$this->error_message = $e->getMessage();
-					$this->logger->critical( $e->getMessage() );
+					$this->logger->log_exception( $e );
 					return array();
 				}
 			} else {
@@ -174,7 +174,7 @@ class Newsman_Api_Client implements Newsman_Api_ClientInterface {
 		} catch ( \Exception $e ) {
 			$this->error_code    = $e->getCode();
 			$this->error_message = $e->getMessage();
-			$this->logger->critical( $e->getMessage() );
+			$this->logger->log_exception( $e );
 		}
 
 		return $result;

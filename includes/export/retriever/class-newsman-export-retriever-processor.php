@@ -68,8 +68,12 @@ class Newsman_Export_Retriever_Processor {
 	 */
 	public function process( $code, $blog_id = null, $data = array() ) {
 		$this->logger->info(
-			/* translators: 1: WordPress blog ID */
-			esc_html( sprintf( __( 'Processing fetch data for blog ID %d.', 'newsman' ), $blog_id ) )
+			sprintf(
+				/* translators: 1: Code, 2: WordPress blog ID */
+				esc_html__( 'Processing fetch data (%1$s) for blog ID %2$d.', 'newsman' ),
+				$code,
+				$blog_id
+			)
 		);
 
 		$tmp_data = $data;
@@ -81,7 +85,7 @@ class Newsman_Export_Retriever_Processor {
 			$api_key = $this->get_api_key_from_data( $code, $data );
 			$this->authenticator->authenticate( $api_key, $blog_id );
 		} catch ( \OutOfBoundsException $e ) {
-			$this->logger->critical( $e->getCode() . ' ' . $e->getMessage() . $e->getTraceAsString() );
+			$this->logger->log_exception( $e );
 			throw $e;
 		}
 

@@ -29,7 +29,7 @@ class Newsman_Service_Context_InitSubscribeEmail extends Newsman_Service_Context
 	/**
 	 * Set options
 	 *
-	 * @param string $options Options.
+	 * @param array|string $options Options.
 	 * @return $this
 	 */
 	public function set_options( $options ) {

@@ -133,12 +133,33 @@
 					}
 				}
 			);
+
 			jQuery( '#newsman_api' ).click(
 				function () {
 					if (jQuery( '#newsman_api' ).is( ':checked' )) {
 						jQuery( '.newsman_apiPanel' ).css( 'display', 'table-row' );
 					} else {
 						jQuery( '.newsman_apiPanel' ).css( 'display', 'none' );
+					}
+				}
+			);
+
+			jQuery( '#newsman_senduserip' ).click(
+				function () {
+					if (jQuery( '#newsman_senduserip' ).is( ':checked' )) {
+						jQuery( '#newsman_serverip' ).closest( 'tr' ).css( 'display', 'none' );
+					} else {
+						jQuery( '#newsman_serverip' ).closest( 'tr' ).css( 'display', 'table-row' );
+					}
+				}
+			);
+
+			jQuery( '#newsman_developeractiveuserip' ).click(
+				function () {
+					if (jQuery( '#newsman_developeractiveuserip' ).is( ':checked' )) {
+						jQuery( '#newsman_developeruserip' ).closest( 'tr' ).css( 'display', 'table-row' );
+					} else {
+						jQuery( '#newsman_developeruserip' ).closest( 'tr' ).css( 'display', 'none' );
 					}
 				}
 			);

@@ -82,6 +82,26 @@ class Newsman_Config {
 	}
 
 	/**
+	 * Is send user IP address
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_send_user_ip( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_senduserip', '' );
+	}
+
+	/**
+	 * Get server IP address.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_server_ip( $blog_id = null ) {
+		return $this->get_blog_option( $blog_id, 'newsman_serverip', '' );
+	}
+
+	/**
 	 * Get API key
 	 *
 	 * @param null|int $blog_id WP blog ID.
@@ -144,6 +164,29 @@ class Newsman_Config {
 	}
 
 	/**
+	 * Is send user IP address
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_developer_active_user_ip( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_developeractiveuserip', '' );
+	}
+
+	/**
+	 * Get server IP address.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_developer_user_ip( $blog_id = null ) {
+		if ( ! $this->is_developer_active_user_ip( $blog_id ) ) {
+			return '';
+		}
+		return $this->get_blog_option( $blog_id, 'newsman_developeruserip', '' );
+	}
+
+	/**
 	 * Get export request authorize header name
 	 *
 	 * @param null|int $blog_id WP blog ID.
@@ -161,6 +204,71 @@ class Newsman_Config {
 	 */
 	public function get_export_authorize_header_key( $blog_id = null ) {
 		return (string) $this->get_blog_option( $blog_id, 'newsman_export_authorize_header_key' );
+	}
+
+	/**
+	 * Is checkout subscribe checkbox
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_newsletter( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkoutnewsletter', '' );
+	}
+
+	/**
+	 * Is subscribe to SMS in checkout
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_sms( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkoutsms', '' );
+	}
+
+	/**
+	 * Is checkout subscribe checkbox checked by default
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_newsletter_checked( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkoutnewsletterdefault', '' );
+	}
+
+	/**
+	 * Get checkout subscribe checkbox label
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_checkout_newsletter_label( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_checkoutnewslettermessage' );
+	}
+
+	/**
+	 * Is checkout subscribe email to list double opt-in
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_newsletter_double_optin( $blog_id = null ) {
+		if ( 'init' === $this->get_blog_option( $blog_id, 'newsman_checkoutnewslettertype', '' ) ) {
+			return true;
+		} elseif ( 'save' === $this->get_blog_option( $blog_id, 'newsman_checkoutnewslettertype', '' ) ) {
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Get Newsman email confirmation form ID
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_newsman_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_form_id' );
 	}
 
 	/**

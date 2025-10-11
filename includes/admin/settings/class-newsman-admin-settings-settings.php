@@ -41,7 +41,11 @@ class Newsman_Admin_Settings_Settings extends Newsman_Admin_Settings {
 	public $form_fields = array(
 		'newsman_userid',
 		'newsman_apikey',
+		'newsman_export_authorize_header_name',
+		'newsman_export_authorize_header_key',
 		'newsman_api',
+		'newsman_senduserip',
+		'newsman_serverip',
 		'newsman_checkoutsms',
 		'newsman_checkoutnewsletter',
 		'newsman_checkoutnewslettertype',
@@ -50,6 +54,8 @@ class Newsman_Admin_Settings_Settings extends Newsman_Admin_Settings {
 		'newsman_form_id',
 		'newsman_developerlogseverity',
 		'newsman_developerapitimeout',
+		'newsman_developeractiveuserip',
+		'newsman_developeruserip',
 	);
 
 	/**
@@ -97,6 +103,7 @@ class Newsman_Admin_Settings_Settings extends Newsman_Admin_Settings {
 
 				$this->set_message_backend( 'updated', esc_html__( 'Options saved.', 'newsman' ) );
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) );
 			}
@@ -110,6 +117,7 @@ class Newsman_Admin_Settings_Settings extends Newsman_Admin_Settings {
 					$this->valid_credentials = false;
 				}
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) );
 			}

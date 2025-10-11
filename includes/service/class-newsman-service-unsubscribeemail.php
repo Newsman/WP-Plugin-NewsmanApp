@@ -14,41 +14,48 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service SMS Send One
+ * API Client Service Unsubscribe from Email List
  *
- * @class Newsman_Service_Sms_SendOne
+ * @class Newsman_Service_UnsubscribeEmail
  */
-class Newsman_Service_Sms_SendOne extends Newsman_Service_Abstract_Service {
+class Newsman_Service_UnsubscribeEmail extends Newsman_Service_Abstract_Service {
 	/**
-	 * Send one SMS Newsman API endpoint
+	 * Unsubscribe from email list Newsman API endpoint
 	 *
-	 * @see https://kb.newsman.com/api/1.2/sms.sendone
+	 * @see https://kb.newsman.com/api/1.2/subscriber.saveUnsubscribe
 	 */
-	public const ENDPOINT = 'sms.sendone';
+	public const ENDPOINT = 'subscriber.saveUnsubscribe';
 
 	/**
-	 * SMS send one
+	 * Unsubscribe email
 	 *
-	 * @param Newsman_Service_Context_Sms_SendOne $context Sms send one context.
+	 * @param Newsman_Service_Context_UnsubscribeEmail $context Unsubscribe email context.
 	 * @return array
 	 * @throws Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {
+		$this->validate_email( $context->get_email() );
+
 		$api_context = $this->create_api_context()
 			->set_list_id( $context->get_list_id() )
 			->set_blog_id( $context->get_blog_id() )
 			->set_endpoint( self::ENDPOINT );
 
-		/* translators: 1: Phone number */
-		$this->logger->info( sprintf( esc_html__( 'Try to send one SMS to %s', 'newsman' ), $context->get_to() ) );
+		$this->logger->info(
+			sprintf(
+				/* translators: 1: Email */
+				esc_html__( 'Try to unsubscribe email %s', 'newsman' ),
+				$context->get_email()
+			)
+		);
 
 		$client = $this->create_api_client();
 		$result = $client->post(
 			$api_context,
 			array(
 				'list_id' => $api_context->get_list_id(),
-				'text'    => $context->get_text(),
-				'to'      => $context->get_to(),
+				'email'   => $context->get_email(),
+				'ip'      => $context->get_ip(),
 			)
 		);
 
@@ -57,8 +64,13 @@ class Newsman_Service_Sms_SendOne extends Newsman_Service_Abstract_Service {
 			throw new Exception( esc_html__( $client->get_error_message(), 'newsman' ), $client->get_error_code() );
 		}
 
-		/* translators: 1: Phone number */
-		$this->logger->info( sprintf( esc_html__( 'Sent SMS to %s', 'newsman' ), $context->get_to() ) );
+		$this->logger->info(
+			sprintf(
+				/* translators: 1: Email */
+				esc_html__( 'Unsubscribed email %s', 'newsman' ),
+				$context->get_email()
+			)
+		);
 
 		return $result;
 	}

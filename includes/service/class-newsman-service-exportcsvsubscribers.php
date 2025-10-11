@@ -135,6 +135,7 @@ class Newsman_Service_ExportCsvSubscribers extends Newsman_Service_Abstract_Serv
 		);
 
 		$header[] = 'tel';
+		$header[] = 'phone';
 		$header[] = 'telephone';
 		$header[] = 'billing_telephone';
 		$header[] = 'shipping_telephone';

@@ -132,6 +132,7 @@ class Newsman_Admin_Settings_Sync extends Newsman_Admin_Settings {
 
 				$this->set_message_backend( 'updated', esc_html__( 'Options saved.', 'newsman' ) );
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) );
 			}
@@ -154,6 +155,7 @@ class Newsman_Admin_Settings_Sync extends Newsman_Admin_Settings {
 					$this->available_sms_lists = array();
 				}
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Could not get the lists or the segments.', 'newsman' ) );
 			}

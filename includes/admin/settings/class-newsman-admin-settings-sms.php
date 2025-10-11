@@ -111,7 +111,7 @@ class Newsman_Admin_Settings_Sms extends Newsman_Admin_Settings {
 			$result   = $send_one->execute( $context );
 			return $result;
 		} catch ( Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			return false;
 		}
 	}
@@ -155,6 +155,7 @@ class Newsman_Admin_Settings_Sms extends Newsman_Admin_Settings {
 					}
 				}
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->set_message_backend(
 					'error',
 					esc_html__( 'An error has occurred.', 'newsman' ) . $e->getMessage()
@@ -177,6 +178,7 @@ class Newsman_Admin_Settings_Sms extends Newsman_Admin_Settings {
 					}
 				}
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->set_message_backend( 'error', 'Invalid Credentials or no SMS list present' );
 			}
 		}
@@ -235,6 +237,7 @@ class Newsman_Admin_Settings_Sms extends Newsman_Admin_Settings {
 					);
 				}
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->set_message_backend( 'error', esc_html__( 'The SMS was not sent. ', 'newsman' ) . $e->getMessage() );
 			}
 		}

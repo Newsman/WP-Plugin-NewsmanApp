@@ -223,7 +223,7 @@ class Newsman_Admin_Settings_Oauth extends Newsman_Admin_Settings {
 				);
 			}
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-		} catch ( Exception $ex ) {
+		} catch ( Exception $e ) {
 			// The feed already exists.
 		}
 
@@ -269,7 +269,7 @@ class Newsman_Admin_Settings_Oauth extends Newsman_Admin_Settings {
 			$get_sms_list_all = new Newsman_Service_Configuration_RemarketingGetSettings();
 			return $get_sms_list_all->execute( $context );
 		} catch ( Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			return false;
 		}
 	}

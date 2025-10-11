@@ -70,6 +70,8 @@ class Newsman_Export_Retriever_SubscribersWoocommerce extends Newsman_Export_Ret
 			'lastname'           => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['last_name'] : '',
 			'tel'                => ( ! empty( $data['billing']['phone'] ) ) ?
 				$this->clean_phone( $data['billing']['phone'] ) : '',
+			'phone'              => ( ! empty( $data['billing']['phone'] ) ) ?
+				$this->clean_phone( $data['billing']['phone'] ) : '',
 			'telephone'          => ( ! empty( $data['billing']['phone'] ) ) ?
 				$this->clean_phone( $data['billing']['phone'] ) : '',
 			'billing_telephone'  => ( ! empty( $data['billing']['phone'] ) ) ?

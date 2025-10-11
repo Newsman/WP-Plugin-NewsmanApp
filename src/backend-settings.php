@@ -93,7 +93,52 @@ $this->process_form();
 						</tr>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewsletter">Checkout newsletter subscribe checkbox</label>
+								<label class="nzm-label" for="newsman_senduserip">Send User IP Address</label>
+							</th>
+							<td>
+								<input name="newsman_senduserip" type="checkbox"
+									id="newsman_senduserip" <?php echo ( ! empty( $this->form_values['newsman_senduserip'] ) && 'on' === $this->form_values['newsman_senduserip'] ) ? 'checked' : ''; ?>/>
+							</td>
+						</tr>
+						<tr style="display: <?php echo ( ! ( ! empty( $this->form_values['newsman_senduserip'] ) && 'on' === $this->form_values['newsman_senduserip'] ) ) ? 'table-row' : 'none'; ?>;">
+							<th scope="row">
+								<label class="nzm-label" for="newsman_serverip">Server IP Address</label>
+							</th>
+							<td>
+								<input type="text" id="newsman_serverip"
+									name="newsman_serverip"
+									value="<?php echo ( ! empty( $this->form_values['newsman_serverip'] ) ) ? esc_attr( $this->form_values['newsman_serverip'] ) : ''; ?>"/>
+								<p class="description">Please set the public IP address of the server if the user IP address is not sent. Newsman subscribe to newsletter requires an IP address.</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_export_authorize_header_name">Import Authorize Header Name</label>
+							</th>
+							<td>
+								<input type="text" name="newsman_export_authorize_header_name" id="newsman_export_authorize_header_name"
+									value="<?php echo esc_attr( $this->form_values['newsman_export_authorize_header_name'] ); ?>"/>
+								<p class="description">HTTP Header Authorization Name. Please set only alphanumeric characters and minus character.
+									Please go to <a target="_blank" href="https://newsman.app/manager">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization. Newsman will be able to import product feeds securely.</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_export_authorize_header_key">Import Authorize Header Key</label>
+							</th>
+							<td>
+								<input type="text" name="newsman_export_authorize_header_key" id="newsman_export_authorize_header_key"
+									value="<?php echo esc_attr( $this->form_values['newsman_export_authorize_header_key'] ); ?>"/>
+								<p class="description">HTTP Header Authorization Key. Please set only alphanumeric characters and minus character.
+									Please go to <a target="_blank" href="https://newsman.app/manager">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization. Newsman will be able to import product feeds securely.</p>
+							</td>
+						</tr>
+					</table>
+					<h2>Checkout Subscribe to Newsletter and SMS</h2>
+					<table class="form-table newsman-table newsman-tbl-fixed">
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_checkoutnewsletter">Enable checkbox</label>
 							</th>
 							<td>
 								<input name="newsman_checkoutnewsletter" type="checkbox"
@@ -102,8 +147,7 @@ $this->process_form();
 						</tr>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutsms">Checkout SMS, sync phone numbers to your SMS
-									list</label>
+								<label class="nzm-label" for="newsman_checkoutsms">Enable SMS, sync phone numbers to your SMS list</label>
 							</th>
 							<td>
 								<input name="newsman_checkoutsms" type="checkbox"
@@ -113,25 +157,24 @@ $this->process_form();
 						<tr class="newsman_checkoutnewslettertypePanel"
 							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewslettertype">Checkout newsletter subscribe checkbox event
-									type</label>
+								<label class="nzm-label" for="newsman_checkoutnewslettertype">Newsletter Opt-in type</label>
 							</th>
 							<td>
 								<select name="newsman_checkoutnewslettertype" id="newsman_checkoutnewslettertype">
 									<option value="save" <?php echo ( 'save' === $this->form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
-										Subscribes a subscriber to the list
+										Opt-in
 									</option>
 									<option value="init" <?php echo ( 'init' === $this->form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
-										Inits a confirmed opt in subscribe to the list
+										Double Opt-in
 									</option>
 								</select>
+								<p class="description">Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions.</p>
 							</td>
 						</tr>
 						<tr class="newsman_checkoutnewslettertypePanel"
 							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewslettermessage">Checkout newsletter subscribe checkbox
-									message</label>
+								<label class="nzm-label" for="newsman_checkoutnewslettermessage">Checkbox label</label>
 							</th>
 							<td>
 								<input type="text" id="newsman_checkoutnewslettermessage"
@@ -142,8 +185,7 @@ $this->process_form();
 						<tr class="newsman_checkoutnewslettertypePanel"
 							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewsletterdefault">Checkout newsletter subscribe checkbox
-									checked by default</label>
+								<label class="nzm-label" for="newsman_checkoutnewsletterdefault">Is checkbox checked by default ?</label>
 							</th>
 							<td>
 								<input name="newsman_checkoutnewsletterdefault" type="checkbox"
@@ -153,13 +195,13 @@ $this->process_form();
 						<tr class="newsman_checkoutnewslettertypePanel"
 							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
-								<label class="nzm-label" for="newsman_form_id">Form_id: the form of the form used for the confirmation
-									email / form settings. Forms can be created admin.</label>
+								<label class="nzm-label" for="newsman_form_id">Confirmation email Form ID.</label>
 							</th>
 							<td>
 								<input type="text" id="newsman_form_id" name="newsman_form_id"
 									value="<?php echo ( ! empty( $this->form_values['newsman_form_id'] ) ) ? esc_attr( $this->form_values['newsman_form_id'] ) : ''; ?>"
 									placeholder="form id"/>
+								<p class="description">Form ID used for the confirmation email / form settings. Forms can be created in <a target="_blank" href="https://newsman.app/manager">newsman.app</a> &gt; Forms.</p>
 							</td>
 						</tr>
 					</table>
@@ -231,6 +273,27 @@ $this->process_form();
 									name="newsman_developerapitimeout"
 									value="<?php echo ( ! empty( $this->form_values['newsman_developerapitimeout'] ) ) ? esc_attr( $this->form_values['newsman_developerapitimeout'] ) : ''; ?>"
 									placeholder="5"/>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_developeractiveuserip">Enable Test User IP</label>
+							</th>
+							<td>
+								<input name="newsman_developeractiveuserip" type="checkbox"
+									id="newsman_developeractiveuserip" <?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) && 'on' === $this->form_values['newsman_developeractiveuserip'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Warning, do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe.</p>
+							</td>
+						</tr>
+						<tr style="display: <?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) && 'on' === $this->form_values['newsman_developeractiveuserip'] ) ? 'table-row' : 'none'; ?>;">
+							<th scope="row">
+								<label class="nzm-label" for="newsman_developeruserip">Test User IP address</label>
+							</th>
+							<td>
+								<input type="text" id="newsman_developeruserip"
+									name="newsman_developeruserip"
+									value="<?php echo ( ! empty( $this->form_values['newsman_developeruserip'] ) ) ? esc_attr( $this->form_values['newsman_developeruserip'] ) : ''; ?>"/>
+								<p class="description">Valid user IP address.</p>
 							</td>
 						</tr>
 					</table>

@@ -123,7 +123,7 @@ class Newsman_Export_Retriever_Orders implements Newsman_Export_Retriever_Interf
 			try {
 				$result[] = $this->process_order( $order, $blog_id );
 			} catch ( Exception $e ) {
-				$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+				$this->logger->log_exception( $e );
 			}
 		}
 

@@ -80,6 +80,7 @@ class Newsman_Admin_Settings_Remarketing extends Newsman_Admin_Settings {
 				}
 				$this->set_message_backend( 'updated', esc_html__( 'Options saved.', 'newsman' ) );
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) );
 			}
@@ -92,6 +93,7 @@ class Newsman_Admin_Settings_Remarketing extends Newsman_Admin_Settings {
 					$this->valid_credentials = false;
 				}
 			} catch ( Exception $e ) {
+				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) );
 			}

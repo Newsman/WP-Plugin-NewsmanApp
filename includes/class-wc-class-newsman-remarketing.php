@@ -52,6 +52,7 @@ class WC_Class_Newsman_Remarketing extends WC_Integration {
 		$constructor = $this->init_options();
 
 		// Contains snippets/JS tracking code.
+		// todo uncomment, implement, reactor.
 		WC_Newsman_Remarketing_JS::get_instance( $constructor );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_assets' ) );

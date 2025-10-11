@@ -29,7 +29,7 @@ class Newsman_Service_Configuration_Sms_GetListAll extends Newsman_Service_Abstr
 	/**
 	 * Get all SMS lists by user ID
 	 *
-	 * @param Newsman_Service_Context_Configuration_User $context User context.
+	 * @param Newsman_Service_Context_Configuration_User $context Configuration user context.
 	 * @return array
 	 * @throws Exception Throw exception on errors.
 	 */

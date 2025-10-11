@@ -95,11 +95,11 @@ class Newsman_Export_Retriever_Coupons implements Newsman_Export_Retriever_Inter
 				try {
 					$coupon->delete();
 				} catch ( Exception $ex ) {
-					$this->logger->error( $ex->getCode() . ' ' . $ex->getMessage() );
+					$this->logger->log_exception( $ex );
 				}
 			}
 
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 
 			return array(
 				'status' => 0,

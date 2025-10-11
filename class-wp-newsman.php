@@ -30,6 +30,8 @@ if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 	return;
 }
 
+register_activation_hook( __FILE__, array( 'Newsman_Setup', 'on_activation' ) );
+
 /**
  * Newsman WP main class
  */
@@ -157,7 +159,7 @@ class WP_Newsman {
 
 			$this->display_json_as_page( $result );
 		} catch ( \OutOfBoundsException $e ) {
-			$this->logger->critical( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			$result = array(
 				'status'  => 403,
 				'message' => $e->getMessage(),
@@ -167,7 +169,7 @@ class WP_Newsman {
 			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 			// wp_die('Access Forbidden', 'Forbidden', array('response' => 403)); .
 		} catch ( \Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			$result = array(
 				'status'  => 0,
 				'message' => $e->getMessage(),
@@ -331,7 +333,7 @@ class WP_Newsman {
 				}
 			} catch ( Exception $e ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( $e->getMessage() );
+				$this->logger->log_exception( $e );
 			}
 		}
 
@@ -350,160 +352,16 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Add checkout field subscribe to newsletter checkbox.
-	 *
-	 * @return void
-	 */
-	public function newsman_checkout() {
-
-		$checkout = get_option( 'newsman_checkoutnewsletter' );
-
-		if ( ! empty( $checkout ) && 'on' === $checkout ) {
-			$msg     = get_option( 'newsman_checkoutnewslettermessage' );
-			$default = get_option( 'newsman_checkoutnewsletterdefault' );
-			$checked = '';
-
-			if ( ! empty( $default ) && 'on' === $default ) {
-				$default = 1;
-				$checked = 'checked';
-			} else {
-				$default = 0;
-			}
-
-			woocommerce_form_field(
-				'newsmanCheckoutNewsletter',
-				array(
-					'type'        => 'checkbox',
-					'class'       => array( 'form-row newsmanCheckoutNewsletter' ),
-					'label_class' => array( 'woocommerce-form__label woocommerce-form__label-for-checkbox checkbox' ),
-					'input_class' => array( 'woocommerce-form__input woocommerce-form__input-checkbox input-checkbox' ),
-					'required'    => false,
-					'label'       => $msg,
-					'default'     => $default,
-					'checked'     => $checked,
-				)
-			);
-		}
-	}
-
-	/**
-	 * Process checkout action.
-	 *
-	 * @param int $order_id Order ID.
-	 * @return void
-	 */
-	public function newsman_checkout_action( $order_id ) {
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		if ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && 1 === (int) $_POST['newsmanCheckoutNewsletter'] ) {
-
-			$checkout_newsletter      = get_option( 'newsman_checkoutnewsletter' );
-			$checkout_sms             = get_option( 'newsman_checkoutsms' );
-			$checkout_newsletter_type = get_option( 'newsman_checkoutnewslettertype' );
-			$list_id                  = get_option( 'newsman_list' );
-			$smslist                  = get_option( 'newsman_smslist' );
-
-			$order      = wc_get_order( $order_id );
-			$order_data = $order->get_data();
-
-			$props = array();
-
-			try {
-				$metadata = $order->get_meta_data();
-
-				foreach ( $metadata as $_metadata ) {
-					if ( '_billing_functia' === $_metadata->key || 'billing_functia' === $_metadata->key ) {
-						$props['functia'] = $_metadata->value;
-					}
-					if ( '_billing_sex' === $_metadata->key || 'billing_sex' === $_metadata->key ) {
-						$props['sex'] = $_metadata->value;
-					}
-				}
-			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-			} catch ( Exception $e ) {
-				// Custom fields not found.
-			}
-
-			$email      = $order_data['billing']['email'];
-			$first_name = $order_data['billing']['first_name'];
-			$last_name  = $order_data['billing']['last_name'];
-
-			$phone = ( ! empty( $order_data['billing']['phone'] ) ) ? $order_data['billing']['phone'] : '';
-
-			$props['phone'] = $phone;
-
-			$options = array();
-
-			$segments     = get_option( 'newsman_segments' );
-			$raw_segments = $segments;
-			if ( ! empty( $segments ) ) {
-				$segments = array( 'segments' => array( $segments ) );
-			}
-
-			$options['segments'] = array( $raw_segments );
-
-			$form_id = get_option( 'newsman_form_id' );
-			if ( ! empty( $form_id ) ) {
-				$options['form_id'] = $form_id;
-			}
-
-			$checkout_type = get_option( 'newsman_checkoutnewslettertype' );
-
-			try {
-				if ( 'init' === $checkout_type ) {
-
-					$ret = $this->client->subscriber->initSubscribe(
-						$list_id,
-						$email,
-						$first_name,
-						$last_name,
-						$this->get_user_ip(),
-						$props,
-						$options
-					);
-
-				} elseif ( 'save' === $checkout_type ) {
-
-					$sub_id = $this->client->subscriber->saveSubscribe(
-						$list_id,
-						$email,
-						$first_name,
-						$last_name,
-						$this->get_user_ip(),
-						$props
-					);
-
-					if ( ! empty( $segments ) ) {
-						$segments = $segments['segments'][0];
-					}
-
-					$ret = $this->client->segment->addSubscriber( $segments, $sub_id );
-
-				}
-
-				// SMS sync.
-				if ( ! empty( $checkout_sms ) && 'on' === $checkout_sms ) {
-
-					if ( ! empty( $phone ) ) {
-						$ret = $this->client->sms->saveSubscribe( $smslist, $phone, $first_name, $last_name, $this->get_user_ip(), $props );
-					}
-				}
-			} catch ( Exception $e ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( $e->getMessage() );
-			}
-		}
-	}
-
-	/**
 	 * Init Woo Commerce hooks.
 	 *
 	 * @return void
 	 */
 	public function init_hooks() {
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), 20 );
 		add_action( 'init', array( $this, 'newsman_export_data' ) );
-		add_action( 'woocommerce_review_order_before_submit', array( $this, 'newsman_checkout' ) );
-		add_action( 'woocommerce_checkout_order_processed', array( $this, 'newsman_checkout_action' ), 10, 2 );
+		add_action( 'woocommerce_review_order_before_submit', array( new Newsman_Form_Checkout_Checkbox(), 'add_field' ) );
+		add_action( 'woocommerce_checkout_order_processed', array( new Newsman_Form_Checkout_Processor(), 'process' ), 10, 2 );
+
 		// Order status change hooks.
 		add_action( 'woocommerce_order_status_pending', array( $this, 'pending' ) );
 		add_action( 'woocommerce_order_status_failed', array( $this, 'failed' ) );
@@ -528,8 +386,6 @@ class WP_Newsman {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		// Add links to plugins page.
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
-		// Enqueue plugin styles.
-		// add_action('wp_enqueue_scripts', array($this, 'register_plugin_styles'));
 		// Enqueue plugin styles in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
 		// Enqueue WordPress ajax library.
@@ -539,8 +395,8 @@ class WP_Newsman {
 		// Enqueue plugin scripts in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
 		// Do ajax form subscribe.
-		add_action( 'wp_ajax_nopriv_newsman_ajax_subscribe', array( $this, 'newsman_ajax_subscribe' ) );
-		add_action( 'wp_ajax_newsman_ajax_subscribe', array( $this, 'newsman_ajax_subscribe' ) );
+		add_action( 'wp_ajax_nopriv_newsman_ajax_subscribe', array( Newsman_Form_AjaxSubscribe::init(), 'subscribe' ) );
+		add_action( 'wp_ajax_newsman_ajax_subscribe', array( Newsman_Form_AjaxSubscribe::init(), 'subscribe' ) );
 		// Check if plugin is active.
 		add_action( 'wp_ajax_newsman_ajax_check_plugin', array( $this, 'newsman_ajax_check_plugin' ) );
 		// Widget auto init.
@@ -548,28 +404,13 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Generate widget.
+	 * Init Newsman plugin after most of other plugins are loaded.
 	 *
-	 * @param array $attributes Attributes array.
-	 * @return string
+	 * @return void
 	 */
-	public function generate_widget( $attributes ) {
-
-		if ( empty( $attributes ) || ! is_array( $attributes ) || ! array_key_exists( 'formid', $attributes ) ) {
-			return '';
-		}
-		$attributes['formid'] = sanitize_text_field( $attributes['formid'] );
-		$c                    = substr_count( $attributes['formid'], '-' );
-
-		// Backwards compatible.
-		if ( 2 === $c || '2' === $c ) {
-			return '<div id="' . esc_attr( $attributes['formid'] ) . '"></div>';
-		} else {
-			$attributes['formid'] = str_replace( 'nzm-container-', '', $attributes['formid'] );
-
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-			return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' .
-				esc_attr( $attributes['formid'] ) . '"></script>';
+	public function plugins_loaded_lazy() {
+		if ( class_exists( 'WC_Logger' ) ) {
+			Newsman_Wc_Logger::$is_wc_logging = true;
 		}
 	}
 
@@ -579,7 +420,7 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function init_widgets() {
-		add_shortcode( 'newsman_subscribe_widget', array( $this, 'generate_widget' ) );
+		add_shortcode( 'newsman_subscribe_widget', array( Newsman_Form_Widget::init(), 'generate' ) );
 	}
 
 	/**
@@ -708,139 +549,6 @@ class WP_Newsman {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $html;
-	}
-
-	/**
-	 * Precess ajax request for the subscription form..
-	 * Initializes the subscription process for a new user.
-	 *
-	 * @return void
-	 */
-	public function newsman_ajax_subscribe() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		if ( isset( $_POST['email'] ) && ! empty( $_POST['email'] ) ) {
-
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			$email = isset( $_POST['email'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['email'] ) ) ) : '';
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			$name = isset( $_POST['name'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['name'] ) ) ) : '';
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			$prename = isset( $_POST['prename'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['prename'] ) ) ) : '';
-			$list_id = get_option( 'newsman_list' );
-			try {
-				if ( $this->newsman_list_email_exists( $email, $list_id ) ) {
-					$message = 'Email deja inscris la newsletter';
-					$this->send_message_front( 'error', $message );
-					die();
-				}
-
-				$ret = $this->client->subscriber->initSubscribe(
-					$list_id, /* The list id */
-					$email, /* Email address of subscriber */
-					$prename, /* Firstname of subscriber, can be null. */
-					$name, /* Lastname of subscriber, can be null. */
-					$this->get_user_ip(), /* IP address of subscriber */
-					null, /* Hash array with props (can be later used to build segment criteria) */
-					null
-				);
-
-				$message = get_option( 'newsman_widget_confirm' );
-
-				$this->send_message_front( 'success', $message );
-
-			} catch ( Exception $e ) {
-				$message = get_option( 'newsman_widget_infirm' );
-				$this->send_message_front( 'error', $message );
-			}
-		}
-		die();
-	}
-
-	/**
-	 * Check if email is already subscriber in Newsman.
-	 *
-	 * @param string $email Email to verify.
-	 * @param string $list_id List ID.
-	 * @return bool
-	 */
-	public function newsman_list_email_exists( $email, $list_id ) {
-		$bool = false;
-
-		try {
-			$ret = $this->client->subscriber->getByEmail(
-				$list_id, /* The list id */
-				$email /* The email address */
-			);
-
-			if ( 'subscribed' === $ret['status'] ) {
-				$bool = true;
-			}
-
-			return $bool;
-		} catch ( Exception $e ) {
-			return $bool;
-		}
-	}
-
-	/**
-	 * Creates and return a message for frontend (because of the echo statement).
-	 *
-	 * @param string $status       The status of the message (the css class of the message).
-	 * @param string $message      The actual message.
-	 * @return void
-	 */
-	public function send_message_front( $status, $message ) {
-		$this->message = wp_json_encode(
-			array(
-				'status'  => $status,
-				'message' => $message,
-			)
-		);
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->message;
-	}
-
-	/**
-	 * Get the subscriber ip address. (Necessary for Newsman subscription).
-	 *
-	 * @return string The ip address.
-	 */
-	public function get_user_ip() {
-		$cl      = isset( $_SERVER['HTTP_CLIENT_IP'] ) ?
-			sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) ) : '';
-		$forward = isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ?
-			sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) : '';
-		$remote  = isset( $_SERVER['REMOTE_ADDR'] ) ?
-			sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-
-		if ( filter_var( $cl, FILTER_VALIDATE_IP ) ) {
-			$ip = $cl;
-		} elseif ( filter_var( $forward, FILTER_VALIDATE_IP ) ) {
-			$ip = $forward;
-		} else {
-			$ip = $remote;
-		}
-		return $ip;
-	}
-
-	/**
-	 * Check is newsman plugin active with AJAX.
-	 *
-	 * @return void
-	 */
-	public function newsman_ajax_check_plugin() {
-		$active_plugins = get_option( 'active_plugins' );
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		$plugin = isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '';
-
-		if ( in_array( $plugin, $active_plugins, true ) ) {
-			echo wp_json_encode( array( 'status' => 1 ) );
-			exit();
-		}
-		echo wp_json_encode( array( 'status' => 0 ) );
-		exit();
 	}
 }
 

@@ -31,7 +31,7 @@ class Newsman_WC_Logger {
 	 *
 	 * @var bool
 	 */
-	protected $is_wc_logging = false;
+	public static $is_wc_logging = false;
 
 	/**
 	 * Logger context defaults
@@ -46,9 +46,6 @@ class Newsman_WC_Logger {
 	 * Class construct
 	 */
 	public function __construct() {
-		if ( class_exists( 'WC_Logger' ) ) {
-			$this->is_wc_logging = true;
-		}
 		$this->config = Newsman_Config::init();
 	}
 
@@ -77,7 +74,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function log( $level, $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 
@@ -110,7 +107,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function debug( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 100 ) {
@@ -131,7 +128,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function info( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 200 ) {
@@ -152,7 +149,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function notice( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 300 ) {
@@ -173,7 +170,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function warning( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 400 ) {
@@ -194,7 +191,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function error( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 500 ) {
@@ -215,7 +212,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function critical( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 600 ) {
@@ -236,7 +233,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function alert( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 700 ) {
@@ -257,7 +254,7 @@ class Newsman_WC_Logger {
 	 * @see WC_Log_Levels::$level_to_severity
 	 */
 	public function emergency( $message, $context = array() ) {
-		if ( ! $this->is_wc_logging ) {
+		if ( ! self::$is_wc_logging ) {
 			return;
 		}
 		if ( $this->config->get_log_severity() > 800 ) {
@@ -267,5 +264,26 @@ class Newsman_WC_Logger {
 		$context = array_merge( $this->logger_default_context, $context );
 
 		wc_get_logger()->emergency( $message, $context );
+	}
+
+	/**
+	 * Log exception
+	 *
+	 * @param Exception $e Exception to log.
+	 * @return void
+	 */
+	public function log_exception( $e ) {
+		$this->error(
+			$e->getMessage(),
+			array(
+				'exception' => array(
+					'message' => $e->getMessage(),
+					'code'    => $e->getCode(),
+					'file'    => $e->getFile(),
+					'line'    => $e->getLine(),
+					'trace'   => $e->getTraceAsString(),
+				),
+			)
+		);
 	}
 }

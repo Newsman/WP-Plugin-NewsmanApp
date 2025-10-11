@@ -14,11 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Subscribe Email
+ * Client Service Context Subscribe Telephone Number to list
  *
- * @class Newsman_Service_Context_SubscribeEmail
+ * @class Newsman_Service_Context_Sms_Subscribe
  */
-class Newsman_Service_Context_SubscribeEmail extends Newsman_Service_Context_UnsubscribeEmail {
+class Newsman_Service_Context_Sms_Subscribe extends Newsman_Service_Context_Sms_Unsubscribe {
 	/**
 	 * Subscriber firstname
 	 *

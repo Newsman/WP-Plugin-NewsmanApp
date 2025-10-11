@@ -122,4 +122,26 @@ class Newsman_Service_Abstract_Service {
 	public function get_blog_id() {
 		return $this->blog_id;
 	}
+
+	/**
+	 * Validate email address
+	 *
+	 * @param string $email Email address to validate.
+	 * @return void
+	 * @throws Exception Throws error on invalid email address.
+	 */
+	public function validate_email( $email ) {
+		$validator = new Newsman_Validator_Email();
+		if ( ! $validator->is_valid( $email ) ) {
+			$e = new Exception(
+				sprintf(
+					/* translators: 1: Email */
+					esc_html__( 'Invalid email address %1', 'newsman' ),
+					$email
+				)
+			);
+			$this->logger->log_exception( $e );
+			throw $e;
+		}
+	}
 }

@@ -97,7 +97,7 @@ class Newsman_Export_Retriever_CronSubscribers implements Newsman_Export_Retriev
 				}
 				$result[] = $this->process_subscriber( $subscriber, $blog_id );
 			} catch ( Exception $e ) {
-				$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+				$this->logger->log_exception( $e );
 			}
 		}
 
@@ -123,7 +123,7 @@ class Newsman_Export_Retriever_CronSubscribers implements Newsman_Export_Retriev
 				unset( $context );
 				unset( $export );
 			} catch ( Exception $e ) {
-				$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+				$this->logger->log_exception( $e );
 			}
 		}
 

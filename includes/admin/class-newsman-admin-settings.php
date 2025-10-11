@@ -162,7 +162,7 @@ class Newsman_Admin_Settings {
 			$lists_data   = $get_list_all->execute( $context );
 			return $lists_data;
 		} catch ( Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			return false;
 		}
 	}
@@ -192,7 +192,7 @@ class Newsman_Admin_Settings {
 			$segments_data   = $get_segment_all->execute( $context );
 			return $segments_data;
 		} catch ( Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			return false;
 		}
 	}
@@ -220,7 +220,7 @@ class Newsman_Admin_Settings {
 			$lists_data       = $get_sms_list_all->execute( $context );
 			return $lists_data;
 		} catch ( Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			return false;
 		}
 	}
@@ -251,7 +251,7 @@ class Newsman_Admin_Settings {
 			$result   = $set_feed->execute( $context );
 			return $result;
 		} catch ( Exception $e ) {
-			$this->logger->error( $e->getCode() . ' ' . $e->getMessage() );
+			$this->logger->log_exception( $e );
 			return false;
 		}
 	}

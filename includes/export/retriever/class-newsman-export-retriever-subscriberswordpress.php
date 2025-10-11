@@ -66,6 +66,7 @@ class Newsman_Export_Retriever_SubscribersWordpress extends Newsman_Export_Retri
 			'firstname'          => $subscriber->data->display_name,
 			'lastname'           => '',
 			'tel'                => '',
+			'phone'              => '',
 			'telephone'          => '',
 			'billing_telephone'  => '',
 			'shipping_telephone' => '',
