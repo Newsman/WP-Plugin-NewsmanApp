@@ -8,7 +8,7 @@
 /**
  * Current class for output
  *
- * @var Newsman_Admin_Settings_Sms $this
+ * @var \Newsman\Admin\Settings\Sms $this
  */
 
 $this->is_oauth();

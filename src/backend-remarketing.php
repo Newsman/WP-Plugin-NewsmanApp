@@ -8,7 +8,7 @@
 /**
  * Current class for output
  *
- * @var Newsman_Admin_Settings_Remarketing $this
+ * @var \Newsman\Admin\Settings\Remarketing $this
  */
 
 $this->is_oauth();

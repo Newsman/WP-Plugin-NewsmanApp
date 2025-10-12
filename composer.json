@@ -39,7 +39,10 @@
 	"autoload": {
 		"classmap": [
 			"includes"
-		]
+		],
+		"psr-4": {
+			"Newsman\\": ""
+		}
 	},
 	"config": {
 		"allow-plugins": {

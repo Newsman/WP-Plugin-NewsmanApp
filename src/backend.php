@@ -8,7 +8,7 @@
 /**
  * Current class for output
  *
- * @var Newsman_Admin_Settings_Newsman $this
+ * @var \Newsman\Admin\Settings\Newsman $this
  */
 
 $this->is_oauth();
@@ -16,7 +16,7 @@ $is_valid_credentials = $this->is_valid_credentials();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png"/>
+		<img alt="Newsman" title="Newsman" src="/wp-content/plugins/newsmanapp/src/img/logo.png"/>
 	</a>
 </div>
 <div class="tabset">

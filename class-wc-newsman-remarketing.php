@@ -62,7 +62,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 			);
 
 			// Checks with WooCommerce is installed.
-			include_once 'includes/class-wc-class-newsman-remarketing.php';
+			include_once 'includes/class-remarketing.php';
 
 			// Register the integration.
 			add_filter( 'woocommerce_integrations', array( $this, 'add_integration' ) );
@@ -181,7 +181,7 @@ if ( ! class_exists( 'WC_Newsman_Remarketing' ) ) {
 		 * @return array Newsman Remarketing integration.
 		 */
 		public function add_integration( $integrations ) {
-			$integrations[] = 'WC_Class_Newsman_Remarketing';
+			$integrations[] = '\Newsman\Remarketing';
 
 			return $integrations;
 		}

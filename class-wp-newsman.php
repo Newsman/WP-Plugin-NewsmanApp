@@ -17,10 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'NEWSMAN_VERSION', '3.0.0' );
 
 // Included before autoload.php and checks for dependencies in vendor.
-require_once __DIR__ . '/includes/class-wp-newsman-php.php';
+require_once __DIR__ . '/includes/class-newsman-php.php';
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	add_action( 'all_admin_notices', 'WP_Newsman_PHP::vendor_check_and_notify' );
+	add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::vendor_check_and_notify' );
 	return;
 }
 
@@ -30,7 +30,7 @@ if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 	return;
 }
 
-register_activation_hook( __FILE__, array( 'Newsman_Setup', 'on_activation' ) );
+register_activation_hook( __FILE__, array( '\Newsman\Setup', 'on_activation' ) );
 
 /**
  * Newsman WP main class
@@ -39,14 +39,14 @@ class WP_Newsman {
 	/**
 	 * Newsman config
 	 *
-	 * @var Newsman_Config
+	 * @var \Newsman\Config
 	 */
 	protected $config;
 
 	/**
 	 * Newsman logger
 	 *
-	 * @var Newsman_WC_Logger
+	 * @var \Newsman\Logger
 	 */
 	protected $logger;
 
@@ -84,8 +84,8 @@ class WP_Newsman {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->config = Newsman_Config::init();
-		$this->logger = Newsman_WC_Logger::init();
+		$this->config = \Newsman\Config::init();
+		$this->logger = \Newsman\Logger::init();
 	}
 
 	/**
@@ -128,10 +128,10 @@ class WP_Newsman {
 	 * Export data to newsman action.
 	 *
 	 * @return void
-	 * @throws Exception Throws standard exception on errors.
+	 * @throws \Exception Throws standard exception on errors.
 	 */
 	public function newsman_export_data() {
-		$export_request = new Newsman_Export_Request();
+		$export_request = new \Newsman\Export\Request();
 		if ( ! $export_request->is_export_request() ) {
 			return;
 		}
@@ -150,7 +150,7 @@ class WP_Newsman {
 
 		try {
 			$parameters = $export_request->get_request_parameters();
-			$processor  = new Newsman_Export_Retriever_Processor();
+			$processor  = new \Newsman\Export\Retriever\Processor();
 			$result     = $processor->process(
 				$processor->get_code_by_data( $parameters ),
 				get_current_blog_id(),
@@ -324,14 +324,14 @@ class WP_Newsman {
 						$phone = '4' . $newsman_smstestnr;
 					}
 
-					$context = new Newsman_Service_Context_Sms_SendOne();
+					$context = new \Newsman\Service\Context\Sms\SendOne();
 					$context->set_list_id( $newsman_smslist )
 						->set_text( $newsman_smstext )
 						->set_to( $phone );
-					$send_one = new Newsman_Service_Sms_SendOne();
+					$send_one = new \Newsman\Service\Sms\SendOne();
 					$send_one->execute( $context );
 				}
-			} catch ( Exception $e ) {
+			} catch ( \Exception $e ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				$this->logger->log_exception( $e );
 			}
@@ -359,8 +359,8 @@ class WP_Newsman {
 	public function init_hooks() {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), 20 );
 		add_action( 'init', array( $this, 'newsman_export_data' ) );
-		add_action( 'woocommerce_review_order_before_submit', array( new Newsman_Form_Checkout_Checkbox(), 'add_field' ) );
-		add_action( 'woocommerce_checkout_order_processed', array( new Newsman_Form_Checkout_Processor(), 'process' ), 10, 2 );
+		add_action( 'woocommerce_review_order_before_submit', array( new \Newsman\Form\Checkout\Checkbox(), 'add_field' ) );
+		add_action( 'woocommerce_checkout_order_processed', array( new \Newsman\Form\Checkout\Processor(), 'process' ), 10, 2 );
 
 		// Order status change hooks.
 		add_action( 'woocommerce_order_status_pending', array( $this, 'pending' ) );
@@ -395,8 +395,8 @@ class WP_Newsman {
 		// Enqueue plugin scripts in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
 		// Do ajax form subscribe.
-		add_action( 'wp_ajax_nopriv_newsman_ajax_subscribe', array( Newsman_Form_AjaxSubscribe::init(), 'subscribe' ) );
-		add_action( 'wp_ajax_newsman_ajax_subscribe', array( Newsman_Form_AjaxSubscribe::init(), 'subscribe' ) );
+		add_action( 'wp_ajax_nopriv_newsman_ajax_subscribe', array( \Newsman\Form\AjaxSubscribe::init(), 'subscribe' ) );
+		add_action( 'wp_ajax_newsman_ajax_subscribe', array( \Newsman\Form\AjaxSubscribe::init(), 'subscribe' ) );
 		// Check if plugin is active.
 		add_action( 'wp_ajax_newsman_ajax_check_plugin', array( $this, 'newsman_ajax_check_plugin' ) );
 		// Widget auto init.
@@ -410,7 +410,7 @@ class WP_Newsman {
 	 */
 	public function plugins_loaded_lazy() {
 		if ( class_exists( 'WC_Logger' ) ) {
-			Newsman_Wc_Logger::$is_wc_logging = true;
+			\Newsman\Logger::$is_wc_logging = true;
 		}
 	}
 
@@ -420,7 +420,7 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function init_widgets() {
-		add_shortcode( 'newsman_subscribe_widget', array( Newsman_Form_Widget::init(), 'generate' ) );
+		add_shortcode( 'newsman_subscribe_widget', array( \Newsman\Form\Widget::init(), 'generate' ) );
 	}
 
 	/**
@@ -434,7 +434,7 @@ class WP_Newsman {
 			'Newsman',
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'Newsman',
-			array( new Newsman_Admin_Settings_Newsman(), 'include_page' ),
+			array( new \Newsman\Admin\Settings\Newsman(), 'include_page' ),
 			plugin_dir_url( __FILE__ ) . 'src/img/newsman-mini.png'
 		);
 
@@ -444,7 +444,7 @@ class WP_Newsman {
 			'Sync',
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanSync',
-			array( new Newsman_Admin_Settings_Sync(), 'include_page' )
+			array( new \Newsman\Admin\Settings\Sync(), 'include_page' )
 		);
 
 		add_submenu_page(
@@ -453,7 +453,7 @@ class WP_Newsman {
 			'Remarketing',
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanRemarketing',
-			array( new Newsman_Admin_Settings_Remarketing(), 'include_page' )
+			array( new \Newsman\Admin\Settings\Remarketing(), 'include_page' )
 		);
 
 		add_submenu_page(
@@ -462,7 +462,7 @@ class WP_Newsman {
 			'SMS',
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanSMS',
-			array( new Newsman_Admin_Settings_Sms(), 'include_page' )
+			array( new \Newsman\Admin\Settings\Sms(), 'include_page' )
 		);
 
 		add_submenu_page(
@@ -471,7 +471,7 @@ class WP_Newsman {
 			'Settings',
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanSettings',
-			array( new Newsman_Admin_Settings_Settings(), 'include_page' )
+			array( new \Newsman\Admin\Settings\Settings(), 'include_page' )
 		);
 
 		add_submenu_page(
@@ -480,7 +480,7 @@ class WP_Newsman {
 			'Oauth',
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanOauth',
-			array( new Newsman_Admin_Settings_Oauth(), 'include_page' )
+			array( new \Newsman\Admin\Settings\Oauth(), 'include_page' )
 		);
 	}
 

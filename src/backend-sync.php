@@ -8,7 +8,7 @@
 /**
  * Current class for output
  *
- * @var Newsman_Admin_Settings_Sync $this
+ * @var \Newsman\Admin\Settings\Sync $this
  */
 
 $this->is_oauth();
