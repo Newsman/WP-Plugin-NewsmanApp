@@ -116,7 +116,7 @@ class Newsman_Admin_Settings_Sync extends Newsman_Admin_Settings {
 							}
 						}
 						if ( ! $found_segment ) {
-							update_option( 'newsman_segments', '' );
+							update_option( 'newsman_segments', '', Newsman_Config::AUTOLOAD_OPTIONS );
 							$this->form_values['newsman_segments'] = '';
 						}
 					}

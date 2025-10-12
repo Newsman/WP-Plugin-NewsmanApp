@@ -199,15 +199,15 @@ class Newsman_Admin_Settings_Oauth extends Newsman_Admin_Settings {
 		$creds = json_decode( $creds );
 		$creds = json_decode( $creds ); // No mistake calling twice.
 
-		update_option( 'newsman_userid', $creds->newsman_userid );
-		update_option( 'newsman_apikey', $creds->newsman_apikey );
-		update_option( 'newsman_list', sanitize_text_field( wp_unslash( $list_id ) ) );
+		update_option( 'newsman_userid', $creds->newsman_userid, Newsman_Config::AUTOLOAD_OPTIONS );
+		update_option( 'newsman_apikey', $creds->newsman_apikey, Newsman_Config::AUTOLOAD_OPTIONS );
+		update_option( 'newsman_list', sanitize_text_field( wp_unslash( $list_id ) ), Newsman_Config::AUTOLOAD_OPTIONS );
 
 		$settings = $this->get_remarketing_settings( $list_id, $creds->newsman_userid, $creds->newsman_apikey );
 		if ( ! empty( $settings ) && is_array( $settings ) ) {
 			$remarketing_id = $settings['site_id'] . '-' . $settings['list_id'] . '-' . $settings['form_id'] .
 				'-' . $settings['control_list_hash'];
-			update_option( 'newsman_remarketingid', $remarketing_id );
+			update_option( 'newsman_remarketingid', $remarketing_id, Newsman_Config::AUTOLOAD_OPTIONS );
 		}
 
 		// Set feed.

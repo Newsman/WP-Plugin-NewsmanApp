@@ -132,7 +132,7 @@ class WC_Newsman_Remarketing_Info_Banner {
 			return;
 		}
 
-		update_option( 'woocommerce_dismissed_info_banner', true );
+		update_option( 'woocommerce_dismissed_info_banner', true, Newsman_Config::AUTOLOAD_OPTIONS );
 
 		if ( wp_get_referer() ) {
 			wp_safe_redirect( wp_get_referer() );

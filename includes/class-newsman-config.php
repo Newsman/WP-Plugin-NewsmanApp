@@ -25,6 +25,11 @@ class Newsman_Config {
 	public const API_URL = 'https://ssl.newsman.app/api/';
 
 	/**
+	 * Autoload all options from plugin
+	 */
+	public const AUTOLOAD_OPTIONS = true;
+
+	/**
 	 * API REST version
 	 */
 	public const API_VERSION = '1.2';

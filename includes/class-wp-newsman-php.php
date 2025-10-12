@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
- * Title: Newsman info banner class.
+ * Title: Newsman PHP checks class.
  * Author: Newsman
  * Author URI: https://newsman.com
  * License: GPLv2 or later

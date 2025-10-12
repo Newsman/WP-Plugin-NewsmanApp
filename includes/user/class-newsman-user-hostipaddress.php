@@ -90,7 +90,7 @@ class Newsman_User_HostIpAddress {
 			$ip = self::NOT_FOUND;
 		}
 
-		update_option( 'newsman_serverip', $ip );
+		update_option( 'newsman_serverip', $ip, Newsman_Config::AUTOLOAD_OPTIONS );
 
 		if ( self::NOT_FOUND === $ip ) {
 			$this->ip = '';

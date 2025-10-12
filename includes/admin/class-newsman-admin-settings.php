@@ -352,7 +352,7 @@ class Newsman_Admin_Settings {
 	public function save_form_values() {
 		foreach ( $this->form_fields as $name ) {
 			if ( isset( $this->form_values[ $name ] ) ) {
-				update_option( $name, $this->form_values[ $name ] );
+				update_option( $name, $this->form_values[ $name ], Newsman_Config::AUTOLOAD_OPTIONS );
 			}
 		}
 
