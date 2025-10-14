@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'NEWSMAN_VERSION', '3.0.0' );
 
 // Included before autoload.php and checks for dependencies in vendor.
-require_once __DIR__ . '/includes/class-newsman-php.php';
+require_once __DIR__ . '/includes/class-newsmanphp.php';
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::vendor_check_and_notify' );
@@ -30,7 +30,18 @@ if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 	return;
 }
 
+// For single site and per-site activation.
 register_activation_hook( __FILE__, array( '\Newsman\Setup', 'on_activation' ) );
+
+// For network-wide activation.
+add_action(
+	'wpmu_new_blog',
+	function ( $blog_id ) {
+		switch_to_blog( $blog_id );
+		\Newsman\Setup::on_activation();
+		restore_current_blog();
+	}
+);
 
 /**
  * Newsman WP main class
