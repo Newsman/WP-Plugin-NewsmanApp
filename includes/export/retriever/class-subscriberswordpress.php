@@ -58,7 +58,7 @@ class SubscribersWordpress extends CronSubscribers {
 	/**
 	 * Process WordPress subscriber
 	 *
-	 * @param \WP_User  $subscriber Subscriber.
+	 * @param \WP_User $subscriber Subscriber.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
 	 */

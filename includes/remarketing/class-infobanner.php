@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Displays a message after install (if not dismissed and GA is not already configured) about how to configure the analytics plugin.
- * 
+ *
  * @class \Newsman\Remarketing\InfoBanner
  */
 class InfoBanner {

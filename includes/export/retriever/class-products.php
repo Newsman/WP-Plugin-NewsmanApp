@@ -142,7 +142,7 @@ class Products implements RetrieverInterface {
 	 * Process product
 	 *
 	 * @param \WC_Product $product Product instance.
-	 * @param null|int   $blog_id WP blog ID.
+	 * @param null|int    $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process_product( $product, $blog_id = null ) {

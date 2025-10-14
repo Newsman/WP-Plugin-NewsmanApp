@@ -83,7 +83,7 @@ class ExportCsvSubscribers extends Service {
 	 * Create CSV file format and return it.
 	 *
 	 * @param Context\ExportCsvSubscribers $context Context.
-	 * @param string                                       $source Source column value.
+	 * @param string                       $source Source column value.
 	 *
 	 * @return string
 	 */

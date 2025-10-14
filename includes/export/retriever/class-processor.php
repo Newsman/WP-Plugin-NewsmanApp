@@ -37,7 +37,7 @@ class Processor {
 	 * @var Logger
 	 */
 	protected $logger;
-	
+
 	/**
 	 * Retriever pool
 	 *

@@ -25,7 +25,7 @@ interface ClientInterface {
 	 * Make API GET request
 	 *
 	 * @param ContextInterface $context API request context.
-	 * @param array                        $params GET parameters.
+	 * @param array            $params GET parameters.
 	 *
 	 * @return array Response from API
 	 */
@@ -35,8 +35,8 @@ interface ClientInterface {
 	 * Make API POST request
 	 *
 	 * @param ContextInterface $context API request context.
-	 * @param array                        $get_params GET parameters.
-	 * @param array                        $post_params POST parameters.
+	 * @param array            $get_params GET parameters.
+	 * @param array            $post_params POST parameters.
 	 *
 	 * @return array Response from API
 	 */
@@ -46,9 +46,9 @@ interface ClientInterface {
 	 * Make API request
 	 *
 	 * @param ContextInterface $context API request context.
-	 * @param string                       $method GET or POST request type.
-	 * @param array                        $get_params GET parameters.
-	 * @param array                        $post_params POST parameters.
+	 * @param string           $method GET or POST request type.
+	 * @param array            $get_params GET parameters.
+	 * @param array            $post_params POST parameters.
 	 *
 	 * @return array
 	 */

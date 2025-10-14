@@ -60,7 +60,7 @@ class SubscribersWoocommerce extends CronSubscribers {
 	 * Process WooCommerce subscriber
 	 *
 	 * @param \WC_Order $subscriber Subscriber.
-	 * @param null|int $blog_id WP blog ID.
+	 * @param null|int  $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process_subscriber( $subscriber, $blog_id = null ) {

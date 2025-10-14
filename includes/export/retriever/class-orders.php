@@ -152,7 +152,7 @@ class Orders implements RetrieverInterface {
 	 * Process order
 	 *
 	 * @param \WC_Order $order Order instance.
-	 * @param null|int $blog_id WP blog ID.
+	 * @param null|int  $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process_order( $order, $blog_id = null ) {

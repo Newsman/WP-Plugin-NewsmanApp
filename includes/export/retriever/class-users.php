@@ -139,8 +139,8 @@ class Users implements RetrieverInterface {
 	 * Process customer
 	 *
 	 * @param \WC_Customer $customer Customer instance.
-	 * @param null|int    $role Role.
-	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|int     $role Role.
+	 * @param null|int     $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process_customer( $customer, $role, $blog_id = null ) {

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * JS for recording Google Analytics info
- * 
+ *
  * @class \Newsman\Remarketing\RemarketingJs
  */
 class RemarketingJs {
@@ -118,7 +118,7 @@ class RemarketingJs {
 	 * Builds the addImpression object
 	 *
 	 * @param \WC_Product $product Product.
-	 * @param string|int $position Position.
+	 * @param string|int  $position Position.
 	 */
 	public static function listing_impression( $product, $position ) {
 		// phpcs:ignore WordPress.WP.Capabilities.RoleFound
@@ -152,7 +152,7 @@ class RemarketingJs {
 	 * Builds an addProduct and click object
 	 *
 	 * @param \WC_Product $product Product.
-	 * @param string|int $position Position.
+	 * @param string|int  $position Position.
 	 * @return void
 	 */
 	public static function listing_click( $product, $position ) {
