@@ -296,6 +296,17 @@ $this->process_form();
 								<p class="description">Valid user IP address.</p>
 							</td>
 						</tr>
+                        <tr>
+                            <th scope="row">
+                                <label class="nzm-label" for="newsman_developerpluginlazypriority">Plugin Loaded Priority</label>
+                            </th>
+                            <td>
+                                <input type="text" id="newsman_developerpluginlazypriority"
+                                       name="newsman_developerpluginlazypriority"
+                                       value="<?php echo ( ! empty( $this->form_values['newsman_developerpluginlazypriority'] ) ) ? esc_attr( $this->form_values['newsman_developerpluginlazypriority'] ) : ''; ?>"/>
+                                <p class="description">Newsman plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20.</p>
+                            </td>
+                        </tr>
 					</table>
 					<div style="padding-top: 5px;">
 						<input type="submit" value="Save Changes" class="button button-primary"/>

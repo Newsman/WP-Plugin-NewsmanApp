@@ -58,22 +58,17 @@ class Options {
 	}
 
 	/**
-	 * Get API list ID
+	 * Get option value
 	 *
+	 * @param string   $name Option name.
 	 * @param null|int $blog_id WP blog ID.
-	 * @return string
+	 * @return string|null
 	 */
-	public function get_list_id( $blog_id = null ) {
-		return $this->config->get_blog_option( $blog_id, 'newsman_smslist', '' );
-	}
-
-	/**
-	 * Is API SMS usage enabled
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return string
-	 */
-	public function use_api( $blog_id = null ) {
-		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_usesms', '' );
+	public function get( $name, $blog_id = null ) {
+		$blog_id;
+		if ( isset( self::$options[ $name ] ) ) {
+			return self::$options[ $name ];
+		}
+		return null;
 	}
 }

@@ -146,6 +146,12 @@ js/retargeting/modal_{{api_key}}.js'
 
 })(window, document, 'script', '{{trackingScriptUrl}}', '_nzm', '_nzm_config');"
 		);
+
+
+		$options->add_option(
+			'newsman_jstrackrunfunc',
+			'_nzm.run'
+		);
 	}
 
 	/**
@@ -155,9 +161,11 @@ js/retargeting/modal_{{api_key}}.js'
 	 */
 	private static function init_options() {
 		add_option( 'newsman_api', 'on' );
+		add_option( 'newsman_useremarketing', 'on' );
 		add_option( 'newsman_senduserip', 'on' );
 		add_option( 'newsman_developeractiveuserip', '' );
 		add_option( 'newsman_developeruserip', '' );
+		add_option( 'newsman_developerpluginlazypriority', \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD );
 	}
 
 	/**

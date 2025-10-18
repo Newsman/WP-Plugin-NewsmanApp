@@ -58,6 +58,7 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_developerapitimeout',
 		'newsman_developeractiveuserip',
 		'newsman_developeruserip',
+		'newsman_developerpluginlazypriority',
 	);
 
 	/**

@@ -192,6 +192,21 @@ class Config {
 		}
 		return $this->get_blog_option( $blog_id, 'newsman_developeruserip', '' );
 	}
+	
+	/**
+	 * Get lazy load plugin priority.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function getPluginLazyPriority( $blog_id = null ) {
+		$value = $this->get_blog_option( $blog_id, 'newsman_developerpluginlazypriority' );
+		if ( $value === null || $value === false || $value === '' ) {
+			return \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD;
+		}
+		
+		return (int) $value;
+	}
 
 	/**
 	 * Get export request authorize header name
@@ -391,7 +406,7 @@ class Config {
 	 */
 	public function is_active( $blog_id = null ) {
 		$active_plugins = $this->get_blog_option( $blog_id, 'active_plugins' );
-		if ( in_array( 'newsmanapp/class-wp-newsman.php', $active_plugins, true ) ) {
+		if ( in_array( 'newsmanapp/newsmanapp.php', $active_plugins, true ) ) {
 			return true;
 		}
 		return false;

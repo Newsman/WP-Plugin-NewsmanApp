@@ -47,6 +47,8 @@ add_action(
  * Newsman WP main class
  */
 class WP_Newsman {
+	public const PLUGIN_PRIORITY_LAZY_LOAD = 20;
+	
 	/**
 	 * Newsman config
 	 *
@@ -78,20 +80,6 @@ class WP_Newsman {
 	public $templates = array();
 
 	/**
-	 * Retargeting JS endpoint
-	 *
-	 * @var string
-	 */
-	public static $endpoint = 'https://retargeting.newsmanapp.com/js/retargeting/track.js';
-
-	/**
-	 * Newsman endpoint host.
-	 *
-	 * @var string
-	 */
-	public static $endpoint_host = 'https://retargeting.newsmanapp.com';
-
-	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -115,27 +103,6 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Encode array or object and set headers.
-	 *
-	 * @param array|Object $obj Array or object to encode.
-	 * @return void
-	 */
-	public function display_json_as_page( $obj ) {
-		// Prevent WordPress from loading the theme.
-		if ( ! defined( 'WP_USE_THEMES' ) ) {
-			define( 'WP_USE_THEMES', false );
-		}
-
-		header( 'Content-Type: application/json' );
-
-		// Disable caching.
-		nocache_headers();
-
-		echo wp_json_encode( $obj );
-		exit( 0 );
-	}
-
-	/**
 	 * Export data to newsman action.
 	 *
 	 * @return void
@@ -152,11 +119,8 @@ class WP_Newsman {
 				'status'  => 403,
 				'message' => 'API setting is not enabled in plugin',
 			);
-			$this->display_json_as_page( $result );
-		}
-
-		if ( ! class_exists( 'WooCommerce' ) ) {
-			wp_send_json( array( 'error' => 'WooCommerce is not installed' ) );
+			$page = new \Newsman\Page\Renderer();
+			$page->display_json( $result );
 		}
 
 		try {
@@ -168,7 +132,8 @@ class WP_Newsman {
 				$parameters
 			);
 
-			$this->display_json_as_page( $result );
+			$page = new \Newsman\Page\Renderer();
+			$page->display_json( $result );
 		} catch ( \OutOfBoundsException $e ) {
 			$this->logger->log_exception( $e );
 			$result = array(
@@ -176,7 +141,8 @@ class WP_Newsman {
 				'message' => $e->getMessage(),
 			);
 
-			$this->display_json_as_page( $result );
+			$page = new \Newsman\Page\Renderer();
+			$page->display_json( $result );
 			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 			// wp_die('Access Forbidden', 'Forbidden', array('response' => 403)); .
 		} catch ( \Exception $e ) {
@@ -186,7 +152,8 @@ class WP_Newsman {
 				'message' => $e->getMessage(),
 			);
 
-			$this->display_json_as_page( $result );
+			$page = new \Newsman\Page\Renderer();
+			$page->display_json( $result );
 		}
 	}
 
@@ -363,15 +330,13 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Init Woo Commerce hooks.
+	 * Init WordPress and Woo Commerce hooks.
 	 *
 	 * @return void
 	 */
 	public function init_hooks() {
-		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), 20 );
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->getPluginLazyPriority() );
 		add_action( 'init', array( $this, 'newsman_export_data' ) );
-		add_action( 'woocommerce_review_order_before_submit', array( new \Newsman\Form\Checkout\Checkbox(), 'add_field' ) );
-		add_action( 'woocommerce_checkout_order_processed', array( new \Newsman\Form\Checkout\Processor(), 'process' ), 10, 2 );
 
 		// Order status change hooks.
 		add_action( 'woocommerce_order_status_pending', array( $this, 'pending' ) );
@@ -381,32 +346,41 @@ class WP_Newsman {
 		add_action( 'woocommerce_order_status_completed', array( $this, 'completed' ) );
 		add_action( 'woocommerce_order_status_refunded', array( $this, 'refunded' ) );
 		add_action( 'woocommerce_order_status_cancelled', array( $this, 'cancelled' ) );
-		add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
 
 		/**
-		 * Declare compatibility with feature "custom_order_tables".
+		 * Declare compatibility with custom_order_tables.
 		 *
 		 * @return void
 		 */
 		function before_woocommerce_hpos() {
 			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+					'custom_order_tables',
+					__FILE__,
+					true
+				);
 			}
 		}
+		add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
+
 		// Admin menu hook.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		// Add links to plugins page.
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
 		// Enqueue plugin styles in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
-		// Enqueue WordPress ajax library.
-		add_action( 'wp_head', array( $this, 'add_ajax_library' ) );
 		// Enqueue plugin scripts.
 		// add_action('wp_enqueue_scripts', array($this, 'register_plugin_scripts'));
 		// Enqueue plugin scripts in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
 		// Do ajax form subscribe.
-		add_action( 'wp_ajax_nopriv_newsman_ajax_subscribe', array( \Newsman\Form\AjaxSubscribe::init(), 'subscribe' ) );
+		add_action(
+			'wp_ajax_nopriv_newsman_ajax_subscribe',
+			array(
+				\Newsman\Form\AjaxSubscribe::init(),
+				'subscribe'
+			)
+		);
 		add_action( 'wp_ajax_newsman_ajax_subscribe', array( \Newsman\Form\AjaxSubscribe::init(), 'subscribe' ) );
 		// Check if plugin is active.
 		add_action( 'wp_ajax_newsman_ajax_check_plugin', array( $this, 'newsman_ajax_check_plugin' ) );
@@ -422,6 +396,22 @@ class WP_Newsman {
 	public function plugins_loaded_lazy() {
 		if ( class_exists( 'WC_Logger' ) ) {
 			\Newsman\Logger::$is_wc_logging = true;
+		}
+
+		$exist = new \Newsman\Util\WooCommerceExist();
+		if ( $exist->exist() ) {
+			$remarketing_config = \Newsman\Remarketing\Config::init();
+			if ($remarketing_config->is_active()) {
+				$remarketing = \Newsman\Remarketing::init();
+				$remarketing->init_hooks();
+			}
+		} else {
+			// Enqueue Newsman tracking script when there is WordPress without Woo Commerce.
+			add_action( 'wp_head', array( new \Newsman\Remarketing\Script\Track(), 'display_script' ) );
+
+			// Event tracking code in footer of the page.
+			add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\PageView(), 'get_script_js' ) );
+			add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\IdentifySubscriber(), 'get_script_js' ) );
 		}
 	}
 
@@ -530,36 +520,6 @@ class WP_Newsman {
 		wp_register_script( 'newsman_js', plugins_url( 'newsmanapp/src/js/script.js' ), array( 'jquery' ) );
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_script( 'newsman_js' );
-	}
-
-	/**
-	 * Includes ajax library that WordPress uses for processing ajax requests.
-	 *
-	 * @return void
-	 */
-	public function add_ajax_library() {
-		$html  = '<script type="text/javascript">';
-		$html .= 'var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '"';
-		$html .= '</script>';
-
-		if ( ! class_exists( 'WooCommerce' ) ) {
-			$remarketingid = get_option( 'newsman_remarketingid' );
-			if ( ! empty( $remarketingid ) ) {
-				$html .= "
-                    <script type='text/javascript'>
-                    var _nzm = _nzm || []; var _nzm_config = _nzm_config || []; _nzm_tracking_server = '" . self::$endpoint_host . "';
-                    (function() {var a, methods, i;a = function(f) {return function() {_nzm.push([f].concat(Array.prototype.slice.call(arguments, 0)));
-                    }};methods = ['identify', 'track', 'run'];for(i = 0; i < methods.length; i++) {_nzm[methods[i]] = a(methods[i])};
-                    s = document.getElementsByTagName('script')[0];var script_dom = document.createElement('script');script_dom.async = true;
-                    script_dom.id = 'nzm-tracker';script_dom.setAttribute('data-site-id', '" . esc_js( $remarketingid ) . "');
-                    script_dom.src = '" . self::$endpoint . "';s.parentNode.insertBefore(script_dom, s);})();
-                    </script>
-                    ";
-			}
-		}
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $html;
 	}
 }
 

@@ -82,8 +82,7 @@ class Options {
 	public function get_option( $option_name, $default_value = false ) {
 		try {
 			$query = $this->wpdb->prepare(
-				'SELECT option_value FROM %s WHERE option_name = %s LIMIT 1',
-				$this->table_name,
+				'SELECT option_value FROM ' . $this->table_name . ' WHERE option_name = %s LIMIT 1',
 				$option_name
 			);
 
@@ -243,8 +242,7 @@ class Options {
 	public function option_exists( $option_name ) {
 		try {
 			$query = $this->wpdb->prepare(
-				'SELECT COUNT(*) FROM %s WHERE option_name = %s',
-				$this->table_name,
+				'SELECT COUNT(*) FROM ' . $this->table_name . ' WHERE option_name = %s',
 				$option_name
 			);
 
@@ -277,15 +275,11 @@ class Options {
 		try {
 			if ( $autoload_only ) {
 				$query = $this->wpdb->prepare(
-					'SELECT option_name, option_value FROM %s WHERE autoload = %s',
-					$this->table_name,
+					'SELECT option_name, option_value FROM ' . $this->table_name . ' WHERE autoload = %s',
 					'on'
 				);
 			} else {
-				$query = $this->wpdb->prepare(
-					'SELECT option_name, option_value FROM %s',
-					$this->table_name
-				);
+				$query = $this->wpdb->prepare( 'SELECT option_name, option_value FROM ' . $this->table_name );
 			}
 
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -345,10 +339,7 @@ class Options {
 	 */
 	public function drop_table() {
 		try {
-			$query = $this->wpdb->prepare(
-				'DROP TABLE IF EXISTS %s',
-				$this->table_name
-			);
+			$query = $this->wpdb->prepare( 'DROP TABLE IF EXISTS ' . $this->table_name );
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$this->wpdb->query( $query );
 

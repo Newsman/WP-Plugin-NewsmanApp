@@ -53,11 +53,30 @@ $this->process_form();
 			<table class="form-table newsman-table newsman-tbl-fixed">
 				<tr>
 					<th scope="row">
+						<label class="nzm-label" for="newsman_useremarketing">Enable</label>
+					</th>
+					<td>
+						<input name="newsman_useremarketing" type="checkbox"
+							d="newsman_useremarketing" <?php echo ( ! empty( $this->form_values['newsman_useremarketing'] ) && 'on' === $this->form_values['newsman_useremarketing'] ) ? 'checked' : ''; ?>/>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
 						<label class="nzm-label" for="newsman_remarketingid">REMARKETING ID</label>
 					</th>
 					<td>
 						<input type="text" name="newsman_remarketingid" id="newsman_remarketingid" value="<?php echo esc_html( $this->form_values['newsman_remarketingid'] ); ?>" />
 						<p class="description">Your Newsman Remarketing ID</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label class="nzm-label" for="newsman_remarketinganonymizeip">Anonymize IP</label>
+					</th>
+					<td>
+						<input name="newsman_remarketinganonymizeip" type="checkbox"
+							id="newsman_remarketinganonymizeip" <?php echo ( ! empty( $this->form_values['newsman_remarketinganonymizeip'] ) && 'on' === $this->form_values['newsman_remarketinganonymizeip'] ) ? 'checked' : ''; ?>/>
+						<p class="description">Anonymize User IP Address</p>
 					</td>
 				</tr>
 			</table>
@@ -66,6 +85,6 @@ $this->process_form();
 			</div>
 			</form>
 		</div>
-		</section>  
+	</section>  
 	</div>
 </div>

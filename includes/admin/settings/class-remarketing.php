@@ -43,7 +43,9 @@ class Remarketing extends Settings {
 	 * @var array
 	 */
 	public $form_fields = array(
+		'newsman_useremarketing',
 		'newsman_remarketingid',
+		'newsman_remarketinganonymizeip',
 	);
 
 	/**
