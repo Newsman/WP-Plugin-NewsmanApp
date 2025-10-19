@@ -32,7 +32,7 @@ class Purchase extends AbstractAction {
 		if ( ! is_order_received_page() ) {
 			return '';
 		}
-		
+
 		$order_id = isset( $wp->query_vars['order-received'] ) ? $wp->query_vars['order-received'] : 0;
 		if ( 0 >= $order_id ) {
 			return '';
@@ -44,8 +44,8 @@ class Purchase extends AbstractAction {
 		}
 
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '7.1.0', '>=' ) ) {
-			if ( function_exists( 'wc_get_container' ) && 
-			     class_exists( 'Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore' )
+			if ( function_exists( 'wc_get_container' ) &&
+				class_exists( 'Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore' )
 			) {
 				$order_data_store = wc_get_container()->get(
 					\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore::class
@@ -57,10 +57,11 @@ class Purchase extends AbstractAction {
 			$order_data_store = \WC_Data_Store::load( 'order' );
 		}
 
-		$run = $this->remarketing_config->get_js_track_run_func();
-		$currency_code = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() : 
+		$run           = $this->remarketing_config->get_js_track_run_func();
+		$currency_code = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() :
 			$order->get_currency();
-		$js  = $run . "( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";
+
+		$js = $run . "( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";
 
 		// Add order items.
 		if ( $order->get_items() ) {
@@ -69,7 +70,7 @@ class Purchase extends AbstractAction {
 			}
 		}
 
-		if ( method_exists( $order, 'get_shipping_total') ) {
+		if ( method_exists( $order, 'get_shipping_total' ) ) {
 			$shipping_total = $order->get_shipping_total();
 		} else {
 			$shipping_total = $order->get_total_shipping();
@@ -89,12 +90,12 @@ class Purchase extends AbstractAction {
 			} );
 		}
 		";
-		
+
 		return apply_filters(
 			'newsman_remarketing_action_purchase_js',
 			$js,
 			array(
-				'order' => $order
+				'order' => $order,
 			)
 		);
 	}
@@ -111,7 +112,7 @@ class Purchase extends AbstractAction {
 
 		$product = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_product_from_item( $item ) :
 			$item->get_product();
-		$variant  = $this->get_product_variant_line( $order, $item, $product );
+		$variant = $this->get_product_variant_line( $order, $item, $product );
 
 		$js  = '' . $run . "( 'ec:addProduct', {";
 		$js .= "'id': '" . esc_js( $product->get_id() ? $product->get_id() : $product->get_sku() ) . "',";
@@ -125,13 +126,13 @@ class Purchase extends AbstractAction {
 		$js .= "'price': '" . esc_js( $order->get_item_total( $item ) ) . "',";
 		$js .= "'quantity': '" . esc_js( $item['qty'] ) . "'";
 		$js .= '});';
-		
+
 		return apply_filters(
 			'newsman_remarketing_action_purchase_item_js',
 			$js,
 			array(
 				'order' => $order,
-				'item'  => $item
+				'item'  => $item,
 			)
 		);
 	}
@@ -139,9 +140,9 @@ class Purchase extends AbstractAction {
 	/**
 	 * Returns a 'variant' JSON line based on product
 	 *
-	 * @param \WC_Order $order \WC_Order Object.
+	 * @param \WC_Order            $order \WC_Order Object.
 	 * @param array|\WC_Order_Item $item The item to add to a transaction/order.
-	 * @param  \WC_Product $product Product to pull info for.
+	 * @param \WC_Product          $product Product to pull info for.
 	 *
 	 * @return string Line of JSON.
 	 */
@@ -164,7 +165,7 @@ class Purchase extends AbstractAction {
 			array(
 				'order'   => $order,
 				'item'    => $item,
-				'product' => $product
+				'product' => $product,
 			)
 		);
 	}

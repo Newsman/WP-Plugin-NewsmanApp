@@ -26,20 +26,20 @@ class ProductDetail extends AbstractAction {
 	 *
 	 * @return string
 	 */
-	public function get_js( ) {
-		$data = $this->get_data();
+	public function get_js() {
+		$data    = $this->get_data();
 		$product = false;
 
 		if ( isset( $data['product'] ) ) {
 			$product = $data['product'];
 		}
 
-		if ( empty( $product) ) {
+		if ( empty( $product ) ) {
 			return '';
 		}
 
 		$run = $this->remarketing_config->get_js_track_run_func();
-		$js = $run . "( 'ec:addProduct', {
+		$js  = $run . "( 'ec:addProduct', {
 			'id': '" . esc_js( $product->get_id() ? $product->get_id() : ( $product->get_sku() ) ) . "',
 			'name': '" . esc_js( $product->get_title() ) . "',
 			'category': " . $this->get_product_category_line( $product ) . "
@@ -51,7 +51,7 @@ class ProductDetail extends AbstractAction {
 			'newsman_remarketing_action_product_detail_js',
 			$js,
 			array(
-				'product' => $product
+				'product' => $product,
 			)
 		);
 	}

@@ -194,8 +194,8 @@ class SendStatus {
 
 					$context = new \Newsman\Service\Context\Sms\SendOne();
 					$context->set_list_id( $newsman_smslist )
-					        ->set_text( $newsman_smstext )
-					        ->set_to( $phone );
+						->set_text( $newsman_smstext )
+						->set_to( $phone );
 					$send_one = new \Newsman\Service\Sms\SendOne();
 					$send_one->execute( $context );
 				}
@@ -210,8 +210,8 @@ class SendStatus {
 		$list_id = $list_id[1];
 
 		$url = 'https://ssl.newsman.app/api/1.2/rest/' . $this->config->get_user_id() . '/'
-		       . $this->config->get_api_key() . '/remarketing.setPurchaseStatus.json?list_id='
-		       . $list_id . '&order_id=' . $order_id . '&status=' . $status;
+			. $this->config->get_api_key() . '/remarketing.setPurchaseStatus.json?list_id='
+			. $list_id . '&order_id=' . $order_id . '&status=' . $status;
 
 		wp_remote_get( esc_url_raw( $url ), array() );
 	}

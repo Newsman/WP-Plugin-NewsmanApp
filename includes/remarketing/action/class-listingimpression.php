@@ -33,10 +33,11 @@ class ListingImpression extends AbstractAction {
 	 *
 	 * @return string
 	 */
-	public function get_js( ) {
-		$data = $this->get_data();
-		$product = false;
+	public function get_js() {
+		$data             = $this->get_data();
+		$product          = false;
 		$woocommerce_loop = false;
+
 		if ( isset( $data['product'] ) ) {
 			$product = $data['product'];
 		}
@@ -44,7 +45,7 @@ class ListingImpression extends AbstractAction {
 			$woocommerce_loop = $data['woocommerce_loop'];
 		}
 
-		if ( empty( $product) ) {
+		if ( empty( $product ) ) {
 			return '';
 		}
 
@@ -52,17 +53,17 @@ class ListingImpression extends AbstractAction {
 			$position = $woocommerce_loop;
 			$position = (int) $position + 1;
 		} else {
-			self::$position++;
+			++self::$position;
 			$position = self::$position;
 		}
-		
+
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 		if ( isset( $_GET['s'] ) ) {
 			$list = 'Search Results';
 		} else {
 			$list = 'Product List';
 		}
-		
+
 		$run = $this->remarketing_config->get_js_track_run_func();
 
 		$js = $run . "( 'ec:addImpression', {
@@ -72,7 +73,7 @@ class ListingImpression extends AbstractAction {
 			'list': '" . esc_js( $list ) . "',
 			'position': '" . esc_js( $position ) . "'
 		} );";
-		
+
 		return apply_filters(
 			'newsman_remarketing_action_listing_impression_js',
 			$js,
@@ -80,7 +81,7 @@ class ListingImpression extends AbstractAction {
 				'product'          => $product,
 				'position'         => $position,
 				'list'             => $list,
-				'woocommerce_loop' => $woocommerce_loop
+				'woocommerce_loop' => $woocommerce_loop,
 			)
 		);
 	}

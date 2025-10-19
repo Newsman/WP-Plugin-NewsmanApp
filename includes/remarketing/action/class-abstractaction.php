@@ -56,7 +56,7 @@ class AbstractAction {
 		}
 
 		$get_attributes = new GetAttributes();
-		$attributes = $get_attributes->get();
+		$attributes     = $get_attributes->get();
 
 		return '<script' . $attributes . '>' . $this->get_js() . '</script>';
 	}
@@ -67,6 +67,7 @@ class AbstractAction {
 	 * @return void
 	 */
 	public function display_script_js() {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->get_script_js();
 	}
 
@@ -85,8 +86,7 @@ class AbstractAction {
 	 * @param array $data Action data.
 	 * @return void
 	 */
-	public function set_data( $data )
-	{
+	public function set_data( $data ) {
 		$this->data = $data;
 	}
 
@@ -107,7 +107,7 @@ class AbstractAction {
 	 * @return string Line of JSON.
 	 */
 	public function get_product_category_line( $product ) {
-		$data = array();
+		$data           = array();
 		$variation_data = array();
 		if ( version_compare( WC_VERSION, '3.0', '<' ) ) {
 			$variation_data = $product->variation_data;
@@ -138,7 +138,7 @@ class AbstractAction {
 			'newsman_remarketing_action_product_category_js',
 			$js,
 			array(
-				'product' => $product
+				'product' => $product,
 			)
 		);
 	}

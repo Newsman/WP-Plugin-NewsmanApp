@@ -27,14 +27,14 @@ class CartAjax {
 	 * GET parameter to identify cart JSON page
 	 */
 	public const CART_PARAMETER = 'getCart.json';
-	
+
 	/**
 	 * Remarketing config
 	 *
 	 * @var RemarketingConfig
 	 */
 	protected $remarketing_config;
-	
+
 	/**
 	 * Construct class
 	 */

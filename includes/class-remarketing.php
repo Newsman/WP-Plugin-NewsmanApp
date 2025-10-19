@@ -38,10 +38,11 @@ class Remarketing {
 	}
 
 	/**
+	 * Init WordPress and Woo Commerce hooks
+	 *
 	 * @return void
 	 */
-	public function init_hooks()
-	{
+	public function init_hooks() {
 		// Declare compatibility with custom_order_tables.
 		add_action(
 			'before_woocommerce_init',
@@ -56,22 +57,22 @@ class Remarketing {
 			}
 		);
 
-		// Get cart action
-		add_action( 'wp_loaded', array( new \Newsman\Remarketing\Cart\Handler\CartAjax, 'display_items' ) );
+		// Get cart action.
+		add_action( 'wp_loaded', array( new \Newsman\Remarketing\Cart\Handler\CartAjax(), 'display_items' ) );
 
 		// Manage subscribe to newsletter checkbox in checkout.
 		add_action(
 			'woocommerce_review_order_before_submit',
 			array(
 				new \Newsman\Form\Checkout\Checkbox(),
-				'add_field'
+				'add_field',
 			)
 		);
 		add_action(
 			'woocommerce_checkout_order_processed',
 			array(
 				new \Newsman\Form\Checkout\Processor(),
-				'process'
+				'process',
 			),
 			10,
 			2
@@ -90,7 +91,6 @@ class Remarketing {
 
 		add_action( 'woocommerce_after_shop_loop_item', array( $this, 'listing_impression' ) );
 		add_action( 'woocommerce_after_single_product', array( $this, 'product_detail' ) );
-		//add_action( 'woocommerce_after_checkout_form', array( $this, 'checkout_process' ) );
 
 		// utm_nooverride parameter for Google AdWords.
 		add_filter( 'woocommerce_get_return_url', array( $this, 'utm_nooverride' ) );

@@ -147,7 +147,6 @@ js/retargeting/modal_{{api_key}}.js'
 })(window, document, 'script', '{{trackingScriptUrl}}', '_nzm', '_nzm_config');"
 		);
 
-
 		$options->add_option(
 			'newsman_jstrackrunfunc',
 			'_nzm.run'

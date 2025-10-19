@@ -178,6 +178,7 @@ class Config {
 	 * @return false
 	 */
 	public function use_proxy( $blog_id = null ) {
+		$blog_id;
 		return false;
 	}
 

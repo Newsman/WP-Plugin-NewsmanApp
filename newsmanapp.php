@@ -48,7 +48,7 @@ add_action(
  */
 class WP_Newsman {
 	public const PLUGIN_PRIORITY_LAZY_LOAD = 20;
-	
+
 	/**
 	 * Newsman config
 	 *
@@ -92,7 +92,7 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function init_hooks() {
-		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->getPluginLazyPriority() );
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->get_plugin_lazy_priority() );
 		add_action( 'init', array( new \Newsman\Export\Router(), 'execute' ) );
 
 		/**
@@ -124,7 +124,7 @@ class WP_Newsman {
 			'wp_ajax_nopriv_newsman_ajax_subscribe',
 			array(
 				\Newsman\Form\AjaxSubscribe::init(),
-				'subscribe'
+				'subscribe',
 			)
 		);
 		add_action( 'wp_ajax_newsman_ajax_subscribe', array( \Newsman\Form\AjaxSubscribe::init(), 'subscribe' ) );
@@ -147,7 +147,7 @@ class WP_Newsman {
 		$exist = new \Newsman\Util\WooCommerceExist();
 		if ( $exist->exist() ) {
 			$remarketing_config = \Newsman\Remarketing\Config::init();
-			if ($remarketing_config->is_active()) {
+			if ( $remarketing_config->is_active() ) {
 				$remarketing = \Newsman\Remarketing::init();
 				$remarketing->init_hooks();
 			}

@@ -192,19 +192,19 @@ class Config {
 		}
 		return $this->get_blog_option( $blog_id, 'newsman_developeruserip', '' );
 	}
-	
+
 	/**
 	 * Get lazy load plugin priority.
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return string
 	 */
-	public function getPluginLazyPriority( $blog_id = null ) {
+	public function get_plugin_lazy_priority( $blog_id = null ) {
 		$value = $this->get_blog_option( $blog_id, 'newsman_developerpluginlazypriority' );
-		if ( $value === null || $value === false || $value === '' ) {
+		if ( null === $value || false === $value || '' === $value ) {
 			return \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD;
 		}
-		
+
 		return (int) $value;
 	}
 

@@ -46,13 +46,16 @@ class Track {
 		if ( ! $this->remarketing_config->is_active() ) {
 			return;
 		}
-		
+
 		if ( ! $this->remarketing_config->is_tracking_allowed() ) {
 			return;
 		}
-		
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->get_before_script();
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->include_script();
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->get_after_script();
 	}
 
@@ -93,9 +96,9 @@ class Track {
 
 		$content = ob_get_clean();
 		$content = (string) apply_filters( 'newsman_remarketing_script_track_content', $content );
-		
+
 		$content .= $this->include_script_cart();
-		
+
 		return $content;
 	}
 
@@ -147,8 +150,7 @@ class Track {
 	 *
 	 * @return string
 	 */
-	public function get_config_js()
-	{
+	public function get_config_js() {
 		$js = '';
 		return apply_filters( 'newsman_remarketing_script_track_config_js', $js );
 	}
@@ -156,7 +158,7 @@ class Track {
 	/**
 	 * Get tracking URL
 	 *
-	 * @return string
+	 * @return string|void
 	 * @throws \Exception Not implemented yet exception.
 	 */
 	public function get_tracking_url() {
@@ -169,11 +171,10 @@ class Track {
 	 * @return string
 	 * @throws \Exception Not implemented yet exception.
 	 */
-	public function get_script_final_url()
-	{
+	public function get_script_final_url() {
 		$url = '';
 		if ( $this->remarketing_config->use_proxy() ) {
-			$url =  $this->get_resources_url() . '/' . $this->get_script_request_uri();
+			$url = $this->get_resources_url() . '/' . $this->get_script_request_uri();
 			throw new \Exception( 'Not implemented' );
 		} else {
 			$url = $this->remarketing_config->get_script_url();

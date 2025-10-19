@@ -64,7 +64,7 @@ class Router {
 				'status'  => 403,
 				'message' => 'API setting is not enabled in plugin',
 			);
-			$page = new \Newsman\Page\Renderer();
+			$page   = new \Newsman\Page\Renderer();
 			$page->display_json( $result );
 		}
 

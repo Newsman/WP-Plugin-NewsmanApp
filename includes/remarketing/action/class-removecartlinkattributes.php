@@ -28,15 +28,15 @@ class RemoveCartLinkAttributes extends AbstractAction {
 	 */
 	public function get() {
 		$data = $this->get_data();
-		
+
 		$link = false;
 		if ( isset( $data['link'] ) ) {
 			$link = $data['link'];
 		}
-		if ( empty ( $link ) ) {
+		if ( empty( $link ) ) {
 			return $link;
 		}
-		
+
 		$item_key = false;
 		if ( isset( $data['item_key'] ) ) {
 			$item_key = $data['item_key'];
@@ -59,7 +59,7 @@ class RemoveCartLinkAttributes extends AbstractAction {
 
 		$link = str_replace(
 			'href=',
-			'data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' . 
+			'data-product_id="' . esc_attr( $product->get_id() ) . '" data-product_sku="' .
 				esc_attr( $product->get_sku() ) . '" href=',
 			$link
 		);

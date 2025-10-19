@@ -31,17 +31,18 @@ class IdentifySubscriber extends AbstractAction {
 
 		$current_user = null;
 		if ( is_user_logged_in() ) {
-			$current_user  = wp_get_current_user();
-			$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $current_user->user_email ) ) . '", ' . 
-				'first_name: "' . esc_attr( esc_html(  $current_user->user_firstname ) ) . '", ' .
-				'last_name: "' . esc_attr( esc_html(  $current_user->user_lastname ) ) . '" });';
+			$current_user = wp_get_current_user();
+
+			$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $current_user->user_email ) ) . '", ' .
+				'first_name: "' . esc_attr( esc_html( $current_user->user_firstname ) ) . '", ' .
+				'last_name: "' . esc_attr( esc_html( $current_user->user_lastname ) ) . '" });';
 		}
-		
+
 		return apply_filters(
 			'newsman_remarketing_action_identify_subscriber_js',
 			$js,
 			array(
-				'current_user' => $current_user
+				'current_user' => $current_user,
 			)
 		);
 	}

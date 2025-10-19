@@ -30,48 +30,48 @@ class Pool {
 	 */
 	protected $retriever_list = array(
 		'version'     => array(
-			'code'  => 'version',
-			'class' => '\Newsman\Export\Retriever\Version',
+			'code'             => 'version',
+			'class'            => '\Newsman\Export\Retriever\Version',
 			'only_woocommerce' => true,
 		),
 		'orders'      => array(
-			'code'  => 'orders',
-			'class' => '\Newsman\Export\Retriever\Orders',
+			'code'             => 'orders',
+			'class'            => '\Newsman\Export\Retriever\Orders',
 			'only_woocommerce' => false,
 		),
 		'products'    => array(
-			'code'  => 'products',
-			'class' => '\Newsman\Export\Retriever\Products',
+			'code'             => 'products',
+			'class'            => '\Newsman\Export\Retriever\Products',
 			'only_woocommerce' => false,
 		),
 		'customers'   => array(
-			'code'  => 'customers',
-			'class' => '\Newsman\Export\Retriever\Customers',
+			'code'             => 'customers',
+			'class'            => '\Newsman\Export\Retriever\Customers',
 			'only_woocommerce' => false,
 		),
 		'subscribers' => array(
-			'code'  => 'subscribers',
-			'class' => '\Newsman\Export\Retriever\Subscribers',
+			'code'             => 'subscribers',
+			'class'            => '\Newsman\Export\Retriever\Subscribers',
 			'only_woocommerce' => true,
 		),
 		'count'       => array(
-			'code'  => 'count',
-			'class' => '\Newsman\Export\Retriever\Count',
+			'code'             => 'count',
+			'class'            => '\Newsman\Export\Retriever\Count',
 			'only_woocommerce' => true,
 		),
 		'coupons'     => array(
-			'code'  => 'coupons',
-			'class' => '\Newsman\Export\Retriever\Coupons',
+			'code'             => 'coupons',
+			'class'            => '\Newsman\Export\Retriever\Coupons',
 			'only_woocommerce' => false,
 		),
 		'wordpress'   => array(
-			'code'  => 'wordpress',
-			'class' => '\Newsman\Export\Retriever\SubscribersWordpress',
+			'code'             => 'wordpress',
+			'class'            => '\Newsman\Export\Retriever\SubscribersWordpress',
 			'only_woocommerce' => true,
 		),
 		'woocommerce' => array(
-			'code'  => 'woocommerce',
-			'class' => '\Newsman\Export\Retriever\SubscribersWoocommerce',
+			'code'             => 'woocommerce',
+			'class'            => '\Newsman\Export\Retriever\SubscribersWoocommerce',
 			'only_woocommerce' => false,
 		),
 	);
@@ -132,8 +132,8 @@ class Pool {
 			$code = $data['method'];
 		}
 
-		$exist = new WooCommerceExist();
-		$isWoo = $exist->exist();
+		$exist  = new WooCommerceExist();
+		$is_woo = $exist->exist();
 
 		if ( isset( $this->retriever_instances[ $code ] ) ) {
 			return $this->retriever_instances[ $code ];
@@ -144,8 +144,8 @@ class Pool {
 				if ( empty( $retriever['class'] ) ) {
 					throw new \InvalidArgumentException( 'The parameter "class" is missing.' );
 				}
-				
-				if ( ! $isWoo && $retriever['only_woocommerce'] ) {
+
+				if ( ! $is_woo && $retriever['only_woocommerce'] ) {
 					throw new \InvalidArgumentException( 'Export allowed only in WooCommerce.' );
 				}
 
