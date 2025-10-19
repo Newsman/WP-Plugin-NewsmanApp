@@ -24,6 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class CartAjax {
 	/**
+	 * GET parameter to identify cart JSON page
+	 */
+	public const CART_PARAMETER = 'getCart.json';
+	
+	/**
 	 * Remarketing config
 	 *
 	 * @var RemarketingConfig
@@ -44,7 +49,7 @@ class CartAjax {
 	 */
 	public function display_items() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$newsman = ( empty( $_GET['newsman'] ) ) ? '' : sanitize_text_field( wp_unslash( $_GET['newsman'] ) );
+		$newsman = ( empty( $_GET['newsman_cart'] ) ) ? '' : sanitize_text_field( wp_unslash( $_GET['newsman_cart'] ) );
 		if ( empty( $newsman ) || ! $this->remarketing_config->is_active() ) {
 			return;
 		}
@@ -63,7 +68,7 @@ class CartAjax {
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( 'getCart.json' !== $newsman ) {
+		if ( self::CART_PARAMETER !== $newsman ) {
 			$page = new \Newsman\Page\Renderer();
 			$page->display_json(
 				array(
@@ -84,6 +89,7 @@ class CartAjax {
 			);
 		}
 
+		$page = new \Newsman\Page\Renderer();
 		$page->display_json( $result, JSON_PRETTY_PRINT );
 	}
 }

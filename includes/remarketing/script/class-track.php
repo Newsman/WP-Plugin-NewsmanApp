@@ -92,9 +92,28 @@ class Track {
 		include_once $path;
 
 		$content = ob_get_clean();
-		$content = apply_filters( 'newsman_remarketing_script_track_content', $content );
+		$content = (string) apply_filters( 'newsman_remarketing_script_track_content', $content );
+		
+		$content .= $this->include_script_cart();
+		
+		return $content;
+	}
 
-		return (string) $content;
+	/**
+	 * Include track cart script and return contents
+	 *
+	 * @return string
+	 */
+	public function include_script_cart() {
+		ob_start();
+
+		$path = plugin_dir_path( __FILE__ ) . '../patterns/track-cart.php';
+		$path = apply_filters( 'newsman_remarketing_script_track_cart_filepath', $path );
+
+		include_once $path;
+
+		$content = ob_get_clean();
+		return (string) apply_filters( 'newsman_remarketing_script_track_cart_content', $content );
 	}
 
 	/**
@@ -200,5 +219,23 @@ class Track {
 	public function is_woo_commerce_exist() {
 		$exist = new \Newsman\Util\WooCommerceExist();
 		return $exist->exist();
+	}
+
+	/**
+	 * Is Woo Commerce application page
+	 *
+	 * @return bool
+	 */
+	public function is_woo_commerce_page() {
+		if ( is_woocommerce() ) {
+			return true;
+		}
+		if ( is_cart() ) {
+			return true;
+		}
+		if ( is_checkout() ) {
+			return true;
+		}
+		return false;
 	}
 }

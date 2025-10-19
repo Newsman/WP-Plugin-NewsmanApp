@@ -19,7 +19,11 @@ if ( $this->remarketing_config->use_proxy() ) {
 	$tracking_base_url = esc_js ( esc_html( $this->get_tracking_url() ) );
 }
 
-$nzm_config_js = $this->get_config_js();
+$nzm_config_js = '';
+if ( $this->is_woo_commerce_exist() ) {
+    $nzm_config_js .= "_nzm_config['disable_datalayer'] = 1;";
+}
+$nzm_config_js .= $this->get_config_js();
 
 $scriptString = strtr(
 	$this->remarketing_config->get_script_js(),
