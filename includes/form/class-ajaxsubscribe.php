@@ -48,6 +48,13 @@ class AjaxSubscribe {
 	protected $logger;
 
 	/**
+	 * Message
+	 *
+	 * @var array
+	 */
+	protected $message;
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {

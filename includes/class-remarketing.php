@@ -83,13 +83,9 @@ class Remarketing {
 		// Event tracking code in footer of the page.
 		add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\PageView(), 'display_script_js' ) );
 		add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\IdentifySubscriber(), 'display_script_js' ) );
-		//add_action( 'wp_footer', array( $this, 'loop_add_to_cart' ) );
 		add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\Purchase(), 'display_script_js' ) );
 
 		// Event tracking code.
-		//add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'add_to_cart' ) );
-		//add_action( 'woocommerce_after_cart', array( $this, 'remove_from_cart' ) );
-		//add_action( 'woocommerce_after_mini_cart', array( $this, 'remove_from_cart' ) );
 		add_filter( 'woocommerce_cart_item_remove_link', array( $this, 'remove_from_cart_attributes' ), 10, 2 );
 
 		add_action( 'woocommerce_after_shop_loop_item', array( $this, 'listing_impression' ) );
@@ -98,41 +94,6 @@ class Remarketing {
 
 		// utm_nooverride parameter for Google AdWords.
 		add_filter( 'woocommerce_get_return_url', array( $this, 'utm_nooverride' ) );
-	}
-
-	/**
-	 * Newsman Remarketing event tracking for single product add to cart
-	 *
-	 * @return void
-	 */
-	public function add_to_cart() {
-		if ( $this->disable_tracking() ) {
-			return;
-		}
-		if ( ! is_single() ) {
-			return;
-		}
-
-		global $product;
-
-		// Add single quotes to allow jQuery to be substituted into _trackEvent parameters.
-		$parameters             = array();
-		$parameters['category'] = "'" . __( 'Products', 'newsman' ) . "'";
-		$parameters['action']   = "'" . __( 'Add to Cart', 'newsman' ) . "'";
-		$parameters['label']    = "'" . esc_js( $product->get_sku() ? __( 'ID:', 'newsman' ) . ' ' . $product->get_sku() : '#' . $product->get_id() ) . "'";
-
-		if ( ! $this->disable_tracking() ) {
-			$code = '' . \Newsman\Remarketing\RemarketingJs::get_instance()->tracker_var() . "( 'ec:addProduct', {";
-			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-			// $code .= "'id': '" . esc_js($product->get_sku() ? $product->get_sku() : ('#' . $product->get_id())) . "',";
-			$code                  .= "'id': '" . esc_js( ( $product->get_id() ) ? ( $product->get_id() ) : $product->get_sku() ) . "',";
-			$code                  .= "'name': '" . esc_js( $product->get_title() ) . "',";
-			$code                  .= "'quantity': $( 'input.qty' ).val() ? $( 'input.qty' ).val() : '1'";
-			$code                  .= '} );';
-			$parameters['enhanced'] = $code;
-		}
-
-		\Newsman\Remarketing\RemarketingJs::get_instance()->event_tracking_code( $parameters, '.single_add_to_cart_button' );
 	}
 
 	/**
@@ -155,36 +116,6 @@ class Remarketing {
 			)
 		);
 		return $attributes->get();
-	}
-
-	/**
-	 * Newsman Remarketing event tracking for loop add to cart
-	 *
-	 * @return void
-	 */
-	public function loop_add_to_cart() {
-		if ( $this->disable_tracking() ) {
-			return;
-		}
-
-		// Add single quotes to allow jQuery to be substituted into _trackEvent parameters.
-		$parameters             = array();
-		$parameters['category'] = "'" . __( 'Products', 'newsman' ) . "'";
-		$parameters['action']   = "'" . __( 'Add to Cart', 'newsman' ) . "'";
-		// Product SKU or ID.
-		$parameters['label'] = "($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id'))";
-
-		if ( ! $this->disable_tracking() ) {
-			$code = '' . \Newsman\Remarketing\RemarketingJs::get_instance()->tracker_var() . "( 'ec:addProduct', {";
-			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-			// $code .= "'id': ($(this).data('product_sku')) ? ($(this).data('product_sku')) : ('#' + $(this).data('product_id')),";
-			$code                  .= "'id': ($(this).data('product_id')) ?  ($(this).data('product_id')) : ($(this).data('product_sku')),";
-			$code                  .= "'quantity': $(this).data('quantity')";
-			$code                  .= '} );';
-			$parameters['enhanced'] = $code;
-		}
-
-		\Newsman\Remarketing\RemarketingJs::get_instance()->event_tracking_code( $parameters, '.add_to_cart_button:not(.product_type_variable, .product_type_grouped)' );
 	}
 
 	/**

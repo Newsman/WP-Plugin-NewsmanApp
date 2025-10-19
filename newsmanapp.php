@@ -57,21 +57,6 @@ class WP_Newsman {
 	protected $config;
 
 	/**
-	 * Newsman logger
-	 *
-	 * @var \Newsman\Logger
-	 */
-	protected $logger;
-
-	/**
-	 * First element in array is the type of message (success or error).
-	 * Second element in array is the message string.
-	 *
-	 * @var array
-	 */
-	public $message;
-
-	/**
 	 * Array containing the names of the html files found in the templates directory.
 	 * (as defined by the templates_dir constant).
 	 *
@@ -84,7 +69,6 @@ class WP_Newsman {
 	 */
 	public function __construct() {
 		$this->config = \Newsman\Config::init();
-		$this->logger = \Newsman\Logger::init();
 	}
 
 	/**
@@ -100,61 +84,6 @@ class WP_Newsman {
 		}
 
 		return $instance;
-	}
-
-	/**
-	 * Export data to newsman action.
-	 *
-	 * @return void
-	 * @throws \Exception Throws standard exception on errors.
-	 */
-	public function newsman_export_data() {
-		$export_request = new \Newsman\Export\Request();
-		if ( ! $export_request->is_export_request() ) {
-			return;
-		}
-
-		if ( ! $this->config->is_enabled_with_api() ) {
-			$result = array(
-				'status'  => 403,
-				'message' => 'API setting is not enabled in plugin',
-			);
-			$page = new \Newsman\Page\Renderer();
-			$page->display_json( $result );
-		}
-
-		try {
-			$parameters = $export_request->get_request_parameters();
-			$processor  = new \Newsman\Export\Retriever\Processor();
-			$result     = $processor->process(
-				$processor->get_code_by_data( $parameters ),
-				get_current_blog_id(),
-				$parameters
-			);
-
-			$page = new \Newsman\Page\Renderer();
-			$page->display_json( $result );
-		} catch ( \OutOfBoundsException $e ) {
-			$this->logger->log_exception( $e );
-			$result = array(
-				'status'  => 403,
-				'message' => $e->getMessage(),
-			);
-
-			$page = new \Newsman\Page\Renderer();
-			$page->display_json( $result );
-			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-			// wp_die('Access Forbidden', 'Forbidden', array('response' => 403)); .
-		} catch ( \Exception $e ) {
-			$this->logger->log_exception( $e );
-			$result = array(
-				'status'  => 0,
-				'message' => $e->getMessage(),
-			);
-
-			$page = new \Newsman\Page\Renderer();
-			$page->display_json( $result );
-		}
 	}
 
 	/**
@@ -336,7 +265,7 @@ class WP_Newsman {
 	 */
 	public function init_hooks() {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->getPluginLazyPriority() );
-		add_action( 'init', array( $this, 'newsman_export_data' ) );
+		add_action( 'init', array( new \Newsman\Export\Router(), 'execute' ) );
 
 		// Order status change hooks.
 		add_action( 'woocommerce_order_status_pending', array( $this, 'pending' ) );
@@ -369,8 +298,6 @@ class WP_Newsman {
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
 		// Enqueue plugin styles in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
-		// Enqueue plugin scripts.
-		// add_action('wp_enqueue_scripts', array($this, 'register_plugin_scripts'));
 		// Enqueue plugin scripts in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
 		// Do ajax form subscribe.
