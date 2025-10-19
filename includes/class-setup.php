@@ -37,6 +37,47 @@ class Setup {
 		$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : '';
 		check_admin_referer( 'activate-plugin_' . $plugin );
 
+		self::setup( $network_wide );
+	}
+	/**
+	 * On upgrade plugin
+	 *
+	 * @param \WP_Upgrader $upgrader Network wide.
+	 * @param array        $options Upgrader options.
+	 * @return void
+	 */
+	public static function on_upgrade( $upgrader, $options ) {
+		// phpcs:ignore Generic.ControlStructures.InlineControlStructure.NotAllowed
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
+
+		$update = false;
+		if ( 'update' === $options['action'] && 'plugin' === $options['type'] && isset( $options['plugins'] ) ) {
+			foreach ( $options['plugins'] as $plugin ) {
+				if ( stripos( $plugin, \WP_Newsman::NZ_PLUGIN_PATH ) !== false ) {
+					$update = true;
+					break;
+				}
+			}
+		}
+		if ( ! $update ) {
+			return;
+		}
+
+		// Determine if this is a network-wide update.
+		$network_wide = is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
+
+		self::setup( $network_wide );
+	}
+
+	/**
+	 * Perform setup install or upgrade.
+	 *
+	 * @param bool $network_wide Is network wide.
+	 * @return void
+	 */
+	protected static function setup( $network_wide = false ) {
 		if ( is_multisite() && $network_wide ) {
 			// Network activation - run for each site.
 			$sites = get_sites();
@@ -60,7 +101,18 @@ class Setup {
 	 *
 	 * @return void
 	 */
-	public static function create_tables() {
+	protected static function create_tables() {
+		if ( get_option( 'newsman_setup_version', '1.0.0', '<' ) ) {
+			self::create_tables_one_zero_zero();
+		}
+	}
+
+	/**
+	 * Create plugin tables 1.0.0
+	 *
+	 * @return void
+	 */
+	protected static function create_tables_one_zero_zero() {
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
 
@@ -82,11 +134,22 @@ class Setup {
 	}
 
 	/**
-	 * Init admin options for the first time with add_option insert only function.
+	 * Init admin options
 	 *
 	 * @return void
 	 */
-	private static function init_newsman_options() {
+	protected static function init_newsman_options() {
+		if ( get_option( 'newsman_setup_version', '1.0.0', '<' ) ) {
+			self::init_newsman_options_one_zero_zero();
+		}
+	}
+
+	/**
+	 * Init admin options 1.0.0
+	 *
+	 * @return void
+	 */
+	protected static function init_newsman_options_one_zero_zero() {
 		$options = new \Newsman\Options();
 		$options->add_option(
 			'newsman_api',
@@ -158,7 +221,19 @@ js/retargeting/modal_{{api_key}}.js'
 	 *
 	 * @return void
 	 */
-	private static function init_options() {
+	protected static function init_options() {
+		if ( get_option( 'newsman_setup_version', '1.0.0', '<' ) ) {
+			self::init_options_one_zero_zero();
+		}
+	}
+
+	/**
+	 * Version 1.0.0 options update
+	 *
+	 * @return void
+	 */
+	protected static function init_options_one_zero_zero() {
+		update_option( 'newsman_setup_version', '1.0.0', true );
 		add_option( 'newsman_api', 'on' );
 		add_option( 'newsman_useremarketing', 'on' );
 		add_option( 'newsman_senduserip', 'on' );
@@ -172,7 +247,7 @@ js/retargeting/modal_{{api_key}}.js'
 	 *
 	 * @return string
 	 */
-	public static function get_current_site_prefix() {
+	protected static function get_current_site_prefix() {
 		global $wpdb;
 
 		if ( is_multisite() ) {

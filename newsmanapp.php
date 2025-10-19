@@ -32,6 +32,7 @@ if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 
 // For single site and per-site activation.
 register_activation_hook( __FILE__, array( '\Newsman\Setup', 'on_activation' ) );
+add_action( 'upgrader_process_complete', array( '\Newsman\Setup', 'on_upgrade' ), 10, 2 );
 
 // For network-wide activation.
 add_action(
@@ -47,6 +48,14 @@ add_action(
  * Newsman WP main class
  */
 class WP_Newsman {
+	/**
+	 * Plugin path relative to plugins directory
+	 */
+	public const NZ_PLUGIN_PATH = 'newsmanapp/newsmanapp.php';
+
+	/**
+	 * Default lazy load plugin priority
+	 */
 	public const PLUGIN_PRIORITY_LAZY_LOAD = 20;
 
 	/**

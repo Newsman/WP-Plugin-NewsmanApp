@@ -406,8 +406,10 @@ class Config {
 	 */
 	public function is_active( $blog_id = null ) {
 		$active_plugins = $this->get_blog_option( $blog_id, 'active_plugins' );
-		if ( in_array( 'newsmanapp/newsmanapp.php', $active_plugins, true ) ) {
-			return true;
+		foreach ( $active_plugins as $plugin ) {
+			if ( stripos( $plugin, \WP_Newsman::NZ_PLUGIN_PATH ) !== false ) {
+				return true;
+			}
 		}
 		return false;
 	}
