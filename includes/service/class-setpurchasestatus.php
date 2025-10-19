@@ -18,28 +18,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Get by Email from list
+ * API Client Service Remarketing order Set Purchase Status
  *
- * @class Newsman\Service\GetByEmail
+ * @class Newsman\Service\SetPurchaseStatus
  */
-class GetByEmail extends Service {
+class SetPurchaseStatus extends Service {
 	/**
-	 * Get by email from email list Newsman API endpoint
+	 * Order set purchase status Newsman API endpoint
 	 *
-	 * @see https://kb.newsman.com/api/1.2/subscriber.getByEmail
+	 * @see https://kb.newsman.com/api/1.2/remarketing.setPurchaseStatus
 	 */
-	public const ENDPOINT = 'subscriber.getByEmail';
+	public const ENDPOINT = 'remarketing.setPurchaseStatus';
 
 	/**
-	 * Get subscriber by email
+	 * Set order purchase status
 	 *
-	 * @param Context\GetByEmail $context Get by email context.
+	 * @param Context\SetPurchaseStatus $context Order Set Purchase Status context.
 	 * @return array
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {
-		$this->validate_email( $context->get_email() );
-
 		$api_context = $this->create_api_context()
 			->set_list_id( $context->get_list_id() )
 			->set_blog_id( $context->get_blog_id() )
@@ -47,9 +45,10 @@ class GetByEmail extends Service {
 
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Email */
-				esc_html__( 'Try to get by email %s', 'newsman' ),
-				$context->get_email()
+				/* translators: 1: Order ID, 2: Order status */
+				esc_html__( 'Try to send order %1$s status %2$s', 'newsman' ),
+				$context->get_order_id(),
+				$context->get_order_status()
 			)
 		);
 
@@ -57,8 +56,9 @@ class GetByEmail extends Service {
 		$result = $client->get(
 			$api_context,
 			array(
-				'list_id' => $api_context->get_list_id(),
-				'email'   => $context->get_email(),
+				'list_id'  => $api_context->get_list_id(),
+				'order_id' => $context->get_order_id(),
+				'status'   => $context->get_order_status(),
 			)
 		);
 
@@ -69,9 +69,10 @@ class GetByEmail extends Service {
 
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Email */
-				esc_html__( 'Done get by email %s', 'newsman' ),
-				$context->get_email()
+				/* translators: 1: Order ID, 2: Order status */
+				esc_html__( 'Sent order %1$s status %2$s', 'newsman' ),
+				$context->get_order_id(),
+				$context->get_order_status()
 			)
 		);
 

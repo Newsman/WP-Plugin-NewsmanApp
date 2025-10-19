@@ -117,4 +117,32 @@ class Sms {
 	public function get_test_phone_number( $blog_id = null ) {
 		return (string) $this->config->get_blog_option( $blog_id, 'newsman_smstestnr', '' );
 	}
+
+	/**
+	 * Get order SMS active by configuration name
+	 *
+	 * @param string   $name Config name.
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_order_sms_active_by_name( $name, $blog_id = null ) {
+		if ( ! in_array( $name, $this->config->get_order_status_to_name(), true ) ) {
+			return false;
+		}
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_sms' . $name . 'activate', '' );
+	}
+
+	/**
+	 * Get order SMS active by configuration name
+	 *
+	 * @param string   $name Config name.
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_order_sms_text_by_name( $name, $blog_id = null ) {
+		if ( ! in_array( $name, $this->config->get_order_status_to_name(), true ) ) {
+			return false;
+		}
+		return (string) $this->config->get_blog_option( $blog_id, 'newsman_sms' . $name . 'text', '' );
+	}
 }

@@ -13,6 +13,7 @@ namespace Newsman\Export\Retriever;
 
 use Newsman\Config;
 use Newsman\Logger;
+use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -49,11 +50,19 @@ class CronSubscribers implements RetrieverInterface {
 	protected $logger;
 
 	/**
+	 * Telephone util
+	 *
+	 * @var Telephone
+	 */
+	protected $telephone;
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->config = Config::init();
-		$this->logger = Logger::init();
+		$this->config    = Config::init();
+		$this->logger    = Logger::init();
+		$this->telephone = new Telephone();
 	}
 
 	/**
@@ -211,11 +220,6 @@ class CronSubscribers implements RetrieverInterface {
 	 * @return string
 	 */
 	public function clean_phone( $phone ) {
-		if ( empty( $phone ) ) {
-			return '';
-		}
-		$phone = str_replace( '+', '', $phone );
-		$phone = preg_replace( '/\s\s+/', ' ', $phone );
-		return trim( $phone );
+		return $this->telephone->clean( $phone );
 	}
 }

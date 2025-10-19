@@ -12,6 +12,7 @@
 namespace Newsman\Export\Retriever;
 
 use Newsman\Logger;
+use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -36,10 +37,18 @@ class Orders implements RetrieverInterface {
 	protected $logger;
 
 	/**
+	 * Telephone util
+	 *
+	 * @var Telephone
+	 */
+	protected $telephone;
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->logger = Logger::init();
+		$this->logger    = Logger::init();
+		$this->telephone = new Telephone();
 	}
 
 	/**
@@ -197,7 +206,7 @@ class Orders implements RetrieverInterface {
 			'lastname'      => $order->get_billing_last_name(),
 			'firstname'     => $order->get_billing_first_name(),
 			'email'         => $order->get_billing_email(),
-			'phone'         => trim( str_replace( '+', '', (string) $item_data['billing']['phone'] ) ),
+			'phone'         => $this->telephone->clean( $item_data['billing']['phone'] ),
 			'state'         => $item_data['billing']['state'],
 			'city'          => $item_data['billing']['city'],
 			'address'       => $item_data['billing']['address_1'],

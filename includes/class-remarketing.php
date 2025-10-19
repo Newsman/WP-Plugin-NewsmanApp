@@ -23,6 +23,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Remarketing {
 	/**
+	 * SMS config
+	 *
+	 * @var Config
+	 */
+	protected $config;
+
+	/**
+	 * Class construct
+	 */
+	public function __construct() {
+		$this->config = Config::init();
+	}
+
+	/**
 	 * Get class instance
 	 *
 	 * @return self Remarketing
@@ -96,13 +110,12 @@ class Remarketing {
 		add_filter( 'woocommerce_get_return_url', array( $this, 'utm_nooverride' ) );
 
 		// Order status change hooks.
-		add_action( 'woocommerce_order_status_pending', array( new \Newsman\Order\SendStatus(), 'pending' ) );
-		add_action( 'woocommerce_order_status_failed', array( new \Newsman\Order\SendStatus(), 'failed' ) );
-		add_action( 'woocommerce_order_status_on-hold', array( new \Newsman\Order\SendStatus(), 'hold' ) );
-		add_action( 'woocommerce_order_status_processing', array( new \Newsman\Order\SendStatus(), 'processing' ) );
-		add_action( 'woocommerce_order_status_completed', array( new \Newsman\Order\SendStatus(), 'completed' ) );
-		add_action( 'woocommerce_order_status_refunded', array( new \Newsman\Order\SendStatus(), 'refunded' ) );
-		add_action( 'woocommerce_order_status_cancelled', array( new \Newsman\Order\SendStatus(), 'cancelled' ) );
+		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
+			$send_status = new \Newsman\Order\SendStatus();
+			if ( method_exists( $send_status, $name ) ) {
+				add_action( 'woocommerce_order_status_' . $status, array( $send_status, $name ) );
+			}
+		}
 	}
 
 	/**

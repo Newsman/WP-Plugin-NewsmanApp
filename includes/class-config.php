@@ -501,4 +501,36 @@ class Config {
 			return get_option( $option_name, $default_value );
 		}
 	}
+
+	/**
+	 * Get order status to configuration name
+	 *
+	 * @return array
+	 */
+	public function get_order_status_to_name() {
+		$return = array(
+			'pending'    => 'pending',
+			'failed'     => 'failed',
+			'on-hold'    => 'onhold',
+			'processing' => 'processing',
+			'completed'  => 'completed',
+			'refunded'   => 'refunded',
+			'cancelled'  => 'cancelled',
+		);
+		return apply_filters( 'newsman_order_status_to_name', $return );
+	}
+
+	/**
+	 * Get configuration name by order status
+	 *
+	 * @param string $status Order status.
+	 * @return false|string
+	 */
+	public function get_order_config_name_by_status( $status ) {
+		$order_status_to_name = $this->get_order_status_to_name();
+		if ( isset( $order_status_to_name[ $status ] ) ) {
+			return $order_status_to_name[ $status ];
+		}
+		return false;
+	}
 }
