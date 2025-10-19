@@ -12,7 +12,7 @@
 namespace Newsman\Export;
 
 use Newsman\Config;
-use Newsman\Export\Retriever\Authenticator;
+use Newsman\Logger;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -34,7 +34,7 @@ class Router {
 	/**
 	 * Newsman logger
 	 *
-	 * @var \Newsman\Logger
+	 * @var Logger
 	 */
 	protected $logger;
 
@@ -43,7 +43,7 @@ class Router {
 	 */
 	public function __construct() {
 		$this->config = Config::init();
-		$this->logger = \Newsman\Logger::init();
+		$this->logger = Logger::init();
 	}
 
 	/**
