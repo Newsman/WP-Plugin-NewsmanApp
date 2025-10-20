@@ -64,7 +64,7 @@ interface ClientInterface {
 	/**
 	 * Get error code from API, HTTP Error Code or JSON error == 1
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function get_error_code();
 

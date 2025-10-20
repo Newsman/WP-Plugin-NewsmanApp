@@ -107,7 +107,7 @@ class Client implements ClientInterface {
 	public function request( $context, $method, $get_params = array(), $post_params = array() ) {
 		$this->status        = null;
 		$this->error_message = null;
-		$this->error_code    = null;
+		$this->error_code    = 0;
 		$result              = array();
 		$args                = array();
 
@@ -140,7 +140,7 @@ class Client implements ClientInterface {
 			}
 
 			if ( $remote_result instanceof \WP_Error ) {
-				throw new \Exception( $remote_result->get_error_message(), $remote_result->get_error_code() );
+				throw new \Exception( $remote_result->get_error_message(), (int) $remote_result->get_error_code() );
 			}
 
 			$this->status = (int) $remote_result['response']['code'];
@@ -149,7 +149,7 @@ class Client implements ClientInterface {
 					$result    = json_decode( $remote_result['body'], true );
 					$api_error = $this->parse_api_error( $result );
 					if ( false !== $api_error ) {
-						$this->error_code    = $api_error['code'];
+						$this->error_code    = (int) $api_error['code'];
 						$this->error_message = $api_error['message'];
 						$this->logger->warning( $this->error_code . ' | ' . $this->error_message );
 					} else {
@@ -162,13 +162,13 @@ class Client implements ClientInterface {
 					return array();
 				}
 			} else {
-				$this->error_code = $this->status;
+				$this->error_code = (int) $this->status;
 				try {
 					if ( stripos( $remote_result['body'], '{' ) !== false ) {
 						$body      = json_decode( $remote_result['body'], true );
 						$api_error = $this->parse_api_error( $body );
 						if ( false !== $api_error ) {
-							$this->error_code    = $api_error['code'];
+							$this->error_code    = (int) $api_error['code'];
 							$this->error_message = $api_error['message'];
 						} else {
 							$this->error_message = 'Error: ' . $this->error_code;
@@ -180,7 +180,7 @@ class Client implements ClientInterface {
 				$this->logger->error( $this->status . ' | ' . $remote_result['body'] );
 			}
 		} catch ( \Exception $e ) {
-			$this->error_code    = $e->getCode();
+			$this->error_code    = (int) $e->getCode();
 			$this->error_message = $e->getMessage();
 			$this->logger->log_exception( $e );
 		}
@@ -217,7 +217,7 @@ class Client implements ClientInterface {
 	/**
 	 * Get error code from API, HTTP Error Code or JSON error == 1
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function get_error_code() {
 		return $this->error_code;
