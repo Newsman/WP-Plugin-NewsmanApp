@@ -122,7 +122,8 @@ class Client implements ClientInterface {
 		if ( is_array( $get_params ) && ! empty( $get_params ) ) {
 			$url .= '?' . http_build_query( $get_params );
 		}
-		$this->logger->debug( str_replace( $context->get_api_key(), '****', $url ) );
+		$log_hash = uniqid();
+		$this->logger->debug( '[' . $log_hash . '] ' . str_replace( $context->get_api_key(), '****', $url ) );
 
 		$args['timeout'] = $this->config->get_api_timeout( $context->get_blog_id() );
 		$args['headers'] = array(
@@ -130,6 +131,7 @@ class Client implements ClientInterface {
 		);
 
 		try {
+			$start_time = microtime( true );
 			if ( 'POST' === $method ) {
 				$args['body']  = $post_params;
 				$remote_result = wp_remote_post( $url, $args );
@@ -138,6 +140,14 @@ class Client implements ClientInterface {
 			} else {
 				$remote_result = wp_remote_get( $url, $args );
 			}
+			$elapsed_ms = round( ( microtime( true ) - $start_time ) * 1000 );
+			$this->logger->debug(
+				sprintf(
+					'[%s] Requested in %s',
+					$log_hash,
+					$this->format_time_duration( $elapsed_ms )
+				)
+			);
 
 			if ( $remote_result instanceof \WP_Error ) {
 				throw new \Exception( $remote_result->get_error_message(), (int) $remote_result->get_error_code() );
@@ -239,5 +249,28 @@ class Client implements ClientInterface {
 	 */
 	public function has_error() {
 		return $this->error_code > 0;
+	}
+
+	/**
+	 * Format time duration based on thresholds
+	 *
+	 * @param int $milliseconds The number of milliseconds to format.
+	 * @return string Formatted time.
+	 */
+	public function format_time_duration( $milliseconds ) {
+		if ( $milliseconds < 1000 ) {
+			return sprintf( '%d ms', $milliseconds );
+		}
+
+		$total_seconds = $milliseconds / 1000;
+
+		if ( $total_seconds < 60 ) {
+			return sprintf( '%.1f s', $total_seconds );
+		}
+
+		$minutes           = floor( $total_seconds / 60 );
+		$seconds_remainder = $total_seconds % 60;
+
+		return sprintf( '%d min %.3f s', $minutes, $seconds_remainder );
 	}
 }
