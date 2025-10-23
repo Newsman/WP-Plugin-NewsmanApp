@@ -57,8 +57,13 @@ class AbstractAction {
 
 		$get_attributes = new GetAttributes();
 		$attributes     = $get_attributes->get();
+		$script         = $this->get_js();
 
-		return '<script' . $attributes . '>' . $this->get_js() . '</script>';
+		if ( empty( $script ) ) {
+			return '';
+		}
+
+		return '<script' . $attributes . '>' . $script . '</script>';
 	}
 
 	/**
