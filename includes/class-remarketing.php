@@ -153,7 +153,10 @@ class Remarketing {
 				'woocommerce_loop' => $woocommerce_loop['loop'],
 			)
 		);
-		wc_enqueue_js( $listing_impression->get_js() );
+		$script = $listing_impression->get_js();
+		if ( ! empty( $script ) ) {
+			wc_enqueue_js( $script );
+		}
 	}
 
 	/**
@@ -164,7 +167,10 @@ class Remarketing {
 
 		$detail = new \Newsman\Remarketing\Action\ProductDetail();
 		$detail->set_data( array( 'product' => $product ) );
-		wc_enqueue_js( $detail->get_js() );
+		$script = $detail->get_js();
+		if ( ! empty( $script ) ) {
+			wc_enqueue_js( $script );
+		}
 	}
 
 	/**

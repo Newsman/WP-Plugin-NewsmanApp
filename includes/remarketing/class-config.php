@@ -247,4 +247,22 @@ class Config {
 		}
 		return true;
 	}
+
+	/**
+	 * Is Woo Commerce application page
+	 *
+	 * @return bool
+	 */
+	public function is_woo_commerce_page() {
+		if ( is_woocommerce() ) {
+			return true;
+		}
+		if ( is_cart() ) {
+			return true;
+		}
+		if ( is_checkout() ) {
+			return true;
+		}
+		return false;
+	}
 }

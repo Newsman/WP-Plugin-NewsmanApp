@@ -29,6 +29,10 @@ class Purchase extends AbstractAction {
 	public function get_js() {
 		global $wp;
 
+		if ( ! $this->is_tracking_allowed() ) {
+			return '';
+		}
+
 		if ( ! is_order_received_page() ) {
 			return '';
 		}

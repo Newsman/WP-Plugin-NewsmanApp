@@ -47,6 +47,7 @@ class Track {
 			return;
 		}
 
+		// The remarketing script can also be displayed in WordPress without WooCommerce. No WooCommerce check.
 		if ( ! $this->remarketing_config->is_tracking_allowed() ) {
 			return;
 		}
@@ -220,23 +221,5 @@ class Track {
 	public function is_woo_commerce_exist() {
 		$exist = new \Newsman\Util\WooCommerceExist();
 		return $exist->exist();
-	}
-
-	/**
-	 * Is Woo Commerce application page
-	 *
-	 * @return bool
-	 */
-	public function is_woo_commerce_page() {
-		if ( is_woocommerce() ) {
-			return true;
-		}
-		if ( is_cart() ) {
-			return true;
-		}
-		if ( is_checkout() ) {
-			return true;
-		}
-		return false;
 	}
 }

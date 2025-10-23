@@ -51,7 +51,7 @@ class AbstractAction {
 	 * @return string
 	 */
 	public function get_script_js() {
-		if ( ! $this->remarketing_config->is_tracking_allowed() ) {
+		if ( ! $this->is_tracking_allowed() ) {
 			return '';
 		}
 
@@ -141,5 +141,14 @@ class AbstractAction {
 				'product' => $product,
 			)
 		);
+	}
+
+	/**
+	 * Is tracking allowed
+	 *
+	 * @return bool
+	 */
+	public function is_tracking_allowed() {
+		return $this->remarketing_config->is_tracking_allowed() && $this->remarketing_config->is_woo_commerce_page();
 	}
 }

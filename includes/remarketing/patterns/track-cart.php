@@ -277,7 +277,7 @@ function NewsmanDebugLog($message) {
 }
 
 <?php
-if ( $this->is_woo_commerce_page() ) {
+if ( $this->remarketing_config->is_woo_commerce_page() ) {
 	echo esc_js( esc_html( $run ) ) . "( 'require', 'ec' );";
 }
 ?>

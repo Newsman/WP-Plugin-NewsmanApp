@@ -34,6 +34,10 @@ class ListingImpression extends AbstractAction {
 	 * @return string
 	 */
 	public function get_js() {
+		if ( ! $this->is_tracking_allowed() ) {
+			return '';
+		}
+
 		$data             = $this->get_data();
 		$product          = false;
 		$woocommerce_loop = false;

@@ -46,4 +46,14 @@ class IdentifySubscriber extends AbstractAction {
 			)
 		);
 	}
+
+	/**
+	 * Is tracking allowed.
+	 * This action can be run on WordPress without WooCommerce.
+	 *
+	 * @return bool
+	 */
+	public function is_tracking_allowed() {
+		return $this->remarketing_config->is_tracking_allowed();
+	}
 }
