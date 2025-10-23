@@ -89,13 +89,14 @@ class Purchase extends AbstractAction {
 		var orderV = localStorage.getItem('" . esc_js( $order->get_order_number() ) . "');
 		var orderN = '" . esc_js( $order->get_order_number() ) . "';
 		localStorage.setItem(orderN, 'true');
-			if (orderV == undefined || orderV == null) {
+		if (typeof orderV === 'undefined' || (typeof orderV !== 'undefined' && (orderV === null || orderV === ''))) {
 			" . $run . "( 'ec:setAction', 'purchase', {
 				'id': '" . esc_js( $order->get_order_number() ) . "',
 				'affiliation': '" . esc_js( get_bloginfo( 'name' ) ) . "',
 				'revenue': '" . esc_js( $order->get_total() ) . "',
 				'tax': '" . esc_js( $order->get_total_tax() ) . "',
-				'shipping': '" . esc_js( $shipping_total ) . "'
+				'shipping': '" . esc_js( $shipping_total ) . "',
+				'currency': '" . esc_js( $currency_code ) . "'
 			} );
 		}
 		";
