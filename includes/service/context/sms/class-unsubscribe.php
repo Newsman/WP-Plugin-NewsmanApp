@@ -11,6 +11,8 @@
 
 namespace Newsman\Service\Context\Sms;
 
+use Newsman\Service\Context\Blog;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\Sms\Unsubscribe
  */
-class Unsubscribe extends \Newsman\Service\Context\Blog {
+class Unsubscribe extends Blog {
 	/**
 	 * Telephone number
 	 *

@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\Configuration\SetFeedOnList
  */
-class SetFeedOnList extends \Newsman\Service\Context\Configuration\EmailList {
+class SetFeedOnList extends EmailList {
 	/**
 	 * The URL of the feed. For the type "fixed", send the name of the feed
 	 *

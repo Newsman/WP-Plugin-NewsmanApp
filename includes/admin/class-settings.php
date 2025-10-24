@@ -262,6 +262,117 @@ class Settings {
 	}
 
 	/**
+	 * Call API update feed and set authorize header name and secret
+	 *
+	 * @param string $list_id List ID.
+	 * @param string $feed_id Feed ID.
+	 * @return false|string|array
+	 */
+	protected function update_feed_authorize( $list_id, $feed_id ) {
+		try {
+			if ( null === $list_id ) {
+				$list_id = $this->get_config()->get_list_id();
+			}
+
+			$properties = array(
+				'auth_header_name'  => $this->generate_random_header_name(),
+				'auth_header_value' => $this->generate_random_password(),
+			);
+
+			$context = new \Newsman\Service\Context\Configuration\UpdateFeed();
+			$context->set_list_id( $list_id )
+				->set_feed_id( $feed_id )
+				->set_properties( $properties );
+			$set_feed = new \Newsman\Service\Configuration\UpdateFeed();
+			return $set_feed->execute( $context );
+		} catch ( \Exception $e ) {
+			$this->logger->log_exception( $e );
+			return false;
+		}
+	}
+
+	/**
+	 * Generates a random string containing lowercase letters (a-z) and hyphens (-).
+	 * Suitable for use as an HTTP header name.
+	 *
+	 * @param int $length         The length of the random string to generate. Default is 16.
+	 * @param int $recursion_depth Tracks recursion depth to prevent infinite loops. Don't set manually.
+	 * @return string The randomly generated string.
+	 */
+	protected function generate_random_header_name( $length = 16, $recursion_depth = 0 ) {
+		// Prevent infinite recursion - limit to 3 levels.
+		if ( $recursion_depth > 3 ) {
+			$characters = 'abcdefghijklmnopqrstuvwxyz';
+			return substr( str_shuffle( $characters ), 0, $length );
+		}
+
+		$characters        = 'abcdefghijklmnopqrstuvwxyz-';
+		$characters_length = strlen( $characters );
+		$random_string     = '';
+
+		for ( $i = 0; $i < $length; $i++ ) {
+			$random_string .= $characters[ wp_rand( 0, $characters_length - 1 ) ];
+		}
+
+		// Ensure the string doesn't start or end with a hyphen, and doesn't have consecutive hyphens.
+		$random_string = ltrim( $random_string, '-' );
+		$random_string = rtrim( $random_string, '-' );
+		$random_string = preg_replace( '/-{2,}/', '-', $random_string );
+
+		// If after cleanup the string is too short, append some random letters.
+		if ( strlen( $random_string ) < $length / 2 ) {
+			$additional     = $this->generate_random_header_name(
+				$length - strlen( $random_string ),
+				$recursion_depth + 1
+			);
+			$random_string .= $additional;
+		}
+
+		return $random_string;
+	}
+
+	/**
+	 * Generates a random password consisting of uppercase letters, lowercase letters, and numbers.
+	 *
+	 * @param int $length The length of the password to generate. Default is 16.
+	 * @return string The randomly generated password.
+	 */
+	protected function generate_random_password( $length = 16 ) {
+		$lowercase = 'abcdefghijklmnopqrstuvwxyz';
+		$uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$numbers   = '0123456789';
+
+		// Combine all characters.
+		$all_chars    = $lowercase . $uppercase . $numbers;
+		$chars_length = strlen( $all_chars );
+
+		$password = '';
+		for ( $i = 0; $i < $length; $i++ ) {
+			$password .= $all_chars[ wp_rand( 0, $chars_length - 1 ) ];
+		}
+
+		// Ensure password has at least one character from each required set.
+		$has_lowercase = preg_match( '/[a-z]/', $password );
+		$has_uppercase = preg_match( '/[A-Z]/', $password );
+		$has_number    = preg_match( '/[0-9]/', $password );
+
+		// Replace characters if any required type is missing.
+		if ( ! $has_lowercase ) {
+			$password[ wp_rand( 0, $length - 1 ) ] = $lowercase[ wp_rand( 0, strlen( $lowercase ) - 1 ) ];
+		}
+
+		if ( ! $has_uppercase ) {
+			$password[ wp_rand( 0, $length - 1 ) ] = $uppercase[ wp_rand( 0, strlen( $uppercase ) - 1 ) ];
+		}
+
+		if ( ! $has_number ) {
+			$password[ wp_rand( 0, $length - 1 ) ] = $numbers[ wp_rand( 0, strlen( $numbers ) - 1 ) ];
+		}
+
+		return $password;
+	}
+
+	/**
 	 * Is valid API credentials
 	 *
 	 * @param null|int|string $user_id API user ID.

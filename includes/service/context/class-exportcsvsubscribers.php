@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\ExportCsvSubscribers
  */
-class ExportCsvSubscribers extends \Newsman\Service\Context\Blog {
+class ExportCsvSubscribers extends Blog {
 	/**
 	 * CSV data
 	 *

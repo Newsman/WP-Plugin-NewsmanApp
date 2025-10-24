@@ -11,6 +11,8 @@
 
 namespace Newsman\Service\Context\Segment;
 
+use Newsman\Service\Context\Blog;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\Segment\AddSubscriber
  */
-class AddSubscriber extends \Newsman\Service\Context\Blog {
+class AddSubscriber extends Blog {
 	/**
 	 * Segment ID
 	 *

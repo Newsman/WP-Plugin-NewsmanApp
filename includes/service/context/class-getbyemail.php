@@ -20,5 +20,5 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\GetByEmail
  */
-class GetByEmail extends \Newsman\Service\Context\UnsubscribeEmail {
+class GetByEmail extends UnsubscribeEmail {
 }

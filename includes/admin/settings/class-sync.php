@@ -13,6 +13,7 @@ namespace Newsman\Admin\Settings;
 
 use Newsman\Admin\Settings;
 use Newsman\Config;
+use Newsman\Util\WooCommerceExist;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -173,7 +174,8 @@ class Sync extends Settings {
 	 * @return void
 	 */
 	public function install_products_feed() {
-		if ( empty( $this->form_values['newsman_list'] ) || ! class_exists( 'WooCommerce' ) ) {
+		$exists = new WooCommerceExist();
+		if ( empty( $this->form_values['newsman_list'] ) || ! $exists->exist() ) {
 			return;
 		}
 
@@ -193,11 +195,16 @@ class Sync extends Settings {
 			$this->form_values['newsman_list'],
 			$url,
 			get_site_url(),
-			'NewsMAN'
+			'NewsMAN',
+			true,
 		);
 
 		if ( ( false === $result ) || ( 'false' === $result ) ) {
 			$this->set_message_backend( 'error', esc_html__( 'Could not update feed list', 'newsman' ) );
+		}
+
+		if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
+			$this->update_feed_authorize( $this->form_values['newsman_list'], $result['feed_id'] );
 		}
 	}
 }

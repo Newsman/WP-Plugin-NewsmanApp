@@ -18,22 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Configuration set feed on list
+ * API Client Service Configuration Update Feed
  *
- * @class \Newsman\Service\Configuration\SetFeedOnList
+ * @class \Newsman\Service\Configuration\UpdateFeed
  */
-class SetFeedOnList extends Service {
+class UpdateFeed extends Service {
 	/**
-	 * Installs a feed via API in Newsman
+	 * Update a feed in Newsman
 	 *
-	 * @see https://kb.newsman.com/api/1.2/feeds.setFeedOnList
+	 * @see https://kb.newsman.com/api/1.2/feeds.updateFeed
 	 */
-	public const ENDPOINT = 'feeds.setFeedOnList';
+	public const ENDPOINT = 'feeds.updateFeed';
 
 	/**
-	 * Update feed by list ID in Newsman
+	 * Update a feed
 	 *
-	 * @param \Newsman\Service\Context\Configuration\SetFeedOnList $context Set feed on list context.
+	 * @param \Newsman\Service\Context\Configuration\UpdateFeed $context Update Feed context.
 	 * @return array
 	 * @throws \Exception Throw exception on errors.
 	 */
@@ -49,18 +49,16 @@ class SetFeedOnList extends Service {
 			->set_blog_id( $context->get_blog_id() )
 			->set_endpoint( self::ENDPOINT );
 
-		/* translators: 1: WP url */
-		$this->logger->info( sprintf( esc_html__( 'Try to install products feed %s', 'newsman' ), $context->get_url() ) );
+		/* translators: 1: Feed ID */
+		$this->logger->info( sprintf( esc_html__( 'Try to update feed %s', 'newsman' ), $context->get_list_id() ) );
 
 		$client = $this->create_api_client();
 		$result = $client->post(
 			$api_context,
 			array(
-				'list_id'   => $api_context->get_list_id(),
-				'url'       => $context->get_url(),
-				'website'   => $context->get_website(),
-				'type'      => $context->get_type(),
-				'return_id' => $context->get_return_id(),
+				'list_id' => $api_context->get_list_id(),
+				'feed_id' => $context->get_feed_id(),
+				'props'   => $context->get_properties(),
 			)
 		);
 
@@ -69,8 +67,8 @@ class SetFeedOnList extends Service {
 			throw new \Exception( esc_html__( $client->get_error_message(), 'newsman' ), $client->get_error_code() );
 		}
 
-		/* translators: 1: WP url */
-		$this->logger->info( sprintf( esc_html__( 'Installed products feed %s', 'newsman' ), $context->get_url() ) );
+		/* translators: 1: Feed ID */
+		$this->logger->info( sprintf( esc_html__( 'Updated the feed %s', 'newsman' ), $context->get_list_id() ) );
 
 		return $result;
 	}

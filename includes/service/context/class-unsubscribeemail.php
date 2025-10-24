@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\UnsubscribeEmail
  */
-class UnsubscribeEmail extends \Newsman\Service\Context\Blog {
+class UnsubscribeEmail extends Blog {
 	/**
 	 * Subscriber E-mail
 	 *

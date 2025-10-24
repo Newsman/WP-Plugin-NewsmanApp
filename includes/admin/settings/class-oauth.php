@@ -12,6 +12,7 @@
 namespace Newsman\Admin\Settings;
 
 use Newsman\Admin\Settings;
+use Newsman\Util\WooCommerceExist;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -218,13 +219,19 @@ class Oauth extends Settings {
 		$url = get_site_url() . '/?newsman=products.json&nzmhash=' . $creds->newsman_apikey;
 
 		try {
-			if ( class_exists( 'WooCommerce' ) ) {
+			$exists = new WooCommerceExist();
+			if ( $exists->exist() ) {
 				$result = $this->set_feed_on_list(
 					$list_id,
 					$url,
 					get_site_url(),
-					'NewsMAN'
+					'NewsMAN',
+					true,
 				);
+
+				if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
+					$this->update_feed_authorize( $list_id, $result['feed_id'] );
+				}
 			}
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( \Exception $e ) {

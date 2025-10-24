@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\InitUnsubscribeEmail
  */
-class InitUnsubscribeEmail extends \Newsman\Service\Context\UnsubscribeEmail {
+class InitUnsubscribeEmail extends UnsubscribeEmail {
 	/**
 	 * Options request parameter API
 	 *

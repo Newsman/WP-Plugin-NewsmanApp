@@ -11,6 +11,8 @@
 
 namespace Newsman\Service\Context\Configuration;
 
+use Newsman\Service\Context\Blog;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\Configuration\User
  */
-class User extends \Newsman\Service\Context\Blog {
+class User extends Blog {
 	/**
 	 * API user ID
 	 *
