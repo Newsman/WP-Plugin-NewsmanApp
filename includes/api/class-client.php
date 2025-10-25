@@ -120,15 +120,15 @@ class Client implements ClientInterface {
 			$context->get_endpoint()
 		);
 
-		$log_url = $url;
+		$log_url        = $url;
+		$log_get_params = $get_params;
 		if ( is_array( $get_params ) && ! empty( $get_params ) ) {
 			$url .= '?' . http_build_query( $get_params );
-			$log_get_params = $get_params;
-			if ( isset( $log_get_params['auth_header_name'] ) ) {
-				$log_get_params['auth_header_name']  = '****';
+			if ( isset( $log_get_params['props'] ) && isset( $log_get_params['props']['auth_header_name'] ) ) {
+				$log_get_params['props']['auth_header_name'] = '****';
 			}
-			if ( isset( $log_get_params['auth_header_value'] ) ) {
-				$log_get_params['auth_header_value'] = '****';
+			if ( isset( $log_get_params['props'] ) && isset( $log_get_params['props']['auth_header_value'] ) ) {
+				$log_get_params['props']['auth_header_value'] = '****';
 			}
 			$log_url .= '?' . http_build_query( $log_get_params );
 		}
