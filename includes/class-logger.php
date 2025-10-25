@@ -11,8 +11,6 @@
 
 namespace Newsman;
 
-use Newsman\Config;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
