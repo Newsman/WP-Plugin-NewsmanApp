@@ -46,6 +46,7 @@ class Remarketing extends Settings {
 		'newsman_useremarketing',
 		'newsman_remarketingid',
 		'newsman_remarketinganonymizeip',
+		'newsman_remarketingsendtelephone',
 	);
 
 	/**

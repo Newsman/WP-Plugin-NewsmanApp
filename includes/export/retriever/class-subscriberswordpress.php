@@ -60,18 +60,18 @@ class SubscribersWordpress extends CronSubscribers {
 	 *
 	 * @param \WP_User $subscriber Subscriber.
 	 * @param null|int $blog_id WP blog ID.
-	 * @return array
+	 * @return array|false
 	 */
 	public function process_subscriber( $subscriber, $blog_id = null ) {
+		if ( isset( $this->emails_cache[ $subscriber->data->user_email ] ) ) {
+			return false;
+		}
+		$this->emails_cache[ $subscriber->data->user_email ] = true;
+
 		$row = array(
-			'email'              => $subscriber->data->user_email,
-			'firstname'          => $subscriber->data->display_name,
-			'lastname'           => '',
-			'tel'                => '',
-			'phone'              => '',
-			'telephone'          => '',
-			'billing_telephone'  => '',
-			'shipping_telephone' => '',
+			'email'     => $subscriber->data->user_email,
+			'firstname' => $subscriber->data->display_name,
+			'lastname'  => '',
 		);
 
 		return $row;

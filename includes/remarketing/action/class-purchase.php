@@ -65,9 +65,11 @@ class Purchase extends AbstractAction {
 		$currency_code = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() :
 			$order->get_currency();
 
-		$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $order->get_billing_email() ) ) . '", ' .
-			'phone: "' . esc_attr( esc_html( $order->get_billing_phone() ) ) . '", ' .
-			'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
+		$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $order->get_billing_email() ) ) . '", ';
+		if ( $this->remarketing_config->is_send_telephone() ) {
+			$js .= 'phone: "' . esc_attr( esc_html( $order->get_billing_phone() ) ) . '", ';
+		}
+		$js .= 'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
 			'last_name: "' . esc_attr( esc_html( $order->get_billing_last_name() ) ) . '" });';
 
 		$js .= ' ' . $run . "( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";

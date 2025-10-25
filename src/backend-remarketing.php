@@ -79,6 +79,16 @@ $this->process_form();
 						<p class="description">Anonymize User IP Address</p>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label class="nzm-label" for="newsman_remarketingsendtelephone">Send telephone numbers</label>
+					</th>
+					<td>
+						<input name="newsman_remarketingsendtelephone" type="checkbox"
+							id="newsman_remarketingsendtelephone" <?php echo ( ! empty( $this->form_values['newsman_remarketingsendtelephone'] ) && 'on' === $this->form_values['newsman_remarketingsendtelephone'] ) ? 'checked' : ''; ?>/>
+						<p class="description">Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders.</p>
+					</td>
+				</tr>
 			</table>
 			<div style="padding-top: 5px;">
 				<input type="submit" value="Save Changes" class="button button-primary"/>

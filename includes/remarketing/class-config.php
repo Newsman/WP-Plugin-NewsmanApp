@@ -117,6 +117,16 @@ class Config {
 	}
 
 	/**
+	 * Is send telephone
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_send_telephone( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingsendtelephone', '' );
+	}
+
+	/**
 	 * Get remarketing script JS code
 	 *
 	 * @param null|int $blog_id WP blog ID.

@@ -9,7 +9,7 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Service\Init;
+namespace Newsman\Service;
 
 use Newsman\Service\Abstract\Service;
 
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * API Client Service Init Subscribe to Email List
  *
- * @class \Newsman\Service\Init\InitSubscribeEmail
+ * @class \Newsman\Service\InitSubscribeEmail
  */
 class InitSubscribeEmail extends Service {
 	/**

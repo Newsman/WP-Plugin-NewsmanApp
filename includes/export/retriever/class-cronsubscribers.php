@@ -13,6 +13,7 @@ namespace Newsman\Export\Retriever;
 
 use Newsman\Config;
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -43,6 +44,13 @@ class CronSubscribers implements RetrieverInterface {
 	protected $config;
 
 	/**
+	 * Remarketing Config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
 	 * Logger
 	 *
 	 * @var Logger
@@ -57,12 +65,20 @@ class CronSubscribers implements RetrieverInterface {
 	protected $telephone;
 
 	/**
+	 * Subscribers emails cache
+	 *
+	 * @var array
+	 */
+	protected $emails_cache = array();
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->config    = Config::init();
-		$this->logger    = Logger::init();
-		$this->telephone = new Telephone();
+		$this->config             = Config::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->logger             = Logger::init();
+		$this->telephone          = new Telephone();
 	}
 
 	/**
@@ -103,13 +119,18 @@ class CronSubscribers implements RetrieverInterface {
 			return array( 'status' => esc_html__( 'No subscribers found.', 'newsman' ) );
 		}
 
-		$count_subscribers = count( $subscribers );
+		$count_subscribers = 0;
 		foreach ( $subscribers as $subscriber ) {
 			try {
 				if ( ! $this->is_valid_subscriber( $subscriber ) ) {
 					continue;
 				}
-				$result[] = $this->process_subscriber( $subscriber, $blog_id );
+				$data = $this->process_subscriber( $subscriber, $blog_id );
+				if ( false === $data ) {
+					continue;
+				}
+				$result[] = $data;
+				++$count_subscribers;
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 			}

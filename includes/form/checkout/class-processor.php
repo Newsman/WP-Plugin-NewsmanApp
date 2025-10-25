@@ -14,6 +14,9 @@ namespace Newsman\Form\Checkout;
 use Newsman\Config;
 use Newsman\Config\Sms;
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
+use Newsman\User\IpAddress;
+use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -33,6 +36,13 @@ class Processor {
 	protected $config;
 
 	/**
+	 * Remarketing Config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
 	 * Config SMS
 	 *
 	 * @var Sms
@@ -42,9 +52,16 @@ class Processor {
 	/**
 	 * User IP address
 	 *
-	 * @var \Newsman\User\IpAddress
+	 * @var IpAddress
 	 */
 	protected $user_ip;
+
+	/**
+	 * Telephone
+	 *
+	 * @var Telephone
+	 */
+	protected $telephone;
 
 	/**
 	 * Logger
@@ -57,10 +74,12 @@ class Processor {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->config     = Config::init();
-		$this->sms_config = Sms::init();
-		$this->user_ip    = \Newsman\User\IpAddress::init();
-		$this->logger     = Logger::init();
+		$this->config             = Config::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->sms_config         = Sms::init();
+		$this->user_ip            = IpAddress::init();
+		$this->telephone          = new Telephone();
+		$this->logger             = Logger::init();
 	}
 
 	/**
@@ -100,8 +119,7 @@ class Processor {
 		$firstname = $order_data['billing']['first_name'];
 		$lastname  = $order_data['billing']['last_name'];
 		$telephone = ( ! empty( $order_data['billing']['phone'] ) ) ? $order_data['billing']['phone'] : '';
-
-		$properties['phone'] = $telephone;
+		$telephone = $this->telephone->clean( $telephone );
 
 		$options    = array();
 		$segment_id = $this->config->get_segment_id();
@@ -144,6 +162,10 @@ class Processor {
 		}
 		if ( ! $this->config->is_enabled_with_api() ) {
 			return;
+		}
+
+		if ( ! $this->remarketing_config->is_send_telephone() ) {
+			unset( $properties['phone'] );
 		}
 
 		if ( $this->config->is_checkout_newsletter_double_optin() ) {

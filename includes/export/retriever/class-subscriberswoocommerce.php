@@ -48,9 +48,11 @@ class SubscribersWoocommerce extends CronSubscribers {
 		}
 
 		$args = array(
-			'status' => 'completed',
-			'offset' => $start,
-			'number' => $limit,
+			'status'  => 'completed',
+			'offset'  => $start,
+			'number'  => $limit,
+			'orderby' => 'date_created_gmt',
+			'order'   => 'DESC',
 		);
 
 		return wc_get_orders( $args );
@@ -61,26 +63,39 @@ class SubscribersWoocommerce extends CronSubscribers {
 	 *
 	 * @param \WC_Order $subscriber Subscriber.
 	 * @param null|int  $blog_id WP blog ID.
-	 * @return array
+	 * @return array|false
 	 */
 	public function process_subscriber( $subscriber, $blog_id = null ) {
 		$data = json_decode( wp_json_encode( $subscriber->data ), true );
 
+		if ( isset( $this->emails_cache[ $data['billing']['email'] ] ) ) {
+			return false;
+		}
+		$this->emails_cache[ $data['billing']['email'] ] = true;
+
 		$row = array(
-			'email'              => $data['billing']['email'],
-			'firstname'          => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['first_name'] : '',
-			'lastname'           => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['last_name'] : '',
-			'tel'                => ( ! empty( $data['billing']['phone'] ) ) ?
-				$this->clean_phone( $data['billing']['phone'] ) : '',
-			'phone'              => ( ! empty( $data['billing']['phone'] ) ) ?
-				$this->clean_phone( $data['billing']['phone'] ) : '',
-			'telephone'          => ( ! empty( $data['billing']['phone'] ) ) ?
-				$this->clean_phone( $data['billing']['phone'] ) : '',
-			'billing_telephone'  => ( ! empty( $data['billing']['phone'] ) ) ?
-				$this->clean_phone( $data['billing']['phone'] ) : '',
-			'shipping_telephone' => ( ! empty( $data['shipping']['phone'] ) ) ?
-				$this->clean_phone( $data['shipping']['phone'] ) : '',
+			'email'     => $data['billing']['email'],
+			'firstname' => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['first_name'] : '',
+			'lastname'  => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['last_name'] : '',
 		);
+
+		if ( $this->remarketing_config->is_send_telephone() ) {
+			$row = array_merge(
+				$row,
+				array(
+					'tel'                => ( ! empty( $data['billing']['phone'] ) ) ?
+						$this->clean_phone( $data['billing']['phone'] ) : '',
+					'phone'              => ( ! empty( $data['billing']['phone'] ) ) ?
+						$this->clean_phone( $data['billing']['phone'] ) : '',
+					'telephone'          => ( ! empty( $data['billing']['phone'] ) ) ?
+						$this->clean_phone( $data['billing']['phone'] ) : '',
+					'billing_telephone'  => ( ! empty( $data['billing']['phone'] ) ) ?
+						$this->clean_phone( $data['billing']['phone'] ) : '',
+					'shipping_telephone' => ( ! empty( $data['shipping']['phone'] ) ) ?
+						$this->clean_phone( $data['shipping']['phone'] ) : '',
+				)
+			);
+		}
 
 		return $row;
 	}

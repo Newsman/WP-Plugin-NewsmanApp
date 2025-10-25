@@ -12,6 +12,7 @@
 namespace Newsman\Export\Retriever;
 
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,9 +31,16 @@ class Orders implements RetrieverInterface {
 	public const DEFAULT_PAGE_SIZE = 1000;
 
 	/**
+	 * Remarketing Config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
 	 * Logger
 	 *
-	 * @var Logger Logger.
+	 * @var Logger
 	 */
 	protected $logger;
 
@@ -47,8 +55,9 @@ class Orders implements RetrieverInterface {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->logger    = Logger::init();
-		$this->telephone = new Telephone();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->logger             = Logger::init();
+		$this->telephone          = new Telephone();
 	}
 
 	/**
@@ -219,6 +228,10 @@ class Orders implements RetrieverInterface {
 			'total'         => (float) wc_format_decimal( $order->get_total(), 2 ),
 			'products'      => $products_data,
 		);
+
+		if ( ! $this->remarketing_config->is_send_telephone() ) {
+			unset( $row['phone'] );
+		}
 
 		return $row;
 	}

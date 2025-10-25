@@ -141,11 +141,13 @@ class ExportCsvSubscribers extends Service {
 			'lastname',
 		);
 
-		$header[] = 'tel';
-		$header[] = 'phone';
-		$header[] = 'telephone';
-		$header[] = 'billing_telephone';
-		$header[] = 'shipping_telephone';
+		if ( $this->remarketing_config->is_send_telephone() ) {
+			$header[] = 'tel';
+			$header[] = 'phone';
+			$header[] = 'telephone';
+			$header[] = 'billing_telephone';
+			$header[] = 'shipping_telephone';
+		}
 
 		$header[] = 'source';
 

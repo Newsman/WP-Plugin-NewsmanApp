@@ -15,6 +15,7 @@ use Newsman\Api\ClientInterface;
 use Newsman\Api\ContextInterface;
 use Newsman\Config;
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -55,6 +56,13 @@ class Service {
 	protected $blog_id;
 
 	/**
+	 * Remarketing Config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
 	 * Config
 	 *
 	 * @var Config
@@ -72,11 +80,12 @@ class Service {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->api_context     = new \Newsman\Api\Context();
-		$this->api_client      = new \Newsman\Api\Client();
-		$this->validator_email = \Newsman\Validator\Email::init();
-		$this->config          = Config::init();
-		$this->logger          = Logger::init();
+		$this->api_context        = new \Newsman\Api\Context();
+		$this->api_client         = new \Newsman\Api\Client();
+		$this->validator_email    = \Newsman\Validator\Email::init();
+		$this->config             = Config::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->logger             = Logger::init();
 	}
 
 	/**
