@@ -266,17 +266,19 @@ class Settings {
 	 *
 	 * @param string $list_id List ID.
 	 * @param string $feed_id Feed ID.
+	 * @param string $auth_name Authorize header name.
+	 * @param string $auth_value Authorize header value.
 	 * @return false|string|array
 	 */
-	protected function update_feed_authorize( $list_id, $feed_id ) {
+	protected function update_feed_authorize( $list_id, $feed_id, $auth_name, $auth_value ) {
 		try {
 			if ( null === $list_id ) {
 				$list_id = $this->get_config()->get_list_id();
 			}
 
 			$properties = array(
-				'auth_header_name'  => $this->generate_random_header_name(),
-				'auth_header_value' => $this->generate_random_password(),
+				'auth_header_name'  => $auth_name,
+				'auth_header_value' => $auth_value,
 			);
 
 			$context = new \Newsman\Service\Context\Configuration\UpdateFeed();
@@ -292,10 +294,22 @@ class Settings {
 	}
 
 	/**
+	 * Update export authorize header options
+	 *
+	 * @param string $auth_name Authorize header name.
+	 * @param string $auth_value Authorize header value.
+	 * @return void
+	 */
+	protected function update_export_authorize_header( $auth_name, $auth_value ) {
+		update_option( 'newsman_export_authorize_header_name', $auth_name, Config::AUTOLOAD_OPTIONS );
+		update_option( 'newsman_export_authorize_header_key', $auth_value, Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
 	 * Generates a random string containing lowercase letters (a-z) and hyphens (-).
 	 * Suitable for use as an HTTP header name.
 	 *
-	 * @param int $length         The length of the random string to generate. Default is 16.
+	 * @param int $length The length of the random string to generate. Default is 16.
 	 * @param int $recursion_depth Tracks recursion depth to prevent infinite loops. Don't set manually.
 	 * @return string The randomly generated string.
 	 */

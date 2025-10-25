@@ -230,7 +230,17 @@ class Oauth extends Settings {
 				);
 
 				if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
-					$this->update_feed_authorize( $list_id, $result['feed_id'] );
+					$auth_name  = $this->generate_random_header_name();
+					$auth_value = $this->generate_random_password();
+					$result     = $this->update_feed_authorize(
+						$list_id,
+						$result['feed_id'],
+						$auth_name,
+						$auth_value
+					);
+					if ( false !== $result ) {
+						$this->update_export_authorize_header( $auth_name, $auth_value );
+					}
 				}
 			}
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
