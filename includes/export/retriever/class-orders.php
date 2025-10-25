@@ -229,6 +229,15 @@ class Orders implements RetrieverInterface {
 			'products'      => $products_data,
 		);
 
+		foreach ( $this->remarketing_config->get_customer_attributes() as $attribute ) {
+			if ( strpos( $attribute, 'billing_' ) === 0 || strpos( $attribute, 'shipping_' ) === 0 ) {
+				$getter = 'get_' . $attribute;
+				if ( method_exists( $order, $getter ) ) {
+					$row[ $attribute ] = $order->$getter();
+				}
+			}
+		}
+
 		if ( ! $this->remarketing_config->is_send_telephone() ) {
 			unset( $row['phone'] );
 		}

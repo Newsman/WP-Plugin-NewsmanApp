@@ -115,6 +115,15 @@ class Processor {
 			// Custom fields not found.
 		}
 
+		foreach ( $this->remarketing_config->get_customer_attributes() as $attribute ) {
+			if ( strpos( $attribute, 'billing_' ) === 0 || strpos( $attribute, 'shipping_' ) === 0 ) {
+				$getter = 'get_' . $attribute;
+				if ( method_exists( $order, $getter ) ) {
+					$properties[ $attribute ] = $order->$getter();
+				}
+			}
+		}
+
 		$email     = $order_data['billing']['email'];
 		$firstname = $order_data['billing']['first_name'];
 		$lastname  = $order_data['billing']['last_name'];

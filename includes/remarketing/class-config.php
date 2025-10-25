@@ -127,6 +127,34 @@ class Config {
 	}
 
 	/**
+	 * Get additional product attributes
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return array
+	 */
+	public function get_product_attributes( $blog_id = null ) {
+		$return = $this->config->get_blog_option( $blog_id, 'newsman_remarketingproductattributes', '' );
+		if ( empty( $return ) ) {
+			return array();
+		}
+		return $return;
+	}
+
+	/**
+	 * Get additional customer attributes from orders
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return array
+	 */
+	public function get_customer_attributes( $blog_id = null ) {
+		$return = $this->config->get_blog_option( $blog_id, 'newsman_remarketingcustomerattributes', '' );
+		if ( empty( $return ) ) {
+			return array();
+		}
+		return $return;
+	}
+
+	/**
 	 * Get remarketing script JS code
 	 *
 	 * @param null|int $blog_id WP blog ID.

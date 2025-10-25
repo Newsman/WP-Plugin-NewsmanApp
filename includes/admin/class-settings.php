@@ -458,7 +458,16 @@ class Settings {
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			if ( isset( $_POST[ $name ] ) && ! empty( $_POST[ $name ] ) ) {
 				// phpcs:ignore WordPress.Security.NonceVerification.Missing
-				$this->form_values[ $name ] = sanitize_text_field( wp_unslash( $_POST[ $name ] ) );
+				if ( is_array( $_POST[ $name ] ) ) {
+					$this->form_values[ $name ] = array();
+					// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+					foreach ( $_POST[ $name ] as $key => $value ) {
+						$this->form_values[ $name ][ $key ] = sanitize_text_field( wp_unslash( $value ) );
+					}
+				} else {
+					// phpcs:ignore WordPress.Security.NonceVerification.Missing
+					$this->form_values[ $name ] = sanitize_text_field( wp_unslash( $_POST[ $name ] ) );
+				}
 			}
 		}
 	}

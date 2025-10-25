@@ -12,6 +12,7 @@
 namespace Newsman\Export\Retriever;
 
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -27,6 +28,13 @@ class Users implements RetrieverInterface {
 	 * Default batch page size
 	 */
 	public const DEFAULT_PAGE_SIZE = 1000;
+
+	/**
+	 * Remarketing Config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
 
 	/**
 	 * Logger
@@ -49,7 +57,8 @@ class Users implements RetrieverInterface {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->logger = Logger::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->logger             = Logger::init();
 	}
 
 	/**

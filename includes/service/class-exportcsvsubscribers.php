@@ -108,10 +108,10 @@ class ExportCsvSubscribers extends Service {
 			}
 			$row['source'] = $source;
 
-			foreach ( $additional_fields as $attribute_code => $field ) {
-				$row[ $field ] = '';
-				if ( isset( $row['additional'][ $attribute_code ] ) ) {
-					$row[ $field ] = $row['additional'][ $attribute_code ];
+			foreach ( $additional_fields as $attribute ) {
+				$row[ $attribute ] = '';
+				if ( isset( $row['additional'][ $attribute ] ) ) {
+					$row[ $attribute ] = $row['additional'][ $attribute ];
 				}
 			}
 
@@ -151,9 +151,9 @@ class ExportCsvSubscribers extends Service {
 
 		$header[] = 'source';
 
-		foreach ( $this->get_additional_fields_names( $context ) as $field ) {
-			if ( ! in_array( $field, $header, true ) ) {
-				$header[] = $field;
+		foreach ( $context->get_additional_fields() as $attribute ) {
+			if ( ! in_array( $attribute, $header, true ) ) {
+				$header[] = $attribute;
 			}
 		}
 		return $header;
@@ -162,23 +162,12 @@ class ExportCsvSubscribers extends Service {
 	/**
 	 * Get CSV line
 	 *
-	 * @param array $row CSV data rpw.
+	 * @param array $row CSV data row.
 	 * @param int   $key Index key.
 	 * @return string
 	 */
 	public function get_csv_line( $row, $key ) {
 		unset( $row['additional'] );
 		return '"' . implode( '","', $row ) . "\"\n";
-	}
-
-	/**
-	 * Get additional fields names
-	 *
-	 * @param Context\ExportCsvSubscribers $context Context.
-	 *
-	 * @return array
-	 */
-	public function get_additional_fields_names( $context ) {
-		return array_values( $context->get_additional_fields() );
 	}
 }

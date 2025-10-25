@@ -69,9 +69,10 @@ class SubscribersWordpress extends CronSubscribers {
 		$this->emails_cache[ $subscriber->data->user_email ] = true;
 
 		$row = array(
-			'email'     => $subscriber->data->user_email,
-			'firstname' => $subscriber->data->display_name,
-			'lastname'  => '',
+			'email'      => $subscriber->data->user_email,
+			'firstname'  => $subscriber->data->display_name,
+			'lastname'   => '',
+			'additional' => array(),
 		);
 
 		return $row;

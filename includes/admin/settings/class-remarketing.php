@@ -47,6 +47,24 @@ class Remarketing extends Settings {
 		'newsman_remarketingid',
 		'newsman_remarketinganonymizeip',
 		'newsman_remarketingsendtelephone',
+		'newsman_remarketingproductattributes',
+		'newsman_remarketingcustomerattributes',
+	);
+
+	/**
+	 * Customer attributes fetched from order
+	 *
+	 * @var array
+	 */
+	protected $customer_attributes = array(
+		'billing_company'  => 'Billing Company',
+		'billing_city'     => 'Billing City',
+		'billing_state'    => 'Billing State/County',
+		'billing_country'  => 'Billing Country',
+		'shipping_company' => 'Shipping Company',
+		'shipping_city'    => 'Shipping City',
+		'shipping_state'   => 'Shipping State/County',
+		'shipping_country' => 'Shipping Country',
 	);
 
 	/**
@@ -105,5 +123,14 @@ class Remarketing extends Settings {
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) );
 			}
 		}
+	}
+
+	/**
+	 * Get customer attributes
+	 *
+	 * @return array
+	 */
+	public function get_customer_attributes() {
+		return $this->customer_attributes;
 	}
 }

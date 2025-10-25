@@ -148,7 +148,8 @@ class CronSubscribers implements RetrieverInterface {
 				$context->set_blog_id( $blog_id )
 					->set_list_id( $this->config->get_list_id() )
 					->set_segment_id( $this->config->get_segment_id() )
-					->set_csv_data( $batch );
+					->set_csv_data( $batch )
+					->set_additional_fields( $this->remarketing_config->get_customer_attributes() );
 
 				$export        = new \Newsman\Service\ExportCsvSubscribers();
 				$api_results[] = $export->execute( $context );

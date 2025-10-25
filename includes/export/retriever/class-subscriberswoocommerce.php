@@ -66,7 +66,8 @@ class SubscribersWoocommerce extends CronSubscribers {
 	 * @return array|false
 	 */
 	public function process_subscriber( $subscriber, $blog_id = null ) {
-		$data = json_decode( wp_json_encode( $subscriber->data ), true );
+		$order = $subscriber;
+		$data  = json_decode( wp_json_encode( $order->data ), true );
 
 		if ( isset( $this->emails_cache[ $data['billing']['email'] ] ) ) {
 			return false;
@@ -95,6 +96,16 @@ class SubscribersWoocommerce extends CronSubscribers {
 						$this->clean_phone( $data['shipping']['phone'] ) : '',
 				)
 			);
+		}
+
+		$row['additional'] = array();
+		foreach ( $this->remarketing_config->get_customer_attributes() as $attribute ) {
+			if ( strpos( $attribute, 'billing_' ) === 0 || strpos( $attribute, 'shipping_' ) === 0 ) {
+				$getter = 'get_' . $attribute;
+				if ( method_exists( $order, $getter ) ) {
+					$row['additional'][ $attribute ] = $order->$getter();
+				}
+			}
 		}
 
 		return $row;

@@ -12,6 +12,7 @@
 namespace Newsman\Export\Retriever;
 
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,6 +30,13 @@ class Products implements RetrieverInterface {
 	public const DEFAULT_PAGE_SIZE = 1000;
 
 	/**
+	 * Remarketing config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
 	 * Logger
 	 *
 	 * @var Logger
@@ -36,10 +44,18 @@ class Products implements RetrieverInterface {
 	protected $logger;
 
 	/**
+	 * Additional product attributes
+	 *
+	 * @var array
+	 */
+	protected $additional_attributes = array();
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->logger = Logger::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->logger             = Logger::init();
 	}
 
 	/**
@@ -50,6 +66,15 @@ class Products implements RetrieverInterface {
 	 * @return array
 	 */
 	public function process( $data = array(), $blog_id = null ) {
+		$attributes = $this->remarketing_config->get_product_attributes();
+		if ( ! empty( $attributes ) ) {
+			foreach ( $attributes as $attribute ) {
+				if ( taxonomy_exists( $attribute ) ) {
+					$this->additional_attributes[] = $attribute;
+				}
+			}
+		}
+
 		if ( isset( $data['product_id'] ) ) {
 			if ( empty( $data['product_id'] ) ) {
 				return array();
@@ -185,6 +210,15 @@ class Products implements RetrieverInterface {
 			'url'            => $url,
 			'sku'            => $product->get_sku(),
 		);
+
+		foreach ( $this->additional_attributes as $attribute_name ) {
+			$attribute_value = $product->get_attribute( $attribute_name );
+			if ( ! empty( $attribute_value ) ) {
+				$row[ $attribute_name ] = $attribute_value;
+			} else {
+				$row[ $attribute_name ] = '';
+			}
+		}
 
 		return $row;
 	}

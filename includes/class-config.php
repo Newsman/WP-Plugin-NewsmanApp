@@ -165,7 +165,7 @@ class Config {
 	public function get_api_timeout( $blog_id = null ) {
 		$timeout = (int) $this->get_blog_option( $blog_id, 'newsman_developerapitimeout', 5 );
 		if ( $timeout <= 0 ) {
-			$timeout = 1;
+			$timeout = 5;
 		}
 		return $timeout;
 	}
