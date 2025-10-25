@@ -119,12 +119,17 @@ class Client implements ClientInterface {
 			$context->get_api_key(),
 			$context->get_endpoint()
 		);
+
+		$log_url = $url;
 		if ( is_array( $get_params ) && ! empty( $get_params ) ) {
 			$url .= '?' . http_build_query( $get_params );
+			if ( isset( $get_params['auth_header_name'] ) ) {
+				$get_params['auth_header_name']  = '****';
+				$get_params['auth_header_value'] = '****';
+			}
+			$log_url .= '?' . http_build_query( $get_params );
 		}
 		$log_hash = uniqid();
-		$log_url  = str_replace( 'auth_header_name', '****', $url );
-		$log_url  = str_replace( 'auth_header_value', '****', $log_url );
 		$this->logger->debug( '[' . $log_hash . '] ' . str_replace( $context->get_api_key(), '****', $log_url ) );
 
 		$args['timeout'] = $this->config->get_api_timeout( $context->get_blog_id() );
