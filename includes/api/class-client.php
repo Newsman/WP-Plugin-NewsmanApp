@@ -123,11 +123,14 @@ class Client implements ClientInterface {
 		$log_url = $url;
 		if ( is_array( $get_params ) && ! empty( $get_params ) ) {
 			$url .= '?' . http_build_query( $get_params );
-			if ( isset( $get_params['auth_header_name'] ) ) {
-				$get_params['auth_header_name']  = '****';
-				$get_params['auth_header_value'] = '****';
+			$log_get_params = $get_params;
+			if ( isset( $log_get_params['auth_header_name'] ) ) {
+				$log_get_params['auth_header_name']  = '****';
 			}
-			$log_url .= '?' . http_build_query( $get_params );
+			if ( isset( $log_get_params['auth_header_value'] ) ) {
+				$log_get_params['auth_header_value'] = '****';
+			}
+			$log_url .= '?' . http_build_query( $log_get_params );
 		}
 		$log_hash = uniqid();
 		$this->logger->debug( '[' . $log_hash . '] ' . str_replace( $context->get_api_key(), '****', $log_url ) );
