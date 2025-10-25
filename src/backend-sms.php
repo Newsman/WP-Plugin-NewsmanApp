@@ -59,8 +59,10 @@ $this->process_form();
 	<label for="" id="syncBtn">Sync</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="remarketingBtn">Remarketing</label>
-	<input type="radio" name="tabset" id="tabSms" aria-controls="" checked>
-	<label for="tabSms" id="smsBtn">SMS</label>
+	<?php if ( $this->is_woo_commerce_exists() ) : ?>
+		<input type="radio" name="tabset" id="" aria-controls="">
+		<label for="" id="smsBtn">SMS</label>
+	<?php endif; ?>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
 	<!--<input type="radio" name="tabset" id="" aria-controls="">

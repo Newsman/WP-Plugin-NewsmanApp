@@ -33,8 +33,10 @@ $this->process_form();
 	<label for="tabSync" id="syncBtn">Sync</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="remarketingBtn">Remarketing</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="smsBtn">SMS</label>
+	<?php if ( $this->is_woo_commerce_exists() ) : ?>
+		<input type="radio" name="tabset" id="" aria-controls="">
+		<label for="" id="smsBtn">SMS</label>
+	<?php endif; ?>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
 	<div class="tab-panels">
@@ -117,12 +119,14 @@ $this->process_form();
 							</th>
 							<td>
 								<?php
-									$wordpress_url   = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
-									$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
+								$wordpress_url   = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
+								$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
 
-									echo "CRON url Sync WordPress subscribers: <a href='" . esc_url( $wordpress_url ) . "' target='_blank'>" . esc_html( $wordpress_url ) . '</a>';
-									echo '<br><br>';
+								echo "CRON url Sync WordPress subscribers: <a href='" . esc_url( $wordpress_url ) . "' target='_blank'>" . esc_html( $wordpress_url ) . '</a>';
+								echo '<br><br>';
+								if ( $this->is_woo_commerce_exists() ) {
 									echo "CRON url Sync customers with orders completed: <a href='" . esc_url( $woocommerce_url ) . "' target='_blank'>" . esc_html( $woocommerce_url ) . '</a>';
+								}
 								?>
 							</td>
 						</tr>

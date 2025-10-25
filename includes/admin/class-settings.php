@@ -13,6 +13,7 @@ namespace Newsman\Admin;
 
 use Newsman\Config;
 use Newsman\Logger;
+use Newsman\Util\WooCommerceExist;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -37,6 +38,13 @@ class Settings {
 	 * @var Logger
 	 */
 	protected $logger;
+
+	/**
+	 *  Woo Commerce Exists
+	 *
+	 * @var WooCommerceExist
+	 */
+	protected $woo_commerce_exists;
 
 	/**
 	 * Page nonce action
@@ -91,8 +99,9 @@ class Settings {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->config = Config::init();
-		$this->logger = Logger::init();
+		$this->config              = Config::init();
+		$this->logger              = Logger::init();
+		$this->woo_commerce_exists = new WooCommerceExist();
 	}
 
 	/**
@@ -505,5 +514,14 @@ class Settings {
 	 */
 	public function get_config() {
 		return $this->config;
+	}
+
+	/**
+	 * Woo Commerce exists
+	 *
+	 * @return bool
+	 */
+	public function is_woo_commerce_exists() {
+		return $this->woo_commerce_exists->exist();
 	}
 }

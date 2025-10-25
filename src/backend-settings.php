@@ -33,8 +33,10 @@ $this->process_form();
 	<label for="" id="syncBtn">Sync</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="remarketingBtn">Remarketing</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="smsBtn">SMS</label>
+	<?php if ( $this->is_woo_commerce_exists() ) : ?>
+		<input type="radio" name="tabset" id="" aria-controls="">
+		<label for="" id="smsBtn">SMS</label>
+	<?php endif; ?>
 	<input type="radio" name="tabset" id="tabSettings" aria-controls="" checked>
 	<label for="tabSettings" id="settingsBtn">Settings</label>
 	<div class="tab-panels">
@@ -134,6 +136,7 @@ $this->process_form();
 							</td>
 						</tr>
 					</table>
+					<?php if ( $this->is_woo_commerce_exists() ) : ?>
 					<h2>Checkout Subscribe to Newsletter and SMS</h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
 						<tr>
@@ -205,6 +208,7 @@ $this->process_form();
 							</td>
 						</tr>
 					</table>
+					<?php endif; ?>
 					<h2>Developer</h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
 						<tr class="newsman_developerlogseverity">
@@ -296,6 +300,7 @@ $this->process_form();
 								<p class="description">Valid user IP address.</p>
 							</td>
 						</tr>
+						<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<tr>
 							<th scope="row">
 								<label class="nzm-label" for="newsman_developerpluginlazypriority">Plugin Loaded Priority</label>
@@ -307,6 +312,7 @@ $this->process_form();
 								<p class="description">Newsman plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20.</p>
 							</td>
 						</tr>
+						<?php endif; ?>
 					</table>
 					<div style="padding-top: 5px;">
 						<input type="submit" value="Save Changes" class="button button-primary"/>

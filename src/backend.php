@@ -26,8 +26,10 @@ $is_valid_credentials = $this->is_valid_credentials();
 	<label for="" id="syncBtn">Sync</label>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="remarketingBtn">Remarketing</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="smsBtn">SMS</label>
+	<?php if ( $this->is_woo_commerce_exists() ) : ?>
+		<input type="radio" name="tabset" id="" aria-controls="">
+		<label for="" id="smsBtn">SMS</label>
+	<?php endif; ?>
 	<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="settingsBtn">Settings</label>
 	<div class="tab-panels">
@@ -69,6 +71,7 @@ $is_valid_credentials = $this->is_valid_credentials();
 								added to cart, completed order etc.</p>
 						</td>
 					</tr>
+					<?php if ( $this->is_woo_commerce_exists() ) : ?>
 					<tr>
 						<th scope="row">
 							<strong>SMS</strong>
@@ -78,6 +81,7 @@ $is_valid_credentials = $this->is_valid_credentials();
 								and manage campaigns or send transactional SMS directly from NewsMAN platform.</p>
 						</td>
 					</tr>
+					<?php endif; ?>
 					<tr>
 						<th scope="row">
 							<strong>Settings</strong>

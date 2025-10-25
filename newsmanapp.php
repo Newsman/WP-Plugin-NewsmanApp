@@ -185,6 +185,8 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function admin_menu() {
+		$exist = new \Newsman\Util\WooCommerceExist();
+
 		add_menu_page(
 			'Newsman',
 			'Newsman',
@@ -212,14 +214,16 @@ class WP_Newsman {
 			array( new \Newsman\Admin\Settings\Remarketing(), 'include_page' )
 		);
 
-		add_submenu_page(
-			'Newsman',
-			'SMS',
-			'SMS',
-			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-			'NewsmanSMS',
-			array( new \Newsman\Admin\Settings\Sms(), 'include_page' )
-		);
+		if ( $exist->exist() ) {
+			add_submenu_page(
+				'Newsman',
+				'SMS',
+				'SMS',
+				'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
+				'NewsmanSMS',
+				array( new \Newsman\Admin\Settings\Sms(), 'include_page' )
+			);
+		}
 
 		add_submenu_page(
 			'Newsman',
