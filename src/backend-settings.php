@@ -312,6 +312,18 @@ $this->process_form();
 								<p class="description">Newsman plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20.</p>
 							</td>
 						</tr>
+							<?php if ( $this->is_action_scheduler_exists() ) : ?>
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_developeruseactionscheduler">Use Action Scheduler</label>
+								</th>
+								<td>
+									<input name="newsman_developeruseactionscheduler" type="checkbox"
+										id="newsman_developeruseactionscheduler" <?php echo ( ! empty( $this->form_values['newsman_developeruseactionscheduler'] ) && 'on' === $this->form_values['newsman_developeruseactionscheduler'] ) ? 'checked' : ''; ?>/>
+									<p class="description">Use action scheduler plugin for a part of API actions to Newsman.</p>
+								</td>
+							</tr>
+							<?php endif; ?>
 						<?php endif; ?>
 					</table>
 					<div style="padding-top: 5px;">

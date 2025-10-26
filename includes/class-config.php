@@ -209,6 +209,16 @@ class Config {
 	}
 
 	/**
+	 * Use action scheduler
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function use_action_scheduler( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_developeruseactionscheduler', '' );
+	}
+
+	/**
 	 * Get export request authorize header name
 	 *
 	 * @param null|int $blog_id WP blog ID.

@@ -110,12 +110,8 @@ class Remarketing {
 		add_filter( 'woocommerce_get_return_url', array( $this, 'utm_nooverride' ) );
 
 		// Order status change hooks.
-		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
-			$send_status = new \Newsman\Order\SendStatus();
-			if ( method_exists( $send_status, $name ) ) {
-				add_action( 'woocommerce_order_status_' . $status, array( $send_status, $name ) );
-			}
-		}
+		$order_status = new \Newsman\Order\SendStatus();
+		$order_status->init();
 	}
 
 	/**

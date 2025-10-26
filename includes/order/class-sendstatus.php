@@ -14,6 +14,7 @@ namespace Newsman\Order;
 use Newsman\Config;
 use Newsman\Config\Sms as SmsConfig;
 use Newsman\Logger;
+use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,11 +22,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Synchronize order status with Newsman
+ * - Synchronize order status by email list (remarketing).
+ * - Send SMS about order status.
  *
  * @class \Newsman\Order\Synchronize
  */
 class SendStatus {
+	/**
+	 * Background event hook notify order status
+	 */
+	public const ORDER_NOTIFY_STATUS = 'newsman_order_notify_status';
+
+	/**
+	 * Background event hook notify order SMS
+	 */
+	public const ORDER_NOTIFY_SMS = 'newsman_order_notify_sms';
+
+	/**
+	 * Wait in micro seconds before retry notify order status
+	 */
+	public const WAIT_RETRY_TIMEOUT_NOTIFY_STATUS = 5000000;
+
+	/**
+	 * Wait in micro seconds before retry notify order SMS
+	 */
+	public const WAIT_RETRY_TIMEOUT_NOTIFY_SMS = 5000000;
 
 	/**
 	 * Newsman config
@@ -56,13 +77,47 @@ class SendStatus {
 	protected $telephone;
 
 	/**
+	 *  Action Scheduler Util
+	 *
+	 * @var NewsmanActionScheduler
+	 */
+	protected $action_scheduler;
+
+	/**
 	 * Class constructor
 	 */
 	public function __construct() {
-		$this->config     = Config::init();
-		$this->sms_config = SmsConfig::init();
-		$this->logger     = Logger::init();
-		$this->telephone  = new Telephone();
+		$this->config           = Config::init();
+		$this->sms_config       = SmsConfig::init();
+		$this->logger           = Logger::init();
+		$this->telephone        = new Telephone();
+		$this->action_scheduler = new NewsmanActionScheduler();
+	}
+
+	/**
+	 * Init WordPress and Woo Commerce hooks.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
+			$send_status = new \Newsman\Order\SendStatus();
+			if ( method_exists( $send_status, $name ) ) {
+				add_action( 'woocommerce_order_status_' . $status, array( $send_status, $name ) );
+			}
+		}
+
+		if ( ! $this->action_scheduler->exist() ||
+			! $this->config->use_action_scheduler() ||
+			! $this->action_scheduler->is_single_action()
+		) {
+			return;
+		}
+
+		add_action( self::ORDER_NOTIFY_STATUS, array( $this, 'send_order_status' ), 10, 3 );
+		if ( $this->sms_config->is_enabled_with_api() ) {
+			add_action( self::ORDER_NOTIFY_SMS, array( $this, 'send_sms' ), 10, 3 );
+		}
 	}
 
 	/**
@@ -75,18 +130,56 @@ class SendStatus {
 	 * @return void
 	 */
 	public function notify( $order_id, $status ) {
-		$this->send_order_status( $order_id, $status );
-		$this->send_sms( $order_id, $status );
+		if ( ! $this->action_scheduler->exist() ||
+			! $this->config->use_action_scheduler() ||
+			! $this->action_scheduler->is_single_action()
+		) {
+			$this->send_order_status( $order_id, $status );
+			$this->send_sms( $order_id, $status );
+			return;
+		}
+
+		if ( $this->config->is_enabled_with_api() ) {
+			as_schedule_single_action(
+				time(),
+				self::ORDER_NOTIFY_STATUS,
+				array(
+					$order_id,
+					$status,
+					true,
+				),
+				NewsmanActionScheduler::GROUP_ORDER_CHANGE
+			);
+		}
+
+		if ( $this->sms_config->is_enabled_with_api() ) {
+			$config_name = $this->config->get_order_config_name_by_status( $status );
+			// Create action if is enabled.
+			if ( false !== $config_name && $this->sms_config->is_order_sms_active_by_name( $config_name ) ) {
+				as_schedule_single_action(
+					time(),
+					self::ORDER_NOTIFY_SMS,
+					array(
+						$order_id,
+						$status,
+						true,
+					),
+					NewsmanActionScheduler::GROUP_ORDER_CHANGE
+				);
+			}
+		}
 	}
 
 	/**
 	 * Send order status to Newsman API
 	 *
-	 * @param int    $order_id Order ID.
-	 * @param string $status Order status.
+	 * @param int    $order_id     Order ID.
+	 * @param string $status       Order status.
+	 * @param string $is_scheduled Is action scheduled.
 	 * @return bool Sent successfully
+	 * @throws \Exception On API errors or other.
 	 */
-	public function send_order_status( $order_id, $status ) {
+	public function send_order_status( $order_id, $status, $is_scheduled = false ) {
 		if ( ! $this->config->is_enabled_with_api() ) {
 			return false;
 		}
@@ -97,7 +190,19 @@ class SendStatus {
 				->set_order_id( $order_id )
 				->set_order_status( $status );
 			$purchase = new \Newsman\Service\SetPurchaseStatus();
-			$result   = $purchase->execute( $context );
+			try {
+				$result = $purchase->execute( $context );
+			} catch ( \Exception $e ) {
+				// Try again if action is scheduled. Otherwise, throw the exception further.
+				if ( false !== $is_scheduled ) {
+					$this->logger->log_exception( $e );
+					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS . ' seconds before retry' );
+					usleep( self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS );
+					$result = $purchase->execute( $context );
+				} else {
+					throw $e;
+				}
+			}
 			return true === $result;
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
@@ -108,11 +213,13 @@ class SendStatus {
 	/**
 	 * Send SMS for order status via Newsman API
 	 *
-	 * @param int    $order_id Order ID.
-	 * @param string $status Order status.
+	 * @param int    $order_id     Order ID.
+	 * @param string $status       Order status.
+	 * @param string $is_scheduled Is action scheduled.
 	 * @return bool Sent SMS successfully
+	 * @throws \Exception On API errors or other.
 	 */
-	public function send_sms( $order_id, $status ) {
+	public function send_sms( $order_id, $status, $is_scheduled = false ) {
 		if ( ! $this->sms_config->is_enabled_with_api() ) {
 			return false;
 		}
@@ -155,7 +262,19 @@ class SendStatus {
 				->set_text( $message )
 				->set_to( $phone );
 			$send_one = new \Newsman\Service\Sms\SendOne();
-			$result   = $send_one->execute( $context );
+			try {
+				$result = $send_one->execute( $context );
+			} catch ( \Exception $e ) {
+				// Try again if action is scheduled. Otherwise, throw the exception further.
+				if ( false !== $is_scheduled ) {
+					$this->logger->log_exception( $e );
+					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS . ' seconds before retry' );
+					usleep( self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS );
+					$result = $send_one->execute( $context );
+				} else {
+					throw $e;
+				}
+			}
 
 			return ! empty( $result );
 		} catch ( \Exception $e ) {

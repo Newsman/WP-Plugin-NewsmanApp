@@ -47,6 +47,10 @@
 	color: #6e6e6e;
 }
 
+p.nzm-description-error {
+	color: #b72524;
+}
+
 .credentials-valid {
 	color: #008000;
 }

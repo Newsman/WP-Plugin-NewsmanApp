@@ -14,6 +14,7 @@ namespace Newsman\Admin;
 use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Util\WooCommerceExist;
+use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -45,6 +46,13 @@ class Settings {
 	 * @var WooCommerceExist
 	 */
 	protected $woo_commerce_exists;
+
+	/**
+	 *  Action Scheduler Util
+	 *
+	 * @var NewsmanActionScheduler
+	 */
+	protected $action_scheduler;
 
 	/**
 	 * Page nonce action
@@ -102,6 +110,7 @@ class Settings {
 		$this->config              = Config::init();
 		$this->logger              = Logger::init();
 		$this->woo_commerce_exists = new WooCommerceExist();
+		$this->action_scheduler    = new NewsmanActionScheduler();
 	}
 
 	/**
@@ -523,5 +532,14 @@ class Settings {
 	 */
 	public function is_woo_commerce_exists() {
 		return $this->woo_commerce_exists->exist();
+	}
+
+	/**
+	 * Action Scheduler exists
+	 *
+	 * @return bool
+	 */
+	public function is_action_scheduler_exists() {
+		return $this->action_scheduler->exist();
 	}
 }

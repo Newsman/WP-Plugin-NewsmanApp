@@ -114,6 +114,9 @@ $this->process_form();
 													value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === strval( $this->form_values['newsman_smslist'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
 											<?php } ?>
 									</select>
+									<?php if ( empty( $this->form_values['newsman_smslist'] ) ) : ?>
+										<p class="description nzm-description-error"><?php echo esc_html__( 'Please save a SMS list to start sending SMS.', 'newsman' ); ?></p>
+									<?php endif; ?>
 								<?php } else { ?>
 									<p class="description"><?php echo esc_html__( 'The SMS lists dropdown shows when Use SMS is enabled.', 'newsman' ); ?></p>
 								<?php } ?>

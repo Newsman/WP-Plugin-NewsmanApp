@@ -59,6 +59,7 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_developeractiveuserip',
 		'newsman_developeruserip',
 		'newsman_developerpluginlazypriority',
+		'newsman_developeruseactionscheduler',
 	);
 
 	/**

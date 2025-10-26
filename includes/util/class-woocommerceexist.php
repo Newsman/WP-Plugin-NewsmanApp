@@ -27,7 +27,7 @@ class WooCommerceExist {
 	 * @return bool
 	 */
 	public function exist() {
-		$exists = class_exists( 'WooCommerce' );
+		$exists = class_exists( '\WooCommerce' );
 		if ( function_exists( 'apply_filters' ) ) {
 			$exists = apply_filters( 'newsman_woocommerce_exist', $exists );
 		}
