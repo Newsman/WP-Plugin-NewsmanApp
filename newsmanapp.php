@@ -107,7 +107,9 @@ class WP_Newsman {
 		add_action( 'init', array( $this, 'init_widgets' ) );
 		// Deactivate old Remarketing plugin.
 		add_action( 'admin_init', '\Newsman\Util\DeprecatedRemarketing::notify_and_deactivate_old_plugin' );
-		add_action( 'all_admin_notices', '\Newsman\Util\DeprecatedRemarketing::notify_old_plugin_exist' );
+		if ( class_exists( '\WC_Newsman_Remarketing' ) ) {
+			add_action( 'all_admin_notices', '\Newsman\Util\DeprecatedRemarketing::notify_old_plugin_exist' );
+		}
 
 		/**
 		 * Declare compatibility with custom_order_tables.
