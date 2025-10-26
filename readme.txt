@@ -133,8 +133,12 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 = 2.3.7 =
  * Remarketing improvements
  = 3.0.0 =
- * General improvements
- * WordPress Codding standards
+ * General improvements and complete code refactoring. NewsmanApp Remarketing plugin was retired. Though, all features were added in the main NewsmanApp plugin.
+ * The plugin has to be deactivated and activated if the source is copied manually inside plugins' directory.
+ * Multiple admin configurations added. Most of the old admin configurations were kept for backward compatibility.
+ * ActionsScheduler is used for some API actions in Woo Commerce.
+ * Added comprehensive logging in Woo Commerce.
+ * WordPress Codding standards.
 
 == Upgrade Notice ==
 
