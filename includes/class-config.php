@@ -215,7 +215,17 @@ class Config {
 	 * @return bool
 	 */
 	public function use_action_scheduler( $blog_id = null ) {
-		return 'on' === $this->get_blog_option( $blog_id, 'newsman_developeruseactionscheduler', '' );
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_developer_use_action_scheduler', '' );
+	}
+
+	/**
+	 * Use action scheduler for subscribe to email or SMS lists
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function use_action_scheduler_subscribe( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_developer_use_as_subscribe', '' );
 	}
 
 	/**

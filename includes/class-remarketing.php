@@ -82,15 +82,9 @@ class Remarketing {
 				'add_field',
 			)
 		);
-		add_action(
-			'woocommerce_checkout_order_processed',
-			array(
-				new \Newsman\Form\Checkout\Processor(),
-				'process',
-			),
-			10,
-			2
-		);
+
+		$checkout_processor = new \Newsman\Form\Checkout\Processor();
+		$checkout_processor->init();
 
 		// Tracking code.
 		add_action( 'wp_head', array( new \Newsman\Remarketing\Script\Track(), 'display_script' ), 999999 );

@@ -14,6 +14,7 @@ namespace Newsman\Order;
 use Newsman\Config;
 use Newsman\Config\Sms as SmsConfig;
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 use Newsman\Util\Telephone;
 
@@ -54,6 +55,12 @@ class SendStatus {
 	 * @var Config
 	 */
 	protected $config;
+	/**
+	 * Newsman config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
 
 	/**
 	 * SMS config
@@ -87,11 +94,12 @@ class SendStatus {
 	 * Class constructor
 	 */
 	public function __construct() {
-		$this->config           = Config::init();
-		$this->sms_config       = SmsConfig::init();
-		$this->logger           = Logger::init();
-		$this->telephone        = new Telephone();
-		$this->action_scheduler = new NewsmanActionScheduler();
+		$this->config             = Config::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->sms_config         = SmsConfig::init();
+		$this->logger             = Logger::init();
+		$this->telephone          = new Telephone();
+		$this->action_scheduler   = new NewsmanActionScheduler();
 	}
 
 	/**
@@ -100,6 +108,11 @@ class SendStatus {
 	 * @return void
 	 */
 	public function init() {
+		// Must send complete order status for remarketing to work properly.
+		if ( ! $this->config->is_enabled_with_api() && ! $this->remarketing_config->is_active() ) {
+			return;
+		}
+
 		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
 			$send_status = new \Newsman\Order\SendStatus();
 			if ( method_exists( $send_status, $name ) ) {
@@ -107,10 +120,7 @@ class SendStatus {
 			}
 		}
 
-		if ( ! $this->action_scheduler->exist() ||
-			! $this->config->use_action_scheduler() ||
-			! $this->action_scheduler->is_single_action()
-		) {
+		if ( ! $this->action_scheduler->is_allowed_single() ) {
 			return;
 		}
 
@@ -130,27 +140,23 @@ class SendStatus {
 	 * @return void
 	 */
 	public function notify( $order_id, $status ) {
-		if ( ! $this->action_scheduler->exist() ||
-			! $this->config->use_action_scheduler() ||
-			! $this->action_scheduler->is_single_action()
-		) {
+		if ( ! $this->action_scheduler->is_allowed_single() ) {
 			$this->send_order_status( $order_id, $status );
 			$this->send_sms( $order_id, $status );
 			return;
 		}
 
-		if ( $this->config->is_enabled_with_api() ) {
-			as_schedule_single_action(
-				time(),
-				self::ORDER_NOTIFY_STATUS,
-				array(
-					$order_id,
-					$status,
-					true,
-				),
-				NewsmanActionScheduler::GROUP_ORDER_CHANGE
-			);
-		}
+		// Must send complete order status for remarketing to work properly.
+		as_schedule_single_action(
+			time(),
+			self::ORDER_NOTIFY_STATUS,
+			array(
+				$order_id,
+				$status,
+				true,
+			),
+			$this->action_scheduler->get_group_order_change()
+		);
 
 		if ( $this->sms_config->is_enabled_with_api() ) {
 			$config_name = $this->config->get_order_config_name_by_status( $status );
@@ -164,7 +170,7 @@ class SendStatus {
 						$status,
 						true,
 					),
-					NewsmanActionScheduler::GROUP_ORDER_CHANGE
+					$this->action_scheduler->get_group_order_change()
 				);
 			}
 		}
@@ -189,16 +195,19 @@ class SendStatus {
 			$context->set_list_id( $this->config->get_list_id() )
 				->set_order_id( $order_id )
 				->set_order_status( $status );
-			$purchase = new \Newsman\Service\SetPurchaseStatus();
+
 			try {
-				$result = $purchase->execute( $context );
+				$purchase = new \Newsman\Service\SetPurchaseStatus();
+				$result   = $purchase->execute( $context );
 			} catch ( \Exception $e ) {
 				// Try again if action is scheduled. Otherwise, throw the exception further.
 				if ( false !== $is_scheduled ) {
 					$this->logger->log_exception( $e );
 					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS . ' seconds before retry' );
 					usleep( self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS );
-					$result = $purchase->execute( $context );
+
+					$purchase = new \Newsman\Service\SetPurchaseStatus();
+					$result   = $purchase->execute( $context );
 				} else {
 					throw $e;
 				}
@@ -247,10 +256,12 @@ class SendStatus {
 			$message = $this->sms_replace_placeholders( $message, $order );
 
 			$item_data = $order->get_data();
-			$phone     = $this->telephone->add_ro_prefix( $item_data['billing']['phone'] );
+			$phone     = $this->telephone->clean( $item_data['billing']['phone'] );
+			$phone     = $this->telephone->add_ro_prefix( $phone );
 
 			if ( $is_test ) {
-				$phone = $this->telephone->add_ro_prefix( $test_phone );
+				$phone = $this->telephone->clean( $test_phone );
+				$phone = $this->telephone->add_ro_prefix( $phone );
 			}
 
 			if ( empty( $phone ) ) {
@@ -261,16 +272,19 @@ class SendStatus {
 			$context->set_list_id( $list_id )
 				->set_text( $message )
 				->set_to( $phone );
-			$send_one = new \Newsman\Service\Sms\SendOne();
+
 			try {
-				$result = $send_one->execute( $context );
+				$send_one = new \Newsman\Service\Sms\SendOne();
+				$result   = $send_one->execute( $context );
 			} catch ( \Exception $e ) {
 				// Try again if action is scheduled. Otherwise, throw the exception further.
 				if ( false !== $is_scheduled ) {
 					$this->logger->log_exception( $e );
-					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS . ' seconds before retry' );
-					usleep( self::WAIT_RETRY_TIMEOUT_NOTIFY_STATUS );
-					$result = $send_one->execute( $context );
+					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_NOTIFY_SMS . ' seconds before retry' );
+					usleep( self::WAIT_RETRY_TIMEOUT_NOTIFY_SMS );
+
+					$send_one = new \Newsman\Service\Sms\SendOne();
+					$result   = $send_one->execute( $context );
 				} else {
 					throw $e;
 				}

@@ -164,6 +164,16 @@
 				}
 			);
 
+			jQuery( '#newsman_developer_use_action_scheduler' ).click(
+				function () {
+					if (jQuery( '#newsman_developer_use_action_scheduler' ).is( ':checked' )) {
+						jQuery( '#newsman_developer_use_as_subscribe' ).closest( 'tr' ).css( 'display', 'table-row' );
+					} else {
+						jQuery( '#newsman_developer_use_as_subscribe' ).closest( 'tr' ).css( 'display', 'none' );
+					}
+				}
+			);
+
 		}
 	);
 } (jQuery));

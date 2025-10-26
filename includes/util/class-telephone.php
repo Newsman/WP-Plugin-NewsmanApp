@@ -46,9 +46,11 @@ class Telephone {
 		if ( empty( $phone ) ) {
 			return $phone;
 		}
-		if ( 0 === strpos( $phone, '4' ) || 0 === strpos( $phone, '40' ) ) {
+		if ( 0 === strpos( $phone, '40' ) ) {
 			return $phone;
 		}
-		return '4' . $phone;
+		$phone = '40' . $phone;
+		$phone = apply_filters( 'newsman_telephone_add_ro_prefix', $phone );
+		return $phone;
 	}
 }

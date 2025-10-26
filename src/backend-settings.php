@@ -146,6 +146,7 @@ $this->process_form();
 							<td>
 								<input name="newsman_checkoutnewsletter" type="checkbox"
 									id="newsman_checkoutnewsletter" <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Enable checkbox to subscribe to newsletter.</p>
 							</td>
 						</tr>
 						<tr>
@@ -155,6 +156,7 @@ $this->process_form();
 							<td>
 								<input name="newsman_checkoutsms" type="checkbox"
 									id="newsman_checkoutsms" <?php echo ( ! empty( $this->form_values['newsman_checkoutsms'] ) && 'on' === $this->form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Enable subscribe after checkout to SMS list with order billing telephone number.</p>
 							</td>
 						</tr>
 						<tr class="newsman_checkoutnewslettertypePanel"
@@ -315,12 +317,22 @@ $this->process_form();
 							<?php if ( $this->is_action_scheduler_exists() ) : ?>
 							<tr>
 								<th scope="row">
-									<label class="nzm-label" for="newsman_developeruseactionscheduler">Use Action Scheduler</label>
+									<label class="nzm-label" for="newsman_developer_use_action_scheduler">Use Action Scheduler</label>
 								</th>
 								<td>
-									<input name="newsman_developeruseactionscheduler" type="checkbox"
-										id="newsman_developeruseactionscheduler" <?php echo ( ! empty( $this->form_values['newsman_developeruseactionscheduler'] ) && 'on' === $this->form_values['newsman_developeruseactionscheduler'] ) ? 'checked' : ''; ?>/>
-									<p class="description">Use action scheduler plugin for a part of API actions to Newsman.</p>
+									<input name="newsman_developer_use_action_scheduler" type="checkbox"
+										id="newsman_developer_use_action_scheduler" <?php echo ( ! empty( $this->form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $this->form_values['newsman_developer_use_action_scheduler'] ) ? 'checked' : ''; ?>/>
+									<p class="description">Use action scheduler plugin for some of Newsman API actions.</p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $this->form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $this->form_values['newsman_developer_use_action_scheduler'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_developer_use_as_subscribe">Use Action Scheduler for Subscribe</label>
+								</th>
+								<td>
+									<input name="newsman_developer_use_as_subscribe" type="checkbox"
+										id="newsman_developer_use_as_subscribe" <?php echo ( ! empty( $this->form_values['newsman_developer_use_as_subscribe'] ) && 'on' === $this->form_values['newsman_developer_use_as_subscribe'] ) ? 'checked' : ''; ?>/>
+									<p class="description">On storefront use action scheduler for subscribe to email and SMS lists actions.</p>
 								</td>
 							</tr>
 							<?php endif; ?>

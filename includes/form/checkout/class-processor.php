@@ -16,6 +16,7 @@ use Newsman\Config\Sms;
 use Newsman\Logger;
 use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\User\IpAddress;
+use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,6 +29,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class \Newsman\Form\Checkout\Processor
  */
 class Processor {
+	/**
+	 * Background event hook subscribe email to list
+	 */
+	public const SUBSCRIBE_EMAIL = 'newsman_subscribe_email';
+
+	/**
+	 * Background event hook subscribe telephone to SMS list
+	 */
+	public const SUBSCRIBE_PHONE = 'newsman_subscribe_phone';
+
+	/**
+	 * Wait in micro seconds before retry subscribe email
+	 */
+	public const WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL = 5000000;
+
+	/**
+	 * Wait in micro seconds before retry subscribe telephone number to SMS list
+	 */
+	public const WAIT_RETRY_TIMEOUT_SUBSCRIBE_PHONE = 5000000;
+
 	/**
 	 * Config
 	 *
@@ -64,6 +85,13 @@ class Processor {
 	protected $telephone;
 
 	/**
+	 *  Action Scheduler Util
+	 *
+	 * @var NewsmanActionScheduler
+	 */
+	protected $action_scheduler;
+
+	/**
 	 * Logger
 	 *
 	 * @var Logger
@@ -79,7 +107,44 @@ class Processor {
 		$this->sms_config         = Sms::init();
 		$this->user_ip            = IpAddress::init();
 		$this->telephone          = new Telephone();
+		$this->action_scheduler   = new NewsmanActionScheduler();
 		$this->logger             = Logger::init();
+	}
+
+	/**
+	 * Class constructor
+	 */
+	public function init() {
+		if ( ! $this->config->is_enabled_with_api() ) {
+			return;
+		}
+
+		if ( $this->is_hook_enabled() ) {
+			add_action( 'woocommerce_checkout_order_processed', array( $this, 'process' ), 10, 2 );
+		}
+
+		if ( $this->action_scheduler->is_allowed_single() && $this->config->use_action_scheduler_subscribe() ) {
+			add_action( self::SUBSCRIBE_EMAIL, array( $this, 'subscribe_email' ), 10, 6 );
+			if ( $this->sms_config->is_enabled_with_api() ) {
+				add_action( self::SUBSCRIBE_PHONE, array( $this, 'subscribe_phone' ), 10, 5 );
+			}
+		}
+	}
+
+	/**
+	 * Is hook enabled
+	 *
+	 * @return bool
+	 */
+	public function is_hook_enabled() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+		if ( ! ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && 1 === (int) $_POST['newsmanCheckoutNewsletter'] ) ) {
+			return false;
+		}
+		if ( ! $this->config->is_checkout_newsletter() && ! $this->config->is_checkout_sms() ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -89,11 +154,6 @@ class Processor {
 	 * @return void
 	 */
 	public function process( $order_id ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		if ( ! ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && 1 === (int) $_POST['newsmanCheckoutNewsletter'] ) ) {
-			return;
-		}
-
 		$order      = wc_get_order( $order_id );
 		$order_data = $order->get_data();
 
@@ -142,13 +202,44 @@ class Processor {
 		}
 
 		try {
-			$this->subscribe_email( $email, $firstname, $lastname, $properties, $options );
+			if ( ! $this->action_scheduler->is_allowed_single() || ! $this->config->use_action_scheduler_subscribe() ) {
+				$this->subscribe_email( $email, $firstname, $lastname, $properties, $options );
+			} elseif ( $this->config->is_checkout_newsletter() ) {
+				as_schedule_single_action(
+					time(),
+					self::SUBSCRIBE_EMAIL,
+					array(
+						$email,
+						$firstname,
+						$lastname,
+						$properties,
+						$options,
+						true,
+					),
+					$this->action_scheduler->get_group_subscribe()
+				);
+			}
 		} catch ( \Exception $e ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( $e->getMessage() );
 		}
 
-		$this->sms_subscribe( $telephone, $firstname, $lastname, $properties );
+		if ( ! $this->action_scheduler->is_allowed_single() || ! $this->config->use_action_scheduler_subscribe() ) {
+			$this->subscribe_phone( $telephone, $firstname, $lastname, $properties );
+		} elseif ( $this->config->is_checkout_sms() && $this->sms_config->is_enabled_with_api() ) {
+			as_schedule_single_action(
+				time(),
+				self::SUBSCRIBE_PHONE,
+				array(
+					$telephone,
+					$firstname,
+					$lastname,
+					$properties,
+					true,
+				),
+				$this->action_scheduler->get_group_subscribe()
+			);
+		}
 	}
 
 	/**
@@ -159,10 +250,11 @@ class Processor {
 	 * @param string $lastname Last name.
 	 * @param array  $properties Properties array.
 	 * @param array  $options Options array, additional fields.
+	 * @param array  $is_scheduled Is action scheduled.
 	 * @return void
 	 * @throws \Exception Error exceptions or other.
 	 */
-	public function subscribe_email( $email, $firstname, $lastname, $properties = array(), $options = array() ) {
+	public function subscribe_email( $email, $firstname, $lastname, $properties = array(), $options = array(), $is_scheduled = false ) {
 		if ( empty( $email ) ) {
 			return;
 		}
@@ -187,8 +279,26 @@ class Processor {
 				->set_properties( $properties )
 				->set_options( $options );
 
-			$init_subscribe = new \Newsman\Service\InitSubscribeEmail();
-			$init_subscribe->execute( $context );
+			try {
+				try {
+					$init_subscribe = new \Newsman\Service\InitSubscribeEmail();
+					$init_subscribe->execute( $context );
+				} catch ( \Exception $e ) {
+					// Try again if action is scheduled. Otherwise, throw the exception further.
+					if ( false !== $is_scheduled ) {
+						$this->logger->log_exception( $e );
+						$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL . ' seconds before retry' );
+						usleep( self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL );
+
+						$init_subscribe = new \Newsman\Service\InitSubscribeEmail();
+						$init_subscribe->execute( $context );
+					} else {
+						throw $e;
+					}
+				}
+			} catch ( \Exception $e ) {
+				$this->logger->log_exception( $e );
+			}
 		} else {
 			$context = new \Newsman\Service\Context\SubscribeEmail();
 			$context->set_list_id( $this->config->get_list_id() )
@@ -198,13 +308,48 @@ class Processor {
 				->set_ip( $this->user_ip->get_ip() )
 				->set_properties( $properties );
 
-			$subscribe     = new \Newsman\Service\SubscribeEmail();
-			$subscriber_id = $subscribe->execute( $context );
+			try {
+				try {
+					$subscribe     = new \Newsman\Service\SubscribeEmail();
+					$subscriber_id = $subscribe->execute( $context );
+				} catch ( \Exception $e ) {
+					// Try again if action is scheduled. Otherwise, throw the exception further.
+					if ( false !== $is_scheduled ) {
+						$this->logger->log_exception( $e );
+						$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL . ' seconds before retry' );
+						usleep( self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL );
 
-			if ( ! empty( $this->config->get_segment_id() ) ) {
-				$context = new \Newsman\Service\Context\Segment\AddSubscriber();
-				$context->set_segment_id( $this->config->get_segment_id() )
-					->set_subscriber_id( $subscriber_id );
+						$subscribe     = new \Newsman\Service\SubscribeEmail();
+						$subscriber_id = $subscribe->execute( $context );
+					} else {
+						throw $e;
+					}
+				}
+
+				if ( ! empty( $this->config->get_segment_id() ) ) {
+					$context = new \Newsman\Service\Context\Segment\AddSubscriber();
+					$context->set_segment_id( $this->config->get_segment_id() )
+						->set_subscriber_id( $subscriber_id );
+
+					try {
+						$add_subscriber = new \Newsman\Service\Segment\AddSubscriber();
+						$add_subscriber->execute( $context );
+					} catch ( \Exception $e ) {
+						// Try again if action is scheduled. Otherwise, throw the exception further.
+						if ( false !== $is_scheduled ) {
+							$this->logger->log_exception( $e );
+							$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL . ' seconds before retry' );
+							usleep( self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_EMAIL );
+
+							$add_subscriber = new \Newsman\Service\Segment\AddSubscriber();
+							$add_subscriber->execute( $context );
+						} else {
+							throw $e;
+						}
+					}
+				}
+			} catch ( \Exception $e ) {
+				$this->logger->log_exception( $e );
 			}
 		}
 	}
@@ -216,10 +361,11 @@ class Processor {
 	 * @param string $firstname First name.
 	 * @param string $lastname Last name.
 	 * @param array  $properties Properties array, additional fields.
+	 * @param array  $is_scheduled Is action scheduled.
 	 * @return void
 	 * @throws \Exception Error exceptions or other.
 	 */
-	public function sms_subscribe( $telephone, $firstname, $lastname, $properties = array() ) {
+	public function subscribe_phone( $telephone, $firstname, $lastname, $properties = array(), $is_scheduled = false ) {
 		if ( ! $this->config->is_checkout_sms() ) {
 			return;
 		}
@@ -241,8 +387,22 @@ class Processor {
 			->set_properties( $properties );
 
 		try {
-			$subscribe = new \Newsman\Service\Sms\Subscribe();
-			$subscribe->execute( $context );
+			try {
+				$subscribe = new \Newsman\Service\Sms\Subscribe();
+				$subscribe->execute( $context );
+			} catch ( \Exception $e ) {
+				// Try again if action is scheduled. Otherwise, throw the exception further.
+				if ( false !== $is_scheduled ) {
+					$this->logger->log_exception( $e );
+					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_PHONE . ' seconds before retry' );
+					usleep( self::WAIT_RETRY_TIMEOUT_SUBSCRIBE_PHONE );
+
+					$subscribe = new \Newsman\Service\Sms\Subscribe();
+					$subscribe->execute( $context );
+				} else {
+					throw $e;
+				}
+			}
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
 		}

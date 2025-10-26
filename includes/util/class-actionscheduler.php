@@ -11,6 +11,8 @@
 
 namespace Newsman\Util;
 
+use Newsman\Config;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,6 +27,25 @@ class ActionScheduler {
 	 * Action scheduler group for order change
 	 */
 	public const GROUP_ORDER_CHANGE = 'newsman_order_change';
+
+	/**
+	 * Action scheduler group for subscribe to email and SMS lists
+	 */
+	public const GROUP_SUBSCRIBE = 'newsman_subscribe';
+
+	/**
+	 * Newsman Config
+	 *
+	 * @var Config
+	 */
+	protected $config;
+
+	/**
+	 * Construct class
+	 */
+	public function __construct() {
+		$this->config = Config::init();
+	}
 
 	/**
 	 * Actions scheduler exist
@@ -49,11 +70,31 @@ class ActionScheduler {
 	}
 
 	/**
+	 * Is action scheduler allowed to run single action
+	 *
+	 * @return bool
+	 */
+	public function is_allowed_single() {
+		return $this->exist() &&
+			$this->config->use_action_scheduler() &&
+			$this->is_single_action();
+	}
+
+	/**
 	 * Get action scheduler group for order change
 	 *
 	 * @return string
 	 */
 	public function get_group_order_change() {
 		return self::GROUP_ORDER_CHANGE;
+	}
+
+	/**
+	 * Get action scheduler group for subscribe to email and SMS lists
+	 *
+	 * @return string
+	 */
+	public function get_group_subscribe() {
+		return self::GROUP_SUBSCRIBE;
 	}
 }

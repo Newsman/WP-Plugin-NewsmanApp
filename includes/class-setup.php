@@ -241,7 +241,8 @@ js/retargeting/modal_{{api_key}}.js'
 		add_option( 'newsman_developeractiveuserip', '' );
 		add_option( 'newsman_developeruserip', '' );
 		add_option( 'newsman_developerpluginlazypriority', \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD );
-		add_option( 'newsman_developeruseactionscheduler', 'on' );
+		add_option( 'newsman_developer_use_action_scheduler', 'on' );
+		add_option( 'newsman_developer_use_as_subscribe', 'on' );
 	}
 
 	/**
