@@ -20,7 +20,7 @@ define( 'NEWSMAN_VERSION', '3.0.0' );
 require_once __DIR__ . '/includes/class-newsmanphp.php';
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::vendor_check_and_notify' );
+	add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::notify_missing_vendor_composer' );
 	return;
 }
 
@@ -103,6 +103,11 @@ class WP_Newsman {
 	public function init_hooks() {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->get_plugin_lazy_priority() );
 		add_action( 'init', array( new \Newsman\Export\Router(), 'execute' ) );
+		// Widget auto init.
+		add_action( 'init', array( $this, 'init_widgets' ) );
+		// Deactivate old Remarketing plugin.
+		add_action( 'admin_init', '\Newsman\Util\DeprecatedRemarketing::notify_and_deactivate_old_plugin' );
+		add_action( 'all_admin_notices', '\Newsman\Util\DeprecatedRemarketing::notify_old_plugin_exist' );
 
 		/**
 		 * Declare compatibility with custom_order_tables.
@@ -126,21 +131,6 @@ class WP_Newsman {
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
 		// Enqueue plugin styles in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
-		// Enqueue plugin scripts in admin.
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
-		// Do ajax form subscribe.
-		add_action(
-			'wp_ajax_nopriv_newsman_ajax_subscribe',
-			array(
-				\Newsman\Form\AjaxSubscribe::init(),
-				'subscribe',
-			)
-		);
-		add_action( 'wp_ajax_newsman_ajax_subscribe', array( \Newsman\Form\AjaxSubscribe::init(), 'subscribe' ) );
-		// Check if plugin is active.
-		add_action( 'wp_ajax_newsman_ajax_check_plugin', array( $this, 'newsman_ajax_check_plugin' ) );
-		// Widget auto init.
-		add_action( 'init', array( $this, 'init_widgets' ) );
 	}
 
 	/**

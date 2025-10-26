@@ -18,17 +18,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( '\Newsman\NewsmanPhp' ) ) {
 
 	/**
-	 * Verify that vendor dependencies are installed.
+	 * Notify that vendor dependencies are not installed.
 	 *
 	 * @class \Newsman\NewsmanPhp
 	 */
 	class NewsmanPhp {
 		/**
-		 * Check if vendor has all dependencies installed and notify in admin.
+		 * Notify in admin about missing composer.
 		 *
 		 * @return void
 		 */
-		public static function vendor_check_and_notify() {
+		public static function notify_missing_vendor_composer() {
 			printf(
 				'<div id="newsman-vendor-missing" class="notice notice-error"><p>Dependencies for Newsman need to be installed. Run <code>composer install --no-dev</code> from the <code>%s</code> directory.</p></div>',
 				esc_html( dirname( __DIR__ ) )
