@@ -13,6 +13,7 @@ namespace Newsman\Remarketing\Action;
 
 use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Remarketing\Script\GetAttributes;
+use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,6 +33,13 @@ class AbstractAction {
 	protected $remarketing_config;
 
 	/**
+	 * Telephone util 
+	 *
+	 * @var Telephone
+	 */
+	protected $telephone;
+
+	/**
 	 * Action data
 	 *
 	 * @var array
@@ -43,6 +51,7 @@ class AbstractAction {
 	 */
 	public function __construct() {
 		$this->remarketing_config = RemarketingConfig::init();
+		$this->telephone          = new Telephone();
 	}
 
 	/**
