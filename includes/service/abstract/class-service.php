@@ -113,7 +113,7 @@ class Service {
 	 * Execute API service
 	 *
 	 * @param \Newsman\Service\Context\Abstract\Context $context APi service context.
-	 * @return array
+	 * @return array|string
 	 */
 	public function execute( $context ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return array();

@@ -34,7 +34,7 @@ class UnsubscribeEmail extends Service {
 	 * Unsubscribe email
 	 *
 	 * @param Context\UnsubscribeEmail $context Unsubscribe email context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

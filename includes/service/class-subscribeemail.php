@@ -34,7 +34,7 @@ class SubscribeEmail extends Service {
 	 * Subscribe email
 	 *
 	 * @param Context\SubscribeEmail $context Subscribe email context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

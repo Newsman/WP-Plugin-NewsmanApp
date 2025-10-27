@@ -34,7 +34,7 @@ class SetFeedOnList extends Service {
 	 * Update feed by list ID in Newsman
 	 *
 	 * @param \Newsman\Service\Context\Configuration\SetFeedOnList $context Set feed on list context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

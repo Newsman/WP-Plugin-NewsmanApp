@@ -35,7 +35,7 @@ class GetSegmentAll extends Service {
 	 * Get all segments by list ID
 	 *
 	 * @param EmailList $context List context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

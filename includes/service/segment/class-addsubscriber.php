@@ -34,7 +34,7 @@ class AddSubscriber extends Service {
 	 * Add subscriber ID (email) to segment
 	 *
 	 * @param \Newsman\Service\Context\Segment\AddSubscriber $context Segment add subscriber context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

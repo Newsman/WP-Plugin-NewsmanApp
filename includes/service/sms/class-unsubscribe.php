@@ -34,7 +34,7 @@ class Unsubscribe extends Service {
 	 * Unsubscribe telephone number from SMS list
 	 *
 	 * @param \Newsman\Service\Context\Sms\Unsubscribe $context SMS unsubscribe context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

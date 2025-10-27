@@ -35,7 +35,7 @@ class GetListAll extends Service {
 	 * Get all SMS lists by user ID
 	 *
 	 * @param User $context Configuration user context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

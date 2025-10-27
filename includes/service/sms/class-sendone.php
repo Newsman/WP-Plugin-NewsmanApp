@@ -34,7 +34,7 @@ class SendOne extends Service {
 	 * SMS send one
 	 *
 	 * @param \Newsman\Service\Context\Sms\SendOne $context Sms send one context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

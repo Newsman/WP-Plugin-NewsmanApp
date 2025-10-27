@@ -34,7 +34,7 @@ class InitSubscribeEmail extends Service {
 	 * Init subscribe email
 	 *
 	 * @param \Newsman\Service\Context\InitSubscribeEmail $context Init subscribe context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

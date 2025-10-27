@@ -34,7 +34,7 @@ class SetPurchaseStatus extends Service {
 	 * Set order purchase status
 	 *
 	 * @param Context\SetPurchaseStatus $context Order Set Purchase Status context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

@@ -34,7 +34,7 @@ class GetByEmail extends Service {
 	 * Get subscriber by email
 	 *
 	 * @param Context\GetByEmail $context Get by email context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

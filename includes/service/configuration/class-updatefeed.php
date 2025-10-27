@@ -34,7 +34,7 @@ class UpdateFeed extends Service {
 	 * Update a feed
 	 *
 	 * @param \Newsman\Service\Context\Configuration\UpdateFeed $context Update Feed context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

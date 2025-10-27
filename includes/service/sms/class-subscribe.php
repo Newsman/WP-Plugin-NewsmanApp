@@ -34,7 +34,7 @@ class Subscribe extends Service {
 	 * Subscribe telephone number to SMS list
 	 *
 	 * @param \Newsman\Service\Context\Sms\Subscribe $context SMS subscribe context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

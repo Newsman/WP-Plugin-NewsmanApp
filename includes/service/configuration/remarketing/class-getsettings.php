@@ -35,7 +35,7 @@ class GetSettings extends Service {
 	 * Get remarketing settings list ID
 	 *
 	 * @param EmailList $context List context.
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {

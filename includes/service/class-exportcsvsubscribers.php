@@ -35,7 +35,7 @@ class ExportCsvSubscribers extends Service {
 	 *
 	 * @param Context\ExportCsvSubscribers $context Export CSV subscribers context.
 	 *
-	 * @return array
+	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
 	public function execute( $context ) {
