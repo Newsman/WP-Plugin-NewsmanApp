@@ -237,6 +237,7 @@ js/retargeting/modal_{{api_key}}.js'
 		add_option( 'newsman_api', 'on' );
 		add_option( 'newsman_useremarketing', 'on' );
 		add_option( 'newsman_remarketingsendtelephone', 'on' );
+		add_option( 'newsman_checkoutnewsletter', 'on' );
 		add_option( 'newsman_senduserip', 'on' );
 		add_option( 'newsman_developeractiveuserip', '' );
 		add_option( 'newsman_developeruserip', '' );
