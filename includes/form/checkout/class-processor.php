@@ -190,6 +190,24 @@ class Processor {
 		$telephone = ( ! empty( $order_data['billing']['phone'] ) ) ? $order_data['billing']['phone'] : '';
 		$telephone = $this->telephone->clean( $telephone );
 
+		$email_properties = $properties;
+		if ( $this->remarketing_config->is_send_telephone() ) {
+			if ( ! empty( $telephone ) ) {
+				$email_properties['tel']               = $telephone;
+				$email_properties['phone']             = $telephone;
+				$email_properties['telephone']         = $telephone;
+				$email_properties['billing_telephone'] = $telephone;
+			}
+
+			if ( ! empty( $order_data['shipping']['phone'] ) ) {
+				$shipping_telephone = $order_data['shipping']['phone'];
+				$shipping_telephone = $this->telephone->clean( $shipping_telephone );
+				if ( ! empty( $shipping_telephone ) ) {
+					$email_properties['shipping_telephone'] = $shipping_telephone;
+				}
+			}
+		}
+
 		$options    = array();
 		$segment_id = $this->config->get_segment_id();
 		if ( ! empty( $segment_id ) ) {
@@ -203,7 +221,7 @@ class Processor {
 
 		try {
 			if ( ! $this->action_scheduler->is_allowed_single() || ! $this->config->use_action_scheduler_subscribe() ) {
-				$this->subscribe_email( $email, $firstname, $lastname, $properties, $options );
+				$this->subscribe_email( $email, $firstname, $lastname, $email_properties, $options );
 			} elseif ( $this->config->is_checkout_newsletter() ) {
 				as_schedule_single_action(
 					time(),
@@ -212,7 +230,7 @@ class Processor {
 						$email,
 						$firstname,
 						$lastname,
-						$properties,
+						$email_properties,
 						$options,
 						true,
 					),
