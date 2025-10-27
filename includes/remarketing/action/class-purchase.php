@@ -66,8 +66,8 @@ class Purchase extends AbstractAction {
 			$order->get_currency();
 
 		$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $order->get_billing_email() ) ) . '", ';
-		if ( $this->remarketing_config->is_send_telephone() ) {
-			$js .= 'phone: "' . esc_attr( esc_html( $order->get_billing_phone() ) ) . '", ';
+		if ( $this->remarketing_config->is_send_telephone() && ! empty( $order->get_billing_phone() ) ) {
+			$js .= 'phone: "' . esc_attr( esc_html( $this->telephone->clean( $order->get_billing_phone() ) ) ) . '", ';
 		}
 		$js .= 'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
 			'last_name: "' . esc_attr( esc_html( $order->get_billing_last_name() ) ) . '" });';
