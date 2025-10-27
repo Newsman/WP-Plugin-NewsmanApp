@@ -82,7 +82,7 @@ $this->process_form();
 							<th scope="row">
 								<label class="nzm-label" for="">Credentials Status</label>
 							</th>
-							<td>
+							<td colspan="2">
 								<div class="credentials-status <?php echo esc_html( $this->valid_credentials ? 'credentials-valid' : 'credentials-invalid' ); ?>">
 									<span><?php echo $this->valid_credentials ? esc_html__( 'Valid', 'newsman' ) : esc_html__( 'Invalid', 'newsman' ); ?></span>
 								</div>
@@ -103,7 +103,7 @@ $this->process_form();
 							<th scope="row">
 								<label class="nzm-label" for="newsman_smslist">Select SMS List</label>
 							</th>
-							<td>
+							<td colspan="2">
 								<?php if ( 'on' === $this->form_values['newsman_usesms'] && ! empty( $this->available_smslists ) ) { ?>
 									<select name="newsman_smslist" id="">
 										<option value="0">-- select list --</option>
@@ -134,7 +134,7 @@ $this->process_form();
 							</th>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smspendingactivate">Pending | Active</label>
 								<input name="newsman_smspendingactivate" type="checkbox" id="newsman_smspendingactivate" <?php echo ( 'on' === $this->form_values['newsman_smspendingactivate'] ) ? 'checked' : ''; ?>/>
@@ -146,7 +146,7 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsfailedactivate">Failed | Active</label>
 								<input name="newsman_smsfailedactivate" type="checkbox" id="newsman_smsfailedactivate" <?php echo ( 'on' === $this->form_values['newsman_smsfailedactivate'] ) ? 'checked' : ''; ?>/>
@@ -158,7 +158,7 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsonholdactivate">On Hold | Active</label>
 								<input name="newsman_smsonholdactivate" type="checkbox" id="newsman_smsonholdactivate" <?php echo ( 'on' === $this->form_values['newsman_smsonholdactivate'] ) ? 'checked' : ''; ?>/>
@@ -170,7 +170,7 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsprocessingactivate">Processing | Active</label>
 								<input name="newsman_smsprocessingactivate" type="checkbox" id="newsman_smsprocessingactivate" <?php echo ( 'on' === $this->form_values['newsman_smsprocessingactivate'] ) ? 'checked' : ''; ?>/>
@@ -182,7 +182,7 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smscompletedactivate">Completed | Active</label>
 								<input name="newsman_smscompletedactivate" type="checkbox" id="newsman_smscompletedactivate" <?php echo ( 'on' === $this->form_values['newsman_smscompletedactivate'] ) ? 'checked' : ''; ?>/>
@@ -194,7 +194,7 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsrefundedactivate">Refunded | Active</label>
 								<input name="newsman_smsrefundedactivate" type="checkbox" id="newsman_smsrefundedactivate" <?php echo ( 'on' === $this->form_values['newsman_smsrefundedactivate'] ) ? 'checked' : ''; ?>/>
@@ -206,7 +206,7 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp;</td>
+							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smscancelledactivate">Canceled | Active</label>
 								<input name="newsman_smscancelledactivate" type="checkbox" id="newsman_smscancelledactivate" <?php echo ( 'on' === $this->form_values['newsman_smscancelledactivate'] ) ? 'checked' : ''; ?>/>

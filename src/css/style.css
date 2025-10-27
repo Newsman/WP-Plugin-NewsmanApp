@@ -15,14 +15,24 @@
 	padding: 3px 10px;
 }
 
+.newsman-sms-msg {
+	width: 20%;
+}
+
 .newsman-table td.newsman-sms-status {
+	width: 15%;
 	vertical-align: top;
 }
 
 .newsman-table td.newsman-sms-status label {
 	display: inline-block;
+	padding: 7px 0 7px 7px;
 	margin-right: 5px;
 	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .nzm-variable {
