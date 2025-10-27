@@ -288,7 +288,7 @@ $this->process_form();
 							<td>
 								<input name="newsman_developeractiveuserip" type="checkbox"
 									id="newsman_developeractiveuserip" <?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) && 'on' === $this->form_values['newsman_developeractiveuserip'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Warning, do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe.</p>
+								<p class="description<?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) ? ' nzm-description-error' : '' ); ?>">Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe.</p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) && 'on' === $this->form_values['newsman_developeractiveuserip'] ) ? 'table-row' : 'none'; ?>;">
