@@ -133,6 +133,8 @@ class WP_Newsman {
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
 		// Enqueue plugin styles in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
+		// Enqueue plugin scripts in admin.
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
 	}
 
 	/**
