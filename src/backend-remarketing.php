@@ -27,18 +27,18 @@ $this->process_form();
 	</a>
 </div>
 <div class="tabset">
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="newsmanBtn">Newsman</label>
+	<input type="radio" name="tabset" id="tabNewsman" aria-controls="">
+	<label for="tabNewsman" id="newsmanBtn">Newsman</label>
 	<input type="radio" name="tabset" id="tabSync" aria-controls="">
 	<label for="tabSync" id="syncBtn">Sync</label>
 	<input type="radio" name="tabset" id="tabRemarketing" aria-controls="" checked>
 	<label for="tabRemarketing" id="remarketingBtn">Remarketing</label>
 	<?php if ( $this->is_woo_commerce_exists() ) : ?>
-		<input type="radio" name="tabset" id="" aria-controls="">
-		<label for="" id="smsBtn">SMS</label>
+		<input type="radio" name="tabset" id="tabSms" aria-controls="">
+		<label for="tabSms" id="smsBtn">SMS</label>
 	<?php endif; ?>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="settingsBtn">Settings</label>
+	<input type="radio" name="tabset" id="tabSettings" aria-controls="">
+	<label for="tabSettings" id="settingsBtn">Settings</label>
 	<div class="tab-panels">
 	<section id="tabRemarketing" class="tab-panel">
 		<div class="wrap wrap-settings-admin-page">

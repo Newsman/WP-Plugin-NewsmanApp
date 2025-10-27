@@ -53,18 +53,18 @@ $this->process_form();
 	</a>
 </div>
 <div class="tabset">
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="newsmanBtn">Newsman</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="syncBtn">Sync</label>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="remarketingBtn">Remarketing</label>
+	<input type="radio" name="tabset" id="tabNewsman" aria-controls="">
+	<label for="tabNewsman" id="newsmanBtn">Newsman</label>
+	<input type="radio" name="tabset" id="tabSync" aria-controls="">
+	<label for="tabSync" id="syncBtn">Sync</label>
+	<input type="radio" name="tabset" id="tabRemarketing" aria-controls="">
+	<label for="tabRemarketing" id="remarketingBtn">Remarketing</label>
 	<?php if ( $this->is_woo_commerce_exists() ) : ?>
-		<input type="radio" name="tabset" id="" aria-controls="">
-		<label for="" id="smsBtn">SMS</label>
+		<input type="radio" name="tabset" id="tabSmsBtn" aria-controls="" checked>
+		<label for="tabSmsBtn" id="smsBtn">SMS</label>
 	<?php endif; ?>
-	<input type="radio" name="tabset" id="" aria-controls="">
-	<label for="" id="settingsBtn">Settings</label>
+	<input type="radio" name="tabset" id="tabSettings" aria-controls="">
+	<label for="tabSettings" id="settingsBtn">Settings</label>
 	<!--<input type="radio" name="tabset" id="" aria-controls="">
 	<label for="" id="widgetBtn">Widget</label>-->
 	<div class="tab-panels">
@@ -118,7 +118,7 @@ $this->process_form();
 										<p class="description nzm-description-error"><?php echo esc_html__( 'Please save a SMS list to start sending SMS.', 'newsman' ); ?></p>
 									<?php endif; ?>
 								<?php } else { ?>
-									<p class="description"><?php echo esc_html__( 'The SMS lists dropdown shows when Use SMS is enabled.', 'newsman' ); ?></p>
+									<p class="description"><?php echo esc_html__( 'The SMS lists dropdown is displayed when Use SMS is enabled.', 'newsman' ); ?></p>
 								<?php } ?>
 							</td>
 						</tr>
