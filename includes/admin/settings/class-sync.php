@@ -108,22 +108,24 @@ class Sync extends Settings {
 				$this->available_lists    = $this->retrieve_api_all_lists();
 				$this->available_segments = array();
 				if ( false !== $this->available_lists ) {
-					if ( ! empty( $this->form_values['newsman_list'] ) ) {
-						$this->available_segments = $this->retrieve_api_all_segments( $this->form_values['newsman_list'] );
+					if ( ! empty( $this->get_form_value( 'newsman_list' ) ) ) {
+						$this->available_segments = $this->retrieve_api_all_segments(
+							$this->get_form_value( 'newsman_list' )
+						);
 					}
 
 					// If the current list doesn't have the configured segment (ID) than save empty in configured segment ID.
-					if ( ! empty( $this->form_values['newsman_segments'] ) ) {
+					if ( ! empty( $this->get_form_value( 'newsman_segments' ) ) ) {
 						$found_segment = false;
 						foreach ( $this->available_segments as $item ) {
-							if ( $this->form_values['newsman_segments'] === (string) $item['segment_id'] ) {
+							if ( $this->get_form_value( 'newsman_segments' ) === (string) $item['segment_id'] ) {
 								$found_segment = true;
 								break;
 							}
 						}
 						if ( ! $found_segment ) {
 							update_option( 'newsman_segments', '', Config::AUTOLOAD_OPTIONS );
-							$this->form_values['newsman_segments'] = '';
+							$this->set_form_value( 'newsman_segments', '' );
 						}
 					}
 				} else {
@@ -148,8 +150,10 @@ class Sync extends Settings {
 			try {
 				$this->available_lists = $this->retrieve_api_all_lists();
 				if ( false !== $this->available_lists ) {
-					if ( ! empty( $this->form_values['newsman_list'] ) ) {
-						$this->available_segments = $this->retrieve_api_all_segments( $this->form_values['newsman_list'] );
+					if ( ! empty( $this->get_form_value( 'newsman_list' ) ) ) {
+						$this->available_segments = $this->retrieve_api_all_segments(
+							$this->get_form_value( 'newsman_list' )
+						);
 					}
 				} else {
 					$this->valid_credentials = false;
@@ -175,7 +179,7 @@ class Sync extends Settings {
 	 */
 	public function install_products_feed() {
 		$exists = new WooCommerceExist();
-		if ( empty( $this->form_values['newsman_list'] ) || ! $exists->exist() ) {
+		if ( empty( $this->get_form_value( 'newsman_list' ) ) || ! $exists->exist() ) {
 			return;
 		}
 
@@ -192,7 +196,7 @@ class Sync extends Settings {
 
 		$url    = get_site_url() . '/?newsman=products.json&nzmhash=' . $this->get_config()->get_api_key();
 		$result = $this->set_feed_on_list(
-			$this->form_values['newsman_list'],
+			$this->get_form_value( 'newsman_list' ),
 			$url,
 			get_site_url(),
 			'NewsMAN',
@@ -207,7 +211,7 @@ class Sync extends Settings {
 			$auth_name  = $this->generate_random_header_name();
 			$auth_value = $this->generate_random_password();
 			$result     = $this->update_feed_authorize(
-				$this->form_values['newsman_list'],
+				$this->get_form_value( 'newsman_list' ),
 				$result['feed_id'],
 				$auth_name,
 				$auth_value

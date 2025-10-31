@@ -20,6 +20,7 @@ if ( ! $this->validate_nonce( array( $this->form_id ) ) ) {
 $this->create_nonce();
 
 $this->process_form();
+$form_values = $this->get_form_values();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
@@ -59,7 +60,7 @@ $this->process_form();
 							</th>
 							<td>
 								<input type="text" name="newsman_apikey" id="newsman_apikey"
-									value="<?php echo esc_attr( $this->form_values['newsman_apikey'] ); ?>"/>
+									value="<?php echo esc_attr( $form_values['newsman_apikey'] ); ?>"/>
 							</td>
 						</tr>
 						<tr>
@@ -68,7 +69,7 @@ $this->process_form();
 							</th>
 							<td>
 								<input type="text" name="newsman_userid" id="newsman_userid"
-									value="<?php echo esc_attr( $this->form_values['newsman_userid'] ); ?>"/>
+									value="<?php echo esc_attr( $form_values['newsman_userid'] ); ?>"/>
 							</td>
 						</tr>
 						<tr>
@@ -90,7 +91,7 @@ $this->process_form();
 							</th>
 							<td>
 								<input name="newsman_api" type="checkbox"
-									id="newsman_api" <?php echo ( ! empty( $this->form_values['newsman_api'] ) && 'on' === $this->form_values['newsman_api'] ) ? 'checked' : ''; ?>/>
+									id="newsman_api" <?php echo ( ! empty( $form_values['newsman_api'] ) && 'on' === $form_values['newsman_api'] ) ? 'checked' : ''; ?>/>
 							</td>
 						</tr>
 						<tr>
@@ -99,17 +100,17 @@ $this->process_form();
 							</th>
 							<td>
 								<input name="newsman_senduserip" type="checkbox"
-									id="newsman_senduserip" <?php echo ( ! empty( $this->form_values['newsman_senduserip'] ) && 'on' === $this->form_values['newsman_senduserip'] ) ? 'checked' : ''; ?>/>
+									id="newsman_senduserip" <?php echo ( ! empty( $form_values['newsman_senduserip'] ) && 'on' === $form_values['newsman_senduserip'] ) ? 'checked' : ''; ?>/>
 							</td>
 						</tr>
-						<tr style="display: <?php echo ( ! ( ! empty( $this->form_values['newsman_senduserip'] ) && 'on' === $this->form_values['newsman_senduserip'] ) ) ? 'table-row' : 'none'; ?>;">
+						<tr style="display: <?php echo ( ! ( ! empty( $form_values['newsman_senduserip'] ) && 'on' === $form_values['newsman_senduserip'] ) ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_serverip">Server IP Address</label>
 							</th>
 							<td>
 								<input type="text" id="newsman_serverip"
 									name="newsman_serverip"
-									value="<?php echo ( ! empty( $this->form_values['newsman_serverip'] ) ) ? esc_attr( $this->form_values['newsman_serverip'] ) : ''; ?>"/>
+									value="<?php echo ( ! empty( $form_values['newsman_serverip'] ) ) ? esc_attr( $form_values['newsman_serverip'] ) : ''; ?>"/>
 								<p class="description">Please set the public IP address of the server if the user IP address is not sent. Newsman subscribe to newsletter requires an IP address.</p>
 							</td>
 						</tr>
@@ -119,7 +120,7 @@ $this->process_form();
 							</th>
 							<td>
 								<input type="text" name="newsman_export_authorize_header_name" id="newsman_export_authorize_header_name"
-									value="<?php echo esc_attr( $this->form_values['newsman_export_authorize_header_name'] ); ?>"/>
+									value="<?php echo esc_attr( $form_values['newsman_export_authorize_header_name'] ); ?>"/>
 								<p class="description">HTTP Header Authorization Name. Please set only alphanumeric characters and minus character.
 									Please go to <a target="_blank" href="https://newsman.app/manager">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization. Newsman will be able to import product feeds securely.</p>
 							</td>
@@ -130,7 +131,7 @@ $this->process_form();
 							</th>
 							<td>
 								<input type="text" name="newsman_export_authorize_header_key" id="newsman_export_authorize_header_key"
-									value="<?php echo esc_attr( $this->form_values['newsman_export_authorize_header_key'] ); ?>"/>
+									value="<?php echo esc_attr( $form_values['newsman_export_authorize_header_key'] ); ?>"/>
 								<p class="description">HTTP Header Authorization Key. Please set only alphanumeric characters and minus character.
 									Please go to <a target="_blank" href="https://newsman.app/manager">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization. Newsman will be able to import product feeds securely.</p>
 							</td>
@@ -145,7 +146,7 @@ $this->process_form();
 							</th>
 							<td>
 								<input name="newsman_checkoutnewsletter" type="checkbox"
-									id="newsman_checkoutnewsletter" <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'checked' : ''; ?>/>
+									id="newsman_checkoutnewsletter" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'checked' : ''; ?>/>
 								<p class="description">Enable checkbox to subscribe to newsletter.</p>
 							</td>
 						</tr>
@@ -155,21 +156,21 @@ $this->process_form();
 							</th>
 							<td>
 								<input name="newsman_checkoutsms" type="checkbox"
-									id="newsman_checkoutsms" <?php echo ( ! empty( $this->form_values['newsman_checkoutsms'] ) && 'on' === $this->form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
+									id="newsman_checkoutsms" <?php echo ( ! empty( $form_values['newsman_checkoutsms'] ) && 'on' === $form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
 								<p class="description">Enable subscribe after checkout to SMS list with order billing telephone number.</p>
 							</td>
 						</tr>
 						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_checkoutnewslettertype">Newsletter Opt-in type</label>
 							</th>
 							<td>
 								<select name="newsman_checkoutnewslettertype" id="newsman_checkoutnewslettertype">
-									<option value="save" <?php echo ( 'save' === $this->form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
+									<option value="save" <?php echo ( 'save' === $form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
 										Opt-in
 									</option>
-									<option value="init" <?php echo ( 'init' === $this->form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
+									<option value="init" <?php echo ( 'init' === $form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
 										Double Opt-in
 									</option>
 								</select>
@@ -177,34 +178,34 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_checkoutnewslettermessage">Checkbox label</label>
 							</th>
 							<td>
 								<input type="text" id="newsman_checkoutnewslettermessage"
 									name="newsman_checkoutnewslettermessage"
-									value="<?php echo ( ! empty( $this->form_values['newsman_checkoutnewslettermessage'] ) ) ? esc_attr( $this->form_values['newsman_checkoutnewslettermessage'] ) : 'Subscribe to our newsletter'; ?>"/>
+									value="<?php echo ( ! empty( $form_values['newsman_checkoutnewslettermessage'] ) ) ? esc_attr( $form_values['newsman_checkoutnewslettermessage'] ) : 'Subscribe to our newsletter'; ?>"/>
 							</td>
 						</tr>
 						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_checkoutnewsletterdefault">Is checkbox checked by default ?</label>
 							</th>
 							<td>
 								<input name="newsman_checkoutnewsletterdefault" type="checkbox"
-									id="newsman_checkoutnewsletterdefault" <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletterdefault'] ) && 'on' === $this->form_values['newsman_checkoutnewsletterdefault'] ) ? 'checked' : ''; ?>/>
+									id="newsman_checkoutnewsletterdefault" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletterdefault'] ) && 'on' === $form_values['newsman_checkoutnewsletterdefault'] ) ? 'checked' : ''; ?>/>
 							</td>
 						</tr>
 						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $this->form_values['newsman_checkoutnewsletter'] ) && 'on' === $this->form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_form_id">Confirmation email Form ID.</label>
 							</th>
 							<td>
 								<input type="text" id="newsman_form_id" name="newsman_form_id"
-									value="<?php echo ( ! empty( $this->form_values['newsman_form_id'] ) ) ? esc_attr( $this->form_values['newsman_form_id'] ) : ''; ?>"
+									value="<?php echo ( ! empty( $form_values['newsman_form_id'] ) ) ? esc_attr( $form_values['newsman_form_id'] ) : ''; ?>"
 									placeholder="form id"/>
 								<p class="description">Form ID used for the confirmation email / form settings. Forms can be created in <a target="_blank" href="https://newsman.app/manager">newsman.app</a> &gt; Forms.</p>
 							</td>
@@ -223,46 +224,46 @@ $this->process_form();
 								// @see WC_Log_Level::$level_to_severity
 								?>
 								<select name="newsman_developerlogseverity" id="">
-									<option value="2000" <?php echo ( '2000' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>>
+									<option value="2000" <?php echo ( '2000' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>>
 										No Logging
 									</option>
 									<option value="800" 
-										<?php echo ( '800' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '800' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Emergency', 'woocommerce' ) ); ?>
 									</option>
 									<option value="700" 
-										<?php echo ( '700' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '700' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Alert', 'woocommerce' ) ); ?>
 									</option>
 									<option value="600" 
-										<?php echo ( '600' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '600' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Critical', 'woocommerce' ) ); ?>
 									</option>
 									<option value="500" 
-										<?php echo ( '500' === $this->form_values['newsman_developerlogseverity'] || empty( $this->form_values['newsman_developerlogseverity'] ) ) ? "selected = ''" : ''; ?>
+										<?php echo ( '500' === $form_values['newsman_developerlogseverity'] || empty( $form_values['newsman_developerlogseverity'] ) ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Error', 'woocommerce' ) ); ?>
 									</option>
 									<option value="400" 
-										<?php echo ( '400' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '400' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Warning', 'woocommerce' ) ); ?>
 									</option>
 									<option value="300" 
-										<?php echo ( '300' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '300' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Notice', 'woocommerce' ) ); ?>
 									</option>
 									<option value="200" 
-										<?php echo ( '200' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '200' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Info', 'woocommerce' ) ); ?>
 									</option>
 									<option value="100" 
-										<?php echo ( '100' === $this->form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
+										<?php echo ( '100' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>
 									>
 										<?php echo esc_html( __( 'Debug', 'woocommerce' ) ); ?>
 									</option>
@@ -270,14 +271,14 @@ $this->process_form();
 							</td>
 						</tr>
 						<tr class="newsman_apiPanel"
-							style="display: <?php echo ( ! empty( $this->form_values['newsman_api'] ) && 'on' === $this->form_values['newsman_api'] ) ? 'table-row' : 'none'; ?>;">
+							style="display: <?php echo ( ! empty( $form_values['newsman_api'] ) && 'on' === $form_values['newsman_api'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_developerapitimeout">API Timeout</label>
 							</th>
 							<td>
 								<input type="number" step="1" id="newsman_developerapitimeout"
 									name="newsman_developerapitimeout"
-									value="<?php echo ( ! empty( $this->form_values['newsman_developerapitimeout'] ) ) ? esc_attr( $this->form_values['newsman_developerapitimeout'] ) : ''; ?>"
+									value="<?php echo ( ! empty( $form_values['newsman_developerapitimeout'] ) ) ? esc_attr( $form_values['newsman_developerapitimeout'] ) : ''; ?>"
 									placeholder="5"/>
 							</td>
 						</tr>
@@ -287,18 +288,18 @@ $this->process_form();
 							</th>
 							<td>
 								<input name="newsman_developeractiveuserip" type="checkbox"
-									id="newsman_developeractiveuserip" <?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) && 'on' === $this->form_values['newsman_developeractiveuserip'] ) ? 'checked' : ''; ?>/>
-								<p class="description<?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) ? ' nzm-description-error' : '' ); ?>">Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe.</p>
+									id="newsman_developeractiveuserip" <?php echo ( ! empty( $form_values['newsman_developeractiveuserip'] ) && 'on' === $form_values['newsman_developeractiveuserip'] ) ? 'checked' : ''; ?>/>
+								<p class="description<?php echo ( ! empty( $form_values['newsman_developeractiveuserip'] ) ? ' nzm-description-error' : '' ); ?>">Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe.</p>
 							</td>
 						</tr>
-						<tr style="display: <?php echo ( ! empty( $this->form_values['newsman_developeractiveuserip'] ) && 'on' === $this->form_values['newsman_developeractiveuserip'] ) ? 'table-row' : 'none'; ?>;">
+						<tr style="display: <?php echo ( ! empty( $form_values['newsman_developeractiveuserip'] ) && 'on' === $form_values['newsman_developeractiveuserip'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_developeruserip">Test User IP address</label>
 							</th>
 							<td>
 								<input type="text" id="newsman_developeruserip"
 									name="newsman_developeruserip"
-									value="<?php echo ( ! empty( $this->form_values['newsman_developeruserip'] ) ) ? esc_attr( $this->form_values['newsman_developeruserip'] ) : ''; ?>"/>
+									value="<?php echo ( ! empty( $form_values['newsman_developeruserip'] ) ) ? esc_attr( $form_values['newsman_developeruserip'] ) : ''; ?>"/>
 								<p class="description">Valid user IP address.</p>
 							</td>
 						</tr>
@@ -310,7 +311,7 @@ $this->process_form();
 							<td>
 								<input type="text" id="newsman_developerpluginlazypriority"
 									name="newsman_developerpluginlazypriority"
-									value="<?php echo ( ! empty( $this->form_values['newsman_developerpluginlazypriority'] ) ) ? esc_attr( $this->form_values['newsman_developerpluginlazypriority'] ) : ''; ?>"/>
+									value="<?php echo ( ! empty( $form_values['newsman_developerpluginlazypriority'] ) ) ? esc_attr( $form_values['newsman_developerpluginlazypriority'] ) : ''; ?>"/>
 								<p class="description">Newsman plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20.</p>
 							</td>
 						</tr>
@@ -321,17 +322,17 @@ $this->process_form();
 								</th>
 								<td>
 									<input name="newsman_developer_use_action_scheduler" type="checkbox"
-										id="newsman_developer_use_action_scheduler" <?php echo ( ! empty( $this->form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $this->form_values['newsman_developer_use_action_scheduler'] ) ? 'checked' : ''; ?>/>
+										id="newsman_developer_use_action_scheduler" <?php echo ( ! empty( $form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $form_values['newsman_developer_use_action_scheduler'] ) ? 'checked' : ''; ?>/>
 									<p class="description">Use action scheduler plugin for some of Newsman API actions.</p>
 								</td>
 							</tr>
-							<tr style="display: <?php echo ( ! empty( $this->form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $this->form_values['newsman_developer_use_action_scheduler'] ) ? 'table-row' : 'none'; ?>;">
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $form_values['newsman_developer_use_action_scheduler'] ) ? 'table-row' : 'none'; ?>;">
 								<th scope="row">
 									<label class="nzm-label" for="newsman_developer_use_as_subscribe">Use Action Scheduler for Subscribe</label>
 								</th>
 								<td>
 									<input name="newsman_developer_use_as_subscribe" type="checkbox"
-										id="newsman_developer_use_as_subscribe" <?php echo ( ! empty( $this->form_values['newsman_developer_use_as_subscribe'] ) && 'on' === $this->form_values['newsman_developer_use_as_subscribe'] ) ? 'checked' : ''; ?>/>
+										id="newsman_developer_use_as_subscribe" <?php echo ( ! empty( $form_values['newsman_developer_use_as_subscribe'] ) && 'on' === $form_values['newsman_developer_use_as_subscribe'] ) ? 'checked' : ''; ?>/>
 									<p class="description">On storefront use action scheduler for subscribe to email and SMS lists actions.</p>
 								</td>
 							</tr>

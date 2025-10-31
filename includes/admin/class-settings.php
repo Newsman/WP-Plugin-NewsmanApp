@@ -154,7 +154,7 @@ class Settings {
 	}
 
 	/**
-	 * Returns the current message for the backend.
+	 * Returns the current message for backend.
 	 *
 	 * @return array The message array
 	 */
@@ -183,7 +183,14 @@ class Settings {
 				->set_api_key( $api_key );
 			$get_list_all = new \Newsman\Service\Configuration\GetListAll();
 			$lists_data   = $get_list_all->execute( $context );
-			return $lists_data;
+			return apply_filters(
+				'newsman_admin_settings_retrieve_api_all_lists',
+				$lists_data,
+				array(
+					'user_id' => $user_id,
+					'api_key' => $api_key,
+				)
+			);
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
 			return false;
@@ -213,7 +220,15 @@ class Settings {
 				->set_list_id( $list_id );
 			$get_segment_all = new \Newsman\Service\Configuration\GetSegmentAll();
 			$segments_data   = $get_segment_all->execute( $context );
-			return $segments_data;
+			return apply_filters(
+				'newsman_admin_settings_retrieve_api_all_segments',
+				$segments_data,
+				array(
+					'list_id' => $list_id,
+					'user_id' => $user_id,
+					'api_key' => $api_key,
+				)
+			);
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
 			return false;
@@ -241,7 +256,14 @@ class Settings {
 				->set_api_key( $api_key );
 			$get_sms_list_all = new \Newsman\Service\Configuration\Sms\GetListAll();
 			$lists_data       = $get_sms_list_all->execute( $context );
-			return $lists_data;
+			return apply_filters(
+				'newsman_admin_settings_retrieve_api_sms_all_lists',
+				$lists_data,
+				array(
+					'user_id' => $user_id,
+					'api_key' => $api_key,
+				)
+			);
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
 			return false;
@@ -270,9 +292,31 @@ class Settings {
 				->set_website( $website )
 				->set_type( $type )
 				->set_return_id( $return_id );
+			$context = apply_filters(
+				'newsman_admin_settings_set_feed_on_list_context',
+				$context,
+				array(
+					'list_id'   => $list_id,
+					'url'       => $url,
+					'website'   => $website,
+					'type'      => $type,
+					'return_id' => $return_id,
+				)
+			);
+
 			$set_feed = new \Newsman\Service\Configuration\SetFeedOnList();
 			$result   = $set_feed->execute( $context );
-			return $result;
+			return apply_filters(
+				'newsman_admin_settings_set_feed_on_list',
+				$result,
+				array(
+					'list_id'   => $list_id,
+					'url'       => $url,
+					'website'   => $website,
+					'type'      => $type,
+					'return_id' => $return_id,
+				)
+			);
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
 			return false;
@@ -470,7 +514,11 @@ class Settings {
 	 * @return void
 	 */
 	public function init_form_values_from_post() {
-		foreach ( $this->form_fields as $name ) {
+		$this->form_fields = apply_filters(
+			'newsman_admin_settings_init_form_values_from_post_before',
+			$this->get_form_fields()
+		);
+		foreach ( $this->get_form_fields() as $name ) {
 			$this->form_values[ $name ] = '';
 
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing
@@ -488,6 +536,13 @@ class Settings {
 				}
 			}
 		}
+		$this->set_form_values(
+			apply_filters(
+				'newsman_admin_settings_init_form_values_from_post_after',
+				$this->get_form_values(),
+				array( 'form_fields' => $this->get_form_fields() )
+			)
+		);
 	}
 
 	/**
@@ -496,9 +551,16 @@ class Settings {
 	 * @return void
 	 */
 	public function init_form_values_from_option() {
-		foreach ( $this->form_fields as $name ) {
+		foreach ( $this->get_form_fields() as $name ) {
 			$this->form_values[ $name ] = get_option( $name );
 		}
+		$this->set_form_values(
+			apply_filters(
+				'newsman_admin_settings_init_form_values_from_option',
+				$this->get_form_values(),
+				array( 'form_fields' => $this->get_form_fields() )
+			)
+		);
 	}
 
 	/**
@@ -507,11 +569,24 @@ class Settings {
 	 * @return array
 	 */
 	public function save_form_values() {
-		foreach ( $this->form_fields as $name ) {
+		$this->set_form_fields(
+			apply_filters(
+				'newsman_admin_settings_save_form_values_before',
+				$this->get_form_fields()
+			)
+		);
+		foreach ( $this->get_form_fields() as $name ) {
 			if ( isset( $this->form_values[ $name ] ) ) {
 				update_option( $name, $this->form_values[ $name ], Config::AUTOLOAD_OPTIONS );
 			}
 		}
+		$this->set_form_values(
+			apply_filters(
+				'newsman_admin_settings_save_form_values_after',
+				$this->get_form_values(),
+				array( 'form_fields' => $this->get_form_fields() )
+			)
+		);
 
 		return $this->form_values;
 	}
@@ -541,5 +616,85 @@ class Settings {
 	 */
 	public function is_action_scheduler_exists() {
 		return $this->action_scheduler->exist();
+	}
+
+	/**
+	 * Set form fields
+	 *
+	 * @param array $form_fields Set form fields.
+	 * @return void
+	 */
+	public function set_form_fields( $form_fields ) {
+		$form_fields       = apply_filters(
+			'newsman_admin_settings_set_form_fields',
+			$form_fields
+		);
+		$this->form_fields = $form_fields;
+	}
+
+	/**
+	 * Get form fields
+	 *
+	 * @return array
+	 */
+	public function get_form_fields() {
+		return apply_filters(
+			'newsman_admin_settings_get_form_fields',
+			$this->form_fields
+		);
+	}
+
+	/**
+	 * Set form values
+	 *
+	 * @param array $form_values Set form values.
+	 * @return void
+	 */
+	public function set_form_values( $form_values ) {
+		$form_values       = apply_filters(
+			'newsman_admin_settings_set_form_values',
+			$form_values
+		);
+		$this->form_values = $form_values;
+	}
+
+	/**
+	 * Get form values
+	 *
+	 * @return array
+	 */
+	public function get_form_values() {
+		return apply_filters(
+			'newsman_admin_settings_get_form_values',
+			$this->form_values
+		);
+	}
+
+	/**
+	 * Set form value by name
+	 *
+	 * @param string     $name Name of value.
+	 * @param mixed|null $value Value to set.
+	 * @return $this
+	 */
+	public function set_form_value( $name, $value ) {
+		$value = apply_filters(
+			'newsman_admin_settings_set_form_value_' . $name,
+			$value
+		);
+
+		$this->form_values[ $name ] = $value;
+		return $this;
+	}
+
+	/**
+	 * Get form value by name
+	 *
+	 * @param string $name Name of value.
+	 * @return mixed|null
+	 */
+	public function get_form_value( $name ) {
+		$value = apply_filters( 'newsman_admin_settings_get_form_value_' . $name, $this->form_values[ $name ] );
+		return $value;
 	}
 }

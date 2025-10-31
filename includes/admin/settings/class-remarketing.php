@@ -131,6 +131,9 @@ class Remarketing extends Settings {
 	 * @return array
 	 */
 	public function get_customer_attributes() {
-		return $this->customer_attributes;
+		return apply_filters(
+			'newsman_admin_settings_remarketing_customer_attributes',
+			$this->customer_attributes
+		);
 	}
 }

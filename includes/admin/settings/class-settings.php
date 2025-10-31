@@ -98,8 +98,8 @@ class Settings extends \Newsman\Admin\Settings {
 
 			try {
 				$available_lists = $this->retrieve_api_all_lists(
-					$this->form_values['newsman_userid'],
-					$this->form_values['newsman_apikey']
+					$this->get_form_value( 'newsman_userid' ),
+					$this->get_form_value( 'newsman_apikey' )
 				);
 
 				if ( false === $available_lists ) {

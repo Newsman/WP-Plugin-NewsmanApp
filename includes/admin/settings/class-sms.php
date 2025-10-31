@@ -84,6 +84,7 @@ class Sms extends Settings {
 		parent::__construct();
 		$this->sms_config = \Newsman\Config\Sms::init();
 	}
+
 	/**
 	 * Includes the html for the admin page.
 	 *

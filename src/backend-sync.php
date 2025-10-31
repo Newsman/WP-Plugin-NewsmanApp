@@ -20,6 +20,7 @@ if ( ! $this->validate_nonce( array( $this->form_id ) ) ) {
 $this->create_nonce();
 
 $this->process_form();
+$form_values = $this->get_form_values();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
@@ -60,7 +61,7 @@ $this->process_form();
 									if ( ! empty( $this->available_lists ) ) {
 										foreach ( $this->available_lists as $item ) {
 											?>
-										<option value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === strval( $this->form_values['newsman_list'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
+										<option value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === strval( $form_valuess['newsman_list'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
 											<?php
 										}
 									}
@@ -80,7 +81,7 @@ $this->process_form();
 									if ( ! empty( $this->available_segments ) ) {
 										foreach ( $this->available_segments as $item ) {
 											?>
-										<option value="<?php echo esc_attr( $item['segment_id'] ); ?>" <?php echo ( strval( $item['segment_id'] ) === strval( $this->form_values['newsman_segments'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['segment_name'] ); ?></option>
+										<option value="<?php echo esc_attr( $item['segment_id'] ); ?>" <?php echo ( strval( $item['segment_id'] ) === strval( $form_valuess['newsman_segments'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['segment_name'] ); ?></option>
 											<?php
 										}
 									}
@@ -101,7 +102,7 @@ $this->process_form();
 									if ( ! empty( $this->available_sms_lists ) ) {
 										foreach ( $this->available_sms_lists as $item ) {
 											?>
-										<option value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === $this->form_values['newsman_smslist'] ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
+										<option value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === $form_valuess['newsman_smslist'] ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
 											<?php
 										}
 									}
