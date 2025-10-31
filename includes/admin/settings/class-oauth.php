@@ -207,16 +207,16 @@ class Oauth extends Settings {
 		$creds->newsman_userid = apply_filters( 'newsman_admin_settings_oauth_update_userid', $creds->newsman_userid );
 		$creds->newsman_apikey = apply_filters( 'newsman_admin_settings_oauth_update_apikey', $creds->newsman_apikey );
 		$list_id               = apply_filters( 'newsman_admin_settings_oauth_update_list_id', $list_id );
-		update_option( 'newsman_userid', $creds->newsman_userid, \Newsman\Config::AUTOLOAD_OPTIONS );
-		update_option( 'newsman_apikey', $creds->newsman_apikey, \Newsman\Config::AUTOLOAD_OPTIONS );
-		update_option( 'newsman_list', $list_id, \Newsman\Config::AUTOLOAD_OPTIONS );
+		update_option( 'newsman_userid', esc_html( $creds->newsman_userid ), \Newsman\Config::AUTOLOAD_OPTIONS );
+		update_option( 'newsman_apikey', esc_html( $creds->newsman_apikey ), \Newsman\Config::AUTOLOAD_OPTIONS );
+		update_option( 'newsman_list', esc_html( $list_id ), \Newsman\Config::AUTOLOAD_OPTIONS );
 
 		$settings = $this->get_remarketing_settings( $list_id, $creds->newsman_userid, $creds->newsman_apikey );
 		if ( ! empty( $settings ) && is_array( $settings ) ) {
 			$remarketing_id = $settings['site_id'] . '-' . $settings['list_id'] . '-' . $settings['form_id'] .
 				'-' . $settings['control_list_hash'];
 			$remarketing_id = apply_filters( 'newsman_admin_settings_oauth_update_remarketing_id', $remarketing_id );
-			update_option( 'newsman_remarketingid', $remarketing_id, \Newsman\Config::AUTOLOAD_OPTIONS );
+			update_option( 'newsman_remarketingid', esc_html( $remarketing_id ), \Newsman\Config::AUTOLOAD_OPTIONS );
 		}
 
 		// Set feed.

@@ -97,7 +97,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_usesms">Use SMS</label>
 							</th>
 							<td>
-								<input name="newsman_usesms" type="checkbox" id="newsman_usesms" <?php echo ( 'on' === $form_valuess['newsman_usesms'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_usesms" type="checkbox" id="newsman_usesms" <?php echo ( 'on' === $form_values['newsman_usesms'] ) ? 'checked' : ''; ?>/>
 							</td>
 						</tr>
 						<tr>
@@ -105,17 +105,17 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_smslist">Select SMS List</label>
 							</th>
 							<td colspan="2">
-								<?php if ( 'on' === $form_valuess['newsman_usesms'] && ! empty( $this->available_smslists ) ) { ?>
+								<?php if ( 'on' === $form_values['newsman_usesms'] && ! empty( $this->available_smslists ) ) { ?>
 									<select name="newsman_smslist" id="">
 										<option value="0">-- select list --</option>
 											<?php
 											foreach ( $this->available_smslists as $item ) {
 												?>
 												<option
-													value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === strval( $form_valuess['newsman_smslist'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
+													value="<?php echo esc_attr( $item['list_id'] ); ?>" <?php echo ( strval( $item['list_id'] ) === strval( $form_values['newsman_smslist'] ) ) ? "selected = ''" : ''; ?>><?php echo esc_html( $item['list_name'] ); ?></option>
 											<?php } ?>
 									</select>
-									<?php if ( empty( $form_valuess['newsman_smslist'] ) ) : ?>
+									<?php if ( empty( $form_values['newsman_smslist'] ) ) : ?>
 										<p class="description nzm-description-error"><?php echo esc_html__( 'Please save a SMS list to start sending SMS.', 'newsman' ); ?></p>
 									<?php endif; ?>
 								<?php } else { ?>
@@ -138,11 +138,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smspendingactivate">Pending | Active</label>
-								<input name="newsman_smspendingactivate" type="checkbox" id="newsman_smspendingactivate" <?php echo ( 'on' === $form_valuess['newsman_smspendingactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smspendingactivate" type="checkbox" id="newsman_smspendingactivate" <?php echo ( 'on' === $form_values['newsman_smspendingactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smspendingtextPanel" <?php echo ( empty( $form_valuess['newsman_smspendingactivate'] ) || 'off' === $form_valuess['newsman_smspendingactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smspendingtextPanel" <?php echo ( empty( $form_values['newsman_smspendingactivate'] ) || 'off' === $form_values['newsman_smspendingactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smspendingtext">Message</label>
-								<textarea id="newsman_smspendingtext" name="newsman_smspendingtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smspendingtext'] ) ) ? esc_html( $form_valuess['newsman_smspendingtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smspendingtext" name="newsman_smspendingtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smspendingtext'] ) ) ? esc_html( $form_values['newsman_smspendingtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smspendingdescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -150,11 +150,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsfailedactivate">Failed | Active</label>
-								<input name="newsman_smsfailedactivate" type="checkbox" id="newsman_smsfailedactivate" <?php echo ( 'on' === $form_valuess['newsman_smsfailedactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smsfailedactivate" type="checkbox" id="newsman_smsfailedactivate" <?php echo ( 'on' === $form_values['newsman_smsfailedactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smsfailedtextPanel" <?php echo ( empty( $form_valuess['newsman_smsfailedactivate'] ) || 'off' === $form_valuess['newsman_smsfailedactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smsfailedtextPanel" <?php echo ( empty( $form_values['newsman_smsfailedactivate'] ) || 'off' === $form_values['newsman_smsfailedactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsfailedtext">Message</label>
-								<textarea id="newsman_smsfailedtext" name="newsman_smsfailedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smsfailedtext'] ) ) ? esc_html( $form_valuess['newsman_smsfailedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smsfailedtext" name="newsman_smsfailedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsfailedtext'] ) ) ? esc_html( $form_values['newsman_smsfailedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smsfaileddescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -162,11 +162,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsonholdactivate">On Hold | Active</label>
-								<input name="newsman_smsonholdactivate" type="checkbox" id="newsman_smsonholdactivate" <?php echo ( 'on' === $form_valuess['newsman_smsonholdactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smsonholdactivate" type="checkbox" id="newsman_smsonholdactivate" <?php echo ( 'on' === $form_values['newsman_smsonholdactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smsonholdtextPanel" <?php echo ( empty( $form_valuess['newsman_smsonholdactivate'] ) || 'off' === $form_valuess['newsman_smsonholdactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smsonholdtextPanel" <?php echo ( empty( $form_values['newsman_smsonholdactivate'] ) || 'off' === $form_values['newsman_smsonholdactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsonholdtext">Message</label>
-								<textarea id="newsman_smsonholdtext" name="newsman_smsonholdtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smsonholdtext'] ) ) ? esc_html( $form_valuess['newsman_smsonholdtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smsonholdtext" name="newsman_smsonholdtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsonholdtext'] ) ) ? esc_html( $form_values['newsman_smsonholdtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smsonholddescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -174,11 +174,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsprocessingactivate">Processing | Active</label>
-								<input name="newsman_smsprocessingactivate" type="checkbox" id="newsman_smsprocessingactivate" <?php echo ( 'on' === $form_valuess['newsman_smsprocessingactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smsprocessingactivate" type="checkbox" id="newsman_smsprocessingactivate" <?php echo ( 'on' === $form_values['newsman_smsprocessingactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smsprocessingtextPanel" <?php echo ( empty( $form_valuess['newsman_smsprocessingactivate'] ) || 'off' === $form_valuess['newsman_smsprocessingactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smsprocessingtextPanel" <?php echo ( empty( $form_values['newsman_smsprocessingactivate'] ) || 'off' === $form_values['newsman_smsprocessingactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsprocessingtext">Message</label>
-								<textarea id="newsman_smsprocessingtext" name="newsman_smsprocessingtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smsprocessingtext'] ) ) ? esc_html( $form_valuess['newsman_smsprocessingtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smsprocessingtext" name="newsman_smsprocessingtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsprocessingtext'] ) ) ? esc_html( $form_values['newsman_smsprocessingtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smsprocessingdescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -186,11 +186,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smscompletedactivate">Completed | Active</label>
-								<input name="newsman_smscompletedactivate" type="checkbox" id="newsman_smscompletedactivate" <?php echo ( 'on' === $form_valuess['newsman_smscompletedactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smscompletedactivate" type="checkbox" id="newsman_smscompletedactivate" <?php echo ( 'on' === $form_values['newsman_smscompletedactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smscompletedtextPanel" <?php echo ( empty( $form_valuess['newsman_smscompletedactivate'] ) || 'off' === $form_valuess['newsman_smscompletedactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smscompletedtextPanel" <?php echo ( empty( $form_values['newsman_smscompletedactivate'] ) || 'off' === $form_values['newsman_smscompletedactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smscompletedtext">Message</label>
-								<textarea id="newsman_smscompletedtext" name="newsman_smscompletedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smscompletedtext'] ) ) ? esc_html( $form_valuess['newsman_smscompletedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smscompletedtext" name="newsman_smscompletedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smscompletedtext'] ) ) ? esc_html( $form_values['newsman_smscompletedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smscompleteddescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -198,11 +198,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smsrefundedactivate">Refunded | Active</label>
-								<input name="newsman_smsrefundedactivate" type="checkbox" id="newsman_smsrefundedactivate" <?php echo ( 'on' === $form_valuess['newsman_smsrefundedactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smsrefundedactivate" type="checkbox" id="newsman_smsrefundedactivate" <?php echo ( 'on' === $form_values['newsman_smsrefundedactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smsrefundedtextPanel" <?php echo ( empty( $form_valuess['newsman_smsrefundedactivate'] ) || 'off' === $form_valuess['newsman_smsrefundedactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smsrefundedtextPanel" <?php echo ( empty( $form_values['newsman_smsrefundedactivate'] ) || 'off' === $form_values['newsman_smsrefundedactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsrefundedtext">Message</label>
-								<textarea id="newsman_smsrefundedtext" name="newsman_smsrefundedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smsrefundedtext'] ) ) ? esc_html( $form_valuess['newsman_smsrefundedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smsrefundedtext" name="newsman_smsrefundedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsrefundedtext'] ) ) ? esc_html( $form_values['newsman_smsrefundedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smsrefundeddescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -210,11 +210,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman-sms-msg">&nbsp;</td>
 							<td class="newsman-sms-status">
 								<label for="newsman_smscancelledactivate">Canceled | Active</label>
-								<input name="newsman_smscancelledactivate" type="checkbox" id="newsman_smscancelledactivate" <?php echo ( 'on' === $form_valuess['newsman_smscancelledactivate'] ) ? 'checked' : ''; ?>/>
+								<input name="newsman_smscancelledactivate" type="checkbox" id="newsman_smscancelledactivate" <?php echo ( 'on' === $form_values['newsman_smscancelledactivate'] ) ? 'checked' : ''; ?>/>
 							</td>
-							<td class="newsman_smscancelledtextPanel" <?php echo ( empty( $form_valuess['newsman_smscancelledactivate'] ) || 'off' === $form_valuess['newsman_smscancelledactivate'] ) ? 'style="display: none;"' : ''; ?>>
+							<td class="newsman_smscancelledtextPanel" <?php echo ( empty( $form_values['newsman_smscancelledactivate'] ) || 'off' === $form_values['newsman_smscancelledactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smscancelledtext">Message</label>
-								<textarea id="newsman_smscancelledtext" name="newsman_smscancelledtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_valuess['newsman_smscancelledtext'] ) ) ? esc_html( $form_valuess['newsman_smscancelledtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
+								<textarea id="newsman_smscancelledtext" name="newsman_smscancelledtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smscancelledtext'] ) ) ? esc_html( $form_values['newsman_smscancelledtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
 								<p class="newsman_smscancelleddescription" style="padding: 5px;">Variables: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
 							</td>
 						</tr>
@@ -226,7 +226,7 @@ $form_values = $this->get_form_values();
 							<label class="nzm-label" for="newsman_smstest">Activate test mode</label>
 						</th>
 						<td>
-							<input name="newsman_smstest" type="checkbox" id="newsman_smstest" <?php echo ( 'on' === $form_valuess['newsman_smstest'] ) ? 'checked' : ''; ?>/>
+							<input name="newsman_smstest" type="checkbox" id="newsman_smstest" <?php echo ( 'on' === $form_values['newsman_smstest'] ) ? 'checked' : ''; ?>/>
 							<p class="description">The message will be sent to your specified phone and not to customer phone. SMS are sent on order status changes.</p>
 						</td>
 					</tr>
@@ -235,7 +235,7 @@ $form_values = $this->get_form_values();
 							<label class="nzm-label" for="newsman_smstestnr">Phone for tests</label>
 						</th>
 						<td>
-							<input id="newsman_smstestnr" name="newsman_smstestnr" value="<?php echo esc_attr( $form_valuess['newsman_smstestnr'] ); ?>" /> Ex: 0720998111
+							<input id="newsman_smstestnr" name="newsman_smstestnr" value="<?php echo esc_attr( $form_values['newsman_smstestnr'] ); ?>" /> Ex: 0720998111
 						</td>
 					</tr>
 					</table>

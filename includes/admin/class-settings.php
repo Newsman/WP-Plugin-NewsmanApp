@@ -575,11 +575,25 @@ class Settings {
 				$this->get_form_fields()
 			)
 		);
+
 		foreach ( $this->get_form_fields() as $name ) {
 			if ( isset( $this->form_values[ $name ] ) ) {
-				update_option( $name, $this->form_values[ $name ], Config::AUTOLOAD_OPTIONS );
+				if ( is_array( $this->form_values[ $name ] ) ) {
+					update_option(
+						esc_html( $name ),
+						$this->escape_form_value( $this->form_values[ $name ] ),
+						Config::AUTOLOAD_OPTIONS
+					);
+				} else {
+					update_option(
+						esc_html( $name ),
+						esc_html( $this->form_values[ $name ] ),
+						Config::AUTOLOAD_OPTIONS
+					);
+				}
 			}
 		}
+
 		$this->set_form_values(
 			apply_filters(
 				'newsman_admin_settings_save_form_values_after',
@@ -589,6 +603,48 @@ class Settings {
 		);
 
 		return $this->form_values;
+	}
+
+	/**
+	 * Recursively escapes form values
+	 *
+	 * Processes single values or nested arrays, applying WordPress escaping
+	 * functions to prevent security issues with user input.
+	 *
+	 * @param mixed  $value The value or array to be escaped.
+	 * @param string $context The context for escaping ('attr', 'html', 'url', 'textarea', etc).
+	 * @return mixed The escaped value or array.
+	 */
+	public function escape_form_value( $value, $context = 'html' ) {
+		// If value is null, return it as is
+		if ( null === $value ) {
+			return $value;
+		}
+
+		// Handle array values recursively
+		if ( is_array( $value ) ) {
+			foreach ( $value as $key => $item ) {
+				$value[$key] = $this->escape_form_value( $item, $context );
+			}
+			return $value;
+		}
+
+		// Handle scalar values based on context
+		switch ( $context ) {
+			case 'attr':
+				return esc_attr( $value );
+			case 'url':
+				return esc_url( $value );
+			case 'textarea':
+				return esc_textarea( $value );
+			case 'js':
+				return esc_js( $value );
+			case 'raw':
+				return $value;
+			case 'html':
+			default:
+				return esc_html( $value );
+		}
 	}
 
 	/**
