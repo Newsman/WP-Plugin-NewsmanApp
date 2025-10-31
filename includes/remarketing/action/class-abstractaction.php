@@ -33,7 +33,7 @@ class AbstractAction {
 	protected $remarketing_config;
 
 	/**
-	 * Telephone util 
+	 * Telephone util
 	 *
 	 * @var Telephone
 	 */

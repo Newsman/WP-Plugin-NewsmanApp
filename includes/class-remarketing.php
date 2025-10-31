@@ -90,7 +90,6 @@ class Remarketing {
 		add_action( 'wp_head', array( new \Newsman\Remarketing\Script\Track(), 'display_script' ), 999999 );
 
 		// Event tracking code in footer of the page.
-		add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\PageView(), 'display_script_js' ) );
 		add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\IdentifySubscriber(), 'display_script_js' ) );
 		add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\Purchase(), 'display_script_js' ) );
 
@@ -106,6 +105,9 @@ class Remarketing {
 		// Order status change hooks.
 		$order_status = new \Newsman\Order\SendStatus();
 		$order_status->init();
+
+		// It should be the last action running (displayed in page source after all).
+		add_action( 'wp_footer', array( $this, 'send_page_view' ) );
 	}
 
 	/**
@@ -158,6 +160,25 @@ class Remarketing {
 		$detail = new \Newsman\Remarketing\Action\ProductDetail();
 		$detail->set_data( array( 'product' => $product ) );
 		$script = $detail->get_js();
+
+		$page_view = new \Newsman\Remarketing\Action\PageView();
+		$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
+		$script .= $page_view->get_js();
+
+		if ( ! empty( $script ) ) {
+			wc_enqueue_js( $script );
+		}
+	}
+
+	/**
+	 * Send page viewed
+	 */
+	public function send_page_view() {
+		global $product;
+
+		$page_view = new \Newsman\Remarketing\Action\PageView();
+		$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
+		$script = $page_view->get_js();
 		if ( ! empty( $script ) ) {
 			wc_enqueue_js( $script );
 		}

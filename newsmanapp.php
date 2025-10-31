@@ -159,8 +159,10 @@ class WP_Newsman {
 			add_action( 'wp_head', array( new \Newsman\Remarketing\Script\Track(), 'display_script' ) );
 
 			// Event tracking code in footer of the page.
-			add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\PageView(), 'get_script_js' ) );
 			add_action( 'wp_footer', array( new \Newsman\Remarketing\Action\IdentifySubscriber(), 'get_script_js' ) );
+			$page_view = new \Newsman\Remarketing\Action\PageView();
+			$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
+			add_action( 'wp_footer', array( $page_view, 'get_script_js' ) );
 		}
 	}
 

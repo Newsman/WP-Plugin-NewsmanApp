@@ -103,6 +103,10 @@ class Purchase extends AbstractAction {
 		}
 		";
 
+		$page_view = new \Newsman\Remarketing\Action\PageView();
+		$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
+		$js .= $page_view->get_js();
+
 		return apply_filters(
 			'newsman_remarketing_action_purchase_js',
 			$js,
