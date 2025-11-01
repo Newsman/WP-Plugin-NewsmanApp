@@ -32,47 +32,47 @@ class Pool {
 		'version'     => array(
 			'code'             => 'version',
 			'class'            => '\Newsman\Export\Retriever\Version',
-			'only_woocommerce' => true,
+			'only_woocommerce' => false,
 		),
 		'orders'      => array(
 			'code'             => 'orders',
 			'class'            => '\Newsman\Export\Retriever\Orders',
-			'only_woocommerce' => false,
+			'only_woocommerce' => true,
 		),
 		'products'    => array(
 			'code'             => 'products',
 			'class'            => '\Newsman\Export\Retriever\Products',
-			'only_woocommerce' => false,
+			'only_woocommerce' => true,
 		),
 		'customers'   => array(
 			'code'             => 'customers',
 			'class'            => '\Newsman\Export\Retriever\Customers',
-			'only_woocommerce' => false,
+			'only_woocommerce' => true,
 		),
 		'subscribers' => array(
 			'code'             => 'subscribers',
 			'class'            => '\Newsman\Export\Retriever\Subscribers',
-			'only_woocommerce' => true,
+			'only_woocommerce' => false,
 		),
 		'count'       => array(
 			'code'             => 'count',
 			'class'            => '\Newsman\Export\Retriever\Count',
-			'only_woocommerce' => true,
+			'only_woocommerce' => false,
 		),
 		'coupons'     => array(
 			'code'             => 'coupons',
 			'class'            => '\Newsman\Export\Retriever\Coupons',
-			'only_woocommerce' => false,
+			'only_woocommerce' => true,
 		),
 		'wordpress'   => array(
 			'code'             => 'wordpress',
 			'class'            => '\Newsman\Export\Retriever\SubscribersWordpress',
-			'only_woocommerce' => true,
+			'only_woocommerce' => false,
 		),
 		'woocommerce' => array(
 			'code'             => 'woocommerce',
 			'class'            => '\Newsman\Export\Retriever\SubscribersWoocommerce',
-			'only_woocommerce' => false,
+			'only_woocommerce' => true,
 		),
 	);
 
