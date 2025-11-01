@@ -52,8 +52,9 @@ class UpdateFeed extends Service {
 		/* translators: 1: Feed ID */
 		$this->logger->info( sprintf( esc_html__( 'Try to update feed %s', 'newsman' ), $context->get_list_id() ) );
 
-		$client = $this->create_api_client();
-		$result = $client->post(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_configuration_update_feed_execute_context', $context );
+		$result  = $client->post(
 			$api_context,
 			array(
 				'list_id' => $api_context->get_list_id(),

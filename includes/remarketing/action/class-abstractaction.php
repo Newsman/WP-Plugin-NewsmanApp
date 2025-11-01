@@ -101,7 +101,7 @@ class AbstractAction {
 	 * @return void
 	 */
 	public function set_data( $data ) {
-		$this->data = $data;
+		$this->data = apply_filters( 'newsman_remarketing_action_set_data', $data );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class AbstractAction {
 	 * @return array
 	 */
 	public function get_data() {
-		return $this->data;
+		return apply_filters( 'newsman_remarketing_action_get_data', $this->data );
 	}
 
 	/**

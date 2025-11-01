@@ -33,6 +33,7 @@ class Telephone {
 		}
 		$phone = str_replace( '+', '', $phone );
 		$phone = preg_replace( '/\s\s+/', ' ', $phone );
+		$phone = apply_filters( 'newsman_telephone_clean', $phone );
 		return trim( $phone );
 	}
 

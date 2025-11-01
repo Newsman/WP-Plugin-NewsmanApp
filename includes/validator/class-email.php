@@ -28,7 +28,8 @@ class Email {
 	 * @return false
 	 */
 	public function is_valid( $email ) {
-		return false !== is_email( $email );
+		$result = ( false !== is_email( $email ) );
+		return apply_filters( 'newsman_validator_email_is_valid', $result, $email );
 	}
 
 	/**

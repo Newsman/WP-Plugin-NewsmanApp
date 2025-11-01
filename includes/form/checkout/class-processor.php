@@ -219,6 +219,30 @@ class Processor {
 			$options['form_id'] = $form_id;
 		}
 
+		$filter           = apply_filters(
+			'newsman_checkout_newsletter_process_params',
+			array(
+				'email'            => $email,
+				'firstname'        => $firstname,
+				'lastname'         => $lastname,
+				'telephone'        => $telephone,
+				'properties'       => $properties,
+				'options'          => $options,
+				'email_properties' => $email_properties,
+			),
+			array(
+				'order_id' => $order_id,
+				'order'    => $order,
+			)
+		);
+		$email            = isset( $filter['email'] ) ? $filter['email'] : $email;
+		$firstname        = isset( $filter['firstname'] ) ? $filter['firstname'] : $firstname;
+		$lastname         = isset( $filter['lastname'] ) ? $filter['lastname'] : $lastname;
+		$telephone        = isset( $filter['telephone'] ) ? $filter['telephone'] : $telephone;
+		$properties       = isset( $filter['properties'] ) ? $filter['properties'] : $properties;
+		$options          = isset( $filter['options'] ) ? $filter['options'] : $options;
+		$email_properties = isset( $filter['email_properties'] ) ? $filter['email_properties'] : $email_properties;
+
 		try {
 			if ( ! $this->action_scheduler->is_allowed_single() || ! $this->config->use_action_scheduler_subscribe() ) {
 				$this->subscribe_email( $email, $firstname, $lastname, $email_properties, $options );

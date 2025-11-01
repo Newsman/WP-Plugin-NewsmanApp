@@ -52,8 +52,9 @@ class SetFeedOnList extends Service {
 		/* translators: 1: WP url */
 		$this->logger->info( sprintf( esc_html__( 'Try to install products feed %s', 'newsman' ), $context->get_url() ) );
 
-		$client = $this->create_api_client();
-		$result = $client->post(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_configuration_set_feed_on_list_execute_context', $context );
+		$result  = $client->post(
 			$api_context,
 			array(
 				'list_id'   => $api_context->get_list_id(),

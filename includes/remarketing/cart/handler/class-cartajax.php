@@ -81,12 +81,14 @@ class CartAjax {
 		$cart_items = WC()->cart->get_cart();
 		$result     = array();
 		foreach ( $cart_items as $cart_item ) {
-			$result[] = array(
+			$row      = array(
 				'id'       => $cart_item['product_id'],
 				'name'     => $cart_item['data']->get_name(),
 				'price'    => $cart_item['data']->get_price(),
 				'quantity' => $cart_item['quantity'],
 			);
+			$row      = apply_filters( 'newsman_remarketing_cart_item_row', $row, $cart_item );
+			$result[] = $row;
 		}
 
 		$page = new \Newsman\Page\Renderer();

@@ -46,8 +46,9 @@ class SendOne extends Service {
 		/* translators: 1: Phone number */
 		$this->logger->info( sprintf( esc_html__( 'Try to send one SMS to %s', 'newsman' ), $context->get_to() ) );
 
-		$client = $this->create_api_client();
-		$result = $client->post(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_sms_send_one_execute_context', $context );
+		$result  = $client->post(
 			$api_context,
 			array(
 				'list_id' => $api_context->get_list_id(),

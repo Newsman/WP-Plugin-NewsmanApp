@@ -53,8 +53,9 @@ class InitUnsubscribeEmail extends Service {
 			)
 		);
 
-		$client = $this->create_api_client();
-		$result = $client->post(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_init_unsubscribe_email_execute_context', $context );
+		$result  = $client->post(
 			$api_context,
 			array(
 				'list_id' => $api_context->get_list_id(),

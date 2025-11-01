@@ -616,20 +616,20 @@ class Settings {
 	 * @return mixed The escaped value or array.
 	 */
 	public function escape_form_value( $value, $context = 'html' ) {
-		// If value is null, return it as is
+		// If value is null, return it as is.
 		if ( null === $value ) {
 			return $value;
 		}
 
-		// Handle array values recursively
+		// Handle array values recursively.
 		if ( is_array( $value ) ) {
 			foreach ( $value as $key => $item ) {
-				$value[$key] = $this->escape_form_value( $item, $context );
+				$value[ $key ] = $this->escape_form_value( $item, $context );
 			}
 			return $value;
 		}
 
-		// Handle scalar values based on context
+		// Handle scalar values based on context.
 		switch ( $context ) {
 			case 'attr':
 				return esc_attr( $value );

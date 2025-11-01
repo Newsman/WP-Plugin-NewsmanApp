@@ -76,6 +76,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function log( $level, $message, $context = array() ) {
+		do_action( 'newsman_logger_before_log', $level, $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -109,6 +110,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function debug( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_debug', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -130,6 +132,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function info( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_info', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -151,6 +154,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function notice( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_notice', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -172,6 +176,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function warning( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_warning', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -193,6 +198,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function error( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_error', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -214,6 +220,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function critical( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_critical', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -235,6 +242,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function alert( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_alert', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}
@@ -256,6 +264,7 @@ class Logger {
 	 * @see \WC_Log_Levels::$level_to_severity
 	 */
 	public function emergency( $message, $context = array() ) {
+		do_action( 'newsman_logger_before_emergency', $message, $context );
 		if ( ! self::$is_wc_logging ) {
 			return;
 		}

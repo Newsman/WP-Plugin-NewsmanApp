@@ -52,8 +52,9 @@ class SetPurchaseStatus extends Service {
 			)
 		);
 
-		$client = $this->create_api_client();
-		$result = $client->get(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_set_purchase_status_execute_context', $context );
+		$result  = $client->get(
 			$api_context,
 			array(
 				'list_id'  => $api_context->get_list_id(),

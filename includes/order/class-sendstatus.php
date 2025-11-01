@@ -190,11 +190,14 @@ class SendStatus {
 			return false;
 		}
 
+		do_action( 'newsman_send_order_status_before', $order_id, $status, $is_scheduled );
+
 		try {
 			$context = new \Newsman\Service\Context\SetPurchaseStatus();
 			$context->set_list_id( $this->config->get_list_id() )
 				->set_order_id( $order_id )
 				->set_order_status( $status );
+			$context = apply_filters( 'newsman_set_purchase_status_context', $context, $order_id, $status );
 
 			try {
 				$purchase = new \Newsman\Service\SetPurchaseStatus();
@@ -212,6 +215,9 @@ class SendStatus {
 					throw $e;
 				}
 			}
+
+			do_action( 'newsman_send_order_status_after', $order_id, $status, $is_scheduled );
+
 			return true === $result;
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
@@ -252,7 +258,8 @@ class SendStatus {
 		}
 
 		try {
-			$order   = wc_get_order( $order_id );
+			$order = wc_get_order( $order_id );
+			do_action( 'newsman_send_order_sms_before', $order, $status, $is_scheduled );
 			$message = $this->sms_replace_placeholders( $message, $order );
 
 			$item_data = $order->get_data();
@@ -272,6 +279,7 @@ class SendStatus {
 			$context->set_list_id( $list_id )
 				->set_text( $message )
 				->set_to( $phone );
+			$context = apply_filters( 'newsman_send_order_sms_context', $context, $order, $status, $is_scheduled );
 
 			try {
 				$send_one = new \Newsman\Service\Sms\SendOne();
@@ -289,6 +297,8 @@ class SendStatus {
 					throw $e;
 				}
 			}
+
+			do_action( 'newsman_send_order_sms_after', $order, $status, $is_scheduled );
 
 			return ! empty( $result );
 		} catch ( \Exception $e ) {
@@ -308,8 +318,9 @@ class SendStatus {
 	 */
 	public function sms_replace_placeholders( $message, $order ) {
 		$item_data = $order->get_data();
+		$date      = $order->get_date_created()->date( 'F j, Y' );
 
-		$date = $order->get_date_created()->date( 'F j, Y' );
+		$message = apply_filters( 'newsman_order_sms_message_before', $message, $order );
 
 		$message = str_replace( '{{billing_first_name}}', $item_data['billing']['first_name'], $message );
 		$message = str_replace( '{{billing_last_name}}', $item_data['billing']['last_name'], $message );
@@ -320,7 +331,9 @@ class SendStatus {
 		$message = str_replace( '{{order_date}}', $date, $message );
 		$message = str_replace( '{{order_total}}', $item_data['total'], $message );
 
-		return trim( $message );
+		$message = trim( $message );
+
+		return apply_filters( 'newsman_order_sms_message', $message, $order );
 	}
 
 	/**

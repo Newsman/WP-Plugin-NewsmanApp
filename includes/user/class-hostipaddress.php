@@ -137,6 +137,10 @@ class HostIpAddress {
 	 * @return string|false
 	 */
 	public function get_url() {
+		$url = apply_filters( 'newsman_user_host_ip_address_get_url', null );
+		if ( null !== $url ) {
+			return $url;
+		}
 		return $this->get_first_file_from_uploads();
 	}
 

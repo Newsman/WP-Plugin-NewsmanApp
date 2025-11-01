@@ -44,8 +44,9 @@ class GetSettings extends Service {
 			->set_api_key( $context->get_api_hey() )
 			->set_endpoint( self::ENDPOINT );
 
-		$client = $this->create_api_client();
-		$result = $client->get( $api_context, array( 'list_id' => $context->get_list_id() ) );
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_configuration_remarketing_get_settings_execute_context', $context );
+		$result  = $client->get( $api_context, array( 'list_id' => $context->get_list_id() ) );
 
 		if ( $client->has_error() ) {
 			// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.Security.EscapeOutput.ExceptionNotEscaped

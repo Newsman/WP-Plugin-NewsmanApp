@@ -52,8 +52,9 @@ class ExportCsvSubscribers extends Service {
 			)
 		);
 
-		$client = $this->create_api_client();
-		$result = $client->post(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_export_csv_subscribers_execute_context', $context );
+		$result  = $client->post(
 			$api_context,
 			array(
 				'list_id'  => $context->get_list_id(),

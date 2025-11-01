@@ -52,8 +52,9 @@ class AddSubscriber extends Service {
 			)
 		);
 
-		$client = $this->create_api_client();
-		$result = $client->post(
+		$client  = $this->create_api_client();
+		$context = apply_filters( 'newsman_service_segment_add_subscriber_execute_context', $context );
+		$result  = $client->post(
 			$api_context,
 			array(
 				'list_id'       => $api_context->get_list_id(),

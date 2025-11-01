@@ -74,6 +74,11 @@ class IpAddress {
 	 * @return string The ip address.
 	 */
 	public function get_ip() {
+		$ip = apply_filters( 'newsman_ip_address_get_ip', null );
+		if ( null !== $ip ) {
+			return $ip;
+		}
+
 		if ( $this->config->get_developer_user_ip() ) {
 			return $this->config->get_developer_user_ip();
 		}
