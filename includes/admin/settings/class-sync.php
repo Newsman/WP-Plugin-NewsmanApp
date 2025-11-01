@@ -148,7 +148,14 @@ class Sync extends Settings {
 			$this->init_form_values_from_option();
 
 			try {
-				$this->available_lists = $this->retrieve_api_all_lists();
+				$this->available_lists = array();
+
+				$lists = $this->retrieve_api_all_lists();
+				foreach ( $lists as $value ) {
+					if ( 'sms' !== $value['list_type'] ) {
+						$this->available_lists[] = $value;
+					}
+				}
 				if ( false !== $this->available_lists ) {
 					if ( ! empty( $this->get_form_value( 'newsman_list' ) ) ) {
 						$this->available_segments = $this->retrieve_api_all_segments(

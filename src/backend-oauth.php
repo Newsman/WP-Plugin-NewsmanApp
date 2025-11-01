@@ -97,6 +97,9 @@ $this->process_forms();
 										<option value="0">-- select list --</option>
 										<?php
 										foreach ( $this->response_lists as $item ) {
+											if ( 'sms' === $item['type'] ) {
+												continue;
+											}
 											?>
 											<option 
 												value="<?php echo esc_attr( $item['id'] ); ?>"><?php echo esc_html( $item['name'] ); ?></option>

@@ -170,6 +170,7 @@ class Oauth extends Settings {
 				$this->response_lists[] = array(
 					'id'   => $l->list_id,
 					'name' => $l->name,
+					'type' => $l->type,
 				);
 			}
 
