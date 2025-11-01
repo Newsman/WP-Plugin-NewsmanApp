@@ -51,6 +51,16 @@ class SubscribersWordpress extends CronSubscribers {
 			'offset' => $start,
 			'number' => $limit,
 		);
+		$args = apply_filters(
+			'newsman_export_retriever_subscribers_wordpress_process_fetch',
+			$args,
+			array(
+				'blog_id'  => $blog_id,
+				'start'    => $start,
+				'limit'    => $limit,
+				'cronlast' => $cronlast,
+			)
+		);
 
 		return get_users( $args );
 	}
@@ -75,6 +85,13 @@ class SubscribersWordpress extends CronSubscribers {
 			'additional' => array(),
 		);
 
-		return $row;
+		return apply_filters(
+			'newsman_export_retriever_subscribers_wordpress_process_subscriber',
+			$row,
+			array(
+				'subscriber' => $subscriber,
+				'blog_id'    => $blog_id,
+			)
+		);
 	}
 }

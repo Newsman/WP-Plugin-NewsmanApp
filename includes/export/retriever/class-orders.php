@@ -126,12 +126,28 @@ class Orders implements RetrieverInterface {
 					'status' => $filtered_statuses,
 				)
 			);
+			$query  = apply_filters(
+				'newsman_export_retriever_orders_process_custom_orders_query',
+				$query,
+				array(
+					'data'    => $data,
+					'blog_id' => $blog_id,
+				)
+			);
 			$orders = $query->get_orders();
 		} else {
 			$args   = array(
 				'limit'  => $limit,
 				'offset' => $start,
 				'status' => $filtered_statuses,
+			);
+			$args   = apply_filters(
+				'newsman_export_retriever_orders_process_args_fetch',
+				$args,
+				array(
+					'data'    => $data,
+					'blog_id' => $blog_id,
+				)
 			);
 			$orders = wc_get_orders( $args );
 		}
@@ -242,7 +258,14 @@ class Orders implements RetrieverInterface {
 			unset( $row['phone'] );
 		}
 
-		return $row;
+		return apply_filters(
+			'newsman_export_retriever_orders_process_order',
+			$row,
+			array(
+				'order'   => $order,
+				'blog_id' => $blog_id,
+			)
+		);
 	}
 
 	/**

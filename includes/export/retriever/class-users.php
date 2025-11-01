@@ -103,11 +103,20 @@ class Users implements RetrieverInterface {
 			)
 		);
 
-		$args      = array(
+		$args = array(
 			'role'   => $role,
 			'offset' => $start,
 			'number' => $limit,
 		);
+		$args = apply_filters(
+			'newsman_export_retriever_users_process_fetch',
+			$args,
+			array(
+				'data'    => $data,
+				'blog_id' => $blog_id,
+			)
+		);
+
 		$customers = get_users( $args );
 
 		if ( empty( $customers ) ) {
@@ -161,7 +170,15 @@ class Users implements RetrieverInterface {
 			'lastname'  => $data['last_name'][0],
 		);
 
-		return $row;
+		return apply_filters(
+			'newsman_export_retriever_users_process_customer',
+			$row,
+			array(
+				'customer' => $customer,
+				'role'     => $role,
+				'blog_id'  => $blog_id,
+			)
+		);
 	}
 
 	/**

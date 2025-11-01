@@ -128,6 +128,14 @@ class Products implements RetrieverInterface {
 			'status'       => 'publish',
 			'stock_status' => 'instock',
 		);
+		$args     = apply_filters(
+			'newsman_export_retriever_products_process_fetch',
+			$args,
+			array(
+				'data'    => $data,
+				'blog_id' => $blog_id,
+			)
+		);
 		$products = wc_get_products( $args );
 
 		if ( empty( $products ) ) {
@@ -220,7 +228,14 @@ class Products implements RetrieverInterface {
 			}
 		}
 
-		return $row;
+		return apply_filters(
+			'newsman_export_retriever_products_process_product',
+			$row,
+			array(
+				'product' => $product,
+				'blog_id' => $blog_id,
+			)
+		);
 	}
 
 	/**

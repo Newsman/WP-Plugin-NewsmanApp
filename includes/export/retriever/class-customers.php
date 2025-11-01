@@ -63,6 +63,14 @@ class Customers extends Users {
 			}
 		}
 
-		return $row;
+		return apply_filters(
+			'newsman_export_retriever_customers_process_customer',
+			$row,
+			array(
+				'customer' => $customer,
+				'role'     => $role,
+				'blog_id'  => $blog_id,
+			)
+		);
 	}
 }

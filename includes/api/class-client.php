@@ -76,6 +76,17 @@ class Client implements ClientInterface {
 	 * @return array Response from API
 	 */
 	public function get( $context, $params = array() ) {
+		$filter = apply_filters(
+			'newsman_api_client_get_params',
+			array(
+				'context' => $context,
+				'params'  => $params,
+			),
+		);
+
+		$context = isset( $filter['context'] ) ? $filter['context'] : $context;
+		$params  = isset( $filter['params'] ) ? $filter['params'] : $params;
+
 		return $this->request( $context, 'GET', $params );
 	}
 
@@ -89,6 +100,19 @@ class Client implements ClientInterface {
 	 * @return array Response from API
 	 */
 	public function post( $context, $get_params = array(), $post_params = array() ) {
+		$filter = apply_filters(
+			'newsman_api_client_post_params',
+			array(
+				'context'     => $context,
+				'get_params'  => $get_params,
+				'post_params' => $post_params,
+			),
+		);
+
+		$context     = isset( $filter['context'] ) ? $filter['context'] : $context;
+		$get_params  = isset( $filter['get_params'] ) ? $filter['get_params'] : $get_params;
+		$post_params = isset( $filter['post_params'] ) ? $filter['post_params'] : $post_params;
+
 		return $this->request( $context, 'POST', $get_params, $post_params );
 	}
 
@@ -105,20 +129,47 @@ class Client implements ClientInterface {
 	 * phpcs:ignore Squiz.Commenting.FunctionCommentThrowTag.Missing
 	 */
 	public function request( $context, $method, $get_params = array(), $post_params = array() ) {
+		$filter = apply_filters(
+			'newsman_api_client_request_params',
+			array(
+				'context'     => $context,
+				'method'      => $method,
+				'get_params'  => $get_params,
+				'post_params' => $post_params,
+			),
+		);
+
+		$context     = isset( $filter['context'] ) ? $filter['context'] : $context;
+		$method      = isset( $filter['method'] ) ? $filter['method'] : $method;
+		$get_params  = isset( $filter['get_params'] ) ? $filter['get_params'] : $get_params;
+		$post_params = isset( $filter['post_params'] ) ? $filter['post_params'] : $post_params;
+
 		$this->status        = null;
 		$this->error_message = null;
 		$this->error_code    = 0;
 		$result              = array();
 		$args                = array();
 
-		$url  = $this->config->get_api_url();
-		$url .= sprintf(
+		$url         = $this->config->get_api_url();
+		$request_uri = sprintf(
 			'%s/rest/%s/%s/%s.json',
 			$this->config->get_api_version(),
 			$context->get_user_id(),
 			$context->get_api_key(),
 			$context->get_endpoint()
 		);
+		$request_uri = apply_filters(
+			'newsman_api_client_request_params',
+			$request_uri,
+			array(
+				'api_version' => $this->config->get_api_version(),
+				'user_id'     => $context->get_user_id(),
+				'api_key'     => $context->get_api_key(),
+				'endpoint'    => $context->get_endpoint(),
+			),
+		);
+
+		$url .= $request_uri;
 
 		$log_url        = $url;
 		$log_get_params = $get_params;
@@ -144,10 +195,12 @@ class Client implements ClientInterface {
 			$start_time = microtime( true );
 			if ( 'POST' === $method ) {
 				$args['body']  = $post_params;
+				$args          = apply_filters( 'newsman_api_client_request_post_args', $args );
 				$remote_result = wp_remote_post( $url, $args );
 
 				$this->logger->debug( wp_json_encode( $post_params ) );
 			} else {
+				$args          = apply_filters( 'newsman_api_client_request_get_args', $args );
 				$remote_result = wp_remote_get( $url, $args );
 			}
 			$elapsed_ms = round( ( microtime( true ) - $start_time ) * 1000 );

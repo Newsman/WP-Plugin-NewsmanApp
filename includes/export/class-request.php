@@ -163,7 +163,7 @@ class Request {
 			}
 		}
 
-		return $parameters;
+		return apply_filters( 'newsman_export_request_get_all_known_parameters', $parameters );
 	}
 
 	/**

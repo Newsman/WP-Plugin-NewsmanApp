@@ -103,7 +103,7 @@ class Pool {
 	 * @return array
 	 */
 	public function get_retriever_list() {
-		return $this->retriever_list;
+		return apply_filters( 'newsman_export_retriever_pool_get_retriever_list', $this->retriever_list );
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Pool {
 			return $this->retriever_instances[ $code ];
 		}
 
-		foreach ( $this->retriever_list as $retriever ) {
+		foreach ( $this->get_retriever_list() as $retriever ) {
 			if ( $retriever['code'] === $code ) {
 				if ( empty( $retriever['class'] ) ) {
 					throw new \InvalidArgumentException( 'The parameter "class" is missing.' );

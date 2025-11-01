@@ -148,6 +148,18 @@ class Coupons implements RetrieverInterface {
 			$coupon->set_minimum_amount( $min_amount );
 		}
 
+		$coupon = apply_filters(
+			'newsman_export_retriever_coupons_process_coupon',
+			$coupon,
+			array(
+				'discount_type' => $discount_type,
+				'prefix'        => $prefix,
+				'expire_date'   => $expire_date,
+				'value'         => $value,
+				'min_amount'    => $min_amount,
+			)
+		);
+
 		$coupon->save();
 
 		return $coupon;
@@ -173,6 +185,6 @@ class Coupons implements RetrieverInterface {
 			$existing_coupon_id = wc_get_coupon_id_by_code( $full_coupon_code );
 		} while ( ! empty( $existing_coupon_id ) && $fail_safe < 3 );
 
-		return $full_coupon_code;
+		return apply_filters( 'newsman_export_retriever_coupons_generate_coupon_code', $full_coupon_code );
 	}
 }

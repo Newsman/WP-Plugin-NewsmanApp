@@ -54,6 +54,16 @@ class SubscribersWoocommerce extends CronSubscribers {
 			'orderby' => 'date_created_gmt',
 			'order'   => 'DESC',
 		);
+		$args = apply_filters(
+			'newsman_export_retriever_subscribers_woocommerce_process_fetch',
+			$args,
+			array(
+				'blog_id'  => $blog_id,
+				'start'    => $start,
+				'limit'    => $limit,
+				'cronlast' => $cronlast,
+			)
+		);
 
 		return wc_get_orders( $args );
 	}
@@ -108,7 +118,14 @@ class SubscribersWoocommerce extends CronSubscribers {
 			}
 		}
 
-		return $row;
+		return apply_filters(
+			'newsman_export_retriever_subscribers_woocommerce_process_subscriber',
+			$row,
+			array(
+				'subscriber' => $subscriber,
+				'blog_id'    => $blog_id,
+			)
+		);
 	}
 
 	/**
