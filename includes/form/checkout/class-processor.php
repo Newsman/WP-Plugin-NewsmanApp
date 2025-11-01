@@ -288,6 +288,15 @@ class Processor {
 		}
 
 		if ( $this->config->is_checkout_newsletter_double_optin() ) {
+			do_action(
+				'newsman_subscribe_email_double_optin_before',
+				$email,
+				$firstname,
+				$lastname,
+				$properties,
+				$options,
+				$is_scheduled
+			);
 			$context = new \Newsman\Service\Context\InitSubscribeEmail();
 			$context->set_list_id( $this->config->get_list_id() )
 				->set_email( $email )
@@ -296,6 +305,7 @@ class Processor {
 				->set_ip( $this->user_ip->get_ip() )
 				->set_properties( $properties )
 				->set_options( $options );
+			$context = apply_filters( 'newsman_subscribe_email_double_optin_context', $context );
 
 			try {
 				try {
@@ -317,7 +327,26 @@ class Processor {
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 			}
+			do_action(
+				'newsman_subscribe_email_double_optin_after',
+				$email,
+				$firstname,
+				$lastname,
+				$properties,
+				$options,
+				$is_scheduled
+			);
 		} else {
+			do_action(
+				'newsman_subscribe_email_single_optin_before',
+				$email,
+				$firstname,
+				$lastname,
+				$properties,
+				$options,
+				$is_scheduled
+			);
+
 			$context = new \Newsman\Service\Context\SubscribeEmail();
 			$context->set_list_id( $this->config->get_list_id() )
 				->set_email( $email )
@@ -325,6 +354,7 @@ class Processor {
 				->set_lastname( $lastname )
 				->set_ip( $this->user_ip->get_ip() )
 				->set_properties( $properties );
+			$context = apply_filters( 'newsman_subscribe_email_single_optin_context', $context );
 
 			try {
 				try {
@@ -348,6 +378,7 @@ class Processor {
 					$context = new \Newsman\Service\Context\Segment\AddSubscriber();
 					$context->set_segment_id( $this->config->get_segment_id() )
 						->set_subscriber_id( $subscriber_id );
+					$context = apply_filters( 'newsman_subscribe_email_single_optin_context_segment_add', $context );
 
 					try {
 						$add_subscriber = new \Newsman\Service\Segment\AddSubscriber();
@@ -369,6 +400,16 @@ class Processor {
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 			}
+
+			do_action(
+				'newsman_subscribe_email_single_optin_after',
+				$email,
+				$firstname,
+				$lastname,
+				$properties,
+				$options,
+				$is_scheduled
+			);
 		}
 	}
 
@@ -396,6 +437,15 @@ class Processor {
 			return;
 		}
 
+		do_action(
+			'newsman_subscribe_telephone_single_optin_before',
+			$telephone,
+			$firstname,
+			$lastname,
+			$properties,
+			$is_scheduled
+		);
+
 		$context = new \Newsman\Service\Context\Sms\Subscribe();
 		$context->set_list_id( $this->sms_config->get_list_id() )
 			->set_telephone( $telephone )
@@ -403,6 +453,7 @@ class Processor {
 			->set_lastname( $lastname )
 			->set_ip( $this->user_ip->get_ip() )
 			->set_properties( $properties );
+		$context = apply_filters( 'newsman_subscribe_telephone_single_optin_context', $context );
 
 		try {
 			try {
@@ -424,5 +475,14 @@ class Processor {
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
 		}
+
+		do_action(
+			'newsman_subscribe_telephone_single_optin_after',
+			$telephone,
+			$firstname,
+			$lastname,
+			$properties,
+			$is_scheduled
+		);
 	}
 }

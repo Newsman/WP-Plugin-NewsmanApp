@@ -55,18 +55,20 @@ class Checkbox {
 			$checked = 'checked';
 		}
 
+		$args = array(
+			'type'        => 'checkbox',
+			'class'       => array( 'form-row newsmanCheckoutNewsletter' ),
+			'label_class' => array( 'woocommerce-form__label woocommerce-form__label-for-checkbox checkbox' ),
+			'input_class' => array( 'woocommerce-form__input woocommerce-form__input-checkbox input-checkbox' ),
+			'required'    => false,
+			'label'       => $this->config->get_checkout_newsletter_label(),
+			'default'     => $default,
+			'checked'     => $checked,
+		);
+
 		woocommerce_form_field(
 			'newsmanCheckoutNewsletter',
-			array(
-				'type'        => 'checkbox',
-				'class'       => array( 'form-row newsmanCheckoutNewsletter' ),
-				'label_class' => array( 'woocommerce-form__label woocommerce-form__label-for-checkbox checkbox' ),
-				'input_class' => array( 'woocommerce-form__input woocommerce-form__input-checkbox input-checkbox' ),
-				'required'    => false,
-				'label'       => $this->config->get_checkout_newsletter_label(),
-				'default'     => $default,
-				'checked'     => $checked,
-			)
+			apply_filters( 'newsman_checkout_newsletter_field_args', $args )
 		);
 	}
 }

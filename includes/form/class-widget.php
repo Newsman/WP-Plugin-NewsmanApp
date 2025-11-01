@@ -56,13 +56,15 @@ class Widget {
 
 		// Backwards compatible.
 		if ( 2 === $c || '2' === $c ) {
-			return '<div id="' . esc_attr( $attributes['formid'] ) . '"></div>';
+			$html = '<div id="' . esc_attr( $attributes['formid'] ) . '"></div>';
+			return apply_filters( 'newsman_subscribe_widget_html2', $html, array( 'attributes' => $attributes ) );
 		} else {
 			$attributes['formid'] = str_replace( 'nzm-container-', '', $attributes['formid'] );
 
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-			return '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' .
+			$html = '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' .
 				esc_attr( $attributes['formid'] ) . '"></script>';
+			return apply_filters( 'newsman_subscribe_widget_html', $html, array( 'attributes' => $attributes ) );
 		}
 	}
 }
