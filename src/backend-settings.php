@@ -282,6 +282,7 @@ $form_values = $this->get_form_values();
 									placeholder="5"/>
 							</td>
 						</tr>
+						<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<tr>
 							<th scope="row">
 								<label class="nzm-label" for="newsman_developeractiveuserip">Enable Test User IP</label>
@@ -303,7 +304,6 @@ $form_values = $this->get_form_values();
 								<p class="description">Valid user IP address.</p>
 							</td>
 						</tr>
-						<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<tr>
 							<th scope="row">
 								<label class="nzm-label" for="newsman_developerpluginlazypriority">Plugin Loaded Priority</label>
