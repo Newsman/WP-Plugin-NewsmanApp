@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Factory
+ * Class Export Retriever Factory
  *
  * @class \Newsman\Export\Retriever\Authenticator
  */

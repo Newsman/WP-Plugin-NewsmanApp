@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Segment Add Subscriber
+ * Class Service Context Segment Add Subscriber
  *
  * @class \Newsman\Service\Context\Segment\AddSubscriber
  */

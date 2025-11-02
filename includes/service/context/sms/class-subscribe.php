@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Subscribe Telephone Number to list
+ * Class Service Context Subscribe Telephone Number to list
  *
  * @class \Newsman\Service\Context\Sms\Subscribe
  */

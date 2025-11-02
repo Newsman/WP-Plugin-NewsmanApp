@@ -43,7 +43,7 @@ $this->process_forms();
 				<h2>NewsMAN plugin for Wordpress-Woocommerce</h2>
 				<?php // OAuth step 1. ?>
 				<?php if ( 1 === $this->step ) { ?>
-					<form method="post" enctype="multipart/form-data">
+					<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanOauth' ) ); ?>">
 						<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>" />
 						<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />
 						<table class="form-table newsman-table newsman-tbl-fixed newsman-oauth">
@@ -85,7 +85,7 @@ $this->process_forms();
 					</form>
 					<?php // List step 2. ?>
 				<?php } elseif ( 2 === $this->step ) { ?>
-					<form method="post" enctype="multipart/form-data">
+					<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanOauth' ) ); ?>">
 						<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>" />
 						<input type="hidden" name="<?php echo esc_attr( $this->form_id_step_two ); ?>" value="Y" />
 						<input type="hidden" name="creds" value='<?php echo wp_json_encode( $this->view_state['creds'] ); ?>'/>

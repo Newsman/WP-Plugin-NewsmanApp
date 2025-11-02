@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Configuration SetFeedOnList
+ * Class Service Context Configuration SetFeedOnList
  *
  * @class \Newsman\Service\Context\Configuration\SetFeedOnList
  */

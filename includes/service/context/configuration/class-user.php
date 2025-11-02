@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Configuration User
+ * Class Service Context Configuration User
  *
  * @class \Newsman\Service\Context\Configuration\User
  */

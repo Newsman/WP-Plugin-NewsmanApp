@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client API Client
+ * Class API Client
  *
  * @class \Newsman\Api\Client
  */

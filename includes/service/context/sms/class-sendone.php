@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context SMS Send One
+ * Class Service Context SMS Send One
  *
  * @class \Newsman\Service\Context\Sms\SendOne
  */

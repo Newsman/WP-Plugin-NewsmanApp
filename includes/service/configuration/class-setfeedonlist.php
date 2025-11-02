@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Configuration set feed on list
+ * API Class Service Configuration set feed on list
  *
  * @class \Newsman\Service\Configuration\SetFeedOnList
  */

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Order Set Purchase Status
+ * Class Service Context Order Set Purchase Status
  *
  * @class \Newsman\Service\Context\SetPurchaseStatus
  */

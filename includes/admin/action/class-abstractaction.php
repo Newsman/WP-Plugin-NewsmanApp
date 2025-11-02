@@ -9,16 +9,16 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Service\Context\Configuration;
+namespace Newsman\Admin\Action;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Class Service Context Configuration List
+ * Admin abstract action
  *
- * @class \Newsman\Service\Context\Configuration\EmailList
+ * @class \Newsman\Admin\Action\AbstractAction
  */
-class EmailList extends User {
+class AbstractAction {
 }

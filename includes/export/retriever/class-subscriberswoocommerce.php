@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Cron Subscribers WooCommerce to API Newsman
+ * Class Export Retriever Cron Subscribers WooCommerce to API Newsman
  *
  * @class \Newsman\Export\Retriever\SubscribersWoocommerce
  */
@@ -32,14 +32,12 @@ class SubscribersWoocommerce extends CronSubscribers {
 	 */
 	public function get_subscribers( $blog_id, $start, $limit, $cronlast ) {
 		if ( true === $cronlast ) {
-			$args    = array(
+			$args  = array(
 				'limit'  => -1,
 				'status' => 'completed',
 				'return' => 'ids',
 			);
-			$all_ids = wc_get_orders( $args );
-			$count   = count( $all_ids );
-			unset( $all_ids );
+			$count = count( wc_get_orders( $args ) );
 
 			$start = $count - $limit;
 			if ( $start < 0 ) {
@@ -147,5 +145,31 @@ class SubscribersWoocommerce extends CronSubscribers {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get total count of subscribers
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int|null
+	 */
+	public function get_count_subscribers( $blog_id = null ) {
+		$args = array(
+			'limit'  => -1,
+			'status' => 'completed',
+			'return' => 'ids',
+		);
+
+		if ( $this->is_different_blog( $blog_id ) ) {
+			switch_to_blog( $blog_id );
+		}
+
+		$count = count( wc_get_orders( $args ) );
+
+		if ( $this->is_different_blog( $blog_id ) ) {
+			restore_current_blog();
+		}
+
+		return $count;
 	}
 }

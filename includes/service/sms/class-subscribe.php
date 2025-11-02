@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Subscribe Telephone Number to SMS List
+ * API Class Service Subscribe Telephone Number to SMS List
  *
  * @class \Newsman\Service\Sms\Subscribe
  */

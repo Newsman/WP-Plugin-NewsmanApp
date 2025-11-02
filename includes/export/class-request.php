@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Request
+ * Class Export Request
  *
  * @class \Newsman\Export\Request
  */

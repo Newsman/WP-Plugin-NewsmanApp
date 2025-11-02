@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Pool
+ * Class Export Retriever Pool
  *
  * @class \Newsman\Export\Retriever\Pool
  */

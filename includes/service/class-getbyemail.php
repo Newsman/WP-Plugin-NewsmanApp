@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Get by Email from list
+ * API Class Service Get by Email from list
  *
  * @class Newsman\Service\GetByEmail
  */

@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Orders
+ * Class Export Retriever Orders
  *
  * @class \Newsman\Export\Retriever\Orders
  */

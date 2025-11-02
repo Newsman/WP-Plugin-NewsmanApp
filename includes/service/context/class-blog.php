@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Blog
+ * Class Service Context Blog
  *
  * @class \Newsman\Service\Context\Blog
  */

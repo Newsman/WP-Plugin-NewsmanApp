@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Configuration Remarketing Get Settings
+ * API Class Service Configuration Remarketing Get Settings
  *
  * @class \Newsman\Service\Configuration\Remarketing\GetSettings
  */

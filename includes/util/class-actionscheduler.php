@@ -34,6 +34,16 @@ class ActionScheduler {
 	public const GROUP_SUBSCRIBE = 'newsman_subscribe';
 
 	/**
+	 * Action scheduler group for mass export WordPress subscribers
+	 */
+	public const GROUP_MASS_EXPORT_SUBSCRIBERS_WORDPRESS = 'newsman_mass_export_subscribers_wordpress';
+
+	/**
+	 * Action scheduler group for mass export Woo Commerce orders subscribers
+	 */
+	public const GROUP_MASS_EXPORT_SUBSCRIBERS_WOOCOMMERCE = 'newsman_mass_export_subscribers_woocommerce';
+
+	/**
 	 * Newsman Config
 	 *
 	 * @var Config
@@ -96,5 +106,23 @@ class ActionScheduler {
 	 */
 	public function get_group_subscribe() {
 		return self::GROUP_SUBSCRIBE;
+	}
+
+	/**
+	 * Get action scheduler group for mass export WordPress subscribers
+	 *
+	 * @return string
+	 */
+	public function get_group_mass_export_subscribers_wordpress() {
+		return self::GROUP_MASS_EXPORT_SUBSCRIBERS_WORDPRESS;
+	}
+
+	/**
+	 * Get action scheduler group for mass export Woo Commerce orders subscribers
+	 *
+	 * @return string
+	 */
+	public function get_group_mass_export_subscribers_woocommerce() {
+		return self::GROUP_MASS_EXPORT_SUBSCRIBERS_WOOCOMMERCE;
 	}
 }

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Configuration UpdateFeed
+ * Class Service Context Configuration UpdateFeed
  *
  * @class \Newsman\Service\Context\Configuration\UpdateFeed
  */

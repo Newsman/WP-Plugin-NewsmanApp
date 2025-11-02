@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Segment add subscriber (email)
+ * API Class Service Segment add subscriber (email)
  *
  * @class \Newsman\Service\Segment\AddSubscriber
  */

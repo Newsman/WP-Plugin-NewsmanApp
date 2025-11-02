@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Cron Subscribers to API Newsman
+ * Class Export Retriever Cron Subscribers to API Newsman
  *
  * @class \Newsman\Export\Retriever\CronSubscribers
  */
@@ -231,8 +231,15 @@ class CronSubscribers implements RetrieverInterface {
 	 * @return bool
 	 */
 	public function is_different_blog( $blog_id = null ) {
+		if ( ! is_multisite() ) {
+			return false;
+		}
+
 		$current_blog_id = get_current_blog_id();
-		return ( null !== $current_blog_id ) && ( (int) $blog_id !== $current_blog_id );
+		if ( ( null === $current_blog_id ) || ( null === $blog_id ) ) {
+			return false;
+		}
+		return ( (int) $blog_id !== $current_blog_id );
 	}
 
 	/**

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever interface
+ * Class Export Retriever interface
  *
  * @class \Newsman\Export\Retriever\RetrieverInterface
  */

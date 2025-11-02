@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Init Subscribe to Email List
+ * API Class Service Init Subscribe to Email List
  *
  * @class \Newsman\Service\InitSubscribeEmail
  */

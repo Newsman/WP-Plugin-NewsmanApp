@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Configuration Get Segment All
+ * API Class Service Configuration Get Segment All
  *
  * @class \Newsman\Service\Configuration\GetSegmentAll
  */

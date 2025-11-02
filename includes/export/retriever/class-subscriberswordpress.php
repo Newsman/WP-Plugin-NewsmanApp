@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Cron Subscribers WordPress to API Newsman
+ * Class Export Retriever Cron Subscribers WordPress to API Newsman
  *
  * @class \Newsman\Export\Retriever\SubscribersWordpress
  */
@@ -32,13 +32,11 @@ class SubscribersWordpress extends CronSubscribers {
 	 */
 	public function get_subscribers( $blog_id, $start, $limit, $cronlast ) {
 		if ( true === $cronlast ) {
-			$args    = array(
+			$args  = array(
 				'role'   => 'subscriber',
 				'fields' => 'ID',
 			);
-			$all_ids = get_users( $args );
-			$count   = count( $all_ids );
-			unset( $all_ids );
+			$count = count( get_users( $args ) );
 
 			$start = $count - $limit;
 			if ( $start < 0 ) {
@@ -93,5 +91,30 @@ class SubscribersWordpress extends CronSubscribers {
 				'blog_id'    => $blog_id,
 			)
 		);
+	}
+
+	/**
+	 * Get total count of subscribers
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int|null
+	 */
+	public function get_count_subscribers( $blog_id = null ) {
+		$args = array(
+			'role'   => 'subscriber',
+			'fields' => 'ID',
+		);
+
+		if ( $this->is_different_blog( $blog_id ) ) {
+			switch_to_blog( $blog_id );
+		}
+
+		$count = count( get_users( $args ) );
+
+		if ( $this->is_different_blog( $blog_id ) ) {
+			restore_current_blog();
+		}
+
+		return $count;
 	}
 }

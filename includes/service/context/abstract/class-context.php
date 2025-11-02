@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Abstract Context
+ * Class Service Context Abstract Context
  *
  * @class \Newsman\Service\Context\Abstract\Context
  */

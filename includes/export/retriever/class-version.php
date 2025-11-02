@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Version
+ * Class Export Retriever Version
  *
  * @class \Newsman\Export\Retriever\Version
  */

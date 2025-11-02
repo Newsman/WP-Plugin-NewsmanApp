@@ -9,13 +9,12 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Order;
+namespace Newsman\Scheduler\Order;
 
 use Newsman\Config;
 use Newsman\Config\Sms as SmsConfig;
-use Newsman\Logger;
 use Newsman\Remarketing\Config as RemarketingConfig;
-use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
+use Newsman\Scheduler\AbstractScheduler;
 use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * - Synchronize order status by email list (remarketing).
  * - Send SMS about order status.
  *
- * @class \Newsman\Order\Synchronize
+ * @class \Newsman\Scheduler\Order
  */
-class SendStatus {
+class SendStatus extends AbstractScheduler {
 	/**
 	 * Background event hook notify order status
 	 */
@@ -70,13 +69,6 @@ class SendStatus {
 	protected $sms_config;
 
 	/**
-	 * Newsman logger
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
-
-	/**
 	 * Telephone util
 	 *
 	 * @var Telephone
@@ -84,22 +76,15 @@ class SendStatus {
 	protected $telephone;
 
 	/**
-	 *  Action Scheduler Util
-	 *
-	 * @var NewsmanActionScheduler
-	 */
-	protected $action_scheduler;
-
-	/**
 	 * Class constructor
 	 */
 	public function __construct() {
+		parent::__construct();
+
 		$this->config             = Config::init();
 		$this->remarketing_config = RemarketingConfig::init();
 		$this->sms_config         = SmsConfig::init();
-		$this->logger             = Logger::init();
 		$this->telephone          = new Telephone();
-		$this->action_scheduler   = new NewsmanActionScheduler();
 	}
 
 	/**
@@ -107,16 +92,15 @@ class SendStatus {
 	 *
 	 * @return void
 	 */
-	public function init() {
+	public function init_hooks() {
 		// Must send complete order status for remarketing to work properly.
 		if ( ! $this->config->is_enabled_with_api() && ! $this->remarketing_config->is_active() ) {
 			return;
 		}
 
 		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
-			$send_status = new \Newsman\Order\SendStatus();
-			if ( method_exists( $send_status, $name ) ) {
-				add_action( 'woocommerce_order_status_' . $status, array( $send_status, $name ) );
+			if ( method_exists( $this, $name ) ) {
+				add_action( 'woocommerce_order_status_' . $status, array( $this, $name ) );
 			}
 		}
 

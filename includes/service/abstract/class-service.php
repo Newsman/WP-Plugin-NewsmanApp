@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Abstract Service
+ * Class Service Abstract Service
  *
  * @class \Newsman\Service\Abstract\Service
  */

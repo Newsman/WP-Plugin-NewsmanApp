@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Unsubscribe Email
+ * Class Service Context Unsubscribe Email
  *
  * @class \Newsman\Service\Context\UnsubscribeEmail
  */

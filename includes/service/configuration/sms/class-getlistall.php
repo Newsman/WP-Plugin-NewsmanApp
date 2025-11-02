@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Configuration Get SMS List All
+ * API Class Service Configuration Get SMS List All
  *
  * @class \Newsman\Service\Configuration\Sms\GetListAll
  */

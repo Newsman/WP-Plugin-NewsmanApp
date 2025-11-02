@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client API Client interface
+ * Class API Client interface
  *
  * @class \Newsman\Api\ClientInterface
  */

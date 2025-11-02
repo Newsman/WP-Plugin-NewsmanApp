@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Remarketing order Set Purchase Status
+ * API Class Service Remarketing order Set Purchase Status
  *
  * @class Newsman\Service\SetPurchaseStatus
  */

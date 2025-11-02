@@ -753,4 +753,37 @@ class Settings {
 		$value = apply_filters( 'newsman_admin_settings_get_form_value_' . $name, $this->form_values[ $name ] );
 		return $value;
 	}
+
+	/**
+	 * Get admin action URL with added nonce.
+	 *
+	 * @param string      $action WP admin action.
+	 * @param string      $redirect_to Redirect URL.
+	 * @param string|bool $action_nonce Nonce namespace.
+	 * @return string
+	 */
+	public function get_action_nonce_url( $action, $redirect_to, $action_nonce = false ) {
+		if ( false === $action_nonce ) {
+			$action_nonce = $action;
+		}
+		return wp_nonce_url(
+			add_query_arg(
+				array(
+					'action'      => $action,
+					'redirect_to' => rawurlencode( $redirect_to ),
+				),
+				admin_url( 'admin.php' )
+			),
+			$action_nonce
+		);
+	}
+
+	/**
+	 * Has single action schedule
+	 *
+	 * @return bool
+	 */
+	public function is_single_action_schedule() {
+		return $this->action_scheduler->exist() && $this->action_scheduler->is_single_action();
+	}
 }

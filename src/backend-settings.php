@@ -43,7 +43,7 @@ $form_values = $this->get_form_values();
 	<div class="tab-panels">
 		<section id="tabSettings" class="tab-panel">
 			<div class="wrap wrap-settings-admin-page">
-				<form method="post" enctype="multipart/form-data">
+				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSettings' ) ); ?>">
 					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>"/>
 					<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />
 

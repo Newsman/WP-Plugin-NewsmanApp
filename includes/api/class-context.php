@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client API Context
+ * Class API Context
  *
  * @class \Newsman\Api\Context
  */

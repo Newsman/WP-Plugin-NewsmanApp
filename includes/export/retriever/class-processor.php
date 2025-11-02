@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Processor
+ * Class Export Retriever Processor
  *
  * @class \Newsman\Export\Retriever\Processor
  */

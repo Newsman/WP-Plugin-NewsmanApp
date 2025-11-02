@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Remarketing {
 	/**
-	 * SMS config
+	 * Newsman config
 	 *
 	 * @var Config
 	 */
@@ -103,8 +103,8 @@ class Remarketing {
 		add_filter( 'woocommerce_get_return_url', array( $this, 'utm_nooverride' ) );
 
 		// Order status change hooks.
-		$order_status = new \Newsman\Order\SendStatus();
-		$order_status->init();
+		$order_status = new \Newsman\Scheduler\Order\SendStatus();
+		$order_status->init_hooks();
 
 		// It should be the last action running (displayed in page source after all).
 		add_action( 'wp_footer', array( $this, 'send_page_view' ) );

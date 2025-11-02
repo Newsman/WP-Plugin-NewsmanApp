@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'NEWSMAN_VERSION', '3.0.0' );
+define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // Included before autoload.php and checks for dependencies in vendor.
 require_once __DIR__ . '/includes/class-newsmanphp.php';
@@ -105,11 +107,9 @@ class WP_Newsman {
 		add_action( 'init', array( new \Newsman\Export\Router(), 'execute' ) );
 		// Widget auto init.
 		add_action( 'init', array( $this, 'init_widgets' ) );
-		// Deactivate old Remarketing plugin.
-		add_action( 'admin_init', '\Newsman\Util\DeprecatedRemarketing::notify_and_deactivate_old_plugin' );
-		if ( class_exists( '\WC_Newsman_Remarketing' ) ) {
-			add_action( 'all_admin_notices', '\Newsman\Util\DeprecatedRemarketing::notify_old_plugin_exist' );
-		}
+
+		$admin = \Newsman\Admin::init();
+		$admin->init_hooks();
 
 		/**
 		 * Declare compatibility with custom_order_tables.
@@ -126,15 +126,6 @@ class WP_Newsman {
 			}
 		}
 		add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
-
-		// Admin menu hook.
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		// Add links to plugins page.
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
-		// Enqueue plugin styles in admin.
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
-		// Enqueue plugin scripts in admin.
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
 	}
 
 	/**
@@ -154,6 +145,8 @@ class WP_Newsman {
 				$remarketing = \Newsman\Remarketing::init();
 				$remarketing->init_hooks();
 			}
+
+			$this->init_scheduled_hooks();
 		} else {
 			// Enqueue Newsman tracking script when there is WordPress without Woo Commerce.
 			add_action( 'wp_head', array( new \Newsman\Remarketing\Script\Track(), 'display_script' ) );
@@ -176,105 +169,36 @@ class WP_Newsman {
 	}
 
 	/**
-	 * Adds a menu item for Newsman on the Admin page
+	 * Init Action Scheduler hooks.
 	 *
 	 * @return void
 	 */
-	public function admin_menu() {
-		$exist = new \Newsman\Util\WooCommerceExist();
-
-		add_menu_page(
-			'Newsman',
-			'Newsman',
-			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-			'Newsman',
-			array( new \Newsman\Admin\Settings\Newsman(), 'include_page' ),
-			plugin_dir_url( __FILE__ ) . 'src/img/newsman-mini.png'
-		);
-
-		add_submenu_page(
-			'Newsman',
-			'Sync',
-			'Sync',
-			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-			'NewsmanSync',
-			array( new \Newsman\Admin\Settings\Sync(), 'include_page' )
-		);
-
-		add_submenu_page(
-			'Newsman',
-			'Remarketing',
-			'Remarketing',
-			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-			'NewsmanRemarketing',
-			array( new \Newsman\Admin\Settings\Remarketing(), 'include_page' )
-		);
-
-		if ( $exist->exist() ) {
-			add_submenu_page(
-				'Newsman',
-				'SMS',
-				'SMS',
-				'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-				'NewsmanSMS',
-				array( new \Newsman\Admin\Settings\Sms(), 'include_page' )
-			);
+	public function init_scheduled_hooks() {
+		$newsman_action_scheduler = new \Newsman\Util\ActionScheduler();
+		if ( ! $newsman_action_scheduler->exist() ) {
+			return;
 		}
 
-		add_submenu_page(
-			'Newsman',
-			'Settings',
-			'Settings',
-			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-			'NewsmanSettings',
-			array( new \Newsman\Admin\Settings\Settings(), 'include_page' )
-		);
-
-		add_submenu_page(
-			'Newsman',
-			'Oauth',
-			'Oauth',
-			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
-			'NewsmanOauth',
-			array( new \Newsman\Admin\Settings\Oauth(), 'include_page' )
-		);
+		foreach ( $this->get_known_scheduled_classes() as $class ) {
+			if ( method_exists( $class, 'init_hooks' ) ) {
+				$scheduled_class = new $class();
+				$scheduled_class->init_hooks();
+			}
+		}
 	}
 
 	/**
-	 * Binds the Newsman menu item to the menu.
+	 * Get known action scheduler classes.
 	 *
-	 * @param array $links Array with links.
 	 * @return array
 	 */
-	public function plugin_links( $links ) {
-		$custom_links = array(
-			'<a href="' . admin_url( 'admin.php?page=NewsmanSettings' ) . '">Settings</a>',
+	public function get_known_scheduled_classes() {
+		$classes = array(
+			'\Newsman\Scheduler\Export\SubscribersWordpress',
+			'\Newsman\Scheduler\Export\SubscribersWoocommerce',
 		);
-		return array_merge( $links, $custom_links );
-	}
 
-	/**
-	 * Register plugin custom css.
-	 *
-	 * @return void
-	 */
-	public function register_plugin_styles() {
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_register_style( 'newsman_css', plugins_url( 'newsmanapp/src/css/style.css' ) );
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_enqueue_style( 'newsman_css' );
-	}
-
-	/**
-	 * Register plugin custom javascript..
-	 *
-	 * @return void
-	 */
-	public function register_plugin_scripts() {
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion, WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'newsman_js', plugins_url( 'newsmanapp/src/js/script.js' ), array( 'jquery' ) );
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_enqueue_script( 'newsman_js' );
+		return apply_filters( 'newsman_known_scheduled_classes', $classes );
 	}
 }
 

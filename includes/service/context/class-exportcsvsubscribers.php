@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Service Context Export CSV subscribers
+ * Class Service Context Export CSV subscribers
  *
  * @class \Newsman\Service\Context\ExportCsvSubscribers
  */

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Export Csv Subscribers
+ * API Class Service Export Csv Subscribers
  *
  * @class \Newsman\Service\ExportCsvSubscribers
  */

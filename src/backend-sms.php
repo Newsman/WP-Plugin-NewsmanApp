@@ -71,7 +71,7 @@ $form_values = $this->get_form_values();
 	<div class="tab-panels">
 		<section id="tabSms" class="tab-panel">
 			<div class="wrap wrap-settings-admin-page">
-				<form method="post" enctype="multipart/form-data" id="mainForm">
+				<form method="post" enctype="multipart/form-data" id="mainForm" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSMS' ) ); ?>">
 					<input type="hidden" name="newsman_action" value="Y" />
 					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>"/>
 					<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Client Export Retriever Coupons
+ * Class Export Retriever Coupons
  *
  * @class Coupons
  */

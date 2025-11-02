@@ -43,7 +43,7 @@ $form_values = $this->get_form_values();
 	<div class="tab-panels">
 		<section id="tabSync" class="tab-panel">
 			<div class="wrap wrap-settings-admin-page">
-				<form method="post" enctype="multipart/form-data">
+				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSync' ) ); ?>">
 					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>" />
 					<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />
 					<h2>Sync</h2>
@@ -112,7 +112,7 @@ $form_values = $this->get_form_values();
 							</td>
 						</tr>
 						<tr>
-							<th>
+							<th rowspan="2">
 								SYNC via CRON Job (Task scheduler)
 								<p class="newsman-paragraph">click the links to begin Sync or setup task scheduler (cron) on your server/hosting<p>
 								<br><br>
@@ -120,17 +120,47 @@ $form_values = $this->get_form_values();
 							</th>
 							<td>
 								<?php
-								$wordpress_url   = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
-								$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
-
-								echo "CRON url Sync WordPress subscribers: <a href='" . esc_url( $wordpress_url ) . "' target='_blank'>" . esc_html( $wordpress_url ) . '</a>';
-								echo '<br><br>';
-								if ( $this->is_woo_commerce_exists() ) {
-									echo "CRON url Sync customers with orders completed: <a href='" . esc_url( $woocommerce_url ) . "' target='_blank'>" . esc_html( $woocommerce_url ) . '</a>';
-								}
+								$wordpress_url = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
 								?>
+								CRON url to export WordPress subscribers:
+								<br>
+								<a href="<?php echo esc_url( $wordpress_url ); ?>" target="_blank"><?php echo esc_html( $wordpress_url ); ?></a>
+								<?php if ( $this->is_single_action_schedule() ) : ?>
+									<br><br>
+									<?php
+										$schedule_url = $this->get_action_nonce_url( 'newsman_export_wordpress_subscribers', admin_url( 'admin.php?page=NewsmanSync' ) );
+									?>
+									<?php echo esc_html__( 'Export once all WordPress Subscribers (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+									<br>
+									<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
+										Schedule Export Subscribers
+									</a>
+								<?php endif; ?>
 							</td>
 						</tr>
+						<?php if ( $this->is_woo_commerce_exists() ) : ?>
+						<tr>
+							<td>
+								<?php
+								$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
+								?>
+								CRON url to export buyers from orders with status complete:
+								<br>
+								<a href="<?php echo esc_url( $woocommerce_url ); ?>" target="_blank"><?php echo esc_html( $woocommerce_url ); ?></a>
+								<?php if ( $this->is_single_action_schedule() ) : ?>
+									<br><br>
+									<?php
+									$schedule_url = $this->get_action_nonce_url( 'newsman_export_subscribers_orders', admin_url( 'admin.php?page=NewsmanSync' ) );
+									?>
+									<?php echo esc_html__( 'Export once all buyers from orders with status complete (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+									<br>
+									<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
+										Schedule Export Customers from Orders
+									</a>
+								<?php endif; ?>
+							</td>
+						</tr>
+						<?php endif; ?>
 					</table>
 					<div style="padding-top: 5px;">
 						<input type="submit" value="Save Changes" class="button button-primary"/>
@@ -138,5 +168,5 @@ $form_values = $this->get_form_values();
 				</form>
 			</div>
 		</section>  
-	</div>  
+	</div>
 </div>

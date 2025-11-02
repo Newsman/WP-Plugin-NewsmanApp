@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Client Service Configuration Update Feed
+ * API Class Service Configuration Update Feed
  *
  * @class \Newsman\Service\Configuration\UpdateFeed
  */
