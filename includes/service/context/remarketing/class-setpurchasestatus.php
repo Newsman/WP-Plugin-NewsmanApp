@@ -9,7 +9,9 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Service\Context;
+namespace Newsman\Service\Context\Remarketing;
+
+use Newsman\Service\Context\Blog;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Service Context Order Set Purchase Status
  *
- * @class \Newsman\Service\Context\SetPurchaseStatus
+ * @class \Newsman\Service\Context\Remarketing\SetPurchaseStatus
  */
 class SetPurchaseStatus extends Blog {
 	/**

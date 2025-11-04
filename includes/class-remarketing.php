@@ -102,9 +102,7 @@ class Remarketing {
 		// utm_nooverride parameter for Google AdWords.
 		add_filter( 'woocommerce_get_return_url', array( $this, 'utm_nooverride' ) );
 
-		// Order status change hooks.
-		$order_status = new \Newsman\Scheduler\Order\SendStatus();
-		$order_status->init_hooks();
+		$this->init_scheduled_hooks();
 
 		// It should be the last action running (displayed in page source after all).
 		add_action( 'wp_footer', array( $this, 'send_page_view' ) );
@@ -199,5 +197,34 @@ class Remarketing {
 		$return_url = apply_filters( 'newsman_remarketing_utm_nooverride', $return_url );
 
 		return $return_url;
+	}
+
+	/**
+	 * Init remarketing Action Scheduler hooks.
+	 *
+	 * @return void
+	 */
+	public function init_scheduled_hooks() {
+		foreach ( $this->get_known_scheduled_classes() as $class ) {
+			if ( method_exists( $class, 'init_hooks' ) ) {
+				$scheduled_class = new $class();
+				$scheduled_class->init_hooks();
+			}
+		}
+	}
+
+	/**
+	 * Get known remarketing action scheduler classes.
+	 *
+	 * @return array
+	 */
+	public function get_known_scheduled_classes() {
+		$classes = array(
+			'\Newsman\Scheduler\Order\Status\SendStatus',
+			'\Newsman\Scheduler\Order\Status\SendSms',
+			'\Newsman\Scheduler\Order\Status\SaveOrder',
+		);
+
+		return apply_filters( 'newsman_known_remarketing_scheduled_classes', $classes );
 	}
 }

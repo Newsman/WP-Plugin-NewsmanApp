@@ -91,6 +91,30 @@ $form_values = $this->get_form_values();
 							<p class="description">Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders.</p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label class="nzm-label" for="newsman_remarketingordersave">Export Orders on Status Change</label>
+						</th>
+						<td>
+							<select class="nzm-multiple-select" name="newsman_remarketingordersave[]" id="newsman_remarketingordersave" multiple="multiple">
+								<?php
+								$all_order_statuses   = wc_get_order_statuses();
+								$saved_order_statuses = isset( $form_values['newsman_remarketingordersave'] ) ?
+									(array) $form_values['newsman_remarketingordersave'] : array();
+
+								if ( ! empty( $all_order_statuses ) ) {
+									foreach ( $all_order_statuses as $status_key => $status_label ) {
+										$selected = in_array( $status_key, $saved_order_statuses, true ) ? 'selected' : '';
+										// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										echo '<option value="' . esc_attr( $status_key ) . '" ' . $selected . '>' .
+											esc_html( $status_label ) . '</option>';
+									}
+								}
+								?>
+							</select>
+							<p class="description">Select order statuses. On each selected order status change, the order details will be sent to Newsman.</p>
+						</td>
+					</tr>
 					<?php if ( function_exists( 'wc_get_attribute_taxonomies' ) ) : ?>
 						<tr>
 							<th scope="row">

@@ -211,7 +211,7 @@ class Orders implements RetrieverInterface {
 			}
 
 			$products_data[] = array(
-				'id'        => (string) $prod['product_id'],
+				'id'        => $prod['product_id'],
 				'name'      => $prod['name'],
 				'quantity'  => (int) $prod['quantity'],
 				'price'     => (float) $_price,
@@ -221,27 +221,22 @@ class Orders implements RetrieverInterface {
 			);
 		}
 
-		$date = $order->get_date_created();
-		$date = $date->getTimestamp();
-
 		$row = array(
 			'order_no'      => $order->get_order_number(),
-			'date'          => $date,
-			'status'        => $order->get_status(),
 			'lastname'      => $order->get_billing_last_name(),
 			'firstname'     => $order->get_billing_first_name(),
 			'email'         => $order->get_billing_email(),
 			'phone'         => $this->telephone->clean( $item_data['billing']['phone'] ),
-			'state'         => $item_data['billing']['state'],
-			'city'          => $item_data['billing']['city'],
-			'address'       => $item_data['billing']['address_1'],
+			'status'        => $order->get_status(),
+			'created_at'    => $order->get_date_created()->format( 'Y-m-d H:i:s' ),
+			'discount_code' => implode( ',', $order->get_coupon_codes() ),
 			'discount'      => ( empty( $item_data['billing']['discount_total'] ) ) ? 0 :
 				(float) $item_data['billing']['discount_total'],
-			'discount_code' => '',
 			'shipping'      => (float) $item_data['shipping_total'],
-			'fees'          => 0,
 			'rebates'       => 0,
+			'fees'          => 0,
 			'total'         => (float) wc_format_decimal( $order->get_total(), 2 ),
+			'currency'      => $order->get_currency(),
 			'products'      => $products_data,
 		);
 

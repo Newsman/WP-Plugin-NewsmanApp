@@ -49,6 +49,7 @@ class Remarketing extends Settings {
 		'newsman_remarketingsendtelephone',
 		'newsman_remarketingproductattributes',
 		'newsman_remarketingcustomerattributes',
+		'newsman_remarketingordersave',
 	);
 
 	/**

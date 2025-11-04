@@ -29,9 +29,14 @@ class ActionScheduler {
 	public const GROUP_ORDER_CHANGE = 'newsman_order_change';
 
 	/**
+	 * Action scheduler group for order save
+	 */
+	public const GROUP_ORDER_SAVE = 'newsman_order_save';
+	/**
 	 * Action scheduler group for subscribe to email and SMS lists
 	 */
 	public const GROUP_SUBSCRIBE = 'newsman_subscribe';
+
 
 	/**
 	 * Action scheduler group for mass export WordPress subscribers
@@ -97,6 +102,15 @@ class ActionScheduler {
 	 */
 	public function get_group_order_change() {
 		return self::GROUP_ORDER_CHANGE;
+	}
+
+	/**
+	 * Get action scheduler group for order save
+	 *
+	 * @return string
+	 */
+	public function get_group_order_save() {
+		return self::GROUP_ORDER_SAVE;
 	}
 
 	/**

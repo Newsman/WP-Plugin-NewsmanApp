@@ -145,4 +145,28 @@ class Sms {
 		}
 		return (string) $this->config->get_blog_option( $blog_id, 'newsman_sms' . $name . 'text', '' );
 	}
+
+	/**
+	 * Is valid SMS message by order status
+	 *
+	 * @param string $status Order status.
+	 * @return bool
+	 */
+	public function is_valid_sms_by_order_status( $status ) {
+		$config_name = $this->config->get_order_config_name_by_status( $status );
+		if ( false === $config_name ) {
+			return false;
+		}
+
+		if ( ! $this->is_order_sms_active_by_name( $config_name ) ) {
+			return false;
+		}
+
+		$message = $this->get_order_sms_text_by_name( $config_name );
+		if ( empty( $message ) ) {
+			return false;
+		}
+
+		return true;
+	}
 }

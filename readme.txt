@@ -138,7 +138,7 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
  * Multiple admin configurations added. Most of the old admin configurations were kept for backward compatibility.
  * ActionsScheduler is used for some API actions in Woo Commerce.
  * Added comprehensive logging in Woo Commerce.
- * WordPress Codding standards.
+ * WordPress codding standards.
 
 == Upgrade Notice ==
 

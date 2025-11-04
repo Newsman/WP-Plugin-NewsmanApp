@@ -174,11 +174,6 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function init_scheduled_hooks() {
-		$newsman_action_scheduler = new \Newsman\Util\ActionScheduler();
-		if ( ! $newsman_action_scheduler->exist() ) {
-			return;
-		}
-
 		foreach ( $this->get_known_scheduled_classes() as $class ) {
 			if ( method_exists( $class, 'init_hooks' ) ) {
 				$scheduled_class = new $class();

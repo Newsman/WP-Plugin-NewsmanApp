@@ -11,8 +11,11 @@
 
 namespace Newsman\Scheduler;
 
+use Newsman\Config;
 use Newsman\Logger;
+use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
+use Newsman\Util\Telephone;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,11 +28,31 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class AbstractScheduler {
 	/**
+	 * Newsman config
+	 *
+	 * @var Config
+	 */
+	protected $config;
+	/**
+	 * Newsman config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
 	 *  Action Scheduler Util
 	 *
 	 * @var NewsmanActionScheduler
 	 */
 	protected $action_scheduler;
+
+	/**
+	 * Telephone util
+	 *
+	 * @var Telephone
+	 */
+	protected $telephone;
 
 	/**
 	 * Newsman logger
@@ -42,7 +65,10 @@ class AbstractScheduler {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->action_scheduler = new NewsmanActionScheduler();
-		$this->logger           = Logger::init();
+		$this->config             = Config::init();
+		$this->remarketing_config = RemarketingConfig::init();
+		$this->action_scheduler   = new NewsmanActionScheduler();
+		$this->telephone          = new Telephone();
+		$this->logger             = Logger::init();
 	}
 }

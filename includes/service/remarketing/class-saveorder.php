@@ -9,7 +9,7 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Service;
+namespace Newsman\Service\Remarketing;
 
 use Newsman\Service\Abstract\Service;
 
@@ -18,22 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * API Class Service Remarketing order Set Purchase Status
+ * API Class Service Remarketing save order
  *
- * @class Newsman\Service\SetPurchaseStatus
+ * @class Newsman\Service\Remarketing\SaveOrder
  */
-class SetPurchaseStatus extends Service {
+class SaveOrder extends Service {
 	/**
-	 * Order set purchase status Newsman API endpoint
+	 * Order save order Newsman API endpoint
 	 *
-	 * @see https://kb.newsman.com/api/1.2/remarketing.setPurchaseStatus
+	 * @see https://kb.newsman.com/api/1.2/remarketing.saveOrder
 	 */
-	public const ENDPOINT = 'remarketing.setPurchaseStatus';
+	public const ENDPOINT = 'remarketing.saveOrder';
 
 	/**
-	 * Set order purchase status
+	 * Save order
 	 *
-	 * @param Context\SetPurchaseStatus $context Order Set Purchase Status context.
+	 * @param \Newsman\Service\Context\Remarketing\SaveOrder $context Save order context.
+	 *
 	 * @return array|string
 	 * @throws \Exception Throw exception on errors.
 	 */
@@ -43,23 +44,27 @@ class SetPurchaseStatus extends Service {
 			->set_blog_id( $context->get_blog_id() )
 			->set_endpoint( self::ENDPOINT );
 
+		$details  = $context->get_order_details();
+		$order_id = 'unknown';
+		if ( is_array( $details ) && ! empty( $details['order_no'] ) ) {
+			$order_id = $details['order_no'];
+		}
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Order ID, 2: Order status */
-				esc_html__( 'Try to send order %1$s status %2$s', 'newsman' ),
-				$context->get_order_id(),
-				$context->get_order_status()
+				/* translators: 1: Order ID */
+				esc_html__( 'Try to save order %s', 'newsman' ),
+				$order_id
 			)
 		);
 
 		$client  = $this->create_api_client();
-		$context = apply_filters( 'newsman_service_set_purchase_status_execute_context', $context );
+		$context = apply_filters( 'newsman_service_save_order_execute_context', $context );
 		$result  = $client->get(
 			$api_context,
 			array(
-				'list_id'  => $api_context->get_list_id(),
-				'order_id' => $context->get_order_id(),
-				'status'   => $context->get_order_status(),
+				'list_id'        => $api_context->get_list_id(),
+				'order_details'  => $context->get_order_details(),
+				'order_products' => $context->get_order_products(),
 			)
 		);
 
@@ -70,10 +75,9 @@ class SetPurchaseStatus extends Service {
 
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Order ID, 2: Order status */
-				esc_html__( 'Sent order %1$s status %2$s', 'newsman' ),
-				$context->get_order_id(),
-				$context->get_order_status()
+				/* translators: 1: Order ID */
+				esc_html__( 'Saved order %s', 'newsman' ),
+				$order_id
 			)
 		);
 
