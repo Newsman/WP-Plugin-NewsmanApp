@@ -10,31 +10,31 @@
 			jQuery( '#newsmanBtn' ).on(
 				'click',
 				function () {
-					location.href = '/wp-admin/admin.php?page=Newsman';
+					location.href = NEWSMAN_URLS.admin_url + 'admin.php?page=Newsman';
 				}
 			);
 			jQuery( '#syncBtn' ).on(
 				'click',
 				function () {
-					location.href = '/wp-admin/admin.php?page=NewsmanSync';
+					location.href = NEWSMAN_URLS.admin_url + 'admin.php?page=NewsmanSync';
 				}
 			);
 			jQuery( '#remarketingBtn' ).on(
 				'click',
 				function () {
-					location.href = '/wp-admin/admin.php?page=NewsmanRemarketing';
+					location.href = NEWSMAN_URLS.admin_url + 'admin.php?page=NewsmanRemarketing';
 				}
 			);
 			jQuery( '#smsBtn' ).on(
 				'click',
 				function () {
-					location.href = '/wp-admin/admin.php?page=NewsmanSMS';
+					location.href = NEWSMAN_URLS.admin_url + 'admin.php?page=NewsmanSMS';
 				}
 			);
 			jQuery( '#settingsBtn' ).on(
 				'click',
 				function () {
-					location.href = '/wp-admin/admin.php?page=NewsmanSettings';
+					location.href = NEWSMAN_URLS.admin_url + 'admin.php?page=NewsmanSettings';
 				}
 			);
 

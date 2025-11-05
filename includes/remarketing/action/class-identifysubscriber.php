@@ -27,6 +27,10 @@ class IdentifySubscriber extends AbstractAction {
 	 * @return string
 	 */
 	public function get_js() {
+        if ( ! $this->is_tracking_allowed() ) {
+            return '';
+        }
+
 		$js = '';
 
 		$current_user = null;

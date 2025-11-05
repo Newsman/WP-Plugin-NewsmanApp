@@ -50,7 +50,7 @@ $form_values = $this->get_form_values();
 </script>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" alt="NewsMAN" />
+		<img src="<?php echo NEWSMAN_PLUGIN_URL?>src/img/logo.png" alt="NewsMAN" />
 	</a>
 </div>
 <div class="tabset">

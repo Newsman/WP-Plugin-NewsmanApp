@@ -122,9 +122,7 @@ class Oauth extends Settings {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$code = sanitize_text_field( wp_unslash( $_GET['code'] ) );
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-		$redirect = 'https://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) .
-			sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) . // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-			( ! empty( $this->new_nonce ) ? '&_wpnonce=' . $this->new_nonce : '' );
+		$redirect = admin_url( 'admin.php?page=NewsmanOauth' ) . ( ! empty( $this->new_nonce ) ? '&_wpnonce=' . $this->new_nonce : '' );
 
 		$data = array(
 			'grant_type'   => 'authorization_code',
@@ -264,9 +262,7 @@ class Oauth extends Settings {
 	public function get_oauth_url() {
 		$oauth_url = 'https://newsman.app/admin/oauth/authorize?response_type=code&client_id=nzmplugin&nzmplugin=Wordpress&scope=api&redirect_uri=' .
 			rawurlencode(
-				'https://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) . // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-				sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) . // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-				( ! empty( $this->new_nonce ) ? '&_wpnonce=' . $this->new_nonce : '' )
+                admin_url( 'admin.php?page=NewsmanOauth' ) . ( ! empty( $this->new_nonce ) ? '&_wpnonce=' . $this->new_nonce : '' )
 			);
 		return $oauth_url;
 	}

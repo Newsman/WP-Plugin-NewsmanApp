@@ -120,22 +120,16 @@ class Settings {
 	 * @return void
 	 */
 	public function is_oauth( $inside_oauth = false ) {
-
-		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-			return;
-		}
-
-		$host = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
 		if ( $inside_oauth ) {
 			if ( ! empty( get_option( 'newsman_userid' ) ) ) {
-				wp_safe_redirect( 'https://' . $host . '/wp-admin/admin.php?page=NewsmanSettings' );
+				wp_safe_redirect( admin_url( 'admin.php?page=NewsmanSettings' ) );
 			}
 
 			return;
 		}
 
 		if ( empty( get_option( 'newsman_userid' ) ) ) {
-			wp_safe_redirect( 'https://' . $host . '/wp-admin/admin.php?page=NewsmanOauth' );
+			wp_safe_redirect( admin_url( 'admin.php?page=NewsmanOauth' ) );
 		}
 	}
 

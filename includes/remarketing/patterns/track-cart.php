@@ -14,11 +14,12 @@
 if ( ! $this->is_woo_commerce_exist() ) {
 	return '';
 }
+$site_url   = get_site_url();
 $run        = $this->remarketing_config->get_js_track_run_func();
 $cart_param = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
 ?>
 <script<?php esc_js( esc_html( $this->get_script_tag_additional_attributes() ) ); ?>>
-var ajaxurl = document.location.protocol.replace(/:+$/, '') + '://' + document.location.hostname + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
+var ajaxurl = <?php echo esc_url( $site_url ) ?> + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
 var isProd = true;
 let lastCart = sessionStorage.getItem('lastCart');
 if (lastCart === null) {

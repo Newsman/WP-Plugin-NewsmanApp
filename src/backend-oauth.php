@@ -19,15 +19,11 @@ if ( ! $this->validate_nonce( array( $this->form_id, $this->form_id_step_two, 'e
 }
 $this->create_nonce();
 
-if ( ! isset( $_SERVER['HTTP_HOST'] ) || ! isset( $_SERVER['REQUEST_URI'] ) ) {
-	return;
-}
-
 $this->process_forms();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="/wp-content/plugins/newsmanapp/src/img/logo.png" alt="NewsMAN" />
+		<img src="<?php echo NEWSMAN_PLUGIN_URL?>src/img/logo.png" alt="NewsMAN" />
 	</a>
 </div>
 <div class="tabset">
