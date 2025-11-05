@@ -11,7 +11,7 @@
 
 namespace Newsman\Service\Remarketing;
 
-use Newsman\Service\Abstract\Service;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class Newsman\Service\Remarketing\SaveOrder
  */
-class SaveOrder extends Service {
+class SaveOrder extends AbstractService {
 	/**
 	 * Order save order Newsman API endpoint
 	 *

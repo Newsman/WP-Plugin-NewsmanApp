@@ -11,8 +11,8 @@
 
 namespace Newsman\Service\Configuration\Remarketing;
 
-use Newsman\Service\Abstract\Service;
 use Newsman\Service\Context\Configuration\EmailList;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Configuration\Remarketing\GetSettings
  */
-class GetSettings extends Service {
+class GetSettings extends AbstractService {
 	/**
 	 * Get remarketing settings
 	 *

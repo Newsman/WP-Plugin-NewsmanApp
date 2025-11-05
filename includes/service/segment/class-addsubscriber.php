@@ -11,7 +11,7 @@
 
 namespace Newsman\Service\Segment;
 
-use Newsman\Service\Abstract\Service;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Segment\AddSubscriber
  */
-class AddSubscriber extends Service {
+class AddSubscriber extends AbstractService {
 	/**
 	 * Subscribe telephone number to SMS list Newsman API endpoint
 	 *

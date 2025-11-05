@@ -11,8 +11,6 @@
 
 namespace Newsman\Service\Context;
 
-use Newsman\Service\Context\Abstract\Context;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Context\Blog
  */
-class Blog extends Context {
+class Blog extends AbstractContext {
 	/**
 	 * WP blog ID
 	 *

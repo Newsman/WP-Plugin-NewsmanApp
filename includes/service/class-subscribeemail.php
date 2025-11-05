@@ -11,8 +11,6 @@
 
 namespace Newsman\Service;
 
-use Newsman\Service\Abstract\Service;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\SubscribeEmail
  */
-class SubscribeEmail extends Service {
+class SubscribeEmail extends AbstractService {
 	/**
 	 * Subscribe to email list Newsman API endpoint
 	 *

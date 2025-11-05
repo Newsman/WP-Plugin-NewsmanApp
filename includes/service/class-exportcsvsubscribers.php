@@ -11,8 +11,6 @@
 
 namespace Newsman\Service;
 
-use Newsman\Service\Abstract\Service;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\ExportCsvSubscribers
  */
-class ExportCsvSubscribers extends Service {
+class ExportCsvSubscribers extends AbstractService {
 	/**
 	 * Export CSV with subscribers to Newsman API endpoint
 	 *

@@ -11,7 +11,7 @@
 
 namespace Newsman\Service\Configuration;
 
-use Newsman\Service\Abstract\Service;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Configuration\SetFeedOnList
  */
-class SetFeedOnList extends Service {
+class SetFeedOnList extends AbstractService {
 	/**
 	 * Installs a feed via API in Newsman
 	 *

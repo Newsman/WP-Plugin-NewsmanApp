@@ -11,8 +11,8 @@
 
 namespace Newsman\Service\Configuration\Sms;
 
-use Newsman\Service\Abstract\Service;
 use Newsman\Service\Context\Configuration\User;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Configuration\Sms\GetListAll
  */
-class GetListAll extends Service {
+class GetListAll extends AbstractService {
 	/**
 	 * Get all SMS lists Newsman API endpoint
 	 *

@@ -9,7 +9,7 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Service\Context\Abstract;
+namespace Newsman\Service\Context;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Service Context Abstract Context
  *
- * @class \Newsman\Service\Context\Abstract\Context
+ * @class \Newsman\Service\Context\AbstractContext
  */
-class Context {
+class AbstractContext {
 	/**
 	 * Null value sent as request parameter to Newsman API
 	 */

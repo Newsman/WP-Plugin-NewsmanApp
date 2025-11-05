@@ -11,8 +11,8 @@
 
 namespace Newsman\Service\Configuration;
 
-use Newsman\Service\Abstract\Service;
 use Newsman\Service\Context\Configuration\EmailList;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Configuration\GetSegmentAll
  */
-class GetSegmentAll extends Service {
+class GetSegmentAll extends AbstractService {
 	/**
 	 * Get all segments Newsman API endpoint by list ID
 	 *

@@ -9,13 +9,14 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Service\Abstract;
+namespace Newsman\Service;
 
 use Newsman\Api\ClientInterface;
 use Newsman\Api\ContextInterface;
 use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Remarketing\Config as RemarketingConfig;
+use Newsman\Service\Context\AbstractContext;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Service Abstract Service
  *
- * @class \Newsman\Service\Abstract\Service
+ * @class \Newsman\Service\AbstractService
  */
-class Service {
+class AbstractService {
 	/**
 	 * API context
 	 *
@@ -112,7 +113,7 @@ class Service {
 	/**
 	 * Execute API service
 	 *
-	 * @param \Newsman\Service\Context\Abstract\Context $context APi service context.
+	 * @param AbstractContext $context APi service context.
 	 * @return array|string
 	 */
 	public function execute( $context ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found

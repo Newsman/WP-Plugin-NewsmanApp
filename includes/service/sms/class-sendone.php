@@ -11,7 +11,7 @@
 
 namespace Newsman\Service\Sms;
 
-use Newsman\Service\Abstract\Service;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Sms\SendOne
  */
-class SendOne extends Service {
+class SendOne extends AbstractService {
 	/**
 	 * Send one SMS Newsman API endpoint
 	 *

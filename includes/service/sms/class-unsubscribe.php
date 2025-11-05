@@ -11,7 +11,7 @@
 
 namespace Newsman\Service\Sms;
 
-use Newsman\Service\Abstract\Service;
+use Newsman\Service\AbstractService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Service\Sms\Unsubscribe
  */
-class Unsubscribe extends Service {
+class Unsubscribe extends AbstractService {
 	/**
 	 * Unsubscribe telephone number from SMS list Newsman API endpoint
 	 *
