@@ -24,7 +24,7 @@ $form_values = $this->get_form_values();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="<?php echo NEWSMAN_PLUGIN_URL?>src/img/logo.png" alt="Newsman" />
+		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="Newsman" />
 	</a>
 </div>
 <div class="tabset">
@@ -279,7 +279,7 @@ $form_values = $this->get_form_values();
 								<input type="number" step="1" id="newsman_developerapitimeout"
 									name="newsman_developerapitimeout"
 									value="<?php echo ( ! empty( $form_values['newsman_developerapitimeout'] ) ) ? esc_attr( $form_values['newsman_developerapitimeout'] ) : ''; ?>"
-									placeholder="<?php echo esc_attr( $this->config->get_api_timeout() ) ?>"/>
+									placeholder="<?php echo esc_attr( $this->config->get_api_timeout() ); ?>"/>
 							</td>
 						</tr>
 						<?php if ( $this->is_woo_commerce_exists() ) : ?>

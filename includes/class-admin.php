@@ -164,6 +164,6 @@ class Admin {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_script( 'newsman_js' );
 
-        wp_localize_script( 'newsman_js', 'NEWSMAN_URLS', array( 'admin_url' => admin_url() ) );
-    }
+		wp_localize_script( 'newsman_js', 'NEWSMAN_URLS', array( 'admin_url' => admin_url() ) );
+	}
 }

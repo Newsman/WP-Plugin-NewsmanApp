@@ -262,7 +262,7 @@ class Oauth extends Settings {
 	public function get_oauth_url() {
 		$oauth_url = 'https://newsman.app/admin/oauth/authorize?response_type=code&client_id=nzmplugin&nzmplugin=Wordpress&scope=api&redirect_uri=' .
 			rawurlencode(
-                admin_url( 'admin.php?page=NewsmanOauth' ) . ( ! empty( $this->new_nonce ) ? '&_wpnonce=' . $this->new_nonce : '' )
+				admin_url( 'admin.php?page=NewsmanOauth' ) . ( ! empty( $this->new_nonce ) ? '&_wpnonce=' . $this->new_nonce : '' )
 			);
 		return $oauth_url;
 	}

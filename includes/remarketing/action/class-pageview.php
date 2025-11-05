@@ -39,9 +39,9 @@ class PageView extends AbstractAction {
 	 * @return string
 	 */
 	public function get_js() {
-        if ( ! $this->is_tracking_allowed() ) {
-            return '';
-        }
+		if ( ! $this->is_tracking_allowed() ) {
+			return '';
+		}
 
 		$js = '';
 		if ( false === self::get_page_view_sent() ) {
