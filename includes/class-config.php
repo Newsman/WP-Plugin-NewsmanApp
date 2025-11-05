@@ -163,9 +163,9 @@ class Config {
 	 * @return int
 	 */
 	public function get_api_timeout( $blog_id = null ) {
-		$timeout = (int) $this->get_blog_option( $blog_id, 'newsman_developerapitimeout', 5 );
+		$timeout = (int) $this->get_blog_option( $blog_id, 'newsman_developerapitimeout', 10 );
 		if ( $timeout <= 0 ) {
-			$timeout = 5;
+			$timeout = 10;
 		}
 		return $timeout;
 	}
