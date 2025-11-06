@@ -49,6 +49,11 @@ class ActionScheduler {
 	public const GROUP_MASS_EXPORT_SUBSCRIBERS_WOOCOMMERCE = 'newsman_mass_export_subscribers_woocommerce';
 
 	/**
+	 * Action scheduler group for mass export orders
+	 */
+	public const GROUP_MASS_EXPORT_ORDERS = 'newsman_mass_export_orders';
+
+	/**
 	 * Newsman Config
 	 *
 	 * @var Config
@@ -138,5 +143,14 @@ class ActionScheduler {
 	 */
 	public function get_group_mass_export_subscribers_woocommerce() {
 		return self::GROUP_MASS_EXPORT_SUBSCRIBERS_WOOCOMMERCE;
+	}
+
+	/**
+	 * Get action scheduler group for mass export orders
+	 *
+	 * @return string
+	 */
+	public function get_group_mass_export_orders() {
+		return self::GROUP_MASS_EXPORT_ORDERS;
 	}
 }

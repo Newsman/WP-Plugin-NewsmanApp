@@ -11,6 +11,9 @@
 
 namespace Newsman\Admin\Action;
 
+use Newsman\Config;
+use Newsman\Remarketing\Config as RemarketingConfig;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -21,4 +24,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class \Newsman\Admin\Action\AbstractAction
  */
 class AbstractAction {
+	/**
+	 * Config
+	 *
+	 * @var Config
+	 */
+	protected $config;
+
+	/**
+	 * Remarketing Config
+	 *
+	 * @var RemarketingConfig
+	 */
+	protected $remarketing_config;
+
+	/**
+	 * Class constructor
+	 */
+	public function __construct() {
+		$this->config             = Config::init();
+		$this->remarketing_config = RemarketingConfig::init();
+	}
 }

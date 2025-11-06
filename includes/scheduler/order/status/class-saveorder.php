@@ -11,6 +11,8 @@
 
 namespace Newsman\Scheduler\Order\Status;
 
+use Newsman\Export\Order\Mapper as OrderMapper;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -30,6 +32,21 @@ class SaveOrder extends AbstractStatus {
 	 * Wait in micro seconds before retry order save
 	 */
 	public const WAIT_RETRY_TIMEOUT = 5000000;
+
+	/**
+	 * Order Mapper
+	 *
+	 * @var OrderMapper
+	 */
+	protected $order_mapper;
+
+	/**
+	 * Class construct
+	 */
+	public function __construct() {
+		parent::__construct();
+		$this->order_mapper = new OrderMapper();
+	}
 
 	/**
 	 * Init WordPress and Woo Commerce hooks.
@@ -95,44 +112,14 @@ class SaveOrder extends AbstractStatus {
 			return false;
 		}
 		try {
-			$order     = wc_get_order( $order_id );
-			$item_data = $order->get_data();
-
+			$order = wc_get_order( $order_id );
 			do_action( 'newsman_order_status_order_save_before', $order, $status, $is_scheduled );
-
-			$order_details = array(
-				'order_no'      => $order->get_order_number(),
-				'lastname'      => $order->get_billing_last_name(),
-				'firstname'     => $order->get_billing_first_name(),
-				'email'         => $order->get_billing_email(),
-				'phone'         => $this->telephone->clean( $item_data['billing']['phone'] ),
-				'status'        => $order->get_status(),
-				'created_at'    => $order->get_date_created()->format( 'Y-m-d H:i:s' ),
-				'discount_code' => implode( ',', $order->get_coupon_codes() ),
-				'discount'      => ( empty( $item_data['billing']['discount_total'] ) ) ? 0 :
-					(float) $item_data['billing']['discount_total'],
-				'shipping'      => (float) $item_data['shipping_total'],
-				'rebates'       => 0,
-				'fees'          => 0,
-				'total'         => (float) wc_format_decimal( $order->get_total(), 2 ),
-				'currency'      => $order->get_currency(),
-			);
-
-			$order_products = array();
-			$items          = $order->get_items();
-			foreach ( $items as $item ) {
-				$order_products[] = array(
-					'id'             => (string) $item['product_id'],
-					'quantity'       => $item['quantity'],
-					'price'          => round( $item->get_total() / $item->get_quantity(), 2 ),
-					'variation_code' => '',
-				);
-			}
+			$order_data = $this->order_mapper->to_array( $order );
 
 			$context = new \Newsman\Service\Context\Remarketing\SaveOrder();
 			$context->set_list_id( $this->config->get_list_id() )
-				->set_order_details( $order_details )
-				->set_order_products( $order_products );
+				->set_order_details( $order_data['details'] )
+				->set_order_products( $order_data['products'] );
 			$context = apply_filters( 'newsman_order_status_order_save_context', $context, $order, $status );
 
 			try {

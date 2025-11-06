@@ -255,6 +255,11 @@ js/retargeting/modal_{{api_key}}.js'
 		add_option( 'newsman_developerpluginlazypriority', \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD );
 		add_option( 'newsman_developer_use_action_scheduler', 'on' );
 		add_option( 'newsman_developer_use_as_subscribe', 'on' );
+		add_option( 'newsman_remarketingexportorders', 'on' );
+
+		$current_date = new \DateTime();
+		$current_date->modify( '-5 years' );
+		add_option( 'newsman_remarketingorderdate', $current_date->format( 'Y-m-d' ) );
 	}
 
 	/**

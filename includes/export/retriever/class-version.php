@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Export\Retriever\Version
  */
-class Version implements RetrieverInterface {
+class Version extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Process version retriever
 	 *

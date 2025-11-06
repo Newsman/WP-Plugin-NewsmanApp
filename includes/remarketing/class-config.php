@@ -155,6 +155,75 @@ class Config {
 	}
 
 	/**
+	 * Is export WordPress users with role subscriber recurring
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_export_wordpress_subscribers( $blog_id = null ) {
+		$is = 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportwordpresssubscribers', '' );
+		return $is && $this->is_active( $blog_id );
+	}
+
+	/**
+	 * Get order date to export orders created after it, including.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_order_date( $blog_id = null ) {
+		$date_string = $this->config->get_blog_option( $blog_id, 'newsman_remarketingorderdate', '' );
+
+		if ( ! ( ! empty( $date_string ) && $this->is_valid_date_format( $date_string ) ) ) {
+			$current_date = new \DateTime();
+			$current_date->modify( '-5 years' );
+			$date_string = $current_date->format( 'Y-m-d' );
+		}
+
+		return $date_string;
+	}
+
+	/**
+	 * Test if a string is a valid date in YYYY-MM-DD format
+	 *
+	 * @param string $date_string The date string to validate.
+	 * @return bool True if valid, false otherwise
+	 */
+	public function is_valid_date_format( $date_string ) {
+		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date_string ) ) {
+			return false;
+		}
+		try {
+			$date = \DateTime::createFromFormat( 'Y-m-d', $date_string );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return $date && $date->format( 'Y-m-d' ) === $date_string;
+	}
+
+
+	/**
+	 * Is export WooCommerce buyers with orders complete recurring
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_export_woocommerce_subscribers( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportwoocommercesubscribers', '' );
+	}
+
+	/**
+	 * Is export orders recurring
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_export_orders( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportorders', '' );
+	}
+
+	/**
 	 * Get remarketing script JS code
 	 *
 	 * @param null|int $blog_id WP blog ID.

@@ -112,54 +112,83 @@ $form_values = $this->get_form_values();
 							</td>
 						</tr>
 						<tr>
-							<th rowspan="2">
-								SYNC via CRON Job (Task scheduler)
-								<p class="newsman-paragraph">click the links to begin Sync or setup task scheduler (cron) on your server/hosting<p>
+							<th rowspan="3">
+								<?php if ( $this->is_woo_commerce_exists() && $this->is_single_action_schedule() ) : ?>
+									<em>Optionally and by case</em> synchronize all data.
+								<br>Or <em>optionally</em> synchronize data via CRON jobs (Task scheduler).
+									<p class="newsman-paragraph">Click the export buttons to push all data once.
+										<br>Or click
+								<?php else : ?>
+									<em>Optional</em> synchronize via CRON jobs (Task scheduler).
+									<p class="newsman-paragraph">Click
+								<?php endif; ?>
+									the links to begin synchronizing or setup task scheduler (cron) on your server/hosting.<p>
 								<br><br>
-								<p class="newsman-paragraph">{{limit}} = Sync with newsman from latest number of records (ex: 5000)</p>
+								<p class="newsman-paragraph">{{limit}} = Synchronize with Newsman from latest number of records (ex: 5000)</p>
 							</th>
 							<td>
-								<?php
-								$wordpress_url = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
-								?>
-								CRON url to export WordPress subscribers:
-								<br>
-								<a href="<?php echo esc_url( $wordpress_url ); ?>" target="_blank"><?php echo esc_html( $wordpress_url ); ?></a>
 								<?php if ( $this->is_single_action_schedule() ) : ?>
-									<br><br>
 									<?php
 										$schedule_url = $this->get_action_nonce_url( 'newsman_export_wordpress_subscribers', admin_url( 'admin.php?page=NewsmanSync' ) );
 									?>
-									<?php echo esc_html__( 'Export once all WordPress Subscribers (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+									<?php echo esc_html__( 'Export once all WordPress users with role subscriber (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
 									<br>
 									<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
 										Schedule Export Subscribers
 									</a>
+									<br><br>
 								<?php endif; ?>
+								<?php
+								$wordpress_url = get_site_url() . '/?newsman=cron.json&method=wordpress&nzmhash=' . $this->get_config()->get_api_key() . '&start=0&limit=5000&cronlast=true';
+								?>
+								CRON url to export WordPress users with role subscriber:
+								<br>
+								<a href="<?php echo esc_url( $wordpress_url ); ?>" target="_blank"><?php echo esc_html( $wordpress_url ); ?></a>
 							</td>
 						</tr>
 						<?php if ( $this->is_woo_commerce_exists() ) : ?>
-						<tr>
-							<td>
-								<?php
-								$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=1&limit=5000&cronlast=true';
-								?>
-								CRON url to export buyers from orders with status complete:
-								<br>
-								<a href="<?php echo esc_url( $woocommerce_url ); ?>" target="_blank"><?php echo esc_html( $woocommerce_url ); ?></a>
-								<?php if ( $this->is_single_action_schedule() ) : ?>
-									<br><br>
+							<tr>
+								<td>
+									<?php if ( $this->is_single_action_schedule() ) : ?>
+										<?php
+										$schedule_url = $this->get_action_nonce_url( 'newsman_export_subscribers_orders', admin_url( 'admin.php?page=NewsmanSync' ) );
+										?>
+										<?php echo esc_html__( 'Export once all buyers from orders with status complete (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+										<br>
+										<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
+											Schedule Export Customers from Orders
+										</a>
+										<br><br>
+									<?php endif; ?>
 									<?php
-									$schedule_url = $this->get_action_nonce_url( 'newsman_export_subscribers_orders', admin_url( 'admin.php?page=NewsmanSync' ) );
+									$woocommerce_url = get_site_url() . '/?newsman=cron.json&method=woocommerce&nzmhash=' . $this->get_config()->get_api_key() . '&start=0&limit=5000&cronlast=true';
 									?>
-									<?php echo esc_html__( 'Export once all buyers from orders with status complete (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+									CRON url to export buyers from orders with status complete:
 									<br>
-									<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
-										Schedule Export Customers from Orders
-									</a>
-								<?php endif; ?>
-							</td>
-						</tr>
+									<a href="<?php echo esc_url( $woocommerce_url ); ?>" target="_blank"><?php echo esc_html( $woocommerce_url ); ?></a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<?php if ( $this->is_single_action_schedule() ) : ?>
+										<?php
+										$schedule_url = $this->get_action_nonce_url( 'newsman_export_orders', admin_url( 'admin.php?page=NewsmanSync' ) );
+										?>
+										<?php echo esc_html__( 'Export once all orders to Newsman after the date set in Remarketing > Export Orders After Date (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+										<br>
+										<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
+											Schedule Export Orders
+										</a>
+										<br><br>
+									<?php endif; ?>
+									<?php
+									$send_orders_url = get_site_url() . '/?newsman=cron.json&method=send-orders&nzmhash=' . $this->get_config()->get_api_key() . '&start=0&limit=100&cronlast=true';
+									?>
+									CRON url to send orders to Newsman:
+									<br>
+									<a href="<?php echo esc_url( $send_orders_url ); ?>" target="_blank"><?php echo esc_html( $send_orders_url ); ?></a>
+								</td>
+							</tr>
 						<?php endif; ?>
 					</table>
 					<div style="padding-top: 5px;">
@@ -167,6 +196,6 @@ $form_values = $this->get_form_values();
 					</div>
 				</form>
 			</div>
-		</section>  
+		</section>
 	</div>
 </div>

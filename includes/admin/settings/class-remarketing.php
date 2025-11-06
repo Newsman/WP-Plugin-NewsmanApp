@@ -50,6 +50,10 @@ class Remarketing extends Settings {
 		'newsman_remarketingproductattributes',
 		'newsman_remarketingcustomerattributes',
 		'newsman_remarketingordersave',
+		'newsman_remarketingexportwordpresssubscribers',
+		'newsman_remarketingexportwoocommercesubscribers',
+		'newsman_remarketingexportorders',
+		'newsman_remarketingorderdate',
 	);
 
 	/**

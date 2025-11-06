@@ -23,42 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Orders
  *
  * @class \Newsman\Export\Retriever\Orders
+ * @deprecated
  */
-class Orders implements RetrieverInterface {
+class Orders extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Default batch page size
 	 */
 	public const DEFAULT_PAGE_SIZE = 1000;
-
-	/**
-	 * Remarketing Config
-	 *
-	 * @var RemarketingConfig
-	 */
-	protected $remarketing_config;
-
-	/**
-	 * Logger
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
-
-	/**
-	 * Telephone util
-	 *
-	 * @var Telephone
-	 */
-	protected $telephone;
-
-	/**
-	 * Class construct
-	 */
-	public function __construct() {
-		$this->remarketing_config = RemarketingConfig::init();
-		$this->logger             = Logger::init();
-		$this->telephone          = new Telephone();
-	}
 
 	/**
 	 * Process orders retriever
@@ -115,15 +86,17 @@ class Orders implements RetrieverInterface {
 			)
 		);
 
+		$date_limit        = $this->remarketing_config->get_order_date() . ' 00:00:00';
 		$all_statuses      = array_keys( wc_get_order_statuses() );
 		$filtered_statuses = array_diff( $all_statuses, array( 'wc-checkout-draft' ) );
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) &&
 			\Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ) {
 			$query  = new \WC_Order_Query(
 				array(
-					'limit'  => $limit,
-					'offset' => $start,
-					'status' => $filtered_statuses,
+					'limit'        => $limit,
+					'offset'       => $start,
+					'status'       => $filtered_statuses,
+					'date_created' => '>=' . $date_limit,
 				)
 			);
 			$query  = apply_filters(
@@ -137,9 +110,10 @@ class Orders implements RetrieverInterface {
 			$orders = $query->get_orders();
 		} else {
 			$args   = array(
-				'limit'  => $limit,
-				'offset' => $start,
-				'status' => $filtered_statuses,
+				'limit'        => $limit,
+				'offset'       => $start,
+				'status'       => $filtered_statuses,
+				'date_created' => '>=' . $date_limit,
 			);
 			$args   = apply_filters(
 				'newsman_export_retriever_orders_process_args_fetch',
@@ -261,16 +235,5 @@ class Orders implements RetrieverInterface {
 				'blog_id' => $blog_id,
 			)
 		);
-	}
-
-	/**
-	 * Is different WP blog than current
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
-	 */
-	public function is_different_blog( $blog_id = null ) {
-		$current_blog_id = get_current_blog_id();
-		return ( null !== $current_blog_id ) && ( (int) $blog_id !== $current_blog_id );
 	}
 }

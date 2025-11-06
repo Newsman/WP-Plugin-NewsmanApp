@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Export\Retriever\CronSubscribers
  */
-class CronSubscribers implements RetrieverInterface {
+class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Default batch page size
 	 */
@@ -37,49 +37,11 @@ class CronSubscribers implements RetrieverInterface {
 	public const BATCH_SIZE = 9000;
 
 	/**
-	 * Config
-	 *
-	 * @var Config
-	 */
-	protected $config;
-
-	/**
-	 * Remarketing Config
-	 *
-	 * @var RemarketingConfig
-	 */
-	protected $remarketing_config;
-
-	/**
-	 * Logger
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
-
-	/**
-	 * Telephone util
-	 *
-	 * @var Telephone
-	 */
-	protected $telephone;
-
-	/**
 	 * Subscribers emails cache
 	 *
 	 * @var array
 	 */
 	protected $emails_cache = array();
-
-	/**
-	 * Class construct
-	 */
-	public function __construct() {
-		$this->config             = Config::init();
-		$this->remarketing_config = RemarketingConfig::init();
-		$this->logger             = Logger::init();
-		$this->telephone          = new Telephone();
-	}
 
 	/**
 	 * Process cron subscribers retriever
@@ -136,8 +98,8 @@ class CronSubscribers implements RetrieverInterface {
 			}
 		}
 
-		$batches = array_chunk( $result, self::BATCH_SIZE );
 		unset( $subscribers );
+		$batches = array_chunk( $result, self::BATCH_SIZE );
 		unset( $result );
 
 		$count       = 0;
@@ -222,33 +184,5 @@ class CronSubscribers implements RetrieverInterface {
 	 */
 	public function is_valid_subscriber( $subscriber, $blog_id = null ) {
 		return true;
-	}
-
-	/**
-	 * Is different WP blog than current
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
-	 */
-	public function is_different_blog( $blog_id = null ) {
-		if ( ! is_multisite() ) {
-			return false;
-		}
-
-		$current_blog_id = get_current_blog_id();
-		if ( ( null === $current_blog_id ) || ( null === $blog_id ) ) {
-			return false;
-		}
-		return ( (int) $blog_id !== $current_blog_id );
-	}
-
-	/**
-	 * Clean telephone string
-	 *
-	 * @param string $phone Phone.
-	 * @return string
-	 */
-	public function clean_phone( $phone ) {
-		return $this->telephone->clean( $phone );
 	}
 }

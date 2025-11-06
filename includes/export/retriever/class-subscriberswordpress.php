@@ -75,13 +75,40 @@ class SubscribersWordpress extends CronSubscribers {
 			return false;
 		}
 		$this->emails_cache[ $subscriber->data->user_email ] = true;
+		$data = get_user_meta( $subscriber->data->ID );
 
 		$row = array(
-			'email'      => $subscriber->data->user_email,
-			'firstname'  => $subscriber->data->display_name,
-			'lastname'   => '',
-			'additional' => array(),
+			'email'     => $subscriber->data->user_email,
+			'firstname' => $subscriber->data->display_name,
+			'lastname'  => '',
 		);
+
+		if ( $this->remarketing_config->is_send_telephone() ) {
+			$row = array_merge(
+				$row,
+				array(
+					'tel'                => ( ! empty( $data['billing_phone'] ) && ! empty( $data['billing_phone'][0] ) ) ?
+						$this->clean_phone( $data['billing_phone'][0] ) : '',
+					'phone'              => ( ! empty( $data['billing_phone'] ) && ! empty( $data['billing_phone'][0] ) ) ?
+						$this->clean_phone( $data['billing_phone'][0] ) : '',
+					'telephone'          => ( ! empty( $data['billing_phone'] ) && ! empty( $data['billing_phone'][0] ) ) ?
+						$this->clean_phone( $data['billing_phone'][0] ) : '',
+					'billing_telephone'  => ( ! empty( $data['billing_phone'] ) && ! empty( $data['billing_phone'][0] ) ) ?
+						$this->clean_phone( $data['billing_phone'][0] ) : '',
+					'shipping_telephone' => ( ! empty( $data['shipping_phone'] ) && ! empty( $data['shipping_phone'][0] ) ) ?
+						$this->clean_phone( $data['shipping_phone'][0] ) : '',
+				)
+			);
+		}
+
+		$row['additional'] = array();
+		foreach ( $this->remarketing_config->get_customer_attributes() as $attribute ) {
+			if ( ! empty( $data[ $attribute ] ) && ! empty( $data[ $attribute ][0] ) ) {
+				$row['additional'][ $attribute ] = $data[ $attribute ][0];
+			} else {
+				$row['additional'][ $attribute ] = '';
+			}
+		}
 
 		return apply_filters(
 			'newsman_export_retriever_subscribers_wordpress_process_subscriber',

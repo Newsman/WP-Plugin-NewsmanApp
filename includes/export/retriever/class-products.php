@@ -23,25 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class \Newsman\Export\Retriever\Products
  */
-class Products implements RetrieverInterface {
+class Products extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Default batch page size
 	 */
 	public const DEFAULT_PAGE_SIZE = 1000;
-
-	/**
-	 * Remarketing config
-	 *
-	 * @var RemarketingConfig
-	 */
-	protected $remarketing_config;
-
-	/**
-	 * Logger
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
 
 	/**
 	 * Additional product attributes
@@ -49,14 +35,6 @@ class Products implements RetrieverInterface {
 	 * @var array
 	 */
 	protected $additional_attributes = array();
-
-	/**
-	 * Class construct
-	 */
-	public function __construct() {
-		$this->remarketing_config = RemarketingConfig::init();
-		$this->logger             = Logger::init();
-	}
 
 	/**
 	 * Process products retriever
@@ -236,16 +214,5 @@ class Products implements RetrieverInterface {
 				'blog_id' => $blog_id,
 			)
 		);
-	}
-
-	/**
-	 * Is different WP blog than current
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
-	 */
-	public function is_different_blog( $blog_id = null ) {
-		$current_blog_id = get_current_blog_id();
-		return ( null !== $current_blog_id ) && ( (int) $blog_id !== $current_blog_id );
 	}
 }

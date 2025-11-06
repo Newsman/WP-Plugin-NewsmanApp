@@ -58,7 +58,7 @@ $form_values = $this->get_form_values();
 					</th>
 					<td>
 						<input name="newsman_useremarketing" type="checkbox"
-							d="newsman_useremarketing" <?php echo ( ! empty( $form_values['newsman_useremarketing'] ) && 'on' === $form_values['newsman_useremarketing'] ) ? 'checked' : ''; ?>/>
+							id="newsman_useremarketing" <?php echo ( ! empty( $form_values['newsman_useremarketing'] ) && 'on' === $form_values['newsman_useremarketing'] ) ? 'checked' : ''; ?>/>
 					</td>
 				</tr>
 				<tr>
@@ -91,6 +91,47 @@ $form_values = $this->get_form_values();
 							<p class="description">Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders.</p>
 						</td>
 					</tr>
+					<?php if ( $this->is_action_scheduler_exists() ) : ?>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers">Export WordPress Subscribers</label>
+							</th>
+							<td>
+								<input name="newsman_remarketingexportwordpresssubscribers" type="checkbox"
+										id="newsman_remarketingexportwordpresssubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Export all WordPress users with role subscriber on regular basis (using Woo Commerce Action Scheduler)</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers">Export WooCommerce Buyers as Subscribers</label>
+							</th>
+							<td>
+								<input name="newsman_remarketingexportwoocommercesubscribers" type="checkbox"
+										id="newsman_remarketingexportwoocommercesubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Export all buyers from orders with status complete on regular basis (using Woo Commerce Action Scheduler)</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_remarketingexportorders">Export Orders</label>
+							</th>
+							<td>
+								<input name="newsman_remarketingexportorders" type="checkbox"
+										id="newsman_remarketingexportorders" <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Export all orders on regular basis (using Woo Commerce Action Scheduler)</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_remarketingorderdate">Export Orders After Date</label>
+							</th>
+							<td>
+								<input type="text" name="newsman_remarketingorderdate" id="newsman_remarketingorderdate" value="<?php echo esc_html( $form_values['newsman_remarketingorderdate'] ); ?>" />
+								<p class="description">Export orders created after a specific date (including). Format: YYYY-MM-DD</p>
+							</td>
+						</tr>
+					<?php endif; ?>
 					<tr>
 						<th scope="row">
 							<label class="nzm-label" for="newsman_remarketingordersave">Export Orders on Status Change</label>

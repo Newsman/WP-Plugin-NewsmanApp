@@ -61,6 +61,11 @@ class Router {
 			'only_woocommerce' => true,
 			'has_admin_notice' => true,
 		),
+		'newsman_export_orders'                => array(
+			'class'            => '\Newsman\Admin\Action\Export\Orders',
+			'only_woocommerce' => true,
+			'has_admin_notice' => true,
+		),
 	);
 
 	/**

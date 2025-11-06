@@ -74,6 +74,11 @@ class Pool {
 			'class'            => '\Newsman\Export\Retriever\SubscribersWoocommerce',
 			'only_woocommerce' => true,
 		),
+		'send-orders' => array(
+			'code'             => 'send-orders',
+			'class'            => '\Newsman\Export\Retriever\SendOrders',
+			'only_woocommerce' => true,
+		),
 	);
 
 	/**

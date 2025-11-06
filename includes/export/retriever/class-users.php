@@ -22,26 +22,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Users
  *
  * @class \Newsman\Export\Retriever\Users
+ * @deprecated
  */
-class Users implements RetrieverInterface {
+class Users extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Default batch page size
 	 */
 	public const DEFAULT_PAGE_SIZE = 1000;
-
-	/**
-	 * Remarketing Config
-	 *
-	 * @var RemarketingConfig
-	 */
-	protected $remarketing_config;
-
-	/**
-	 * Logger
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
 
 	/**
 	 * Allowed rows to export
@@ -52,14 +39,6 @@ class Users implements RetrieverInterface {
 		'subscriber',
 		'customer',
 	);
-
-	/**
-	 * Class construct
-	 */
-	public function __construct() {
-		$this->remarketing_config = RemarketingConfig::init();
-		$this->logger             = Logger::init();
-	}
 
 	/**
 	 * Process users retriever
@@ -74,7 +53,7 @@ class Users implements RetrieverInterface {
 			throw new \Exception( 'wp_newsman_internal_role is empty!' );
 		}
 		$role = $data['wp_newsman_internal_role'];
-		if ( ! in_array( $role, $this->allowed_roles, true ) ) {
+		if ( ! in_array( $role, $this->get_allowed_roles(), true ) ) {
 			/* translators: 1: User role */
 			throw new \Exception(
 				sprintf(
@@ -156,9 +135,9 @@ class Users implements RetrieverInterface {
 	/**
 	 * Process customer
 	 *
-	 * @param \WC_Customer $customer Customer instance.
-	 * @param null|int     $role Role.
-	 * @param null|int     $blog_id WP blog ID.
+	 * @param \WP_User|\WC_Customer $customer Customer instance.
+	 * @param null|int              $role Role.
+	 * @param null|int              $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process_customer( $customer, $role, $blog_id = null ) {
@@ -182,13 +161,14 @@ class Users implements RetrieverInterface {
 	}
 
 	/**
-	 * Is different WP blog than current
+	 * Get allowed roles
 	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
+	 * @return array
 	 */
-	public function is_different_blog( $blog_id = null ) {
-		$current_blog_id = get_current_blog_id();
-		return ( null !== $current_blog_id ) && ( (int) $blog_id !== $current_blog_id );
+	public function get_allowed_roles() {
+		$roles = apply_filters( 'newsman_export_retriever_users_get_allowed_roles', $this->allowed_roles );
+		$roles = array_map( 'sanitize_text_field', $roles );
+		$roles = array_diff( $roles, array( 'administrator', 'admin', 'editor', 'author', 'contributor' ) );
+		return $roles;
 	}
 }

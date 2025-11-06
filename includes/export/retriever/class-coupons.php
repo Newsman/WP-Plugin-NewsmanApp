@@ -22,21 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @class Coupons
  */
-class Coupons implements RetrieverInterface {
-	/**
-	 * Logger
-	 *
-	 * @var Logger
-	 */
-	protected $logger;
-
-	/**
-	 * Class construct
-	 */
-	public function __construct() {
-		$this->logger = Logger::init();
-	}
-
+class Coupons extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Process coupons retriever
 	 *
