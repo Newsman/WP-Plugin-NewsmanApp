@@ -35,6 +35,8 @@ if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 // For single site and per-site activation.
 register_activation_hook( __FILE__, array( '\Newsman\Setup', 'on_activation' ) );
 add_action( 'upgrader_process_complete', array( '\Newsman\Setup', 'on_upgrade' ), 10, 2 );
+register_uninstall_hook( __FILE__, array( '\Newsman\Setup', 'on_uninstall' ) );
+register_deactivation_hook( __FILE__, array( '\Newsman\Setup', 'on_deactivate' ) );
 
 // For network-wide activation.
 add_action(

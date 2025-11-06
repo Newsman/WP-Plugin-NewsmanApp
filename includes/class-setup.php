@@ -39,6 +39,7 @@ class Setup {
 
 		self::setup( $network_wide );
 	}
+
 	/**
 	 * On upgrade plugin
 	 *
@@ -69,6 +70,24 @@ class Setup {
 		$network_wide = is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
 
 		self::setup( $network_wide );
+	}
+
+	/**
+	 * Plugin uninstallation handler
+	 *
+	 * @return void
+	 */
+	public static function on_uninstall() {
+		self::remove_scheduled_action();
+	}
+
+	/**
+	 * Plugin deactivate handler
+	 *
+	 * @return void
+	 */
+	public static function on_deactivate() {
+		self::remove_scheduled_action();
 	}
 
 	/**
@@ -276,5 +295,31 @@ js/retargeting/modal_{{api_key}}.js'
 		}
 
 		return $wpdb->prefix;
+	}
+
+	/**
+	 * Remove scheduled actions
+	 *
+	 * @return void
+	 */
+	public static function remove_scheduled_action() {
+		if ( ! ( class_exists( \ActionScheduler::class ) &&
+			\ActionScheduler::is_initialized() &&
+			function_exists( 'as_unschedule_all_actions' )
+		) ) {
+			return;
+		}
+
+		$hooks = array(
+			'newsman_export_orders',
+			'newsman_export_woocommerce_subscribers',
+			'newsman_export_wordpress_subscribers',
+			'newsman_order_save',
+			'newsman_order_notify_sms',
+			'newsman_order_notify_status',
+		);
+		foreach ( $hooks as $hook ) {
+			as_unschedule_all_actions( $hook );
+		}
 	}
 }
