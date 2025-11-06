@@ -98,7 +98,7 @@ class SubscribersWoocommerce extends AbstractScheduler {
 			$date_created = $data['date_created'];
 			$count        = $exporter->get_count_subscribers( $blog_id, $date_created );
 			if ( 0 >= $count ) {
-				$this->logger->info( 'No subscribers from orders to export' );
+				$this->logger->info( 'No subscribers from orders to export, date=' . $date_created );
 				return false;
 			}
 

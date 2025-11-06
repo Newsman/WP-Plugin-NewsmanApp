@@ -98,7 +98,7 @@ class SubscribersWordpress extends AbstractScheduler {
 			$date_created = $data['date_created'];
 			$count        = $exporter->get_count_subscribers( $blog_id, $date_created );
 			if ( 0 >= $count ) {
-				$this->logger->info( 'No users with role subscriber to export' );
+				$this->logger->info( 'No users with role subscriber to export, date=' . $date_created );
 				return false;
 			}
 
