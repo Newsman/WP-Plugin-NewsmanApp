@@ -57,7 +57,6 @@ class Remarketing {
 	 * @return void
 	 */
 	public function init_hooks() {
-		
 
 		// Get cart action.
 		add_action( 'wp_loaded', array( new \Newsman\Remarketing\Cart\Handler\CartAjax(), 'display_items' ) );
