@@ -28,7 +28,7 @@ class Track {
 	 *
 	 * @var RemarketingConfig
 	 */
-	protected $remarketing_config;
+	public $remarketing_config;
 
 	/**
 	 * Construct class
