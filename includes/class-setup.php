@@ -311,8 +311,14 @@ js/retargeting/modal_{{api_key}}.js'
 		}
 
 		$hooks = array(
+			'newsman_recurring_export_orders_short',
+			'newsman_recurring_export_orders_long',
 			'newsman_export_orders',
+			'newsman_recurring_export_woocommerce_subscribers_short',
+			'newsman_recurring_export_woocommerce_subscribers_long',
 			'newsman_export_woocommerce_subscribers',
+			'newsman_recurring_export_wordpress_subscribers_short',
+			'newsman_recurring_export_wordpress_subscribers_long',
 			'newsman_export_wordpress_subscribers',
 			'newsman_order_save',
 			'newsman_order_notify_sms',

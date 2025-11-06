@@ -23,6 +23,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Admin {
 	/**
+	 * Newsman config
+	 *
+	 * @var \Newsman\Config
+	 */
+	protected $config;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->config = \Newsman\Config::init();
+	}
+
+	/**
 	 * Get class instance
 	 *
 	 * @return self Admin
@@ -43,6 +57,7 @@ class Admin {
 	 * @return void
 	 */
 	public function init_hooks() {
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->get_plugin_lazy_priority() );
 		// Deactivate old Remarketing plugin.
 		add_action( 'admin_init', '\Newsman\Util\DeprecatedRemarketing::notify_and_deactivate_old_plugin' );
 		if ( class_exists( '\WC_Newsman_Remarketing' ) ) {
@@ -61,6 +76,22 @@ class Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
 		// Enqueue plugin scripts in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_scripts' ) );
+	}
+
+	/**
+	 * Init for admin Newsman plugin after most of other plugins are loaded.
+	 *
+	 * @return void
+	 */
+	public function plugins_loaded_lazy() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$exist = new \Newsman\Util\WooCommerceExist();
+		if ( $exist->exist() ) {
+			$this->init_scheduled_hooks();
+		}
 	}
 
 	/**
@@ -165,5 +196,34 @@ class Admin {
 		wp_enqueue_script( 'newsman_js' );
 
 		wp_localize_script( 'newsman_js', 'NEWSMAN_URLS', array( 'admin_url' => admin_url() ) );
+	}
+
+	/**
+	 * Init Action Scheduler hooks.
+	 *
+	 * @return void
+	 */
+	public function init_scheduled_hooks() {
+		foreach ( $this->get_known_scheduled_classes() as $class ) {
+			if ( method_exists( $class, 'init_admin_hooks' ) ) {
+				$scheduled_class = new $class();
+				$scheduled_class->init_admin_hooks();
+			}
+		}
+	}
+
+	/**
+	 * Get known action scheduler classes.
+	 *
+	 * @return array
+	 */
+	public function get_known_scheduled_classes() {
+		$classes = array(
+			'\Newsman\Scheduler\Export\Recurring\Orders',
+			'\Newsman\Scheduler\Export\Recurring\SubscribersWordpress',
+			'\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',
+		);
+
+		return apply_filters( 'newsman_known_admin_scheduled_classes', $classes );
 	}
 }

@@ -24,20 +24,21 @@ class SubscribersWoocommerce extends CronSubscribers {
 	/**
 	 * Fetch subscribers from WooCommerce users role subscriber
 	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @param null|int $start Start batch.
-	 * @param null|int $limit Limit batch.
-	 * @param bool     $cronlast Is last entities.
+	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|int    $start Start batch.
+	 * @param null|int    $limit Limit batch.
+	 * @param bool        $cronlast Is last entities.
+	 * @param null|string $date_created Consider orders after date.
+	 * @param null|int    $pre_count Pre count.
 	 * @return array
 	 */
-	public function get_subscribers( $blog_id, $start, $limit, $cronlast ) {
+	public function get_subscribers( $blog_id, $start, $limit, $cronlast, $date_created = null, $pre_count = null ) {
 		if ( true === $cronlast ) {
-			$args  = array(
-				'limit'  => -1,
-				'status' => 'completed',
-				'return' => 'ids',
-			);
-			$count = count( wc_get_orders( $args ) );
+			if ( empty( $date_created ) ) {
+				$count = $this->get_count_subscribers( $blog_id, $date_created );
+			} else {
+				$count = $pre_count;
+			}
 
 			$start = $count - $limit;
 			if ( $start < 0 ) {
@@ -52,14 +53,19 @@ class SubscribersWoocommerce extends CronSubscribers {
 			'orderby' => 'date_created_gmt',
 			'order'   => 'DESC',
 		);
+		if ( ! empty( $date_created ) ) {
+			$date_created        .= ' 00:00:00';
+			$args['date_created'] = '>=' . $date_created;
+		}
 		$args = apply_filters(
 			'newsman_export_retriever_subscribers_woocommerce_process_fetch',
 			$args,
 			array(
-				'blog_id'  => $blog_id,
-				'start'    => $start,
-				'limit'    => $limit,
-				'cronlast' => $cronlast,
+				'blog_id'      => $blog_id,
+				'start'        => $start,
+				'limit'        => $limit,
+				'date_created' => $date_created,
+				'cronlast'     => $cronlast,
 			)
 		);
 
@@ -150,19 +156,34 @@ class SubscribersWoocommerce extends CronSubscribers {
 	/**
 	 * Get total count of subscribers
 	 *
-	 * @param null|int $blog_id WP blog ID.
+	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|string $date_created Consider orders after date.
 	 * @return int|null
 	 */
-	public function get_count_subscribers( $blog_id = null ) {
+	public function get_count_subscribers( $blog_id = null, $date_created = null ) {
+		if ( $this->is_different_blog( $blog_id ) ) {
+			switch_to_blog( $blog_id );
+		}
+
 		$args = array(
 			'limit'  => -1,
 			'status' => 'completed',
 			'return' => 'ids',
 		);
 
-		if ( $this->is_different_blog( $blog_id ) ) {
-			switch_to_blog( $blog_id );
+		if ( ! empty( $date_created ) ) {
+			$date_created        .= ' 00:00:00';
+			$args['date_created'] = '>=' . $date_created;
 		}
+
+		$args = apply_filters(
+			'newsman_export_retriever_subscribers_woocommerce_process_count',
+			$args,
+			array(
+				'blog_id'      => $blog_id,
+				'date_created' => $date_created,
+			)
+		);
 
 		$count = count( wc_get_orders( $args ) );
 

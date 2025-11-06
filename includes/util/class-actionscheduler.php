@@ -81,12 +81,32 @@ class ActionScheduler {
 	}
 
 	/**
+	 * Is as_schedule_recurring_action exist
+	 *
+	 * @return bool
+	 */
+	public function is_single_recurring() {
+		return function_exists( 'as_schedule_recurring_action' );
+	}
+
+	/**
 	 * Is as_schedule_single_action exist
 	 *
 	 * @return bool
 	 */
 	public function is_single_action() {
 		return function_exists( 'as_schedule_single_action' );
+	}
+
+	/**
+	 * Is action scheduler allowed to run recurring action
+	 *
+	 * @return bool
+	 */
+	public function is_allowed_recurring() {
+		return $this->exist() &&
+			$this->config->use_action_scheduler() &&
+			$this->is_single_recurring();
 	}
 
 	/**

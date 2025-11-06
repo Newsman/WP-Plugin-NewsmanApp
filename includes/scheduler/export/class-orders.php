@@ -77,7 +77,7 @@ class Orders extends AbstractScheduler {
 
 		$steps = ceil( $count / $limit );
 		for ( $i = 0; $i < $steps; $i++ ) {
-			$this->schedule( $i * $limit, $limit, $blog_id );
+			$this->schedule( $i * $limit, $limit, $blog_id, null, $count );
 		}
 		$this->logger->info( 'Scheduled ' . $steps . ' batches of orders to export, limit ' . $limit );
 		return true;
@@ -86,28 +86,43 @@ class Orders extends AbstractScheduler {
 	/**
 	 * Schedule action
 	 *
-	 * @param int      $start Pagination start.
-	 * @param int      $limit Pagination limit.
-	 * @param null|int $blog_id WP blog ID.
-	 *
+	 * @param int         $start Pagination start.
+	 * @param int         $limit Pagination limit.
+	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|string $date_created Consider orders after date.
+	 * @param null|string $pre_count Pre count of orders.
 	 * @return void
 	 */
-	public function schedule( $start, $limit = 200, $blog_id = null ) {
+	public function schedule( $start, $limit = 200, $blog_id = null, $date_created = null, $pre_count = null ) {
 		as_schedule_single_action(
 			time(),
 			self::BACKGROUND_EVENT_HOOK,
 			array(
 				array(
-					'start'    => $start,
-					'limit'    => $limit,
-					'cronlast' => true,
+					'start'        => $start,
+					'limit'        => $limit,
+					'cronlast'     => true,
+					'date_created' => $date_created,
+					'pre_count'    => $pre_count,
 				),
 				$blog_id,
 			),
 			$this->action_scheduler->get_group_mass_export_orders()
 		);
 		$this->logger->info(
-			'Scheduled export orders ' . $start . ',' . $limit . ' Site ID=' . $blog_id
+			'Scheduled export orders ' . $start . ',' . $limit . ' Site ID=' . $blog_id .
+				' date=' . $date_created . ' pre count=' . $pre_count
+		);
+	}
+
+	/**
+	 * Get hooks events
+	 *
+	 * @return string[]
+	 */
+	public function get_hooks_events() {
+		return array(
+			self::BACKGROUND_EVENT_HOOK,
 		);
 	}
 }

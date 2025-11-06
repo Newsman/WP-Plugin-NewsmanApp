@@ -141,4 +141,37 @@ class Remarketing extends Settings {
 			$this->customer_attributes
 		);
 	}
+
+	/**
+	 * Save admin configuration from form fields.
+	 * Unschedule recurring hooks in Action Scheduler.
+	 *
+	 * @return array
+	 */
+	public function save_form_values() {
+		$form_values = parent::save_form_values();
+
+		if ( isset( $form_values['newsman_remarketingexportwordpresssubscribers'] ) &&
+			'on' !== $form_values['newsman_remarketingexportwordpresssubscribers']
+		) {
+			$scheduler = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
+			$scheduler->unschedule_all_actions();
+		}
+
+		if ( isset( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) &&
+			'on' !== $form_values['newsman_remarketingexportwoocommercesubscribers']
+		) {
+			$scheduler = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
+			$scheduler->unschedule_all_actions();
+		}
+
+		if ( isset( $form_values['newsman_remarketingexportorders'] ) &&
+			'on' !== $form_values['newsman_remarketingexportorders']
+		) {
+			$scheduler = new \Newsman\Scheduler\Export\Recurring\Orders();
+			$scheduler->unschedule_all_actions();
+		}
+
+		return $form_values;
+	}
 }

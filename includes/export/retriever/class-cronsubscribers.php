@@ -52,9 +52,11 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	 * @throws \Exception On errors.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		$start    = ! empty( $data['start'] ) && $data['start'] > 0 ? $data['start'] : 0;
-		$limit    = empty( $data['limit'] ) ? self::DEFAULT_PAGE_SIZE : $data['limit'];
-		$cronlast = ! empty( $data['cronlast'] ) && 'true' === $data['cronlast'] ? true : false;
+		$start        = ! empty( $data['start'] ) && $data['start'] > 0 ? $data['start'] : 0;
+		$limit        = empty( $data['limit'] ) ? self::DEFAULT_PAGE_SIZE : $data['limit'];
+		$cronlast     = ! empty( $data['cronlast'] ) && 'true' === $data['cronlast'] ? true : false;
+		$date_created = empty( $data['date_created'] ) ? null : $data['date_created'];
+		$pre_count    = empty( $data['pre_count'] ) ? null : $data['pre_count'];
 
 		if ( $this->is_different_blog( $blog_id ) ) {
 			switch_to_blog( $blog_id );
@@ -62,17 +64,18 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 
 		$this->logger->info(
 			sprintf(
-			/* translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID */
-				esc_html__( 'Export subscribers %1$s %2$d, %3$d, blog ID %4$s', 'newsman' ),
+			/* translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created */
+				esc_html__( 'Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s', 'newsman' ),
 				$data['method'],
 				$start,
 				$limit,
-				$blog_id
+				$blog_id,
+				$date_created
 			)
 		);
 
 		$result      = array();
-		$subscribers = $this->get_subscribers( $blog_id, $start, $limit, $cronlast );
+		$subscribers = $this->get_subscribers( $blog_id, $start, $limit, $cronlast, $date_created, $pre_count );
 
 		if ( empty( $subscribers ) ) {
 			if ( $this->is_different_blog( $blog_id ) ) {
@@ -127,12 +130,13 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID */
-				esc_html__( 'Exported subscribers %1$s %2$d, %3$d, blog ID %4$s', 'newsman' ),
+				/* translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created */
+				esc_html__( 'Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s', 'newsman' ),
 				$data['method'],
 				$start,
 				$limit,
-				$blog_id
+				$blog_id,
+				$date_created
 			)
 		);
 
@@ -154,13 +158,15 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Fetch subscribers
 	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @param null|int $start Start batch.
-	 * @param null|int $limit Limit batch.
-	 * @param bool     $cronlast Is last entities.
+	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|int    $start Start batch.
+	 * @param null|int    $limit Limit batch.
+	 * @param bool        $cronlast Is last entities.
+	 * @param null|string $date_created Is last entities.
+	 * @param null|int    $pre_count Is last entities.
 	 * @return array
 	 */
-	public function get_subscribers( $blog_id, $start, $limit, $cronlast ) {
+	public function get_subscribers( $blog_id, $start, $limit, $cronlast, $date_created = null, $pre_count = null ) {
 		return array();
 	}
 

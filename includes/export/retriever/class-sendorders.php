@@ -86,8 +86,11 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			return $result;
 		}
 
-		$start = ! empty( $data['start'] ) && $data['start'] > 0 ? $data['start'] : 0;
-		$limit = empty( $data['limit'] ) ? self::DEFAULT_PAGE_SIZE : $data['limit'];
+		$start        = ! empty( $data['start'] ) && $data['start'] > 0 ? $data['start'] : 0;
+		$limit        = empty( $data['limit'] ) ? self::DEFAULT_PAGE_SIZE : $data['limit'];
+		$cronlast     = ! empty( $data['cronlast'] ) && 'true' === $data['cronlast'] ? true : false;
+		$date_created = empty( $data['date_created'] ) ? null : $data['date_created'];
+		$pre_count    = empty( $data['pre_count'] ) ? null : $data['pre_count'];
 
 		if ( $this->is_different_blog( $blog_id ) ) {
 			switch_to_blog( $blog_id );
@@ -95,52 +98,16 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Batch start, 2: Batch end, 3: WP blog ID */
-				esc_html__( 'Send orders %1$d, %2$d, blog ID %3$s', 'newsman' ),
+				/* translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created */
+				esc_html__( 'Send orders %1$d, %2$d, blog ID %3$s, date %4$s', 'newsman' ),
 				$start,
 				$limit,
-				$blog_id
+				$blog_id,
+				$date_created
 			)
 		);
 
-		$date_limit        = $this->remarketing_config->get_order_date() . ' 00:00:00';
-		$filtered_statuses = $this->get_filtered_statuses();
-		if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) &&
-			\Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ) {
-			$query  = new \WC_Order_Query(
-				array(
-					'limit'        => $limit,
-					'offset'       => $start,
-					'status'       => $filtered_statuses,
-					'date_created' => '>=' . $date_limit,
-				)
-			);
-			$query  = apply_filters(
-				'newsman_export_retriever_send_orders_process_custom_orders_query',
-				$query,
-				array(
-					'data'    => $data,
-					'blog_id' => $blog_id,
-				)
-			);
-			$orders = $query->get_orders();
-		} else {
-			$args   = array(
-				'limit'        => $limit,
-				'offset'       => $start,
-				'status'       => $filtered_statuses,
-				'date_created' => '>=' . $date_limit,
-			);
-			$args   = apply_filters(
-				'newsman_export_retriever_send_orders_process_args_fetch',
-				$args,
-				array(
-					'data'    => $data,
-					'blog_id' => $blog_id,
-				)
-			);
-			$orders = wc_get_orders( $args );
-		}
+		$orders = $this->get_orders( $data, $start, $limit, $cronlast, $blog_id, $date_created, $pre_count );
 
 		if ( empty( $orders ) ) {
 			return array();
@@ -184,11 +151,12 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 
 		$this->logger->info(
 			sprintf(
-				/* translators: 1: Batch start, 2: Batch end, 3: WP blog ID */
-				esc_html__( 'Sent orders %1$d, %2$d, blog ID %3$s', 'newsman' ),
+				/* translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created */
+				esc_html__( 'Sent orders %1$d, %2$d, blog ID %3$s, Date %4$s', 'newsman' ),
 				$start,
 				$limit,
-				$blog_id
+				$blog_id,
+				$date_created
 			)
 		);
 
@@ -205,6 +173,77 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			),
 			'results' => $api_results,
 		);
+	}
+
+	/**
+	 * Get orders
+	 *
+	 * @param array       $data Data.
+	 * @param int         $start Start.
+	 * @param int         $limit Limit.
+	 * @param bool        $cronlast Cron last.
+	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|string $date_created Consider orders after date.
+	 * @param null|int    $pre_count Pre count of orders.
+	 * @return \WC_Order[]
+	 */
+	public function get_orders( $data, $start, $limit, $cronlast, $blog_id = null, $date_created = null, $pre_count = null ) {
+		$date_limit = $this->remarketing_config->get_order_date() . ' 00:00:00';
+		if ( ! empty( $date_created ) ) {
+			$date_limit = $date_created . ' 00:00:00';
+		}
+		$filtered_statuses = $this->get_filtered_statuses();
+
+		if ( true === $cronlast ) {
+			if ( ! empty( $pre_count ) ) {
+				$count = $pre_count;
+			} else {
+				$count = $this->get_count_orders( $blog_id, $date_created );
+			}
+			$start = $count - $limit;
+			if ( $start < 0 ) {
+				$start = 0;
+			}
+		}
+
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) &&
+			\Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			$query = new \WC_Order_Query(
+				array(
+					'limit'        => $limit,
+					'offset'       => $start,
+					'status'       => $filtered_statuses,
+					'date_created' => '>=' . $date_limit,
+				)
+			);
+			$query = apply_filters(
+				'newsman_export_retriever_send_orders_process_custom_orders_query',
+				$query,
+				array(
+					'data'         => $data,
+					'blog_id'      => $blog_id,
+					'date_created' => $date_limit,
+				)
+			);
+			return $query->get_orders();
+		} else {
+			$args = array(
+				'limit'        => $limit,
+				'offset'       => $start,
+				'status'       => $filtered_statuses,
+				'date_created' => '>=' . $date_limit,
+			);
+			$args = apply_filters(
+				'newsman_export_retriever_send_orders_process_args_fetch',
+				$args,
+				array(
+					'data'         => $data,
+					'blog_id'      => $blog_id,
+					'date_created' => $date_limit,
+				)
+			);
+			return wc_get_orders( $args );
+		}
 	}
 
 	/**
@@ -232,15 +271,19 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Get total count of subscribers
 	 *
-	 * @param null|int $blog_id WP blog ID.
+	 * @param null|int    $blog_id WP blog ID.
+	 * @param null|string $date_created Consider orders after date.
 	 * @return int|null
 	 */
-	public function get_count_orders( $blog_id = null ) {
+	public function get_count_orders( $blog_id = null, $date_created = null ) {
 		if ( $this->is_different_blog( $blog_id ) ) {
 			switch_to_blog( $blog_id );
 		}
 
-		$date_limit        = $this->remarketing_config->get_order_date() . ' 00:00:00';
+		$date_limit = $this->remarketing_config->get_order_date() . ' 00:00:00';
+		if ( ! empty( $date_created ) ) {
+			$date_limit = $date_created . ' 00:00:00';
+		}
 		$filtered_statuses = $this->get_filtered_statuses();
 
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) &&
@@ -256,7 +299,10 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			$query = apply_filters(
 				'newsman_export_retriever_send_orders_process_custom_orders_count_query',
 				$query,
-				array( 'blog_id' => $blog_id )
+				array(
+					'blog_id'      => $blog_id,
+					'date_created' => $date_limit,
+				)
 			);
 			$count = count( $query->get_orders() );
 		} else {
@@ -270,7 +316,10 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			$args = apply_filters(
 				'newsman_export_retriever_send_orders_process_args_fetch',
 				$args,
-				array( 'blog_id' => $blog_id )
+				array(
+					'blog_id'      => $blog_id,
+					'date_created' => $date_limit,
+				)
 			);
 
 			$count = count( wc_get_orders( $args ) );
