@@ -191,7 +191,7 @@ class Admin {
 	 */
 	public function register_plugin_scripts() {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion, WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'newsman_js', plugins_url( 'newsmanapp/src/js/script.js' ), array( 'jquery' ) );
+		wp_register_script( 'newsman_js', plugins_url( 'newsmanapp/src/js/script.js?' . NEWSMAN_JS_SCRIPT_VERSION ), array( 'jquery' ) );
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_script( 'newsman_js' );
 
