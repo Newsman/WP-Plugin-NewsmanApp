@@ -62,8 +62,8 @@ class Orders extends AbstractScheduler {
 		add_action( self::BACKGROUND_EVENT_HOOK_SHORT, array( $this, 'process_recurring' ), 10, 2 );
 		add_action( self::BACKGROUND_EVENT_HOOK_LONG, array( $this, 'process_recurring' ), 10, 2 );
 
-		$this->schedule_short();
-		$this->schedule_long();
+		add_action( 'init', array( $this, 'schedule_short' ) );
+		add_action( 'init', array( $this, 'schedule_long' ) );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Orders extends AbstractScheduler {
 		$date = new \DateTime();
 		$date->sub( new \DateInterval( 'P7D' ) );
 
-		$this->schedule( self::BACKGROUND_EVENT_HOOK_SHORT, 7 * 24, $date->format( 'Y-m-d' ) );
+		$this->schedule( self::BACKGROUND_EVENT_HOOK_SHORT, 24, $date->format( 'Y-m-d' ) );
 
 		return true;
 	}

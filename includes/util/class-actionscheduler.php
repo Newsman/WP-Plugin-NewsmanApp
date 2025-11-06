@@ -37,7 +37,6 @@ class ActionScheduler {
 	 */
 	public const GROUP_SUBSCRIBE = 'newsman_subscribe';
 
-
 	/**
 	 * Action scheduler group for mass export WordPress subscribers
 	 */

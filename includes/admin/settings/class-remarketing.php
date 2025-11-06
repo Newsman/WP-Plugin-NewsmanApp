@@ -156,6 +156,8 @@ class Remarketing extends Settings {
 		) {
 			$scheduler = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
 			$scheduler->unschedule_all_actions();
+			$scheduler = new \Newsman\Scheduler\Export\SubscribersWordpress();
+			$scheduler->unschedule_all_actions();
 		}
 
 		if ( isset( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) &&
@@ -163,12 +165,16 @@ class Remarketing extends Settings {
 		) {
 			$scheduler = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
 			$scheduler->unschedule_all_actions();
+			$scheduler = new \Newsman\Scheduler\Export\SubscribersWoocommerce();
+			$scheduler->unschedule_all_actions();
 		}
 
 		if ( isset( $form_values['newsman_remarketingexportorders'] ) &&
 			'on' !== $form_values['newsman_remarketingexportorders']
 		) {
 			$scheduler = new \Newsman\Scheduler\Export\Recurring\Orders();
+			$scheduler->unschedule_all_actions();
+			$scheduler = new \Newsman\Scheduler\Export\Orders();
 			$scheduler->unschedule_all_actions();
 		}
 
