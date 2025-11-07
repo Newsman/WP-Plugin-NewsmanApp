@@ -50,6 +50,7 @@ class SendOne extends AbstractService {
 		$context = apply_filters( 'newsman_service_sms_send_one_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id' => $api_context->get_list_id(),
 				'text'    => $context->get_text(),

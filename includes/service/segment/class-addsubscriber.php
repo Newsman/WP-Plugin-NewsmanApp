@@ -56,6 +56,7 @@ class AddSubscriber extends AbstractService {
 		$context = apply_filters( 'newsman_service_segment_add_subscriber_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id'       => $api_context->get_list_id(),
 				'segment_id'    => $context->get_segment_id(),

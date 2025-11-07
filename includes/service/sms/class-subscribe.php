@@ -55,6 +55,7 @@ class Subscribe extends AbstractService {
 		$context = apply_filters( 'newsman_service_sms_subscribe_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id'   => $api_context->get_list_id(),
 				'telephone' => $context->get_telephone(),

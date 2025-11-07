@@ -54,8 +54,9 @@ class SaveOrders extends AbstractService {
 
 		$client  = $this->create_api_client();
 		$context = apply_filters( 'newsman_service_save_orders_execute_context', $context );
-		$result  = $client->get(
+		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id' => $api_context->get_list_id(),
 				'orders'  => $context->get_orders(),

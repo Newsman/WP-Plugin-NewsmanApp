@@ -194,7 +194,7 @@ class Client implements ClientInterface {
 		try {
 			$start_time = microtime( true );
 			if ( 'POST' === $method ) {
-				$args['body']  = $post_params;
+				$args['body']  = wp_json_encode( $post_params );
 				$args          = apply_filters( 'newsman_api_client_request_post_args', $args );
 				$remote_result = wp_remote_post( $url, $args );
 

@@ -55,6 +55,7 @@ class UnsubscribeEmail extends AbstractService {
 		$context = apply_filters( 'newsman_service_unsubscribe_email_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id' => $api_context->get_list_id(),
 				'email'   => $context->get_email(),

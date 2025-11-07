@@ -56,6 +56,7 @@ class UpdateFeed extends AbstractService {
 		$context = apply_filters( 'newsman_service_configuration_update_feed_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id' => $api_context->get_list_id(),
 				'feed_id' => $context->get_feed_id(),

@@ -56,6 +56,7 @@ class SetFeedOnList extends AbstractService {
 		$context = apply_filters( 'newsman_service_configuration_set_feed_on_list_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id'   => $api_context->get_list_id(),
 				'url'       => $context->get_url(),

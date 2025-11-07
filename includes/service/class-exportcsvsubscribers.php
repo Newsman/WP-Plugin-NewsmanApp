@@ -54,6 +54,7 @@ class ExportCsvSubscribers extends AbstractService {
 		$context = apply_filters( 'newsman_service_export_csv_subscribers_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id'  => $context->get_list_id(),
 				'segments' => ! empty( $context->get_segment_id() ) ? array( $context->get_segment_id() )

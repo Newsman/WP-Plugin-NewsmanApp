@@ -55,6 +55,7 @@ class InitSubscribeEmail extends AbstractService {
 		$context = apply_filters( 'newsman_service_init_subscribe_email_execute_context', $context );
 		$result  = $client->post(
 			$api_context,
+			array(),
 			array(
 				'list_id'   => $api_context->get_list_id(),
 				'email'     => $context->get_email(),
