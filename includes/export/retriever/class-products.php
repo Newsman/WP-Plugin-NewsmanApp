@@ -157,9 +157,13 @@ class Products extends AbstractRetriever implements RetrieverInterface {
 	 * @return array
 	 */
 	public function process_product( $product, $blog_id = null ) {
-		$image_id  = $product->get_image_id();
-		$image_url = wp_get_attachment_image_url( $image_id, 'full' );
-		$url       = get_permalink( $product->get_id() );
+		$image_id = $product->get_image_id();
+		if ( ! empty( $image_id ) ) {
+			$image_url = wp_get_attachment_image_url( $image_id, 'full' );
+		} else {
+			$image_url = wc_placeholder_img_src( 'full' );
+		}
+		$url = get_permalink( $product->get_id() );
 
 		$_price_old = 0;
 		if ( empty( $product->get_sale_price() ) ) {
