@@ -204,5 +204,4 @@ class WP_Newsman {
 	}
 }
 
-$wp_newsman = WP_Newsman::init();
-$wp_newsman->init_hooks();
+\WP_Newsman::init()->init_hooks();
