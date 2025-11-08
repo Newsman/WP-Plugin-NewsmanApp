@@ -174,6 +174,42 @@
 				}
 			);
 
+			jQuery( '#newsman_remarketingexportwordpresssubscribers' ).click(
+				function () {
+					if (jQuery( '#newsman_remarketingexportwordpresssubscribers' ).is( ':checked' )) {
+						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'table-row' );
+						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'table-row' );
+					} else {
+						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'none' );
+						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'none' );
+					}
+				}
+			);
+
+			jQuery( '#newsman_remarketingexportwoocommercesubscribers' ).click(
+				function () {
+					if (jQuery( '#newsman_remarketingexportwoocommercesubscribers' ).is( ':checked' )) {
+						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'table-row' );
+						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'table-row' );
+					} else {
+						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'none' );
+						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'none' );
+					}
+				}
+			);
+
+			jQuery( '#newsman_remarketingexportorders' ).click(
+				function () {
+					if (jQuery( '#newsman_remarketingexportorders' ).is( ':checked' )) {
+						jQuery( '#newsman_remarketingexportorders_recurring_short_days' ).closest( 'tr' ).css( 'display', 'table-row' );
+						jQuery( '#newsman_remarketingexportorders_recurring_long_days' ).closest( 'tr' ).css( 'display', 'table-row' );
+					} else {
+						jQuery( '#newsman_remarketingexportorders_recurring_short_days' ).closest( 'tr' ).css( 'display', 'none' );
+						jQuery( '#newsman_remarketingexportorders_recurring_long_days' ).closest( 'tr' ).css( 'display', 'none' );
+					}
+				}
+			);
+
 		}
 	);
 } (jQuery));

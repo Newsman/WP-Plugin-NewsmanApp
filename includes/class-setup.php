@@ -276,6 +276,13 @@ js/retargeting/modal_{{api_key}}.js'
 		add_option( 'newsman_developer_use_as_subscribe', 'on' );
 		add_option( 'newsman_remarketingexportorders', 'on' );
 
+		add_option( 'newsman_remarketingexportwordpresssubscribers_recurring_short_days', '7' );
+		add_option( 'newsman_remarketingexportwordpresssubscribers_recurring_long_days', '90' );
+		add_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_short_days', '7' );
+		add_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_long_days', '90' );
+		add_option( 'newsman_remarketingexportorders_recurring_short_days', '7' );
+		add_option( 'newsman_remarketingexportorders_recurring_long_days', '90' );
+
 		$current_date = new \DateTime();
 		$current_date->modify( '-5 years' );
 		add_option( 'newsman_remarketingorderdate', $current_date->format( 'Y-m-d' ) );

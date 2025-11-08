@@ -34,6 +34,16 @@ class Orders extends AbstractScheduler {
 	public const BACKGROUND_EVENT_HOOK_LONG = 'newsman_recurring_export_orders_long';
 
 	/**
+	 * Repeat short action every of X hours
+	 */
+	public const RECURRING_SHORT_INTERVAL = 24;
+
+	/**
+	 * Repeat long action every of X hours
+	 */
+	public const RECURRING_LONG_INTERVAL = 720;
+
+	/**
 	 * Is allow action to run
 	 *
 	 * @return bool
@@ -128,9 +138,9 @@ class Orders extends AbstractScheduler {
 		}
 
 		$date = new \DateTime();
-		$date->sub( new \DateInterval( 'P7D' ) );
+		$date->sub( new \DateInterval( 'P' . $this->remarketing_config->get_export_orders_recurring_short_days() . 'D' ) );
 
-		$this->schedule( self::BACKGROUND_EVENT_HOOK_SHORT, 24, $date->format( 'Y-m-d' ) );
+		$this->schedule( self::BACKGROUND_EVENT_HOOK_SHORT, $this->get_recurring_short_interval(), $date->format( 'Y-m-d' ) );
 
 		return true;
 	}
@@ -146,7 +156,10 @@ class Orders extends AbstractScheduler {
 			return false;
 		}
 
-		$this->schedule( self::BACKGROUND_EVENT_HOOK_LONG, 30 * 24 );
+		$date = new \DateTime();
+		$date->sub( new \DateInterval( 'P' . $this->remarketing_config->get_export_orders_recurring_long_days() . 'D' ) );
+
+		$this->schedule( self::BACKGROUND_EVENT_HOOK_LONG, $this->get_recurring_long_interval(), $date->format( 'Y-m-d' ) );
 
 		return true;
 	}
@@ -211,5 +224,37 @@ class Orders extends AbstractScheduler {
 			self::BACKGROUND_EVENT_HOOK_SHORT,
 			self::BACKGROUND_EVENT_HOOK_LONG,
 		);
+	}
+
+	/**
+	 * Get the recurring short interval in hours.
+	 *
+	 * @return int The value of the recurring short interval in hours.
+	 */
+	public function get_recurring_short_interval() {
+		$interval = apply_filters(
+			'newsman_scheduler_export_recurring_orders_short_interval',
+			self::RECURRING_SHORT_INTERVAL
+		);
+		if ( $interval < 4 ) {
+			$interval = self::RECURRING_SHORT_INTERVAL;
+		}
+		return $interval;
+	}
+
+	/**
+	 * Get the recurring long interval in hours.
+	 *
+	 * @return int The value of the recurring long interval in hours.
+	 */
+	public function get_recurring_long_interval() {
+		$interval = apply_filters(
+			'newsman_scheduler_export_recurring_orders_long_interval',
+			self::RECURRING_LONG_INTERVAL
+		);
+		if ( $interval < 168 ) {
+			$interval = self::RECURRING_LONG_INTERVAL;
+		}
+		return $interval;
 	}
 }

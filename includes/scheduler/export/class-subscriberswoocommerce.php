@@ -102,7 +102,6 @@ class SubscribersWoocommerce extends AbstractScheduler {
 				array(
 					'start'        => $start,
 					'limit'        => $limit,
-					'cronlast'     => true,
 					'date_created' => $date_created,
 					'pre_count'    => $pre_count,
 				),

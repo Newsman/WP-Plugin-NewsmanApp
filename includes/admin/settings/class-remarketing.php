@@ -51,8 +51,14 @@ class Remarketing extends Settings {
 		'newsman_remarketingcustomerattributes',
 		'newsman_remarketingordersave',
 		'newsman_remarketingexportwordpresssubscribers',
+		'newsman_remarketingexportwordpresssubscribers_recurring_short_days',
+		'newsman_remarketingexportwordpresssubscribers_recurring_long_days',
 		'newsman_remarketingexportwoocommercesubscribers',
+		'newsman_remarketingexportwoocommercesubscribers_recurring_short_days',
+		'newsman_remarketingexportwoocommercesubscribers_recurring_long_days',
 		'newsman_remarketingexportorders',
+		'newsman_remarketingexportorders_recurring_short_days',
+		'newsman_remarketingexportorders_recurring_long_days',
 		'newsman_remarketingorderdate',
 	);
 

@@ -6,6 +6,9 @@
 .newsman-table th {
 	padding: 20px 20px 20px 20px;
 }
+.newsman-table th.nzm-child-config {
+	text-align: right;
+}
 
 .newsman-tbl-fixed {
 	table-layout: fixed;

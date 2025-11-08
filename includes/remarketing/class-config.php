@@ -166,6 +166,134 @@ class Config {
 	}
 
 	/**
+	 * Get export WordPress subscribers short recurring latest number of days
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int
+	 */
+	public function get_export_wordpress_recurring_short_days( $blog_id = null ) {
+		$days = (int) $this->config->get_blog_option(
+			$blog_id,
+			'newsman_remarketingexportwordpresssubscribers_recurring_short_days',
+			7
+		);
+		if ( 1 > $days ) {
+			return 7;
+		}
+		return $days;
+	}
+
+	/**
+	 * Get export WordPress subscribers long recurring latest number of days
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int
+	 */
+	public function get_export_wordpress_recurring_long_days( $blog_id = null ) {
+		$days = (int) $this->config->get_blog_option(
+			$blog_id,
+			'newsman_remarketingexportwordpresssubscribers_recurring_long_days',
+			90
+		);
+		if ( 1 > $days ) {
+			return 90;
+		}
+		return $days;
+	}
+
+	/**
+	 * Is export WooCommerce buyers with orders complete recurring
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_export_woocommerce_subscribers( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportwoocommercesubscribers', '' );
+	}
+
+	/**
+	 * Get export WooCommerce buyers from orders short recurring latest number of days
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int
+	 */
+	public function get_export_woocommerce_recurring_short_days( $blog_id = null ) {
+		$days = (int) $this->config->get_blog_option(
+			$blog_id,
+			'newsman_remarketingexportwoocommercesubscribers_recurring_short_days',
+			7
+		);
+		if ( 1 > $days ) {
+			return 7;
+		}
+		return $days;
+	}
+
+	/**
+	 * Get export WooCommerce buyers from orders long recurring latest number of days
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int
+	 */
+	public function get_export_woocommerce_recurring_long_days( $blog_id = null ) {
+		$days = (int) $this->config->get_blog_option(
+			$blog_id,
+			'newsman_remarketingexportwoocommercesubscribers_recurring_long_days',
+			90
+		);
+		if ( 1 > $days ) {
+			return 90;
+		}
+		return $days;
+	}
+
+	/**
+	 * Is export orders recurring
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_export_orders( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportorders', '' );
+	}
+
+	/**
+	 * Get export orders short recurring latest number of days
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int
+	 */
+	public function get_export_orders_recurring_short_days( $blog_id = null ) {
+		$days = (int) $this->config->get_blog_option(
+			$blog_id,
+			'newsman_remarketingexportorders_recurring_short_days',
+			7
+		);
+		if ( 1 > $days ) {
+			return 7;
+		}
+		return $days;
+	}
+
+	/**
+	 * Get export orders long recurring latest number of days
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return int
+	 */
+	public function get_export_orders_recurring_long_days( $blog_id = null ) {
+		$days = (int) $this->config->get_blog_option(
+			$blog_id,
+			'newsman_remarketingexportorders_recurring_long_days',
+			90
+		);
+		if ( 1 > $days ) {
+			return 90;
+		}
+		return $days;
+	}
+
+	/**
 	 * Get order date to export orders created after it, including.
 	 *
 	 * @param null|int $blog_id WP blog ID.
@@ -200,27 +328,6 @@ class Config {
 		}
 
 		return $date && $date->format( 'Y-m-d' ) === $date_string;
-	}
-
-
-	/**
-	 * Is export WooCommerce buyers with orders complete recurring
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
-	 */
-	public function is_export_woocommerce_subscribers( $blog_id = null ) {
-		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportwoocommercesubscribers', '' );
-	}
-
-	/**
-	 * Is export orders recurring
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
-	 */
-	public function is_export_orders( $blog_id = null ) {
-		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportorders', '' );
 	}
 
 	/**
