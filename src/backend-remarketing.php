@@ -127,7 +127,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_remarketingorderdate">Export Orders After Date</label>
 							</th>
 							<td>
-								<input type="text" name="newsman_remarketingorderdate" id="newsman_remarketingorderdate" value="<?php echo esc_html( $form_values['newsman_remarketingorderdate'] ); ?>" />
+								<input class="nzm-small-input" type="text" name="newsman_remarketingorderdate" id="newsman_remarketingorderdate" value="<?php echo esc_html( $form_values['newsman_remarketingorderdate'] ); ?>" />
 								<p class="description">Export orders created after a specific date (including). Format: YYYY-MM-DD</p>
 							</td>
 						</tr>

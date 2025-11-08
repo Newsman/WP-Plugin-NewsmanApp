@@ -55,7 +55,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_list">Select a list</label>
 							</th>
 							<td>
-								<select name="newsman_list" id="newsman_list">
+								<select class="nzm-small-select" name="newsman_list" id="newsman_list">
 									<option value="0">-- select list --</option>
 									<?php
 									if ( ! empty( $this->available_lists ) ) {
@@ -75,7 +75,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_segments">Select a segment</label>
 							</th>
 							<td>
-								<select name="newsman_segments" id="newsman_segments">
+								<select class="nzm-small-select" name="newsman_segments" id="newsman_segments">
 									<option value="0">-- select segment (optional) --</option>
 									<?php
 									if ( ! empty( $this->available_segments ) ) {
@@ -96,7 +96,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_smslist">Select an SMS list</label>
 							</th>
 							<td>
-								<select name="newsman_smslist" id="newsman_smslist">
+								<select class="nzm-small-select"name="newsman_smslist" id="newsman_smslist">
 									<option value="0">-- select list --</option>
 									<?php
 									if ( ! empty( $this->available_sms_lists ) ) {

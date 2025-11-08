@@ -68,7 +68,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_userid">User ID</label>
 							</th>
 							<td>
-								<input type="text" name="newsman_userid" id="newsman_userid"
+								<input class="nzm-small-input" type="text" name="newsman_userid" id="newsman_userid"
 									value="<?php echo esc_attr( $form_values['newsman_userid'] ); ?>"/>
 							</td>
 						</tr>
@@ -108,7 +108,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_serverip">Server IP Address</label>
 							</th>
 							<td>
-								<input type="text" id="newsman_serverip"
+								<input class="nzm-small-input" type="text" id="newsman_serverip"
 									name="newsman_serverip"
 									value="<?php echo ( ! empty( $form_values['newsman_serverip'] ) ) ? esc_attr( $form_values['newsman_serverip'] ) : ''; ?>"/>
 								<p class="description">Please set the public IP address of the server if the user IP address is not sent. Newsman subscribe to newsletter requires an IP address.</p>
@@ -166,7 +166,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_checkoutnewslettertype">Newsletter Opt-in type</label>
 							</th>
 							<td>
-								<select name="newsman_checkoutnewslettertype" id="newsman_checkoutnewslettertype">
+								<select class="nzm-small-select" name="newsman_checkoutnewslettertype" id="newsman_checkoutnewslettertype">
 									<option value="save" <?php echo ( 'save' === $form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
 										Opt-in
 									</option>
@@ -223,7 +223,7 @@ $form_values = $this->get_form_values();
 								// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 								// @see WC_Log_Level::$level_to_severity
 								?>
-								<select name="newsman_developerlogseverity" id="">
+								<select class="nzm-small-select" name="newsman_developerlogseverity" id="">
 									<option value="2000" <?php echo ( '2000' === $form_values['newsman_developerlogseverity'] ) ? "selected = ''" : ''; ?>>
 										No Logging
 									</option>
@@ -276,7 +276,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_developerapitimeout">API Timeout</label>
 							</th>
 							<td>
-								<input type="number" step="1" id="newsman_developerapitimeout"
+								<input class="nzm-small-input" type="number" step="1" id="newsman_developerapitimeout"
 									name="newsman_developerapitimeout"
 									value="<?php echo ( ! empty( $form_values['newsman_developerapitimeout'] ) ) ? esc_attr( $form_values['newsman_developerapitimeout'] ) : ''; ?>"
 									placeholder="<?php echo esc_attr( $this->config->get_api_timeout() ); ?>"/>
@@ -309,7 +309,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_developerpluginlazypriority">Plugin Loaded Priority</label>
 							</th>
 							<td>
-								<input type="text" id="newsman_developerpluginlazypriority"
+								<input class="nzm-small-input" type="text" id="newsman_developerpluginlazypriority"
 									name="newsman_developerpluginlazypriority"
 									value="<?php echo ( ! empty( $form_values['newsman_developerpluginlazypriority'] ) ) ? esc_attr( $form_values['newsman_developerpluginlazypriority'] ) : ''; ?>"/>
 								<p class="description">Newsman plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20.</p>

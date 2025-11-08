@@ -34,6 +34,11 @@
 	-ms-user-select: none;
 	user-select: none;
 }
+.newsman-table input[type="text"].nzm-small-input,
+.newsman-table input[type="number"].nzm-small-input,
+.newsman-table .nzm-small-select {
+	min-width: 250px;
+}
 
 .nzm-variable {
 	background: rgba(0, 0, 0, 0.8);

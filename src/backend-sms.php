@@ -106,7 +106,7 @@ $form_values = $this->get_form_values();
 							</th>
 							<td colspan="2">
 								<?php if ( 'on' === $form_values['newsman_usesms'] && ! empty( $this->available_smslists ) ) { ?>
-									<select name="newsman_smslist" id="">
+									<select class="nzm-small-select" name="newsman_smslist" id="">
 										<option value="0">-- select list --</option>
 											<?php
 											foreach ( $this->available_smslists as $item ) {
@@ -235,7 +235,7 @@ $form_values = $this->get_form_values();
 							<label class="nzm-label" for="newsman_smstestnr">Phone for tests</label>
 						</th>
 						<td>
-							<input id="newsman_smstestnr" name="newsman_smstestnr" value="<?php echo esc_attr( $form_values['newsman_smstestnr'] ); ?>" /> Ex: 0720998111
+							<input class="nzm-small-input" type="text" id="newsman_smstestnr" name="newsman_smstestnr" value="<?php echo esc_attr( $form_values['newsman_smstestnr'] ); ?>" /> Ex: 0720998111
 						</td>
 					</tr>
 					</table>
@@ -246,7 +246,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_smsdevtestnr">Phone</label>
 							</th>
 							<td>
-								<input id="newsman_smsdevtestnr" name="newsman_smsdevtestnr" value="<?php echo ''; ?>" /> Ex: 0720998111
+								<input class="nzm-small-input" type="text" id="newsman_smsdevtestnr" name="newsman_smsdevtestnr" value="<?php echo ''; ?>" /> Ex: 0720998111
 							</td>
 						</tr>
 						<tr>
