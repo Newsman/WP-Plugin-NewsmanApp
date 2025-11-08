@@ -120,6 +120,32 @@ class ActionScheduler {
 	}
 
 	/**
+	 * Has scheduled action
+	 *
+	 * @param string $hook Hook.
+	 * @param array  $args Arguments.
+	 * @param string $group Group.
+	 * @return bool|int|null
+	 */
+	public function has_scheduled_action( $hook, $args = null, $group = '' ) {
+		if ( function_exists( 'as_has_scheduled_action' ) ) {
+			return as_has_scheduled_action( $hook, $args, $group );
+		} elseif ( function_exists( 'as_has_scheduled_action' ) ) {
+			return as_next_scheduled_action( $hook, $args, $group );
+		}
+		return null;
+	}
+
+	/**
+	 * Has action hook ensure_recurring_actions_hook
+	 *
+	 * @return bool
+	 */
+	public function has_ensure_recurring() {
+		return function_exists( 'as_supports' ) && as_supports( 'ensure_recurring_actions_hook' );
+	}
+
+	/**
 	 * Get action scheduler group for order change
 	 *
 	 * @return string

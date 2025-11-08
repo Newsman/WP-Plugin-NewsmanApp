@@ -39,14 +39,10 @@ class Orders extends AbstractScheduler {
 	 * @return bool
 	 */
 	public function is_allow() {
-		if ( ! $this->action_scheduler->is_allowed_recurring() ) {
-			return false;
-		}
-		if ( ! $this->remarketing_config->is_export_orders() ) {
-			return false;
-		}
+		$allow = $this->action_scheduler->is_allowed_recurring();
+		$allow = $allow && $this->remarketing_config->is_export_orders();
 
-		return true;
+		return apply_filters( 'newsman_scheduler_export_recurring_orders_allow', $allow );
 	}
 
 	/**
@@ -62,8 +58,11 @@ class Orders extends AbstractScheduler {
 		add_action( self::BACKGROUND_EVENT_HOOK_SHORT, array( $this, 'process_recurring' ), 10, 2 );
 		add_action( self::BACKGROUND_EVENT_HOOK_LONG, array( $this, 'process_recurring' ), 10, 2 );
 
-		add_action( 'init', array( $this, 'schedule_short' ) );
-		add_action( 'init', array( $this, 'schedule_long' ) );
+		if ( ! $this->action_scheduler->has_ensure_recurring() && is_admin() ) {
+			// Fallback: runs on every admin request.
+			add_action( 'init', array( $this, 'schedule_short' ) );
+			add_action( 'init', array( $this, 'schedule_long' ) );
+		}
 	}
 
 	/**
@@ -76,8 +75,10 @@ class Orders extends AbstractScheduler {
 			return;
 		}
 
-		add_action( 'action_scheduler_ensure_recurring_actions', array( $this, 'schedule_short' ), 10 );
-		add_action( 'action_scheduler_ensure_recurring_actions', array( $this, 'schedule_long' ), 10 );
+		if ( $this->action_scheduler->has_ensure_recurring() ) {
+			add_action( 'action_scheduler_ensure_recurring_actions', array( $this, 'schedule_short' ), 10 );
+			add_action( 'action_scheduler_ensure_recurring_actions', array( $this, 'schedule_long' ), 10 );
+		}
 	}
 
 	/**
@@ -166,7 +167,22 @@ class Orders extends AbstractScheduler {
 			return false;
 		}
 
-		if ( ! as_has_scheduled_action( $hook ) ) {
+		$has = $this->action_scheduler->has_scheduled_action(
+			$hook,
+			array(
+				array(
+					'limit'        => $limit,
+					'date_created' => $date_created,
+				),
+				'blog_id' => $blog_id,
+			),
+			$this->action_scheduler->get_group_mass_export_orders()
+		);
+		if ( null === $has ) {
+			return false;
+		}
+
+		if ( ! $has ) {
 			as_schedule_recurring_action(
 				time(),
 				$interval_hours * HOUR_IN_SECONDS,
