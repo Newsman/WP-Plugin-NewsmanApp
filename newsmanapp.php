@@ -22,12 +22,16 @@ define( 'NEWSMAN_JS_SCRIPT_VERSION', '20251107010000' );
 // Included before autoload.php and checks for dependencies in vendor.
 require_once __DIR__ . '/includes/class-newsmanphp.php';
 
-if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::notify_missing_vendor_composer' );
-	return;
-}
+// If there isn't already in place no autoload with composer.
+if ( ! ( class_exists( 'Newsman\Admin' ) && class_exists( 'Newsman\Remarketing' ) && class_exists( 'Newsman\Config' ) ) ) {
+	// Composer autoload from newsmanapp/vendor/ .
+	if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::notify_missing_vendor_composer' );
+		return;
+	}
 
-require_once __DIR__ . '/vendor/autoload.php';
+	require_once __DIR__ . '/vendor/autoload.php';
+}
 
 if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 	return;
