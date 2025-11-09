@@ -86,6 +86,7 @@ class WP_Newsman {
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->check_setup_not_run();
 		$this->config = \Newsman\Config::init();
 	}
 
@@ -205,6 +206,18 @@ class WP_Newsman {
 		);
 
 		return apply_filters( 'newsman_known_scheduled_classes', $classes );
+	}
+
+	/**
+	 * Verify that the setup was run at least one time.
+	 * This can happen when the plugin is installed or updated with various tools outside WP admin.
+	 *
+	 * @return void
+	 */
+	public function check_setup_not_run() {
+		if ( class_exists( 'Newsman\Setup' ) ) {
+			\Newsman\Setup::one_time_setup();
+		}
 	}
 }
 

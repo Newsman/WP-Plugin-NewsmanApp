@@ -91,6 +91,20 @@ class Setup {
 	}
 
 	/**
+	 * One time setup to make sure the initial setup was run.
+	 * This can happen when the plugin is installed or updated with various tools outside WP admin.
+	 *
+	 * @return void
+	 */
+	public static function one_time_setup() {
+		if ( ! empty( self::get_current_version() ) ) {
+			return;
+		}
+		$network_wide = is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
+		self::setup( $network_wide );
+	}
+
+	/**
 	 * Perform setup install or upgrade.
 	 *
 	 * @param bool $network_wide Is network wide.
@@ -121,7 +135,7 @@ class Setup {
 	 * @return void
 	 */
 	protected static function create_tables() {
-		if ( get_option( 'newsman_setup_version', '1.0.0', '<' ) ) {
+		if ( version_compare( self::get_current_version(), '1.0.0', '<' ) ) {
 			self::create_tables_one_zero_zero();
 		}
 	}
@@ -158,7 +172,7 @@ class Setup {
 	 * @return void
 	 */
 	protected static function init_newsman_options() {
-		if ( get_option( 'newsman_setup_version', '1.0.0', '<' ) ) {
+		if ( version_compare( self::get_current_version(), '1.0.0', '<' ) ) {
 			self::init_newsman_options_one_zero_zero();
 		}
 	}
@@ -241,7 +255,7 @@ js/retargeting/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function init_options() {
-		if ( get_option( 'newsman_setup_version', '1.0.0', '<' ) ) {
+		if ( version_compare( self::get_current_version(), '1.0.0', '<' ) ) {
 			self::init_options_one_zero_zero();
 		}
 	}
@@ -334,5 +348,14 @@ js/retargeting/modal_{{api_key}}.js'
 		foreach ( $hooks as $hook ) {
 			as_unschedule_all_actions( $hook );
 		}
+	}
+
+	/**
+	 * Get current version of setup from wp_options table
+	 *
+	 * @return false|mixed|null
+	 */
+	public static function get_current_version() {
+		return get_option( 'newsman_setup_version' );
 	}
 }
