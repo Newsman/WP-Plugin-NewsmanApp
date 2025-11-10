@@ -71,7 +71,10 @@ class Admin {
 		// Admin menu hook.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		// Add links to plugins page.
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_links' ) );
+		add_filter(
+			'plugin_action_links_' . plugin_basename( rtrim( NEWSMAN_PLUGIN_DIR, '/' ) . '/newsmanapp.php' ),
+			array( $this, 'plugin_links' )
+		);
 		// Enqueue plugin styles in admin.
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
 		// Enqueue plugin scripts in admin.
