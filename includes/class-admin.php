@@ -172,7 +172,7 @@ class Admin {
 		$custom_links = array(
 			'<a href="' . admin_url( 'admin.php?page=NewsmanSettings' ) . '">Settings</a>',
 		);
-		return array_merge( $links, $custom_links );
+		return array_merge( $custom_links, $links );
 	}
 
 	/**
