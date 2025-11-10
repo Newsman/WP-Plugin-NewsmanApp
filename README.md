@@ -11,8 +11,25 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
 
 ## Manually 
-1. Download the latest archive from [here](https://github.com/Newsman/WP-Plugin-NewsmanApp/archive/master.zip).
-2. Rename folder `WP-Plugin-NewsmanApp-master` to `newsmanapp`, upload the contents of `newsmanapp` to your plugins directory, which usually is `/wp-content/plugins/`.
+1. Download the latest newsmanapp.zip archive from [releases](https://github.com/Newsman/WP-Plugin-NewsmanApp/releases) (link in right sidebar here). The archive newsmanapp.zip contains the plugin and has the generated `vendor/autoload.php` which is required in non-composer WordPress installations.
+2. Upload the directory `newsmanapp` to your plugins directory, which usually is `/wp-content/plugins/`.
+3. Alternatively you can download the plugin in WordPress plugins listing in [plugin page](https://wordpress.org/plugins/newsmanapp/#description).
+4. Please note that you can also upload the plugin in WordPress Admin > Add Plugin > Upload Plugin button (top left of the page).
+
+## Composer
+1. The plugin is compatible with WordPress Composer managed installations.
+```
+composer require newsman/newsmanapp
+```
+If Composer autoloader is not included already in your project than you may need to generate `vendor/autoload.php` inside `newsmanapp` plugin's directory (`wp-content/plugins/newsmanapp`). 
+You can either use:
+```
+composer install --no-dev
+```
+or
+```
+composer dump-autoload -o
+```
 
 ## Activate the plugin
 
@@ -47,7 +64,7 @@ After the plugin is installed, you will also have: feed products, events (produc
 
 Go to Remarketing Tab and paste your Newsman Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_remarketingId.jpg)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_remarketingId.png)
 
 # Widget
 

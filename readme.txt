@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter, create, form
 Requires at least: 3.7
-Tested up to: 6.6.2
+Tested up to: 6.8.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -70,16 +70,21 @@ With the NewsMAN Plugin, you have the power to streamline your email and SMS mar
 
 == Installation ==
 
-Automatically
+Automatically:
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for **NewsmanApp** and click "*Install now*"
 
-Manually 
+Manually:
 1. Download the plugin and upload the contents of newsmanapp.zip to your plugins directory, which usually is /wp-content/plugins/.
 
-- Activate the plugin, NewsmanApp and Newsman Remarketing
-- Go to *Newsman, you can login with Newsman via OAuth and automate the flow (API KEY, User ID, Remarketing ID), automated installer.
+Composer:
+1. The plugin is compatible now with WordPress installations managed by Composer.
+For this type of installation please visit the plugin's page on <a target="_blank" href="https://github.com/Newsman/WP-Plugin-NewsmanApp">Github</a>.
 
-Widget
+Continue with:
+- Activate the plugin, NewsmanApp and Newsman Remarketing
+- Go to Admin > Newsman. You can login with Newsman via OAuth and automate the flow (API KEY, User ID, Remarketing ID), automated installer.
+
+Widget configuration:
 
 - Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form ->  select landing page -> Activate for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
 
@@ -105,7 +110,13 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
-= 3.0.1 =
+= 3.0.2 =
+ * Change "Tested up to" to "6.8.3"
+ * Updated installation documentation
+ * Add back settings link in installed plugins admin page
+ * Add Text Domain and Domain Path
+ * Reverse changelog in readme.txt
+ = 3.0.1 =
  * Hotfix on setup. Add initial rows in table wp_newsman_options.
  = 3.0.0 =
  * General improvements and complete code refactoring. NewsmanApp Remarketing plugin was retired. Though, all features were added in the main NewsmanApp plugin.
