@@ -7,6 +7,8 @@
  * Tested up to: 6.8.3
  * Author: Newsman
  * Author URI: https://www.newsman.com
+ * Text Domain: newsman 
+ * Domain Path: /languages
  *
  * @package NewsmanApp for WordPress
  */
