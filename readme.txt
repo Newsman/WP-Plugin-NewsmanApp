@@ -139,6 +139,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
  * ActionsScheduler is used for some API actions in Woo Commerce.
  * Added comprehensive logging in Woo Commerce.
  * WordPress codding standards.
+ = 3.0.1 =
+ * Hotfix on setup. Add initial rows in table wp_newsman_options.
 
 == Upgrade Notice ==
 

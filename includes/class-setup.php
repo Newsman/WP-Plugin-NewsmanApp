@@ -21,6 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @class Newsman_Setup
  */
 class Setup {
+    /**
+     * Current version of setup in database
+     *
+     * @var string|null
+     */
+    protected static $current_version;
+
 	/**
 	 * On activate plugin
 	 *
@@ -111,21 +118,23 @@ class Setup {
 	 * @return void
 	 */
 	protected static function setup( $network_wide = false ) {
+        self::$current_version = self::get_current_version();
+
 		if ( is_multisite() && $network_wide ) {
 			// Network activation - run for each site.
 			$sites = get_sites();
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
 				self::create_tables();
+                self::init_newsman_options();
 				self::init_options();
-				self::init_newsman_options();
 				restore_current_blog();
 			}
 		} else {
 			// Single site activation.
 			self::create_tables();
+            self::init_newsman_options();
 			self::init_options();
-			self::init_newsman_options();
 		}
 	}
 
@@ -135,7 +144,7 @@ class Setup {
 	 * @return void
 	 */
 	protected static function create_tables() {
-		if ( version_compare( self::get_current_version(), '1.0.0', '<' ) ) {
+		if ( version_compare( self::$current_version, '1.0.0', '<' ) ) {
 			self::create_tables_one_zero_zero();
 		}
 	}
@@ -172,9 +181,16 @@ class Setup {
 	 * @return void
 	 */
 	protected static function init_newsman_options() {
-		if ( version_compare( self::get_current_version(), '1.0.0', '<' ) ) {
+		if ( version_compare( self::$current_version, '1.0.0', '<' ) ) {
 			self::init_newsman_options_one_zero_zero();
 		}
+        
+        // Hotfix in 3.0.1 .
+        if ( version_compare( self::$current_version, '2.0.0', '<' ) ) {
+            self::init_newsman_options_one_zero_zero();
+
+            update_option( 'newsman_setup_version', '2.0.0', true );
+        }
 	}
 
 	/**
@@ -255,7 +271,7 @@ js/retargeting/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function init_options() {
-		if ( version_compare( self::get_current_version(), '1.0.0', '<' ) ) {
+		if ( version_compare( self::$current_version, '1.0.0', '<' ) ) {
 			self::init_options_one_zero_zero();
 		}
 	}
