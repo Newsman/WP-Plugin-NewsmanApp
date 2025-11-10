@@ -118,7 +118,7 @@ class Remarketing extends Settings {
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
-				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) );
+				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		} else {
 			$this->init_form_values_from_option();
@@ -131,7 +131,7 @@ class Remarketing extends Settings {
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
-				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) );
+				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials. Please configure them in Settings tab.', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		}
 	}

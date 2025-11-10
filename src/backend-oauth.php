@@ -32,8 +32,7 @@ $this->process_forms();
 			<?php
 			if ( ! empty( $this->form_error_message ) ) {
 				?>
-				<div class="error"><p><strong><?php echo esc_html( $this->form_error_message ); ?></strong>
-				</p></div>
+				<div class="error"><p><strong><?php echo esc_html( $this->form_error_message ); ?></strong></p></div>
 			<?php } ?>
 			<div class="wrap wrap-settings-admin-page">
 				<h2>NewsMAN plugin for Wordpress-Woocommerce</h2>

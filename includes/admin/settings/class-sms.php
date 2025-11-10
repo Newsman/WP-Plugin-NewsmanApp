@@ -163,7 +163,7 @@ class Sms extends Settings {
 				$this->logger->log_exception( $e );
 				$this->set_message_backend(
 					'error',
-					esc_html__( 'An error has occurred.', 'newsman' ) . $e->getMessage()
+					esc_html__( 'An error has occurred.', 'newsman' ) . ' | ' . $e->getMessage()
 				);
 			}
 		} else {
@@ -184,7 +184,7 @@ class Sms extends Settings {
 				}
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
-				$this->set_message_backend( 'error', 'Invalid Credentials or no SMS list present' );
+				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials or no SMS list present' ) . ' | ' . $e->getMessage() );
 			}
 		}
 	}
@@ -243,7 +243,7 @@ class Sms extends Settings {
 				}
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
-				$this->set_message_backend( 'error', esc_html__( 'The SMS was not sent. ', 'newsman' ) . $e->getMessage() );
+				$this->set_message_backend( 'error', esc_html__( 'The SMS was not sent. ', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		}
 	}

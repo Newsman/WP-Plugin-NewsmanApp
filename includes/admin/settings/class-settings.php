@@ -110,7 +110,7 @@ class Settings extends \Newsman\Admin\Settings {
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
-				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) );
+				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials ', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		} else {
 			$this->init_form_values_from_option();
@@ -124,7 +124,7 @@ class Settings extends \Newsman\Admin\Settings {
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
 				$this->valid_credentials = false;
-				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) );
+				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		}
 	}

@@ -101,7 +101,7 @@ class Settings {
 	 *
 	 * @var array
 	 */
-	public $message = array();
+	public $messages = array();
 
 	/**
 	 * Class construct
@@ -141,19 +141,19 @@ class Settings {
 	 * @return void
 	 */
 	public function set_message_backend( $status, $message ) {
-		$this->message = array(
+		$this->messages[] = array(
 			'status'  => $status,
 			'message' => $message,
 		);
 	}
 
 	/**
-	 * Returns the current message for backend.
+	 * Returns messages for backend.
 	 *
-	 * @return array The message array
+	 * @return array The messages array
 	 */
-	public function get_backend_message() {
-		return $this->message;
+	public function get_backend_messages() {
+		return $this->messages;
 	}
 
 	/**

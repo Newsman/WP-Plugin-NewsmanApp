@@ -47,8 +47,13 @@ $form_values = $this->get_form_values();
 					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>" />
 					<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />
 					<h2>Sync</h2>
-					<div class="<?php echo ( is_array( $this->message ) && isset( $this->message['status'] ) ) ? esc_attr( $this->message['status'] ) : ''; ?>"><p><strong><?php echo ( is_array( $this->message ) && isset( $this->message['message'] ) ) ? esc_html( $this->message['message'] ) : ''; ?></strong>
-						</p></div>
+					<?php foreach ( $this->get_backend_messages() as $message ) : ?>
+						<div class="<?php echo ( is_array( $message ) && isset( $message['status'] ) ) ? esc_attr( $message['status'] ) : ''; ?>">
+							<p>
+								<strong><?php echo ( is_array( $message ) && isset( $message['message'] ) ) ? esc_attr( $message['message'] ) : ''; ?></strong>
+							</p>
+						</div>
+					<?php endforeach; ?>
 					<table class="form-table newsman-table newsman-tbl-fixed">
 						<tr>
 							<th scope="row">

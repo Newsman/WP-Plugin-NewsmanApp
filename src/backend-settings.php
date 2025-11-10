@@ -46,12 +46,11 @@ $form_values = $this->get_form_values();
 				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSettings' ) ); ?>">
 					<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo esc_html( $this->new_nonce ); ?>"/>
 					<input type="hidden" name="<?php echo esc_attr( $this->form_id ); ?>" value="Y" />
-
-					<div class="<?php echo ( is_array( $this->message ) && isset( $this->message['status'] ) ) ? esc_attr( $this->message['status'] ) : ''; ?>">
-						<p>
-							<strong><?php echo ( is_array( $this->message ) && isset( $this->message['message'] ) ) ? esc_attr( $this->message['message'] ) : ''; ?></strong>
-						</p>
+					<?php foreach ( $this->get_backend_messages() as $message ) : ?>
+					<div class="<?php echo ( is_array( $message ) && isset( $message['status'] ) ) ? esc_attr( $message['status'] ) : ''; ?>">
+						<p><strong><?php echo ( is_array( $message ) && isset( $message['message'] ) ) ? esc_attr( $message['message'] ) : ''; ?></strong></p>
 					</div>
+					<?php endforeach; ?>
 					<h2>Newsman Connection</h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
 						<tr>
