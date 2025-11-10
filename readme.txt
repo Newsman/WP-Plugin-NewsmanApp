@@ -105,33 +105,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
-= 1.0 = 
- * Initial release of the plugin
-= 1.1 =
- * Sync improvements
- * Import subscribers functionality from MailPoet plugin
-= 1.2 =
- * Sendpress plugin import
- * Woocommerce customers import
- * Small frontend corrections
-= 1.3 =
- * Improvements
-= 1.4 =
- * Bug Fixes 
-= 1.5 =
- * Bug Fixes 
-= 1.6 =
- * Remarketing improvements
-= 1.7 =
- * Cron improvements
-= 1.8 = 
- * Improvements
-= 1.8.1 = 
- * Patch
-= 1.8.2 = 
- * Patch
-= 2.3.7 =
- * Remarketing improvements
+= 3.0.1 =
+ * Hotfix on setup. Add initial rows in table wp_newsman_options.
  = 3.0.0 =
  * General improvements and complete code refactoring. NewsmanApp Remarketing plugin was retired. Though, all features were added in the main NewsmanApp plugin.
  * The plugin has to be deactivated and activated if the source is copied manually inside plugins' directory.
@@ -139,9 +114,34 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
  * ActionsScheduler is used for some API actions in Woo Commerce.
  * Added comprehensive logging in Woo Commerce.
  * WordPress codding standards.
- = 3.0.1 =
- * Hotfix on setup. Add initial rows in table wp_newsman_options.
-
+ = 2.3.7 =
+  * Remarketing improvements
+ = 1.8.2 = 
+  * Patch
+ = 1.8.1 = 
+  * Patch
+ = 1.8 = 
+  * Improvements
+ = 1.7 =
+  * Cron improvements
+ = 1.6 =
+  * Remarketing improvements
+ = 1.5 =
+  * Bug Fixes 
+ = 1.4 =
+  * Bug Fixes 
+ = 1.3 =
+  * Improvements
+ = 1.2 =
+  * Sendpress plugin import
+  * Woocommerce customers import
+  * Small frontend corrections
+ = 1.1 =
+  * Sync improvements
+  * Import subscribers functionality from MailPoet plugin
+= 1.0 = 
+ * Initial release of the plugin
+ 
 == Upgrade Notice ==
 
 No upgrade yet.
