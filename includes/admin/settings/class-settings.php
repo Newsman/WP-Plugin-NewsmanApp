@@ -48,12 +48,13 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_api',
 		'newsman_senduserip',
 		'newsman_serverip',
+		'newsman_form_id',
+		'newsman_newslettertype',
 		'newsman_checkoutsms',
 		'newsman_checkoutnewsletter',
-		'newsman_checkoutnewslettertype',
 		'newsman_checkoutnewslettermessage',
 		'newsman_checkoutnewsletterdefault',
-		'newsman_form_id',
+		'newsman_myaccountnewsletter',
 		'newsman_developerlogseverity',
 		'newsman_developerapitimeout',
 		'newsman_developeractiveuserip',
@@ -61,6 +62,7 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_developerpluginlazypriority',
 		'newsman_developer_use_action_scheduler',
 		'newsman_developer_use_as_subscribe',
+		'newsman_developer_use_as_unsubscribe',
 	);
 
 	/**

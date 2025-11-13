@@ -136,6 +136,36 @@ $form_values = $this->get_form_values();
 							</td>
 						</tr>
 					</table>
+					<h2>Subscribe to Newsletter</h2>
+					<table class="form-table newsman-table newsman-tbl-fixed">
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_newslettertype">Newsletter Opt-in type</label>
+							</th>
+							<td>
+								<select class="nzm-small-select" name="newsman_newslettertype" id="newsman_newslettertype">
+									<option value="save" <?php echo ( 'save' === $form_values['newsman_newslettertype'] ) ? "selected = ''" : ''; ?>>
+										Opt-in
+									</option>
+									<option value="init" <?php echo ( 'init' === $form_values['newsman_newslettertype'] ) ? "selected = ''" : ''; ?>>
+										Double Opt-in
+									</option>
+								</select>
+								<p class="description">Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions.</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_form_id">Confirmation email Form ID.</label>
+							</th>
+							<td>
+								<input type="text" id="newsman_form_id" name="newsman_form_id"
+										value="<?php echo ( ! empty( $form_values['newsman_form_id'] ) ) ? esc_attr( $form_values['newsman_form_id'] ) : ''; ?>"
+										placeholder="form id"/>
+								<p class="description">Form ID used for the confirmation email / form settings. Forms can be created in <a target="_blank" href="https://newsman.app/manager">newsman.app</a> &gt; Forms.</p>
+							</td>
+						</tr>
+					</table>
 					<?php if ( $this->is_woo_commerce_exists() ) : ?>
 					<h2>Checkout Subscribe to Newsletter and SMS</h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
@@ -162,23 +192,6 @@ $form_values = $this->get_form_values();
 						<tr class="newsman_checkoutnewslettertypePanel"
 							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewslettertype">Newsletter Opt-in type</label>
-							</th>
-							<td>
-								<select class="nzm-small-select" name="newsman_checkoutnewslettertype" id="newsman_checkoutnewslettertype">
-									<option value="save" <?php echo ( 'save' === $form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
-										Opt-in
-									</option>
-									<option value="init" <?php echo ( 'init' === $form_values['newsman_checkoutnewslettertype'] ) ? "selected = ''" : ''; ?>>
-										Double Opt-in
-									</option>
-								</select>
-								<p class="description">Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions.</p>
-							</td>
-						</tr>
-						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row">
 								<label class="nzm-label" for="newsman_checkoutnewslettermessage">Checkbox label</label>
 							</th>
 							<td>
@@ -197,16 +210,17 @@ $form_values = $this->get_form_values();
 									id="newsman_checkoutnewsletterdefault" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletterdefault'] ) && 'on' === $form_values['newsman_checkoutnewsletterdefault'] ) ? 'checked' : ''; ?>/>
 							</td>
 						</tr>
-						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+					</table>
+					<h2>My Account Subscribe to Newsletter</h2>
+					<table class="form-table newsman-table newsman-tbl-fixed">
+						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_form_id">Confirmation email Form ID.</label>
+								<label class="nzm-label" for="newsman_myaccountnewsletter">Enable</label>
 							</th>
 							<td>
-								<input type="text" id="newsman_form_id" name="newsman_form_id"
-									value="<?php echo ( ! empty( $form_values['newsman_form_id'] ) ) ? esc_attr( $form_values['newsman_form_id'] ) : ''; ?>"
-									placeholder="form id"/>
-								<p class="description">Form ID used for the confirmation email / form settings. Forms can be created in <a target="_blank" href="https://newsman.app/manager">newsman.app</a> &gt; Forms.</p>
+								<input name="newsman_myaccountnewsletter" type="checkbox"
+									id="newsman_myaccountnewsletter" <?php echo ( ! empty( $form_values['newsman_myaccountnewsletter'] ) && 'on' === $form_values['newsman_myaccountnewsletter'] ) ? 'checked' : ''; ?>/>
+								<p class="description">Enable page and checkbox to subscribe to newsletter in customers account.</p>
 							</td>
 						</tr>
 					</table>
@@ -333,6 +347,16 @@ $form_values = $this->get_form_values();
 									<input name="newsman_developer_use_as_subscribe" type="checkbox"
 										id="newsman_developer_use_as_subscribe" <?php echo ( ! empty( $form_values['newsman_developer_use_as_subscribe'] ) && 'on' === $form_values['newsman_developer_use_as_subscribe'] ) ? 'checked' : ''; ?>/>
 									<p class="description">On storefront use action scheduler for subscribe to email and SMS lists actions.</p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_developer_use_action_scheduler'] ) && 'on' === $form_values['newsman_developer_use_action_scheduler'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_developer_use_as_unsubscribe">Use Action Scheduler for Unsubscribe</label>
+								</th>
+								<td>
+									<input name="newsman_developer_use_as_unsubscribe" type="checkbox"
+										id="newsman_developer_use_as_unsubscribe" <?php echo ( ! empty( $form_values['newsman_developer_use_as_unsubscribe'] ) && 'on' === $form_values['newsman_developer_use_as_unsubscribe'] ) ? 'checked' : ''; ?>/>
+									<p class="description">On storefront use action scheduler for unsubscribe from email lists action.</p>
 								</td>
 							</tr>
 							<?php endif; ?>

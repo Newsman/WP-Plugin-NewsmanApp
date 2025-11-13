@@ -205,6 +205,8 @@ class WP_Newsman {
 			'\Newsman\Scheduler\Export\SubscribersWordpress',
 			'\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',
 			'\Newsman\Scheduler\Export\SubscribersWoocommerce',
+			'\Newsman\Scheduler\Subscribe\Email',
+			'\Newsman\Scheduler\Subscribe\Phone',
 		);
 
 		return apply_filters( 'newsman_known_scheduled_classes', $classes );

@@ -147,4 +147,15 @@ class SaveOrder extends AbstractStatus {
 			return false;
 		}
 	}
+
+	/**
+	 * Get hooks events
+	 *
+	 * @return string[]
+	 */
+	public function get_hooks_events() {
+		return array(
+			self::BACKGROUND_HOOK_EVENT,
+		);
+	}
 }

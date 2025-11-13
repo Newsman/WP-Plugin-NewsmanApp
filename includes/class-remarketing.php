@@ -72,6 +72,8 @@ class Remarketing {
 
 		$checkout_processor = new \Newsman\Form\Checkout\Processor();
 		$checkout_processor->init();
+		$checkout_processor = new \Newsman\Form\Account\Processor();
+		$checkout_processor->init_hooks();
 
 		// Tracking code.
 		add_action( 'wp_head', array( new \Newsman\Remarketing\Script\Track(), 'display_script' ), 999999 );

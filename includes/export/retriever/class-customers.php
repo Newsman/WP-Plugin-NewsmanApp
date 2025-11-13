@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Customers
  *
  * @class \Newsman\Export\Retriever\Customers
- * @deprecated
+ * @deprecated since 3.0.0
  */
 class Customers extends Users {
 	/**

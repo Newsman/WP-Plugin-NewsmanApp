@@ -40,7 +40,7 @@ class Setup {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : '';
 		check_admin_referer( 'activate-plugin_' . $plugin );
 
@@ -126,15 +126,17 @@ class Setup {
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
 				self::create_tables();
-				self::init_newsman_options();
-				self::init_options();
+				self::upgrade_newsman_options();
+				self::upgrade_rewrites();
+				self::upgrade_options();
 				restore_current_blog();
 			}
 		} else {
 			// Single site activation.
 			self::create_tables();
-			self::init_newsman_options();
-			self::init_options();
+			self::upgrade_newsman_options();
+			self::upgrade_rewrites();
+			self::upgrade_options();
 		}
 	}
 
@@ -176,29 +178,28 @@ class Setup {
 	}
 
 	/**
-	 * Init admin options
+	 * Upgrade admin options
 	 *
 	 * @return void
 	 */
-	protected static function init_newsman_options() {
+	protected static function upgrade_newsman_options() {
 		if ( version_compare( self::$current_version, '1.0.0', '<' ) ) {
-			self::init_newsman_options_one_zero_zero();
+			self::upgrade_newsman_options_one_zero_zero();
 		}
 
 		// Hotfix in 3.0.1 .
 		if ( version_compare( self::$current_version, '2.0.0', '<' ) ) {
-			self::init_newsman_options_one_zero_zero();
-
-			update_option( 'newsman_setup_version', '2.0.0', true );
+			// Run 1.0.0 again as a hotfix to a bug fixed here.
+			self::upgrade_newsman_options_one_zero_zero();
 		}
 	}
 
 	/**
-	 * Init admin options 1.0.0
+	 * Upgrade admin options 1.0.0
 	 *
 	 * @return void
 	 */
-	protected static function init_newsman_options_one_zero_zero() {
+	protected static function upgrade_newsman_options_one_zero_zero() {
 		$options = new \Newsman\Options();
 		$options->add_option(
 			'newsman_api',
@@ -266,13 +267,46 @@ js/retargeting/modal_{{api_key}}.js'
 	}
 
 	/**
-	 * Init admin options for the first time with add_option insert only function.
+	 * Run upgrade rewrites on all version
 	 *
 	 * @return void
 	 */
-	protected static function init_options() {
+	public static function upgrade_rewrites() {
+		if ( version_compare( self::$current_version, '3.0.0', '<' ) ) {
+			self::upgrade_rewrites_three_zero_zero();
+		}
+	}
+
+	/**
+	 * Upgrade rewrites 3.0.0
+	 *
+	 * @return void
+	 */
+	public static function upgrade_rewrites_three_zero_zero() {
+		$account_processor = new \Newsman\Form\Account\Processor();
+		$account_processor->add_endpoint();
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * Upgrade admin options for the first time with add_option insert only function.
+	 *
+	 * @note This function should be run last because newsman_setup_version option is updated.
+	 * @return void
+	 */
+	protected static function upgrade_options() {
 		if ( version_compare( self::$current_version, '1.0.0', '<' ) ) {
-			self::init_options_one_zero_zero();
+			self::upgrade_options_one_zero_zero();
+			update_option( 'newsman_setup_version', '1.0.0', true );
+		}
+
+		if ( version_compare( self::$current_version, '2.0.0', '<' ) ) {
+			update_option( 'newsman_setup_version', '2.0.0', true );
+		}
+
+		if ( version_compare( self::$current_version, '3.0.0', '<' ) ) {
+			self::upgrade_options_three_zero_zero();
+			update_option( 'newsman_setup_version', '3.0.0', true );
 		}
 	}
 
@@ -281,8 +315,7 @@ js/retargeting/modal_{{api_key}}.js'
 	 *
 	 * @return void
 	 */
-	protected static function init_options_one_zero_zero() {
-		update_option( 'newsman_setup_version', '1.0.0', true );
+	protected static function upgrade_options_one_zero_zero() {
 		add_option( 'newsman_api', 'on' );
 		add_option( 'newsman_useremarketing', 'on' );
 		add_option( 'newsman_remarketingsendtelephone', 'on' );
@@ -316,6 +349,22 @@ js/retargeting/modal_{{api_key}}.js'
 		$current_date = new \DateTime();
 		$current_date->modify( '-5 years' );
 		add_option( 'newsman_remarketingorderdate', $current_date->format( 'Y-m-d' ) );
+	}
+
+	/**
+	 * Version 3.0.0 options update
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_three_zero_zero() {
+		add_option( 'newsman_myaccountnewsletter', 'on' );
+
+		$deprecated = get_option( 'newsman_checkoutnewslettertype' );
+		if ( ! empty( $deprecated ) ) {
+			add_option( 'newsman_newslettertype', $deprecated );
+		} else {
+			add_option( 'newsman_newslettertype', 'save' );
+		}
 	}
 
 	/**
@@ -360,6 +409,8 @@ js/retargeting/modal_{{api_key}}.js'
 			'newsman_order_save',
 			'newsman_order_notify_sms',
 			'newsman_order_notify_status',
+			'newsman_subscribe_email',
+			'newsman_subscribe_phone',
 		);
 		foreach ( $hooks as $hook ) {
 			as_unschedule_all_actions( $hook );
@@ -367,7 +418,7 @@ js/retargeting/modal_{{api_key}}.js'
 	}
 
 	/**
-	 * Get current version of setup from wp_options table
+	 * Get current version of setup from wp_options table.
 	 *
 	 * @return false|mixed|null
 	 */

@@ -229,6 +229,16 @@ class Config {
 	}
 
 	/**
+	 * Use action scheduler for unsubscribe to email or SMS lists
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function use_action_scheduler_unsubscribe( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_developer_use_as_unsubscribe', '' );
+	}
+
+	/**
 	 * Get export request authorize header name
 	 *
 	 * @param null|int $blog_id WP blog ID.
@@ -246,6 +256,31 @@ class Config {
 	 */
 	public function get_export_authorize_header_key( $blog_id = null ) {
 		return (string) $this->get_blog_option( $blog_id, 'newsman_export_authorize_header_key' );
+	}
+
+	/**
+	 * Is subscribe email to list double opt-in
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_newsletter_double_optin( $blog_id = null ) {
+		if ( 'init' === $this->get_blog_option( $blog_id, 'newsman_newslettertype', '' ) ) {
+			return true;
+		} elseif ( 'save' === $this->get_blog_option( $blog_id, 'newsman_newslettertype', '' ) ) {
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Get Newsman email confirmation form ID
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_newsman_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_form_id' );
 	}
 
 	/**
@@ -293,24 +328,20 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return bool
+	 * @deprecated
 	 */
 	public function is_checkout_newsletter_double_optin( $blog_id = null ) {
-		if ( 'init' === $this->get_blog_option( $blog_id, 'newsman_checkoutnewslettertype', '' ) ) {
-			return true;
-		} elseif ( 'save' === $this->get_blog_option( $blog_id, 'newsman_checkoutnewslettertype', '' ) ) {
-			return false;
-		}
-		return false;
+		return $this->is_newsletter_double_optin( $blog_id );
 	}
 
 	/**
-	 * Get Newsman email confirmation form ID
+	 * Is my account subscribe
 	 *
 	 * @param null|int $blog_id WP blog ID.
-	 * @return string
+	 * @return bool
 	 */
-	public function get_newsman_form_id( $blog_id = null ) {
-		return (string) $this->get_blog_option( $blog_id, 'newsman_form_id' );
+	public function is_account_subscribe( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_myaccountnewsletter', '' );
 	}
 
 	/**

@@ -210,4 +210,15 @@ class SendSms extends AbstractStatus {
 
 		return apply_filters( 'newsman_order_status_send_sms_message_after', $message, $order );
 	}
+
+	/**
+	 * Get hooks events
+	 *
+	 * @return string[]
+	 */
+	public function get_hooks_events() {
+		return array(
+			self::BACKGROUND_HOOK_EVENT,
+		);
+	}
 }

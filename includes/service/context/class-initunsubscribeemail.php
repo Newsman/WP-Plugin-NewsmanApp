@@ -31,7 +31,7 @@ class InitUnsubscribeEmail extends UnsubscribeEmail {
 	/**
 	 * Set options
 	 *
-	 * @param string $options Options.
+	 * @param array $options Options.
 	 * @return $this
 	 */
 	public function set_options( $options ) {
