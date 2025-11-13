@@ -275,7 +275,7 @@ class Processor {
                 // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 				wc_add_notice( esc_html__( $e->getMessage(), 'newsman' ), 'error' );
 			} else {
-				wc_add_notice( 'There was an error subscribing to the newsletter. Please try again.', 'error' );
+				wc_add_notice( esc_html__( 'There was an error subscribing to the newsletter. Please try again.', 'newsman' ), 'error' );
 			}
 			exit;
 		}
