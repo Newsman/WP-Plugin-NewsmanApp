@@ -345,6 +345,36 @@ class Config {
 	}
 
 	/**
+	 * Get my account subscribe menu label
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_account_newsletter_menu_label( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_myaccountnewsletter_menu_label' );
+	}
+
+	/**
+	 * Get my account subscribe page title
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_account_newsletter_page_title( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_myaccountnewsletter_page_title' );
+	}
+
+	/**
+	 * Get my account subscribe checkbox label
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_account_newsletter_checkbox_label( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_myaccountnewsletter_checkbox_label' );
+	}
+
+	/**
 	 * Get all available blog IDs that are not spam, not deleted, not archived and nay if public or not.
 	 * Cache the blog IDs in this class instance.
 	 *

@@ -7,6 +7,7 @@
 ( function ($) {
 	$(
 		function () {
+			// Tabs top page.
 			jQuery( '#newsmanBtn' ).on(
 				'click',
 				function () {
@@ -58,158 +59,112 @@
 				}
 			);
 
-			// Settings checkout newsletter.
-			jQuery( 'input[name="newsman_checkoutnewsletter"]' ).on(
-				'click',
-				function () {
-					if (jQuery( 'input[name="newsman_checkoutnewsletter"]' ).is( ':checked' )) {
-						jQuery( ".newsman_checkoutnewslettertypePanel" ).css( 'display', 'table-row' );
-					} else {
-						jQuery( ".newsman_checkoutnewslettertypePanel" ).css( 'display', 'none' );
+			var $show = function (checkboxSelector, onChecked, childsSelector, displayCss, useClosestTr = true) {
+				var $checkbox = jQuery( checkboxSelector );
+
+				$checkbox.on(
+					'click',
+					function () {
+						jQuery.each(
+							childsSelector,
+							function (index, childSelector) {
+								var child;
+
+								if (useClosestTr) {
+									child = jQuery( childSelector ).closest( 'tr' );
+								} else {
+									child = jQuery( childSelector );
+								}
+
+								if (child.length === 0) {
+									return true;
+								}
+
+								if (onChecked) {
+									if ($checkbox.is( ':checked' )) {
+										child.css( 'display', displayCss );
+									} else {
+										child.css( 'display', 'none' );
+									}
+								} else {
+									if ($checkbox.is( ':checked' )) {
+										child.css( 'display', 'none' );
+									} else {
+										child.css( 'display', displayCss );
+									}
+								}
+							}
+						);
 					}
-				}
+				);
+			}
+
+			$show( '#newsman_api', true, ['#newsman_developerapitimeout'], 'table-row' );
+			$show( '#newsman_senduserip', false, ['#newsman_serverip'], 'table-row' );
+			$show( '#newsman_developeractiveuserip', true, ['#newsman_developeruserip'], 'table-row' );
+			$show(
+				'#newsman_checkoutnewsletter',
+				true,
+				[
+					'#newsman_checkoutnewslettermessage',
+					'#newsman_checkoutnewsletterdefault'
+				],
+				'table-row'
+			);
+			$show(
+				'#newsman_myaccountnewsletter',
+				true,
+				[
+					'#newsman_myaccountnewsletter_menu_label',
+					'#newsman_myaccountnewsletter_page_title',
+					'#newsman_myaccountnewsletter_checkbox_label'
+				],
+				'table-row'
+			);
+			$show(
+				'#newsman_developer_use_action_scheduler',
+				true,
+				[
+					'#newsman_developer_use_as_subscribe',
+					'#newsman_developer_use_as_unsubscribe'
+				],
+				'table-row'
+			);
+			$show(
+				'#newsman_remarketingexportwordpresssubscribers',
+				true,
+				[
+					'#newsman_remarketingexportwordpresssubscribers_recurring_short_days',
+					'#newsman_remarketingexportwordpresssubscribers_recurring_long_days'
+				],
+				'table-row'
+			);
+			$show(
+				'#newsman_remarketingexportwoocommercesubscribers',
+				true,
+				[
+					'#newsman_remarketingexportwoocommercesubscribers_recurring_short_days',
+					'#newsman_remarketingexportwoocommercesubscribers_recurring_long_days'
+				],
+				'table-row'
+			);
+			$show(
+				'#newsman_remarketingexportorders',
+				true,
+				[
+					'#newsman_remarketingexportorders_recurring_short_days',
+					'#newsman_remarketingexportorders_recurring_long_days'
+				],
+				'table-row'
 			);
 
-			jQuery( '#newsman_smsrefundedactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smsrefundedactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smsrefundedtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smsrefundedtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-			jQuery( '#newsman_smscancelledactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smscancelledactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smscancelledtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smscancelledtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-			jQuery( '#newsman_smscompletedactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smscompletedactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smscompletedtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smscompletedtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-			jQuery( '#newsman_smsprocessingactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smsprocessingactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smsprocessingtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smsprocessingtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-			jQuery( '#newsman_smsonholdactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smsonholdactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smsonholdtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smsonholdtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-			jQuery( '#newsman_smsfailedactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smsfailedactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smsfailedtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smsfailedtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-			jQuery( '#newsman_smspendingactivate' ).click(
-				function () {
-					if (jQuery( '#newsman_smspendingactivate' ).is( ':checked' )) {
-						jQuery( '.newsman_smspendingtextPanel' ).css( 'display', 'block' );
-					} else {
-						jQuery( '.newsman_smspendingtextPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_api' ).click(
-				function () {
-					if (jQuery( '#newsman_api' ).is( ':checked' )) {
-						jQuery( '.newsman_apiPanel' ).css( 'display', 'table-row' );
-					} else {
-						jQuery( '.newsman_apiPanel' ).css( 'display', 'none' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_senduserip' ).click(
-				function () {
-					if (jQuery( '#newsman_senduserip' ).is( ':checked' )) {
-						jQuery( '#newsman_serverip' ).closest( 'tr' ).css( 'display', 'none' );
-					} else {
-						jQuery( '#newsman_serverip' ).closest( 'tr' ).css( 'display', 'table-row' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_developeractiveuserip' ).click(
-				function () {
-					if (jQuery( '#newsman_developeractiveuserip' ).is( ':checked' )) {
-						jQuery( '#newsman_developeruserip' ).closest( 'tr' ).css( 'display', 'table-row' );
-					} else {
-						jQuery( '#newsman_developeruserip' ).closest( 'tr' ).css( 'display', 'none' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_developer_use_action_scheduler' ).click(
-				function () {
-					if (jQuery( '#newsman_developer_use_action_scheduler' ).is( ':checked' )) {
-						jQuery( '#newsman_developer_use_as_subscribe' ).closest( 'tr' ).css( 'display', 'table-row' );
-					} else {
-						jQuery( '#newsman_developer_use_as_subscribe' ).closest( 'tr' ).css( 'display', 'none' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_remarketingexportwordpresssubscribers' ).click(
-				function () {
-					if (jQuery( '#newsman_remarketingexportwordpresssubscribers' ).is( ':checked' )) {
-						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'table-row' );
-						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'table-row' );
-					} else {
-						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'none' );
-						jQuery( '#newsman_remarketingexportwordpresssubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'none' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_remarketingexportwoocommercesubscribers' ).click(
-				function () {
-					if (jQuery( '#newsman_remarketingexportwoocommercesubscribers' ).is( ':checked' )) {
-						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'table-row' );
-						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'table-row' );
-					} else {
-						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_short_days' ).closest( 'tr' ).css( 'display', 'none' );
-						jQuery( '#newsman_remarketingexportwoocommercesubscribers_recurring_long_days' ).closest( 'tr' ).css( 'display', 'none' );
-					}
-				}
-			);
-
-			jQuery( '#newsman_remarketingexportorders' ).click(
-				function () {
-					if (jQuery( '#newsman_remarketingexportorders' ).is( ':checked' )) {
-						jQuery( '#newsman_remarketingexportorders_recurring_short_days' ).closest( 'tr' ).css( 'display', 'table-row' );
-						jQuery( '#newsman_remarketingexportorders_recurring_long_days' ).closest( 'tr' ).css( 'display', 'table-row' );
-					} else {
-						jQuery( '#newsman_remarketingexportorders_recurring_short_days' ).closest( 'tr' ).css( 'display', 'none' );
-						jQuery( '#newsman_remarketingexportorders_recurring_long_days' ).closest( 'tr' ).css( 'display', 'none' );
-					}
-				}
-			);
-
+			$show( '#newsman_smsrefundedactivate', true, ['.newsman_smsrefundedtextPanel'], 'block', false );
+			$show( '#newsman_smscancelledactivate', true, ['.newsman_smscancelledtextPanel'], 'block', false );
+			$show( '#newsman_smscompletedactivate', true, ['.newsman_smscompletedtextPanel'], 'block', false );
+			$show( '#newsman_smsprocessingactivate', true, ['.newsman_smsprocessingtextPanel'], 'block', false );
+			$show( '#newsman_smsonholdactivate', true, ['.newsman_smsonholdtextPanel'], 'block', false );
+			$show( '#newsman_smsfailedactivate', true, ['.newsman_smsfailedtextPanel'], 'block', false );
+			$show( '#newsman_smspendingactivate', true, ['.newsman_smspendingtextPanel'], 'block', false );
 		}
 	);
 } (jQuery));

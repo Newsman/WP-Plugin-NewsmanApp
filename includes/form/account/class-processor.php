@@ -355,7 +355,7 @@ class Processor {
 
 		foreach ( $items as $key => $value ) {
 			if ( 'customer-logout' === $key ) {
-				$new_items['nzm-newsletter'] = 'Newsletter';
+				$new_items['nzm-newsletter'] = esc_html( $this->config->get_account_newsletter_menu_label() );
 			}
 			$new_items[ $key ] = $value;
 		}

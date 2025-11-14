@@ -167,63 +167,94 @@ $form_values = $this->get_form_values();
 						</tr>
 					</table>
 					<?php if ( $this->is_woo_commerce_exists() ) : ?>
-					<h2>Checkout Subscribe to Newsletter and SMS</h2>
-					<table class="form-table newsman-table newsman-tbl-fixed">
-						<tr>
-							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewsletter">Enable checkbox</label>
-							</th>
-							<td>
-								<input name="newsman_checkoutnewsletter" type="checkbox"
-									id="newsman_checkoutnewsletter" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Enable checkbox to subscribe to newsletter.</p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutsms">Enable SMS, sync phone numbers to your SMS list</label>
-							</th>
-							<td>
-								<input name="newsman_checkoutsms" type="checkbox"
-									id="newsman_checkoutsms" <?php echo ( ! empty( $form_values['newsman_checkoutsms'] ) && 'on' === $form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Enable subscribe after checkout to SMS list with order billing telephone number.</p>
-							</td>
-						</tr>
-						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewslettermessage">Checkbox label</label>
-							</th>
-							<td>
-								<input type="text" id="newsman_checkoutnewslettermessage"
-									name="newsman_checkoutnewslettermessage"
-									value="<?php echo ( ! empty( $form_values['newsman_checkoutnewslettermessage'] ) ) ? esc_attr( $form_values['newsman_checkoutnewslettermessage'] ) : 'Subscribe to our newsletter'; ?>"/>
-							</td>
-						</tr>
-						<tr class="newsman_checkoutnewslettertypePanel"
-							style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row">
-								<label class="nzm-label" for="newsman_checkoutnewsletterdefault">Is checkbox checked by default ?</label>
-							</th>
-							<td>
-								<input name="newsman_checkoutnewsletterdefault" type="checkbox"
-									id="newsman_checkoutnewsletterdefault" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletterdefault'] ) && 'on' === $form_values['newsman_checkoutnewsletterdefault'] ) ? 'checked' : ''; ?>/>
-							</td>
-						</tr>
-					</table>
-					<h2>My Account Subscribe to Newsletter</h2>
-					<table class="form-table newsman-table newsman-tbl-fixed">
-						<tr>
-							<th scope="row">
-								<label class="nzm-label" for="newsman_myaccountnewsletter">Enable</label>
-							</th>
-							<td>
-								<input name="newsman_myaccountnewsletter" type="checkbox"
-									id="newsman_myaccountnewsletter" <?php echo ( ! empty( $form_values['newsman_myaccountnewsletter'] ) && 'on' === $form_values['newsman_myaccountnewsletter'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Enable page and checkbox to subscribe to newsletter in customers account.</p>
-							</td>
-						</tr>
-					</table>
+						<h2>Checkout Subscribe to Newsletter and SMS</h2>
+						<table class="form-table newsman-table newsman-tbl-fixed">
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkoutnewsletter">Enable</label>
+								</th>
+								<td>
+									<input name="newsman_checkoutnewsletter" type="checkbox"
+										id="newsman_checkoutnewsletter" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'checked' : ''; ?>/>
+									<p class="description">Enable checkbox to subscribe to newsletter in checkout.</p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkoutsms">Enable SMS, sync phone numbers to your SMS list</label>
+								</th>
+								<td>
+									<input name="newsman_checkoutsms" type="checkbox"
+										id="newsman_checkoutsms" <?php echo ( ! empty( $form_values['newsman_checkoutsms'] ) && 'on' === $form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
+									<p class="description">Enable subscribe after checkout to SMS list with order billing telephone number.</p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkoutnewslettermessage">Checkbox label</label>
+								</th>
+								<td>
+									<input type="text" id="newsman_checkoutnewslettermessage"
+										name="newsman_checkoutnewslettermessage"
+										value="<?php echo ( ! empty( $form_values['newsman_checkoutnewslettermessage'] ) ) ? esc_attr( $form_values['newsman_checkoutnewslettermessage'] ) : 'Subscribe to our newsletter'; ?>"/>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkoutnewsletterdefault">Is checkbox checked by default ?</label>
+								</th>
+								<td>
+									<input name="newsman_checkoutnewsletterdefault" type="checkbox"
+										id="newsman_checkoutnewsletterdefault" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletterdefault'] ) && 'on' === $form_values['newsman_checkoutnewsletterdefault'] ) ? 'checked' : ''; ?>/>
+								</td>
+							</tr>
+						</table>
+						<h2>My Account Subscribe to Newsletter</h2>
+						<table class="form-table newsman-table newsman-tbl-fixed">
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_myaccountnewsletter">Enable</label>
+								</th>
+								<td>
+									<input name="newsman_myaccountnewsletter" type="checkbox"
+										id="newsman_myaccountnewsletter" <?php echo ( ! empty( $form_values['newsman_myaccountnewsletter'] ) && 'on' === $form_values['newsman_myaccountnewsletter'] ) ? 'checked' : ''; ?>/>
+									<p class="description">Enable page and checkbox to subscribe to newsletter in customers account.</p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_myaccountnewsletter'] ) && 'on' === $form_values['newsman_myaccountnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_myaccountnewsletter_menu_label">Page Menu Label</label>
+								</th>
+								<td>
+									<input class="nzm-small-input" type="text" id="newsman_myaccountnewsletter_menu_label"
+											name="newsman_myaccountnewsletter_menu_label"
+											value="<?php echo ( ! empty( $form_values['newsman_myaccountnewsletter_menu_label'] ) ) ? esc_attr( $form_values['newsman_myaccountnewsletter_menu_label'] ) : ''; ?>"/>
+									<p class="description">The label on the link on the left side menu in customer account.</p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_myaccountnewsletter'] ) && 'on' === $form_values['newsman_myaccountnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_myaccountnewsletter_page_title">Page Title</label>
+								</th>
+								<td>
+									<input class="nzm-small-input" type="text" id="newsman_myaccountnewsletter_page_title"
+											name="newsman_myaccountnewsletter_page_title"
+											value="<?php echo ( ! empty( $form_values['newsman_myaccountnewsletter_page_title'] ) ) ? esc_attr( $form_values['newsman_myaccountnewsletter_page_title'] ) : ''; ?>"/>
+									<p class="description">The title of subscribe to newsletter page in customer account.</p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_myaccountnewsletter'] ) && 'on' === $form_values['newsman_myaccountnewsletter'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_myaccountnewsletter_checkbox_label">Checkbox Label</label>
+								</th>
+								<td>
+									<input class="nzm-small-input" type="text" id="newsman_myaccountnewsletter_checkbox_label"
+											name="newsman_myaccountnewsletter_checkbox_label"
+											value="<?php echo ( ! empty( $form_values['newsman_myaccountnewsletter_checkbox_label'] ) ) ? esc_attr( $form_values['newsman_myaccountnewsletter_checkbox_label'] ) : ''; ?>"/>
+									<p class="description">The label on subscribe to newsletter checkbox in customer account.</p>
+								</td>
+							</tr>
+						</table>
 					<?php endif; ?>
 					<h2>Developer</h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
@@ -283,8 +314,7 @@ $form_values = $this->get_form_values();
 								</select>
 							</td>
 						</tr>
-						<tr class="newsman_apiPanel"
-							style="display: <?php echo ( ! empty( $form_values['newsman_api'] ) && 'on' === $form_values['newsman_api'] ) ? 'table-row' : 'none'; ?>;">
+						<tr style="display: <?php echo ( ! empty( $form_values['newsman_api'] ) && 'on' === $form_values['newsman_api'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row">
 								<label class="nzm-label" for="newsman_developerapitimeout">API Timeout</label>
 							</th>

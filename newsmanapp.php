@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'NEWSMAN_VERSION', '3.0.2' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'NEWSMAN_JS_SCRIPT_VERSION', '20251107010000' );
+define( 'NEWSMAN_JS_SCRIPT_VERSION', '20251114010000' );
 
 // Included before autoload.php and checks for dependencies in vendor.
 require_once __DIR__ . '/includes/class-newsmanphp.php';

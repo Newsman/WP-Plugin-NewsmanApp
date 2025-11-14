@@ -357,7 +357,12 @@ js/retargeting/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function upgrade_options_three_zero_zero() {
+		add_option( 'newsman_checkoutnewslettermessage', 'Subscribe to our newsletter' );
+
 		add_option( 'newsman_myaccountnewsletter', 'on' );
+		add_option( 'newsman_myaccountnewsletter_menu_label', 'Newsletter' );
+		add_option( 'newsman_myaccountnewsletter_page_title', 'Newsletter Subscription' );
+		add_option( 'newsman_myaccountnewsletter_checkbox_label', 'Subscribe to our newsletter' );
 
 		$deprecated = get_option( 'newsman_checkoutnewslettertype' );
 		if ( ! empty( $deprecated ) ) {
