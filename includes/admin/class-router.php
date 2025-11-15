@@ -69,6 +69,13 @@ class Router {
 	);
 
 	/**
+	 * Is Newsman Page
+	 *
+	 * @var bool
+	 */
+	protected $is_newsman_page = false;
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
@@ -84,13 +91,15 @@ class Router {
 	public function init_hooks() {
 		$allowed_actions = $this->get_allowed_actions();
 
-		foreach ( $allowed_actions as $data ) {
-			if ( ! $data['has_admin_notice'] ) {
-				continue;
-			}
+		if ( $this->is_newsman_page || $this->is_newsman_settings_page() ) {
+			foreach ( $allowed_actions as $data ) {
+				if ( ! $data['has_admin_notice'] ) {
+					continue;
+				}
 
-			add_action( 'admin_init', array( $data['class'], 'is_success_notice' ) );
-			add_action( 'admin_notices', array( $data['class'], 'display_success_notice' ) );
+				add_action( 'admin_init', array( $data['class'], 'is_success_notice' ) );
+				add_action( 'admin_notices', array( $data['class'], 'display_success_notice' ) );
+			}
 		}
 	}
 
@@ -142,6 +151,8 @@ class Router {
 			return;
 		}
 
+		$this->is_newsman_page = true;
+
 		$action_class = $allowed_actions[ $this->action ]['class'];
 		$action_class::init()->execute();
 	}
@@ -177,5 +188,15 @@ class Router {
 			$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 		}
 		return $nonce;
+	}
+
+	/**
+	 * Is Newsman admin page with settings
+	 *
+	 * @return bool
+	 */
+	public function is_newsman_settings_page() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return isset( $_GET['page'] ) && 0 === strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'Newsman' );
 	}
 }
