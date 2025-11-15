@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-15T10:50:02+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2025-11-15T10:38:38+02:00\n"
+"PO-Revision-Date: 2025-11-15T10:38:38+02:00\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
 
@@ -62,14 +62,14 @@ msgid "There are no lists in your NewsMAN account"
 msgstr "Nu există liste în contul dvs. NewsMAN"
 
 #: includes/admin/settings/class-remarketing.php:97
-#: includes/admin/settings/class-settings.php:87
+#: includes/admin/settings/class-settings.php:90
 #: includes/admin/settings/class-sms.php:131
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Utilizator neautorizat"
 
 #: includes/admin/settings/class-remarketing.php:117
-#: includes/admin/settings/class-settings.php:114
+#: includes/admin/settings/class-settings.php:117
 #: includes/admin/settings/class-sync.php:141
 msgid "Options saved."
 msgstr "Opțiuni salvate."
@@ -79,7 +79,8 @@ msgstr "Opțiuni salvate."
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Credențiale invalide. Vă rugăm să le configurați în fila Setări."
 
-#: includes/admin/settings/class-settings.php:132
+#: includes/admin/settings/class-settings.php:121
+#: includes/admin/settings/class-settings.php:135
 #: includes/admin/settings/class-sync.php:145
 msgid "Invalid Credentials"
 msgstr "Credențiale invalide"
@@ -127,10 +128,72 @@ msgstr "Nu s-au putut obține listele sau segmentele."
 msgid "Could not update feed list"
 msgstr "Nu s-a putut actualiza lista de fluxuri de produse"
 
+#: includes/class-admin.php:110
+#: src/backend-oauth.php:26
+#: src/backend-remarketing.php:27
+#: src/backend-remarketing.php:32
+#: src/backend-settings.php:27
+#: src/backend-settings.php:32
+#: src/backend-sms.php:53
+#: src/backend-sms.php:58
+#: src/backend-sync.php:27
+#: src/backend-sync.php:32
+#: src/backend.php:19
+#: src/backend.php:24
+msgid "NewsMAN"
+msgstr "NewsMAN"
+
+#: includes/class-admin.php:119
+#: includes/class-admin.php:120
+#: src/backend-remarketing.php:34
+#: src/backend-settings.php:34
+#: src/backend-sms.php:60
+#: src/backend-sync.php:34
+#: src/backend.php:26
+#: src/backend.php:57
+msgid "Sync"
+msgstr "Sincronizare"
+
+#: includes/class-admin.php:128
+#: includes/class-admin.php:129
+#: src/backend-remarketing.php:36
+#: src/backend-settings.php:36
+#: src/backend-sms.php:62
+#: src/backend-sync.php:36
+#: src/backend.php:28
+#: src/backend.php:65
+msgid "Remarketing"
+msgstr "Remarketing"
+
+#: includes/class-admin.php:138
+#: includes/class-admin.php:139
+#: src/backend-remarketing.php:39
+#: src/backend-settings.php:39
+#: src/backend-sms.php:65
+#: src/backend-sync.php:39
+#: src/backend.php:31
+msgid "SMS"
+msgstr "SMS"
+
+#: includes/class-admin.php:148
+#: includes/class-admin.php:149
+#: src/backend-remarketing.php:42
+#: src/backend-settings.php:42
+#: src/backend-sms.php:68
+#: src/backend-sync.php:42
+#: src/backend.php:34
+#: src/backend.php:83
+msgid "Settings"
+msgstr "Setări"
+
+#: includes/class-admin.php:157
+#: includes/class-admin.php:158
+msgid "Oauth"
+msgstr "Oauth"
+
 #: includes/export/retriever/class-authenticator.php:55
 msgid "Empty API key provided."
 msgstr "Cheie API goală furnizată."
-
 #. translators: 1: WordPress blog ID
 #: includes/export/retriever/class-authenticator.php:78
 #, php-format
@@ -313,6 +376,9 @@ msgstr "Procesul de dezabonare durează de obicei mai puțin de un minut. După 
 msgid "There was an error subscribing to the newsletter. Please try again."
 msgstr "A apărut o eroare la abonarea la newsletter. Vă rugăm să încercați din nou."
 
+#: includes/form/checkout/class-checkbox.php:126
+msgid "Send Order Status SMS"
+msgstr "Trimite SMS cu starea comenzii"
 #: includes/form/patterns/account/subscribe.php:32
 msgid "Subscribe"
 msgstr "Abonează-te"
@@ -508,20 +574,6 @@ msgstr "Încercare dezabonare la nr. de telefon %s"
 msgid "Unsubscribed telephone %s"
 msgstr "Nr. de telefon %s a fost dezabonat"
 
-#: src/backend-oauth.php:26
-#: src/backend-remarketing.php:27
-#: src/backend-remarketing.php:32
-#: src/backend-settings.php:27
-#: src/backend-settings.php:32
-#: src/backend-sms.php:53
-#: src/backend-sms.php:58
-#: src/backend-sync.php:27
-#: src/backend-sync.php:32
-#: src/backend.php:19
-#: src/backend.php:24
-msgid "NewsMAN"
-msgstr "NewsMAN"
-
 #: src/backend-oauth.php:38
 msgid "NewsMAN plugin for Wordpress-Woocommerce"
 msgstr "NewsMAN plugin pentru Wordpress-Woocommerce"
@@ -570,50 +622,9 @@ msgid "Save"
 msgstr "Salvează"
 
 #: src/backend-remarketing.php:63
-#: src/backend-settings.php:221
-#: src/backend-settings.php:263
+#: src/backend-settings.php:292
 msgid "Enable"
 msgstr "Permite"
-
-#: src/backend-remarketing.php:34
-#: src/backend-settings.php:34
-#: src/backend-sms.php:60
-#: src/backend-sync.php:34
-#: src/backend.php:26
-#: src/backend.php:57
-msgid "Sync"
-msgstr "Sincronizare"
-
-#: src/backend-remarketing.php:36
-#: src/backend-settings.php:36
-#: src/backend-sms.php:62
-#: src/backend-sync.php:36
-#: src/backend.php:28
-#: src/backend.php:65
-msgid "Remarketing"
-msgstr "Remarketing"
-
-#: src/backend-remarketing.php:39
-#: src/backend-settings.php:39
-#: src/backend-sms.php:65
-#: src/backend-sync.php:39
-#: src/backend.php:31
-msgid "SMS"
-msgstr "SMS"
-
-#: src/backend-remarketing.php:42
-#: src/backend-settings.php:42
-#: src/backend-sms.php:68
-#: src/backend-sync.php:42
-#: src/backend.php:34
-#: src/backend.php:83
-msgid "Settings"
-msgstr "Setări"
-
-#: includes/class-admin.php:157
-#: includes/class-admin.php:158
-msgid "Oauth"
-msgstr "Oauth"
 
 #: src/backend-remarketing.php:72
 msgid "REMARKETING ID"
@@ -744,7 +755,7 @@ msgid "Select which customer attributes (from orders) to include in your remarke
 msgstr "Selectați atributele clienților (din comenzi) pe care să le includeți în datele de remarketing."
 
 #: src/backend-remarketing.php:312
-#: src/backend-settings.php:443
+#: src/backend-settings.php:472
 #: src/backend-sms.php:275
 #: src/backend-sync.php:200
 msgid "Save Changes"
@@ -856,111 +867,131 @@ msgstr "Formularele pot fi create în <a target=\"_blank\" href=\"https://newsma
 msgid "Checkout Subscribe to Newsletter and SMS"
 msgstr "Finalizare comandă Abonează-te la newsletter și SMS"
 
+#: src/backend-settings.php:221
+msgid "Enable Newsletter Checkbox"
+msgstr "Activează caseta de selectare pentru newsletter"
+
 #: src/backend-settings.php:226
 msgid "Enable checkbox to subscribe to newsletter in checkout."
 msgstr "Activați caseta de selectare pentru abonare la newsletter la finalizarea comenzii."
 
 #: src/backend-settings.php:231
+msgid "Newsletter Checkbox Label"
+msgstr ""
+
+#: src/backend-settings.php:241
+msgid "Is newsletter checkbox checked by default ?"
+msgstr "Caseta de selectare pentru newsletter este bifată în mod implicit?"
+
+#: src/backend-settings.php:250
 msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr "Activează SMS-urile, sincronizează numerele de telefon cu lista ta de SMS-uri"
 
-#: src/backend-settings.php:236
+#: src/backend-settings.php:255
 msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
 msgstr "Activați abonarea după finalizarea comenzii la lista de SMS-uri cu numărul de telefon pentru facturarea comenzii."
 
-#: src/backend-settings.php:241
-msgid "Checkbox label"
-msgstr "Etichetă casetă de selectare"
+#: src/backend-settings.php:260
+msgid "Enable Order Status Checkbox"
+msgstr "Activează caseta de selectare pentru starea comenzii"
 
-#: src/backend-settings.php:251
-msgid "Is checkbox checked by default ?"
-msgstr "Caseta de selectare este bifată în mod implicit?"
+#: src/backend-settings.php:265
+msgid "Enable checkbox to send SMS about order status in checkout."
+msgstr "Bifați caseta de selectare pentru a trimite SMS-uri despre starea comenzii la finalizarea comenzii."
+ 
+#: src/backend-settings.php:270
+msgid "Order Status Checkbox Label"
+msgstr "Etichetă casetă de selectare pentru starea comenzii"
 
-#: src/backend-settings.php:259
+#: src/backend-settings.php:280
+msgid "Is order status checkbox checked by default ?"
+msgstr "Caseta de selectare pentru starea comenzii este bifată în mod implicit?"
+
+#: src/backend-settings.php:288
 msgid "My Account Subscribe to Newsletter"
 msgstr "Contul meu Abonează-te la newsletter"
 
-#: src/backend-settings.php:268
+#: src/backend-settings.php:297
 msgid "Enable page and checkbox to subscribe to newsletter in customers account."
 msgstr "Activați pagina și bifați caseta de selectare pentru abonarea la newsletter în contul clientului."
 
-#: src/backend-settings.php:273
+#: src/backend-settings.php:302
 msgid "Page Menu Label"
 msgstr "Etichetă meniu pagină"
 
-#: src/backend-settings.php:279
+#: src/backend-settings.php:308
 msgid "The label on the link on the left side menu in customer account."
 msgstr "Eticheta de pe linkul din meniul din stânga din contul clientului."
 
-#: src/backend-settings.php:284
+#: src/backend-settings.php:313
 msgid "Page Title"
 msgstr "Titlul paginii"
 
-#: src/backend-settings.php:290
+#: src/backend-settings.php:319
 msgid "The title of subscribe to newsletter page in customer account."
 msgstr "Titlul paginii de abonare la newsletter din contul clientului."
 
-#: src/backend-settings.php:295
+#: src/backend-settings.php:324
 msgid "Checkbox Label"
 msgstr "Etichetă casetă de selectare"
 
-#: src/backend-settings.php:301
+#: src/backend-settings.php:330
 msgid "The label on subscribe to newsletter checkbox in customer account."
 msgstr "Eticheta de pe caseta de selectare a abonării la newsletter din contul clientului."
 
-#: src/backend-settings.php:310
+#: src/backend-settings.php:339
 msgid "Logging level"
 msgstr "Nivel Jurnalizare "
 
-#: src/backend-settings.php:319
+#: src/backend-settings.php:348
 msgid "No Logging"
 msgstr "Fara Jurnalizare"
 
-#: src/backend-settings.php:366
+#: src/backend-settings.php:395
 msgid "API Timeout"
 msgstr "Expirare API"
 
-#: src/backend-settings.php:378
+#: src/backend-settings.php:407
 msgid "Enable Test User IP"
 msgstr "Activează adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:383
+#: src/backend-settings.php:412
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr "Atenție! Vă rugăm să nu utilizați această adresă IP în producție, deoarece este utilizată de endpoint-ul API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:388
+#: src/backend-settings.php:417
 msgid "Test User IP address"
 msgstr "Adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:399
+#: src/backend-settings.php:428
 msgid "Plugin Loaded Priority"
 msgstr "Prioritate încărcare plugin"
 
-#: src/backend-settings.php:405
+#: src/backend-settings.php:434
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr "Hook-urile pluginului NewsMAN pentru Woo Commerce sunt încărcate cu plugins_loaded și prioritatea este setată în această configurație. Implicit este 20."
 
-#: src/backend-settings.php:411
+#: src/backend-settings.php:440
 msgid "Use Action Scheduler"
 msgstr "Utilizează Planificatorul de acțiuni"
 
-#: src/backend-settings.php:416
+#: src/backend-settings.php:445
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile API-ului NewsMAN."
 
-#: src/backend-settings.php:421
+#: src/backend-settings.php:450
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Folosește Planificatorul de acțiuni pentru Abonare"
 
-#: src/backend-settings.php:426
+#: src/backend-settings.php:455
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr "În magazinul virtual, folosiți planificatorul de acțiuni pentru abonarea la listele de e-mail și SMS."
 
-#: src/backend-settings.php:431
+#: src/backend-settings.php:460
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
 
-#: src/backend-settings.php:436
+#: src/backend-settings.php:465
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr "În magazinul virtual, utilizați planificatorul de acțiuni pentru acțiunea de dezabonare de la listele de e-mail."
 
@@ -1240,3 +1271,6 @@ msgstr "Abonare la newsletter"
 
 msgid "Newsletter"
 msgstr "Newsletter"
+
+msgid "I want to receive notifications about the status of my order on my phone (SMS messages)"
+msgstr "Doresc să primesc notificări despre starea comenzii mele pe telefon (mesaje SMS)"

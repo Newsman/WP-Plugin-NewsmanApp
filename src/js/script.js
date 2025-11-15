@@ -112,6 +112,15 @@
 				'table-row'
 			);
 			$show(
+				'#newsman_checkout_order_status',
+				true,
+				[
+					'#newsman_checkout_order_status_label',
+					'#newsman_checkout_order_status_default'
+				],
+				'table-row'
+			);
+			$show(
 				'#newsman_myaccountnewsletter',
 				true,
 				[

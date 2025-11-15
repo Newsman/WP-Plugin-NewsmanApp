@@ -364,6 +364,9 @@ js/retargeting/modal_{{api_key}}.js'
 		add_option( 'newsman_myaccountnewsletter_page_title', 'Newsletter Subscription' );
 		add_option( 'newsman_myaccountnewsletter_checkbox_label', 'Subscribe to our newsletter' );
 
+		add_option( 'newsman_checkout_order_status', 'on' );
+		add_option( 'newsman_checkout_order_status_label', 'I want to receive notifications about the status of my order on my phone (SMS messages)' );
+
 		$deprecated = get_option( 'newsman_checkoutnewslettertype' );
 		if ( ! empty( $deprecated ) ) {
 			add_option( 'newsman_newslettertype', $deprecated );

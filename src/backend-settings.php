@@ -218,7 +218,7 @@ $form_values = $this->get_form_values();
 						<table class="form-table newsman-table newsman-tbl-fixed">
 							<tr>
 								<th scope="row">
-									<label class="nzm-label" for="newsman_checkoutnewsletter"><?php echo esc_html__( 'Enable', 'newsman' ); ?></label>
+									<label class="nzm-label" for="newsman_checkoutnewsletter"><?php echo esc_html__( 'Enable Newsletter Checkbox', 'newsman' ); ?></label>
 								</th>
 								<td>
 									<input name="newsman_checkoutnewsletter" type="checkbox"
@@ -226,19 +226,9 @@ $form_values = $this->get_form_values();
 									<p class="description"><?php echo esc_html__( 'Enable checkbox to subscribe to newsletter in checkout.', 'newsman' ); ?></p>
 								</td>
 							</tr>
-							<tr>
-								<th scope="row">
-									<label class="nzm-label" for="newsman_checkoutsms"><?php echo esc_html__( 'Enable SMS, sync phone numbers to your SMS list', 'newsman' ); ?></label>
-								</th>
-								<td>
-									<input name="newsman_checkoutsms" type="checkbox"
-										id="newsman_checkoutsms" <?php echo ( ! empty( $form_values['newsman_checkoutsms'] ) && 'on' === $form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
-									<p class="description"><?php echo esc_html__( 'Enable subscribe after checkout to SMS list with order billing telephone number.', 'newsman' ); ?></p>
-								</td>
-							</tr>
 							<tr style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 								<th scope="row">
-									<label class="nzm-label" for="newsman_checkoutnewslettermessage"><?php echo esc_html__( 'Checkbox label', 'newsman' ); ?></label>
+									<label class="nzm-label" for="newsman_checkoutnewslettermessage"><?php echo esc_html__( 'Newsletter Checkbox Label', 'newsman' ); ?></label>
 								</th>
 								<td>
 									<input type="text" id="newsman_checkoutnewslettermessage"
@@ -248,11 +238,50 @@ $form_values = $this->get_form_values();
 							</tr>
 							<tr style="display: <?php echo ( ! empty( $form_values['newsman_checkoutnewsletter'] ) && 'on' === $form_values['newsman_checkoutnewsletter'] ) ? 'table-row' : 'none'; ?>;">
 								<th scope="row">
-									<label class="nzm-label" for="newsman_checkoutnewsletterdefault"><?php echo esc_html__( 'Is checkbox checked by default ?', 'newsman' ); ?></label>
+									<label class="nzm-label" for="newsman_checkoutnewsletterdefault"><?php echo esc_html__( 'Is newsletter checkbox checked by default ?', 'newsman' ); ?></label>
 								</th>
 								<td>
 									<input name="newsman_checkoutnewsletterdefault" type="checkbox"
 										id="newsman_checkoutnewsletterdefault" <?php echo ( ! empty( $form_values['newsman_checkoutnewsletterdefault'] ) && 'on' === $form_values['newsman_checkoutnewsletterdefault'] ) ? 'checked' : ''; ?>/>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkoutsms"><?php echo esc_html__( 'Enable SMS, sync phone numbers to your SMS list', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input name="newsman_checkoutsms" type="checkbox"
+											id="newsman_checkoutsms" <?php echo ( ! empty( $form_values['newsman_checkoutsms'] ) && 'on' === $form_values['newsman_checkoutsms'] ) ? 'checked' : ''; ?>/>
+									<p class="description"><?php echo esc_html__( 'Enable subscribe after checkout to SMS list with order billing telephone number.', 'newsman' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkout_order_status"><?php echo esc_html__( 'Enable Order Status Checkbox', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input name="newsman_checkout_order_status" type="checkbox"
+											id="newsman_checkout_order_status" <?php echo ( ! empty( $form_values['newsman_checkout_order_status'] ) && 'on' === $form_values['newsman_checkout_order_status'] ) ? 'checked' : ''; ?>/>
+									<p class="description"><?php echo esc_html__( 'Enable checkbox to send SMS about order status in checkout.', 'newsman' ); ?></p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_checkout_order_status'] ) && 'on' === $form_values['newsman_checkout_order_status'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkout_order_status_label"><?php echo esc_html__( 'Order Status Checkbox Label', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="newsman_checkout_order_status_label"
+											name="newsman_checkout_order_status_label"
+											value="<?php echo ( ! empty( $form_values['newsman_checkout_order_status_label'] ) ) ? esc_attr( $form_values['newsman_checkout_order_status_label'] ) : 'I want to receive notifications about the status of my order on my phone (SMS messages)'; ?>"/>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_checkout_order_status'] ) && 'on' === $form_values['newsman_checkout_order_status'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_checkout_order_status_default"><?php echo esc_html__( 'Is order status checkbox checked by default ?', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input name="newsman_checkout_order_status_default" type="checkbox"
+											id="newsman_checkout_order_status_default" <?php echo ( ! empty( $form_values['newsman_checkout_order_status_default'] ) && 'on' === $form_values['newsman_checkout_order_status_default'] ) ? 'checked' : ''; ?>/>
 								</td>
 							</tr>
 						</table>

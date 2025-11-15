@@ -62,13 +62,8 @@ class Remarketing {
 		add_action( 'wp_loaded', array( new \Newsman\Remarketing\Cart\Handler\CartAjax(), 'display_items' ) );
 
 		// Manage subscribe to newsletter checkbox in checkout.
-		add_action(
-			'woocommerce_review_order_before_submit',
-			array(
-				new \Newsman\Form\Checkout\Checkbox(),
-				'add_field',
-			)
-		);
+		$checkbox = new \Newsman\Form\Checkout\Checkbox();
+		$checkbox->init_hooks();
 
 		$checkout_processor = new \Newsman\Form\Checkout\Processor();
 		$checkout_processor->init();

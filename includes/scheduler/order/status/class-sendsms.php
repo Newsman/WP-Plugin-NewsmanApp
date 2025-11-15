@@ -134,6 +134,11 @@ class SendSms extends AbstractStatus {
 		try {
 			$order = wc_get_order( $order_id );
 
+			$is_send_order_status = ( '1' === (string) ( (int) $order->get_meta( '_nzm_send_order_status' ) ) );
+			if ( ! $is_send_order_status ) {
+				return true;
+			}
+
 			do_action( 'newsman_order_status_send_sms_before', $order, $status, $is_scheduled );
 
 			$message   = $this->sms_replace_placeholders( $message, $order );

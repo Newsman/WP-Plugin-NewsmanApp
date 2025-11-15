@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-15T12:55:33+00:00\n"
+"POT-Creation-Date: 2025-11-15T10:38:38+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -62,14 +62,14 @@ msgid "There are no lists in your NewsMAN account"
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:97
-#: includes/admin/settings/class-settings.php:87
+#: includes/admin/settings/class-settings.php:90
 #: includes/admin/settings/class-sms.php:131
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:117
-#: includes/admin/settings/class-settings.php:114
+#: includes/admin/settings/class-settings.php:117
 #: includes/admin/settings/class-sync.php:141
 msgid "Options saved."
 msgstr ""
@@ -79,8 +79,8 @@ msgstr ""
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:118
-#: includes/admin/settings/class-settings.php:132
+#: includes/admin/settings/class-settings.php:121
+#: includes/admin/settings/class-settings.php:135
 #: includes/admin/settings/class-sync.php:145
 msgid "Invalid Credentials"
 msgstr ""
@@ -377,6 +377,10 @@ msgstr ""
 msgid "There was an error subscribing to the newsletter. Please try again."
 msgstr ""
 
+#: includes/form/checkout/class-checkbox.php:126
+msgid "Send Order Status SMS"
+msgstr ""
+
 #: includes/form/patterns/account/subscribe.php:32
 msgid "Subscribe"
 msgstr ""
@@ -620,8 +624,7 @@ msgid "Save"
 msgstr ""
 
 #: src/backend-remarketing.php:63
-#: src/backend-settings.php:221
-#: src/backend-settings.php:263
+#: src/backend-settings.php:292
 msgid "Enable"
 msgstr ""
 
@@ -754,7 +757,7 @@ msgid "Select which customer attributes (from orders) to include in your remarke
 msgstr ""
 
 #: src/backend-remarketing.php:312
-#: src/backend-settings.php:443
+#: src/backend-settings.php:472
 #: src/backend-sms.php:275
 #: src/backend-sync.php:200
 msgid "Save Changes"
@@ -866,111 +869,131 @@ msgstr ""
 msgid "Checkout Subscribe to Newsletter and SMS"
 msgstr ""
 
+#: src/backend-settings.php:221
+msgid "Enable Newsletter Checkbox"
+msgstr ""
+
 #: src/backend-settings.php:226
 msgid "Enable checkbox to subscribe to newsletter in checkout."
 msgstr ""
 
 #: src/backend-settings.php:231
-msgid "Enable SMS, sync phone numbers to your SMS list"
-msgstr ""
-
-#: src/backend-settings.php:236
-msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
+msgid "Newsletter Checkbox Label"
 msgstr ""
 
 #: src/backend-settings.php:241
-msgid "Checkbox label"
+msgid "Is newsletter checkbox checked by default ?"
 msgstr ""
 
-#: src/backend-settings.php:251
-msgid "Is checkbox checked by default ?"
+#: src/backend-settings.php:250
+msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr ""
 
-#: src/backend-settings.php:259
+#: src/backend-settings.php:255
+msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
+msgstr ""
+
+#: src/backend-settings.php:260
+msgid "Enable Order Status Checkbox"
+msgstr ""
+
+#: src/backend-settings.php:265
+msgid "Enable checkbox to send SMS about order status in checkout."
+msgstr ""
+
+#: src/backend-settings.php:270
+msgid "Order Status Checkbox Label"
+msgstr ""
+
+#: src/backend-settings.php:280
+msgid "Is order status checkbox checked by default ?"
+msgstr ""
+
+#: src/backend-settings.php:288
 msgid "My Account Subscribe to Newsletter"
 msgstr ""
 
-#: src/backend-settings.php:268
+#: src/backend-settings.php:297
 msgid "Enable page and checkbox to subscribe to newsletter in customers account."
 msgstr ""
 
-#: src/backend-settings.php:273
+#: src/backend-settings.php:302
 msgid "Page Menu Label"
 msgstr ""
 
-#: src/backend-settings.php:279
+#: src/backend-settings.php:308
 msgid "The label on the link on the left side menu in customer account."
 msgstr ""
 
-#: src/backend-settings.php:284
+#: src/backend-settings.php:313
 msgid "Page Title"
 msgstr ""
 
-#: src/backend-settings.php:290
+#: src/backend-settings.php:319
 msgid "The title of subscribe to newsletter page in customer account."
 msgstr ""
 
-#: src/backend-settings.php:295
+#: src/backend-settings.php:324
 msgid "Checkbox Label"
 msgstr ""
 
-#: src/backend-settings.php:301
+#: src/backend-settings.php:330
 msgid "The label on subscribe to newsletter checkbox in customer account."
 msgstr ""
 
-#: src/backend-settings.php:310
+#: src/backend-settings.php:339
 msgid "Logging level"
 msgstr ""
 
-#: src/backend-settings.php:319
+#: src/backend-settings.php:348
 msgid "No Logging"
 msgstr ""
 
-#: src/backend-settings.php:366
+#: src/backend-settings.php:395
 msgid "API Timeout"
 msgstr ""
 
-#: src/backend-settings.php:378
+#: src/backend-settings.php:407
 msgid "Enable Test User IP"
 msgstr ""
 
-#: src/backend-settings.php:383
+#: src/backend-settings.php:412
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr ""
 
-#: src/backend-settings.php:388
+#: src/backend-settings.php:417
 msgid "Test User IP address"
 msgstr ""
 
-#: src/backend-settings.php:399
+#: src/backend-settings.php:428
 msgid "Plugin Loaded Priority"
 msgstr ""
 
-#: src/backend-settings.php:405
+#: src/backend-settings.php:434
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr ""
 
-#: src/backend-settings.php:411
+#: src/backend-settings.php:440
 msgid "Use Action Scheduler"
 msgstr ""
 
-#: src/backend-settings.php:416
+#: src/backend-settings.php:445
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 
-#: src/backend-settings.php:421
+#: src/backend-settings.php:450
 msgid "Use Action Scheduler for Subscribe"
 msgstr ""
 
-#: src/backend-settings.php:426
+#: src/backend-settings.php:455
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr ""
 
-#: src/backend-settings.php:431
+#: src/backend-settings.php:460
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr ""
 
-#: src/backend-settings.php:436
+#: src/backend-settings.php:465
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
 
@@ -1240,4 +1263,16 @@ msgstr ""
 
 #: src/backend.php:96
 msgid "Log in to your NewsMAN account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget"
+msgstr ""
+
+msgid "Subscribe to our newsletter"
+msgstr ""
+
+msgid "Newsletter Subscription"
+msgstr ""
+
+msgid "Newsletter"
+msgstr ""
+
+msgid "I want to receive notifications about the status of my order on my phone (SMS messages)"
 msgstr ""

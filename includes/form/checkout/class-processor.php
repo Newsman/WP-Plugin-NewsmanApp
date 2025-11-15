@@ -108,7 +108,13 @@ class Processor {
 	 */
 	public function is_hook_enabled() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		if ( ! ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && 1 === (int) $_POST['newsmanCheckoutNewsletter'] ) ) {
+		$is_checkout_newsletter = ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && ( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) ) );
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+		$is_checkout_send_order_status = ( ! empty( $_POST['nzm_send_order_status'] ) && ( 1 === (int) sanitize_text_field( wp_unslash( $_POST['nzm_send_order_status'] ) ) ) );
+		// Is checkout page.
+		$is_checkout = function_exists( '\is_checkout' ) && is_checkout() && ! is_wc_endpoint_url();
+
+		if ( ! $is_checkout_newsletter && ! $is_checkout_send_order_status && ! $is_checkout ) {
 			return false;
 		}
 		if ( ! $this->config->is_enabled_with_api() ) {
@@ -128,8 +134,11 @@ class Processor {
 	 * @throws \Exception Exceptions.
 	 */
 	public function process( $order_id ) {
-		$order      = wc_get_order( $order_id );
-		$order_data = $order->get_data();
+		$order                 = wc_get_order( $order_id );
+		$order_data            = $order->get_data();
+		$is_subscribe_sms_list = ( '1' === (string) ( (int) $order->get_meta( '_nzm_send_order_status' ) ) );
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+		$is_subscribe_newsletter = ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && ( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) ) );
 
 		$properties = array();
 
@@ -217,7 +226,7 @@ class Processor {
 		$options          = isset( $filter['options'] ) ? $filter['options'] : $options;
 		$email_properties = isset( $filter['email_properties'] ) ? $filter['email_properties'] : $email_properties;
 
-		if ( $this->config->is_checkout_newsletter() ) {
+		if ( $this->config->is_checkout_newsletter() && $is_subscribe_newsletter ) {
 			try {
 				$scheduler = new \Newsman\Scheduler\Subscribe\Email();
 				$scheduler->execute( $email, $firstname, $lastname, $email_properties, $options );
@@ -226,7 +235,7 @@ class Processor {
 			}
 		}
 
-		if ( $this->config->is_checkout_sms() ) {
+		if ( $this->config->is_checkout_sms() || $is_subscribe_sms_list ) {
 			$scheduler = new \Newsman\Scheduler\Subscribe\Phone();
 			$scheduler->execute( $telephone, $firstname, $lastname, $properties );
 		}

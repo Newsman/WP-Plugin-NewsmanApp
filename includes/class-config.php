@@ -294,16 +294,6 @@ class Config {
 	}
 
 	/**
-	 * Is subscribe to SMS in checkout
-	 *
-	 * @param null|int $blog_id WP blog ID.
-	 * @return bool
-	 */
-	public function is_checkout_sms( $blog_id = null ) {
-		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkoutsms', '' );
-	}
-
-	/**
 	 * Is checkout subscribe checkbox checked by default
 	 *
 	 * @param null|int $blog_id WP blog ID.
@@ -321,6 +311,46 @@ class Config {
 	 */
 	public function get_checkout_newsletter_label( $blog_id = null ) {
 		return (string) $this->get_blog_option( $blog_id, 'newsman_checkoutnewslettermessage' );
+	}
+
+	/**
+	 * Is subscribe to SMS list in checkout
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_sms( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkoutsms', '' );
+	}
+
+	/**
+	 * Is checkout order status checkbox
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_order_status( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkout_order_status', '' );
+	}
+
+	/**
+	 * Is checkout order status checkbox checked by default
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_checkout_order_status_checked( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_checkout_order_status_default', '' );
+	}
+
+	/**
+	 * Get checkout order status checkbox label
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_checkout_order_status_label( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_checkout_order_status_label' );
 	}
 
 	/**
