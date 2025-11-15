@@ -182,7 +182,7 @@ class Admin {
 	 */
 	public function register_plugin_styles() {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_register_style( 'newsman_css', plugins_url( 'newsmanapp/src/css/style.css' ) );
+		wp_register_style( 'newsman_css', plugins_url( 'newsmanapp/src/css/style.css?' . NEWSMAN_CSS_SCRIPT_VERSION ) );
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'newsman_css' );
 	}

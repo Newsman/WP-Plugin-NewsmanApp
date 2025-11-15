@@ -19,7 +19,7 @@ $is_valid_credentials = $this->is_valid_credentials();
 		<img alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png"/>
 	</a>
 </div>
-<div class="tabset">
+<div class="nzm-tabset">
 	<input type="radio" name="tabset" id="tabNewsman" aria-controls="" checked>
 	<label for="tabNewsman" id="newsmanBtn"><?php echo esc_html__( 'NewsMAN', 'newsman' ); ?></label>
 	<input type="radio" name="tabset" id="tabSync" aria-controls="">

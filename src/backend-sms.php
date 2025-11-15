@@ -53,7 +53,7 @@ $form_values = $this->get_form_values();
 		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" />
 	</a>
 </div>
-<div class="tabset">
+<div class="nzm-tabset">
 	<input type="radio" name="tabset" id="tabNewsman" aria-controls="">
 	<label for="tabNewsman" id="newsmanBtn"><?php echo esc_html__( 'NewsMAN', 'newsman' ); ?></label>
 	<input type="radio" name="tabset" id="tabSync" aria-controls="">

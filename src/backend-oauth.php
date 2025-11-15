@@ -26,7 +26,7 @@ $this->process_forms();
 		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" />
 	</a>
 </div>
-<div class="tabset">
+<div class="nzm-tabset">
 	<div class="tab-panels">
 		<section id="tab-oauth" class="tab-panel">
 			<?php

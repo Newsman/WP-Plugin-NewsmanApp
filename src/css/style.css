@@ -78,8 +78,16 @@ p.nzm-description-error {
 }
 
 /*tabs*/
+.nzm-tabset {
+	text-align: left;
+	margin-right: 20px;
+}
 
-.tabset > input[type="radio"] {
+.nzm-tabset .wrap {
+	margin-right: 0;
+}
+
+.nzm-tabset > input[type="radio"] {
 	position: absolute;
 	left: -200vw;
 }
@@ -89,20 +97,20 @@ p.nzm-description-error {
 	background: #ad0100;
 }
 
-.tabset .tab-panel {
+.nzm-tabset .tab-panel {
 	display: block;
 }
 
-.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+.nzm-tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.nzm-tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.nzm-tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.nzm-tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.nzm-tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.nzm-tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
 	display: block;
 }
 
-.tabset > label {
+.nzm-tabset > label {
 	position: relative;
 	display: inline-block;
 	padding: 21px 21px 25px;
@@ -112,7 +120,7 @@ p.nzm-description-error {
 	font-weight: 600;
 }
 
-.tabset > label::after {
+.nzm-tabset > label::after {
 	content: "";
 	position: absolute;
 	left: 15px;
@@ -122,18 +130,18 @@ p.nzm-description-error {
 	background: #8d8d8d;
 }
 
-.tabset > label:hover,
-.tabset > input:focus + label {
+.nzm-tabset > label:hover,
+.nzm-tabset > input:focus + label {
 	color: #b72524;
 }
 
-.tabset > label:hover::after,
-.tabset > input:focus + label::after,
-.tabset > input:checked + label::after {
+.nzm-tabset > label:hover::after,
+.nzm-tabset > input:focus + label::after,
+.nzm-tabset > input:checked + label::after {
 	background: #b72524;
 }
 
-.tabset > input:checked + label {
+.nzm-tabset > input:checked + label {
 	border-color: #ccc;
 	border-bottom: 1px solid #fff;
 	margin-bottom: -1px;
@@ -145,14 +153,10 @@ p.nzm-description-error {
 	border-top: 1px solid #ccc;
 }
 
-.tabset {
-	text-align: left;
-}
-
 .tab-panels {
 	text-align: left;
 	background: #fff;
-	padding: 15px;
+	padding: 15px 20px;
 }
 
 .tabset-img {
