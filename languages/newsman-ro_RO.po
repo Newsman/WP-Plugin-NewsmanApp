@@ -1,0 +1,1242 @@
+# Copyright (C) 2025 Newsman
+# This file is distributed under the same license as the NewsmanApp for WordPress plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: NewsmanApp for WordPress 3.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
+"Last-Translator: NewsMAN <contact@newsman.com>\n"
+"Language-Team: NewsMAN <contact@newsman.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-11-15T10:50:02+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: newsman\n"
+
+#. Plugin Name of the plugin
+#: newsmanapp.php
+msgid "NewsmanApp for WordPress"
+msgstr "NewsmanApp pentru WordPress"
+
+#. Plugin URI of the plugin
+#: newsmanapp.php
+msgid "https://github.com/Newsman/WP-Plugin-NewsmanApp"
+msgstr "https://github.com/Newsman/WP-Plugin-NewsmanApp"
+
+#. Description of the plugin
+#: newsmanapp.php
+msgid "NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)"
+msgstr "NewsmanApp pentru WordPress (widget de înscriere, sincronizare abonați, creare și trimitere newslettere din postările de pe blog)"
+
+#. Author of the plugin
+#: newsmanapp.php
+msgid "Newsman"
+msgstr "Newsman"
+
+#. Author URI of the plugin
+#: newsmanapp.php
+msgid "https://www.newsman.com"
+msgstr "https://www.newsman.com"
+
+#. translators: 1: After date export orders
+#: includes/admin/action/export/class-orders.php:88
+#, php-format
+msgid "All orders after date %s were scheduled for export."
+msgstr "Toate comenzile de după data de %s au fost programate pentru trimitere."
+
+#: includes/admin/action/export/class-subscribersorders.php:86
+msgid "All buyers from complete orders were scheduled for export."
+msgstr "Toți cumpărătorii din comenzi complete au fost programați pentru trimitere."
+
+#: includes/admin/action/export/class-wordpresssubscribers.php:86
+msgid "All subscribers were scheduled for export."
+msgstr "Toți abonații au fost programați pentru trimitere."
+
+#: includes/admin/settings/class-oauth.php:110
+msgid "Access is denied"
+msgstr "Accesul este refuzat"
+
+#: includes/admin/settings/class-oauth.php:113
+msgid "There are no lists in your NewsMAN account"
+msgstr "Nu există liste în contul dvs. NewsMAN"
+
+#: includes/admin/settings/class-remarketing.php:97
+#: includes/admin/settings/class-settings.php:87
+#: includes/admin/settings/class-sms.php:131
+#: includes/admin/settings/class-sync.php:90
+msgid "Unauthorized user"
+msgstr "Utilizator neautorizat"
+
+#: includes/admin/settings/class-remarketing.php:117
+#: includes/admin/settings/class-settings.php:114
+#: includes/admin/settings/class-sync.php:141
+msgid "Options saved."
+msgstr "Opțiuni salvate."
+
+#: includes/admin/settings/class-remarketing.php:121
+#: includes/admin/settings/class-remarketing.php:134
+msgid "Invalid Credentials. Please configure them in Settings tab."
+msgstr "Credențiale invalide. Vă rugăm să le configurați în fila Setări."
+
+#: includes/admin/settings/class-settings.php:132
+#: includes/admin/settings/class-sync.php:145
+msgid "Invalid Credentials"
+msgstr "Credențiale invalide"
+
+#: includes/admin/settings/class-sms.php:153
+#: includes/admin/settings/class-sms.php:157
+#: includes/admin/settings/class-sms.php:176
+#: includes/admin/settings/class-sms.php:180
+msgid "Invalid credentials."
+msgstr "Credențiale invalide."
+
+#: includes/admin/settings/class-sms.php:159
+#: includes/admin/settings/class-sms.php:182
+msgid "No SMS list found."
+msgstr "Nu a fost găsită nicio listă de SMS-uri."
+
+#: includes/admin/settings/class-sms.php:166
+msgid "An error has occurred."
+msgstr "A apărut o eroare."
+
+#: includes/admin/settings/class-sms.php:226
+#: includes/admin/settings/class-sms.php:246
+msgid "The SMS was not sent. "
+msgstr "SMS-ul nu a fost trimis."
+
+#: includes/admin/settings/class-sms.php:228
+msgid "Test SMS was sent."
+msgstr "SMS-ul de test a fost trimis."
+
+#: includes/admin/settings/class-sms.php:233
+msgid "The SMS was not sent. Please select or keep the configured SMS list."
+msgstr "SMS-ul nu a fost trimis. Vă rugăm să selectați sau să păstrați lista de SMS-uri configurată."
+
+#: includes/admin/settings/class-sms.php:238
+msgid "The SMS was not sent. Please fill the test phone number and the test message."
+msgstr "SMS-ul nu a fost trimis. Vă rugăm să completați numărul de telefon de test și mesajul de test."
+
+#: includes/admin/settings/class-sync.php:133
+#: includes/admin/settings/class-sync.php:167
+#: includes/admin/settings/class-sync.php:177
+msgid "Could not get the lists or the segments."
+msgstr "Nu s-au putut obține listele sau segmentele."
+
+#: includes/admin/settings/class-sync.php:214
+msgid "Could not update feed list"
+msgstr "Nu s-a putut actualiza lista de fluxuri de produse"
+
+#: includes/export/retriever/class-authenticator.php:55
+msgid "Empty API key provided."
+msgstr "Cheie API goală furnizată."
+
+#. translators: 1: WordPress blog ID
+#: includes/export/retriever/class-authenticator.php:78
+#, php-format
+msgid "Invalid API key for blog ID %d"
+msgstr "Cheie API nevalidă pentru ID-ul blogului %d"
+
+#. translators: 1: Input data
+#: includes/export/retriever/class-coupons.php:35
+#, php-format
+msgid "Add coupons: %s"
+msgstr "Adăugați cupoane: %s"
+
+#. translators: 1: Coupons count, 2: All coupons codes added
+#: includes/export/retriever/class-coupons.php:73
+#, php-format
+msgid "Added %1$d coupons %2$s"
+msgstr "S-au adăugat %1$d cupoane %2$s"
+
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
+#: includes/export/retriever/class-cronsubscribers.php:68
+#, php-format
+msgid "Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
+msgstr "Trimite abonați %1$s %2$d, %3$d, ID blog %4$s, dată %5$s"
+
+#: includes/export/retriever/class-cronsubscribers.php:84
+msgid "No subscribers found."
+msgstr "Nu s-au găsit abonați."
+
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
+#: includes/export/retriever/class-cronsubscribers.php:134
+#, php-format
+msgid "Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
+msgstr "Abonați trimisi %1$s %2$d, %3$d, ID blog %4$s, data %5$s"
+
+#. translators: 1: Sent subscribers count, 2: Total subscribers count
+#: includes/export/retriever/class-cronsubscribers.php:150
+#, php-format
+msgid "Sent to NewsMAN %1$d subscribers out of a total of %2$d."
+msgstr "Trimis către NewsMAN %1$d abonați dintr-un total de %2$d."
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-orders.php:49
+#, php-format
+msgid "Export order %1$d, store ID %2$s"
+msgstr "Încercare export comanda %1$d, ID magazin %2$s"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-orders.php:66
+#, php-format
+msgid "Exported order %1$d, store ID %2$s"
+msgstr "Comanda %1$d trimisă, ID magazin %2$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-orders.php:82
+#, php-format
+msgid "Export orders %1$d, %2$d, blog ID %3$s"
+msgstr "Încercare de trimitere comenzi multiple %1$d, %2$d, ID blog %3$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-orders.php:145
+#, php-format
+msgid "Exported orders %1$d, %2$d, blog ID %3$s"
+msgstr "Comenzi trimise %1$d, %2$d, ID blog %3$s"
+
+#. translators: 1: Code, 2: WordPress blog ID
+#: includes/export/retriever/class-processor.php:78
+#, php-format
+msgid "Processing fetch data (%1$s) for blog ID %2$d."
+msgstr "Se procesează datele de preluare (%1$s) pentru blogul cu ID-ul %2$d."
+
+#. translators: 1: Product ID, 2: WordPress blog ID
+#: includes/export/retriever/class-products.php:63
+#, php-format
+msgid "Export product %1$d, store ID %2$s"
+msgstr "Incercare de trimitere produs %1$d, ID magazin %2$s"
+
+#. translators: 1: Product ID, 2: WordPress blog ID
+#: includes/export/retriever/class-products.php:80
+#, php-format
+msgid "Exported product %1$d, store ID %2$s"
+msgstr "Produs trimisă %1$d, ID magazin %2$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-products.php:96
+#, php-format
+msgid "Export products %1$d, %2$d, blog ID %3$s"
+msgstr "Încercare de trimitere produse %1$d, %2$d, ID blog %3$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-products.php:138
+#, php-format
+msgid "Exported products %1$d, %2$d, blog ID %3$s"
+msgstr "Produse trimise %1$d, %2$d, ID blog %3$s"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-sendorders.php:66
+#, php-format
+msgid "Send order %1$d, store ID %2$s"
+msgstr "Încercare de trimitere comandă %1$d, ID magazin %2$s"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-sendorders.php:83
+#, php-format
+msgid "Sent order %1$d, store ID %2$s"
+msgstr "Comanda %1$d a fost trimisă, ID magazin %2$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
+#: includes/export/retriever/class-sendorders.php:102
+#, php-format
+msgid "Send orders %1$d, %2$d, blog ID %3$s, date %4$s"
+msgstr "Încercare trimitere comenzi %1$d, %2$d, ID blog %3$s, data %4$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
+#: includes/export/retriever/class-sendorders.php:155
+#, php-format
+msgid "Sent orders %1$d, %2$d, blog ID %3$s, Date %4$s"
+msgstr "Comenzi trimise %1$d, %2$d, ID blog %3$s, Data %4$s"
+
+#. translators: 1: Sent orders count, 2: Total orders count
+#: includes/export/retriever/class-sendorders.php:170
+#, php-format
+msgid "Sent to NewsMAN %1$d orders out of a total of %2$d."
+msgstr "Trimis către NewsMAN %1$d comenzi dintr-un total de %2$d."
+
+#. translators: 1: User role
+#: includes/export/retriever/class-users.php:61
+#, php-format
+msgid "wp_newsman_internal_role %s is not allowed!"
+msgstr "wp_newsman_internal_role %s nu este permis!"
+
+#. translators: 1: User role, 2: Batch start, 3: Batch end, 4: WP blog ID
+#: includes/export/retriever/class-users.php:77
+#, php-format
+msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
+msgstr "Încercare trimitere %1$s %2$d, %3$d, ID blog %4$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-users.php:120
+#, php-format
+msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
+msgstr "Exportat %1$s %2$d, %3$d, ID blog %4$s"
+
+#: includes/form/account/class-processor.php:130
+msgid "Security check failed. Please try again."
+msgstr "Verificarea de securitate a eșuat. Vă rugăm să încercați din nou."
+
+#: includes/form/account/class-processor.php:148
+msgid "You have already subscribed to our newsletter!"
+msgstr "Te-ai abonat deja la newsletter-ul nostru!"
+
+#: includes/form/account/class-processor.php:154
+msgid "You have already unsubscribed from our newsletter!"
+msgstr "Te-ai dezabonat deja de la newsletter-ul nostru!"
+
+#: includes/form/account/class-processor.php:215
+msgid "A subscription confirmation email will be sent to you shortly."
+msgstr "Un e-mail de confirmare a abonamentului vă va fi trimis în scurt timp."
+
+#: includes/form/account/class-processor.php:222
+msgid "You have successfully subscribed to our newsletter!"
+msgstr "Te-ai abonat cu succes la newsletter-ul nostru!"
+
+#: includes/form/account/class-processor.php:227
+msgid "The subscription process usually takes less than a minute. After that the status of your subscription will be shown here. Thank you!"
+msgstr "Procesul de abonare durează de obicei mai puțin de un minut. După aceea, starea abonamentului dvs. va fi afișată aici. Mulțumesc!"
+
+#: includes/form/account/class-processor.php:252
+msgid "You have unsubscribed from our newsletter! An unsubscription confirmation email will be sent to you shortly."
+msgstr "V-ați dezabonat de la newsletter-ul nostru! Veți primi în scurt timp un e-mail de confirmare a dezabonării."
+
+#: includes/form/account/class-processor.php:259
+msgid "You have unsubscribed from our newsletter!"
+msgstr "Te-ai dezabonat de la newsletter-ul nostru!"
+
+#: includes/form/account/class-processor.php:264
+msgid "The unsubscription process usually takes less than a minute. After that the status of your subscription will be shown here. Thank you!"
+msgstr "Procesul de dezabonare durează de obicei mai puțin de un minut. După aceea, starea abonamentului dvs. va fi afișată aici. Mulțumim!"
+
+#: includes/form/account/class-processor.php:278
+msgid "There was an error subscribing to the newsletter. Please try again."
+msgstr "A apărut o eroare la abonarea la newsletter. Vă rugăm să încercați din nou."
+
+#: includes/form/patterns/account/subscribe.php:32
+msgid "Subscribe"
+msgstr "Abonează-te"
+
+#. translators: 1: Email
+#: includes/service/class-abstractservice.php:156
+msgid "Invalid email address %1"
+msgstr "Adresă de e-mail nevalidă %1"
+
+#. translators: 1: Count subscribers
+#: includes/service/class-exportcsvsubscribers.php:48
+#, php-format
+msgid "Try to export CSV with %s subscribers"
+msgstr "Încercare trimitere fișier CSV cu %s abonați"
+
+#. translators: 1: Count subscribers
+#: includes/service/class-exportcsvsubscribers.php:74
+#, php-format
+msgid "Sent export CSV with %s subscribers"
+msgstr "Fișier CSV trimis cu %s abonați"
+
+#. translators: 1: Email
+#: includes/service/class-getbyemail.php:49
+#, php-format
+msgid "Try to get by email %s"
+msgstr "Încercare obținere date e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-getbyemail.php:72
+#, php-format
+msgid "Done get by email %s"
+msgstr "Gata, primesc prin e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-initsubscribeemail.php:49
+#, php-format
+msgid "Try to init subscribe email %s"
+msgstr "Încercare inițializare pentru adresa de e-mail de abonare %s"
+
+#. translators: 1: Email
+#: includes/service/class-initsubscribeemail.php:78
+#, php-format
+msgid "Init subscribe successful for email %s"
+msgstr "Încercarea de abonare pentru e-mailul %s a avut succes"
+
+#. translators: 1: Email
+#: includes/service/class-initunsubscribeemail.php:49
+#, php-format
+msgid "Try to init unsubscribe email %s"
+msgstr "Încercare initializare de dezabonare pentru e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-initunsubscribeemail.php:75
+#, php-format
+msgid "Init unsubscribed successful for email %s"
+msgstr "Dezabonare inițială reușită pentru e-mailul %s"
+
+#. translators: 1: Email
+#: includes/service/class-subscribeemail.php:49
+#, php-format
+msgid "Try to subscribe email %s"
+msgstr "Încercare abonare adresa de e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-subscribeemail.php:77
+#, php-format
+msgid "Subscribed email %s"
+msgstr "Adresă de e-mail abonată %s"
+
+#. translators: 1: Email
+#: includes/service/class-unsubscribeemail.php:49
+#, php-format
+msgid "Try to unsubscribe email %s"
+msgstr "Încercare dezabonare e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-unsubscribeemail.php:74
+#, php-format
+msgid "Unsubscribed email %s"
+msgstr "E-mail dezabonat %s"
+
+#: includes/service/configuration/class-getsegmentall.php:43
+#: includes/service/configuration/class-setfeedonlist.php:42
+#: includes/service/configuration/class-updatefeed.php:42
+msgid "List ID is required."
+msgstr "ID-ul listei este obligatoriu."
+
+#. translators: 1: WP url
+#: includes/service/configuration/class-setfeedonlist.php:53
+#, php-format
+msgid "Try to install products feed %s"
+msgstr "Încercare instalare flux de produse %s"
+
+#. translators: 1: WP url
+#: includes/service/configuration/class-setfeedonlist.php:75
+#, php-format
+msgid "Installed products feed %s"
+msgstr "Fluxul de produse instalate %s"
+
+#. translators: 1: Feed ID
+#: includes/service/configuration/class-updatefeed.php:53
+#, php-format
+msgid "Try to update feed %s"
+msgstr "Încercare actualizare flux %s"
+
+#. translators: 1: Feed ID
+#: includes/service/configuration/class-updatefeed.php:73
+#, php-format
+msgid "Updated the feed %s"
+msgstr "Fluxul %s a fost actualizat"
+
+#. translators: 1: Order ID
+#: includes/service/remarketing/class-saveorder.php:55
+#, php-format
+msgid "Try to save order %s"
+msgstr "Încercare de salvare a comanzii %s"
+
+#. translators: 1: Order ID
+#: includes/service/remarketing/class-saveorder.php:80
+#, php-format
+msgid "Saved order %s"
+msgstr "Comanda salvată %s"
+
+#. translators: 1: Number of orders
+#: includes/service/remarketing/class-saveorders.php:50
+#, php-format
+msgid "Try to %s save orders"
+msgstr "Încercare salvare a comenzilor %s"
+
+#. translators: 1: Number of orders
+#: includes/service/remarketing/class-saveorders.php:74
+#, php-format
+msgid "Saved %s save orders"
+msgstr "Comenzi salvate %s"
+
+#. translators: 1: Order ID, 2: Order status
+#: includes/service/remarketing/class-setpurchasestatus.php:50
+#, php-format
+msgid "Try to send order %1$s status %2$s"
+msgstr "Încercare trimitere comanda %1$s cu starea %2$s"
+
+#. translators: 1: Order ID, 2: Order status
+#: includes/service/remarketing/class-setpurchasestatus.php:75
+#, php-format
+msgid "Sent order %1$s status %2$s"
+msgstr "Comanda trimisă %1$s stare %2$s"
+
+#. translators: 1: Newsman segment ID, 2: Newsman subscriber ID
+#: includes/service/segment/class-addsubscriber.php:49
+#, php-format
+msgid "Try to add to segment %1$s subscriber ID %2$s"
+msgstr "Încercare adăugare la segmentul %1$s ID-ul de abonat %2$s"
+
+#. translators: 1: Newsman segment ID, 2: Newsman subscriber ID
+#: includes/service/segment/class-addsubscriber.php:75
+#, php-format
+msgid "Added to segment %1$s subscriber ID %2$s"
+msgstr "S-a adăugat la segmentul %1$s ID abonat %2$s"
+
+#. translators: 1: Phone number
+#: includes/service/sms/class-sendone.php:47
+#, php-format
+msgid "Try to send one SMS to %s"
+msgstr "Încercare de trimitere SMS către %s"
+
+#. translators: 1: Phone number
+#: includes/service/sms/class-sendone.php:67
+#, php-format
+msgid "Sent SMS to %s"
+msgstr "SMS trimis către %s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-subscribe.php:49
+#, php-format
+msgid "Try to subscribe telephone %s"
+msgstr "Încercare abonare nr. telefon %s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-subscribe.php:77
+#, php-format
+msgid "Subscribed telephone %s"
+msgstr "Nr. de telefon %s a fost abonat"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-unsubscribe.php:49
+#, php-format
+msgid "Try to unsubscribe telephone %s"
+msgstr "Încercare dezabonare la nr. de telefon %s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-unsubscribe.php:74
+#, php-format
+msgid "Unsubscribed telephone %s"
+msgstr "Nr. de telefon %s a fost dezabonat"
+
+#: src/backend-oauth.php:26
+#: src/backend-remarketing.php:27
+#: src/backend-remarketing.php:32
+#: src/backend-settings.php:27
+#: src/backend-settings.php:32
+#: src/backend-sms.php:53
+#: src/backend-sms.php:58
+#: src/backend-sync.php:27
+#: src/backend-sync.php:32
+#: src/backend.php:19
+#: src/backend.php:24
+msgid "NewsMAN"
+msgstr "NewsMAN"
+
+#: src/backend-oauth.php:38
+msgid "NewsMAN plugin for Wordpress-Woocommerce"
+msgstr "NewsMAN plugin pentru Wordpress-Woocommerce"
+
+#: src/backend-oauth.php:47
+msgid "Connect your site with NewsMAN for:"
+msgstr "Conectează-ți site-ul cu NewsMAN pentru:"
+
+#: src/backend-oauth.php:52
+msgid "Subscribers Sync"
+msgstr "Sincronizarea abonaților"
+
+#: src/backend-oauth.php:57
+msgid "Ecommerce Remarketing"
+msgstr "Ecommerce Remarketing"
+
+#: src/backend-oauth.php:62
+msgid "Create and manage forms"
+msgstr "Creați și gestionați formulare"
+
+#: src/backend-oauth.php:67
+msgid "Create and manage popups"
+msgstr "Creați și gestionați ferestre pop-up"
+
+#: src/backend-oauth.php:72
+msgid "Connect your forms to automation"
+msgstr "Conectați formularele la automatizare"
+
+#: src/backend-oauth.php:78
+msgid "Login with NewsMAN"
+msgstr "Autentificare cu NewsMAN"
+
+#: src/backend-oauth.php:90
+msgid "Select list:"
+msgstr "Selectați lista:"
+
+#: src/backend-oauth.php:92
+#: src/backend-sms.php:115
+#: src/backend-sync.php:64
+#: src/backend-sync.php:105
+msgid "-- select list --"
+msgstr "-- selectați o listă --"
+
+#: src/backend-oauth.php:107
+msgid "Save"
+msgstr "Salvează"
+
+#: src/backend-remarketing.php:63
+#: src/backend-settings.php:221
+#: src/backend-settings.php:263
+msgid "Enable"
+msgstr "Permite"
+
+#: src/backend-remarketing.php:34
+#: src/backend-settings.php:34
+#: src/backend-sms.php:60
+#: src/backend-sync.php:34
+#: src/backend.php:26
+#: src/backend.php:57
+msgid "Sync"
+msgstr "Sincronizare"
+
+#: src/backend-remarketing.php:36
+#: src/backend-settings.php:36
+#: src/backend-sms.php:62
+#: src/backend-sync.php:36
+#: src/backend.php:28
+#: src/backend.php:65
+msgid "Remarketing"
+msgstr "Remarketing"
+
+#: src/backend-remarketing.php:39
+#: src/backend-settings.php:39
+#: src/backend-sms.php:65
+#: src/backend-sync.php:39
+#: src/backend.php:31
+msgid "SMS"
+msgstr "SMS"
+
+#: src/backend-remarketing.php:42
+#: src/backend-settings.php:42
+#: src/backend-sms.php:68
+#: src/backend-sync.php:42
+#: src/backend.php:34
+#: src/backend.php:83
+msgid "Settings"
+msgstr "Setări"
+
+#: includes/class-admin.php:157
+#: includes/class-admin.php:158
+msgid "Oauth"
+msgstr "Oauth"
+
+#: src/backend-remarketing.php:72
+msgid "REMARKETING ID"
+msgstr "REMARKETING ID"
+
+#: src/backend-remarketing.php:76
+msgid "Your NewsMAN Remarketing ID"
+msgstr "ID-ul dvs. de remarketing NewsMAN"
+
+#: src/backend-remarketing.php:81
+msgid "Anonymize IP"
+msgstr "Anonimizare IP"
+
+#: src/backend-remarketing.php:86
+msgid "Anonymize User IP Address"
+msgstr "Anonimizarea adresei IP a utilizatorului"
+
+#: src/backend-remarketing.php:92
+msgid "Send telephone numbers"
+msgstr "Trimite numere de telefon"
+
+#: src/backend-remarketing.php:97
+msgid "Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders."
+msgstr "Trimiteți (in listele de e-mail) numerele de telefon ale abonaților și numerele de telefon ale clienților care au plasat comenzi."
+
+#: src/backend-remarketing.php:103
+msgid "Export WordPress Subscribers"
+msgstr "Trimite abonați WordPress"
+
+#: src/backend-remarketing.php:108
+msgid "Export all WordPress users with role subscriber on regular basis (using Woo Commerce Action Scheduler)."
+msgstr "Trimiteți toți utilizatorii WordPress cu rol de abonat în mod regulat (folosind Woo Commerce Action Scheduler)."
+
+#: src/backend-remarketing.php:113
+#: src/backend-remarketing.php:155
+#: src/backend-remarketing.php:197
+msgid "Latest Short Period in Days"
+msgstr "Ultima perioadă scurtă în zile"
+
+#. translators: 1: Time Interval
+#: src/backend-remarketing.php:124
+#, php-format
+msgid "Export latest WordPress subscribers registered in last X days every %d hours."
+msgstr "Trimite cei mai recenți abonați WordPress înregistrați în ultimele X zile la fiecare %d ore."
+
+#: src/backend-remarketing.php:129
+#: src/backend-remarketing.php:171
+#: src/backend-remarketing.php:213
+msgid "Latest Long Period in Days"
+msgstr "Ultima perioadă lungă în zile"
+
+#. translators: 1: Time Interval
+#: src/backend-remarketing.php:140
+#, php-format
+msgid "Export latest WordPress subscribers registered in last X days every %d days."
+msgstr "Trimite cei mai recenți abonați WordPress înregistrați în ultimele X zile la fiecare %d zile."
+
+#: src/backend-remarketing.php:145
+msgid "Export WooCommerce Buyers as Subscribers"
+msgstr "Trimite cumpărătorii WooCommerce ca abonați"
+
+#: src/backend-remarketing.php:150
+msgid "Export all buyers from orders with status complete on regular basis (using Woo Commerce Action Scheduler)."
+msgstr "Trimiteți toți cumpărătorii din comenzile cu starea „Finalizat” în mod regulat (folosind Woo Commerce Action Scheduler)."
+
+#. translators: 1: Time Interval
+#: src/backend-remarketing.php:166
+#, php-format
+msgid "Export latest buyers from orders created in the last X days every %d hours."
+msgstr "Trimite cei mai recenți cumpărători din comenzile create în ultimele X zile la fiecare %d ore."
+
+#. translators: 1: Time Interval
+#: src/backend-remarketing.php:182
+#, php-format
+msgid "Export latest buyers from orders created in the last X days every %d days."
+msgstr "Trimite cei mai recenți cumpărători din comenzile create în ultimele X zile la fiecare %d zile."
+
+#: src/backend-remarketing.php:187
+msgid "Export Orders"
+msgstr "Trimite comenzi"
+
+#: src/backend-remarketing.php:192
+msgid "Export orders on regular basis (using Woo Commerce Action Scheduler)."
+msgstr "Trimiteți comenzile în mod regulat (folosind Woo Commerce Action Scheduler)."
+
+#. translators: 1: Time Interval
+#: src/backend-remarketing.php:208
+#, php-format
+msgid "Export latest orders created in the last X days every %d hours."
+msgstr "Trimiteți cele mai recente comenzi create în ultimele X zile la fiecare %d ore."
+
+#. translators: 1: Time Interval
+#: src/backend-remarketing.php:224
+#, php-format
+msgid "Export latest orders created in the last X days every %d days."
+msgstr "Trimiteți cele mai recente comenzi create în ultimele X zile la fiecare %d zile."
+
+#: src/backend-remarketing.php:229
+msgid "Export Orders After Date"
+msgstr "Trimite comenzile de după data"
+
+#: src/backend-remarketing.php:233
+msgid "Export orders created after a specific date (including). Format: YYYY-MM-DD"
+msgstr "Comenzi care vor fi trimise după o anumită dată de creare (inclusiv). Format: AAAA-LL-ZZ"
+
+#: src/backend-remarketing.php:239
+msgid "Export Orders on Status Change"
+msgstr "Comenzi trimise la schimbarea stării"
+
+#: src/backend-remarketing.php:258
+msgid "Select order statuses. On each selected order status change, the order details will be sent to NewsMAN."
+msgstr "Selectați stările comenzii. La fiecare modificare a stării, detaliile comenzii vor fi trimise către NewsMAN."
+
+#: src/backend-remarketing.php:264
+msgid "Export Additional Product Attributes"
+msgstr "Trimiteți atribute suplimentare ale produsului"
+
+#: src/backend-remarketing.php:284
+msgid "Select multiple product attributes to include in your product feed."
+msgstr "Selectați mai multe atribute de produs pentru a le include în feedul de produse."
+
+#: src/backend-remarketing.php:290
+msgid "Customer Attributes"
+msgstr "Atributele clientului"
+
+#: src/backend-remarketing.php:306
+msgid "Select which customer attributes (from orders) to include in your remarketing data."
+msgstr "Selectați atributele clienților (din comenzi) pe care să le includeți în datele de remarketing."
+
+#: src/backend-remarketing.php:312
+#: src/backend-settings.php:443
+#: src/backend-sms.php:275
+#: src/backend-sync.php:200
+msgid "Save Changes"
+msgstr "Salvați modificările"
+
+#: src/backend-settings.php:54
+msgid "NewsMAN Connection"
+msgstr "Conexiune NewsMAN"
+
+#: src/backend-settings.php:58
+msgid "API KEY"
+msgstr "Cheie API"
+
+#: src/backend-settings.php:67
+msgid "User ID"
+msgstr "ID-ul de utilizator"
+
+#: src/backend-settings.php:76
+#: src/backend-sms.php:89
+#: src/backend.php:42
+msgid "Credentials Status"
+msgstr "Starea credențialelor"
+
+#: src/backend-settings.php:80
+#: src/backend-sms.php:93
+#: src/backend.php:46
+msgid "Valid"
+msgstr "Valid"
+
+#: src/backend-settings.php:80
+#: src/backend-sms.php:93
+#: src/backend.php:46
+msgid "Invalid"
+msgstr "Invalid"
+
+#: src/backend-settings.php:89
+msgid "Allow API access"
+msgstr "Permite accesul API"
+
+#: src/backend-settings.php:98
+msgid "Send User IP Address"
+msgstr "Trimite adresa IP a utilizatorului"
+
+#: src/backend-settings.php:107
+msgid "Server IP Address"
+msgstr "Adresă IP a serverului"
+
+#: src/backend-settings.php:113
+msgid "Please set the public IP address of the server if the user IP address is not sent. NewsMAN subscribe to newsletter requires an IP address."
+msgstr "Vă rugăm să introduceți adresa IP publică a serverului dacă adresa IP a utilizatorului nu este trimisă. Abonarea la newsletter-ul NewsMAN necesită o adresă IP."
+
+#: src/backend-settings.php:118
+msgid "Import Authorize Header Name"
+msgstr "Nume antet de autorizare (fluxuri)"
+
+#: src/backend-settings.php:123
+msgid "HTTP Header Authorization Name. Please set only alphanumeric characters and minus character."
+msgstr "Nume de autorizare a antetului HTTP (Authorize Header Name). Vă rugăm să introduceți doar caractere alfanumerice și caracterul minus."
+
+#. translators: 1: Link to NewsMAN
+#: src/backend-settings.php:128
+#: src/backend-settings.php:155
+#, php-format
+msgid "Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization."
+msgstr "Vă rugăm să accesați <a target=\"_blank\" href=\"%s\">newsman.app</a> în E-Commerce > Feeds și să introduceți Autorizarea antetului (Header Authorization)."
+
+#: src/backend-settings.php:139
+#: src/backend-settings.php:166
+msgid "NewsMAN will be able to import product feeds securely."
+msgstr "NewsMAN va putea importa fluxuri de produse în siguranță."
+
+#: src/backend-settings.php:145
+msgid "Import Authorize Header Key"
+msgstr "Cheie antet de autorizare (fluxuri)"
+
+#: src/backend-settings.php:150
+msgid "HTTP Header Authorization Key. Please set only alphanumeric characters and minus character."
+msgstr "Cheie de autorizare a antetului HTTP (Authorize Header Key). Vă rugăm să introduceți doar caractere alfanumerice și semnul minus."
+
+#: src/backend-settings.php:175
+msgid "Newsletter Opt-in type"
+msgstr "Tip de înscriere la newsletter"
+
+#: src/backend-settings.php:180
+msgid "Opt-in"
+msgstr "Înscriere simpla (Opt-in)"
+
+#: src/backend-settings.php:183
+msgid "Double Opt-in"
+msgstr "Înscriere cu confirmare (Double Opt-in)"
+
+#: src/backend-settings.php:186
+msgid "Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions."
+msgstr "Selectați tipul de abonare la newsletter. Opțiunea dublă de abonare este recomandată pentru abonamentele la newsletter."
+
+#: src/backend-settings.php:191
+msgid "Confirmation email Form ID."
+msgstr "ID-ul formularului de e-mail de confirmare."
+
+#: src/backend-settings.php:197
+msgid "Form ID used for the confirmation email / form settings."
+msgstr "ID-ul formularului utilizat pentru e-mailul de confirmare / setările formularului."
+
+#: src/backend-settings.php:201
+msgid "Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/manager\">newsman.app</a> &gt; Forms."
+msgstr "Formularele pot fi create în <a target=\"_blank\" href=\"https://newsman.app/manager\">newsman.app</a> > Formulare."
+
+#: src/backend-settings.php:217
+msgid "Checkout Subscribe to Newsletter and SMS"
+msgstr "Finalizare comandă Abonează-te la newsletter și SMS"
+
+#: src/backend-settings.php:226
+msgid "Enable checkbox to subscribe to newsletter in checkout."
+msgstr "Activați caseta de selectare pentru abonare la newsletter la finalizarea comenzii."
+
+#: src/backend-settings.php:231
+msgid "Enable SMS, sync phone numbers to your SMS list"
+msgstr "Activează SMS-urile, sincronizează numerele de telefon cu lista ta de SMS-uri"
+
+#: src/backend-settings.php:236
+msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
+msgstr "Activați abonarea după finalizarea comenzii la lista de SMS-uri cu numărul de telefon pentru facturarea comenzii."
+
+#: src/backend-settings.php:241
+msgid "Checkbox label"
+msgstr "Etichetă casetă de selectare"
+
+#: src/backend-settings.php:251
+msgid "Is checkbox checked by default ?"
+msgstr "Caseta de selectare este bifată în mod implicit?"
+
+#: src/backend-settings.php:259
+msgid "My Account Subscribe to Newsletter"
+msgstr "Contul meu Abonează-te la newsletter"
+
+#: src/backend-settings.php:268
+msgid "Enable page and checkbox to subscribe to newsletter in customers account."
+msgstr "Activați pagina și bifați caseta de selectare pentru abonarea la newsletter în contul clientului."
+
+#: src/backend-settings.php:273
+msgid "Page Menu Label"
+msgstr "Etichetă meniu pagină"
+
+#: src/backend-settings.php:279
+msgid "The label on the link on the left side menu in customer account."
+msgstr "Eticheta de pe linkul din meniul din stânga din contul clientului."
+
+#: src/backend-settings.php:284
+msgid "Page Title"
+msgstr "Titlul paginii"
+
+#: src/backend-settings.php:290
+msgid "The title of subscribe to newsletter page in customer account."
+msgstr "Titlul paginii de abonare la newsletter din contul clientului."
+
+#: src/backend-settings.php:295
+msgid "Checkbox Label"
+msgstr "Etichetă casetă de selectare"
+
+#: src/backend-settings.php:301
+msgid "The label on subscribe to newsletter checkbox in customer account."
+msgstr "Eticheta de pe caseta de selectare a abonării la newsletter din contul clientului."
+
+#: src/backend-settings.php:310
+msgid "Logging level"
+msgstr "Nivel Jurnalizare "
+
+#: src/backend-settings.php:319
+msgid "No Logging"
+msgstr "Fara Jurnalizare"
+
+#: src/backend-settings.php:366
+msgid "API Timeout"
+msgstr "Expirare API"
+
+#: src/backend-settings.php:378
+msgid "Enable Test User IP"
+msgstr "Activează adresa IP a utilizatorului de testare"
+
+#: src/backend-settings.php:383
+msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
+msgstr "Atenție! Vă rugăm să nu utilizați această adresă IP în producție, deoarece este utilizată de endpoint-ul API subscriber.saveSubscribe."
+
+#: src/backend-settings.php:388
+msgid "Test User IP address"
+msgstr "Adresa IP a utilizatorului de testare"
+
+#: src/backend-settings.php:399
+msgid "Plugin Loaded Priority"
+msgstr "Prioritate încărcare plugin"
+
+#: src/backend-settings.php:405
+msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
+msgstr "Hook-urile pluginului NewsMAN pentru Woo Commerce sunt încărcate cu plugins_loaded și prioritatea este setată în această configurație. Implicit este 20."
+
+#: src/backend-settings.php:411
+msgid "Use Action Scheduler"
+msgstr "Utilizează Planificatorul de acțiuni"
+
+#: src/backend-settings.php:416
+msgid "Use action scheduler plugin for some of NewsMAN API actions."
+msgstr "Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile API-ului NewsMAN."
+
+#: src/backend-settings.php:421
+msgid "Use Action Scheduler for Subscribe"
+msgstr "Folosește Planificatorul de acțiuni pentru Abonare"
+
+#: src/backend-settings.php:426
+msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
+msgstr "În magazinul virtual, folosiți planificatorul de acțiuni pentru abonarea la listele de e-mail și SMS."
+
+#: src/backend-settings.php:431
+msgid "Use Action Scheduler for Unsubscribe"
+msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
+
+#: src/backend-settings.php:436
+msgid "On storefront use action scheduler for unsubscribe from email lists action."
+msgstr "În magazinul virtual, utilizați planificatorul de acțiuni pentru acțiunea de dezabonare de la listele de e-mail."
+
+#: src/backend-sms.php:96
+msgid "Please configure the credentials in Settings tab."
+msgstr "Vă rugăm să configurați acreditările în fila Setări."
+
+#: src/backend-sms.php:102
+msgid "Use SMS"
+msgstr "Folosește SMS-uri"
+
+#: src/backend-sms.php:110
+msgid "Select SMS List"
+msgstr "Selectați lista SMS-uri"
+
+#: src/backend-sms.php:124
+msgid "Please save a SMS list to start sending SMS."
+msgstr "Vă rugăm să salvați o listă de SMS-uri pentru a începe să trimiteți SMS-uri."
+
+#: src/backend-sms.php:127
+msgid "The SMS lists dropdown is displayed when Use SMS is enabled."
+msgstr "Meniul derulant al listelor SMS este afișat când este activată opțiunea Utilizare SMS."
+
+#: src/backend-sms.php:133
+msgid "SMS Message"
+msgstr "Mesaj SMS"
+
+#: src/backend-sms.php:136
+msgid "Order Status"
+msgstr "Starea comenzii"
+
+#: src/backend-sms.php:139
+msgid "Message / Variables"
+msgstr "Mesaj / Variabile"
+
+#: src/backend-sms.php:145
+msgid "Pending"
+msgstr "În așteptare (Pending)"
+
+#: src/backend-sms.php:145
+#: src/backend-sms.php:157
+#: src/backend-sms.php:169
+#: src/backend-sms.php:181
+#: src/backend-sms.php:193
+#: src/backend-sms.php:205
+#: src/backend-sms.php:217
+msgid "Active"
+msgstr "Activ"
+
+#: src/backend-sms.php:149
+#: src/backend-sms.php:161
+#: src/backend-sms.php:173
+#: src/backend-sms.php:185
+#: src/backend-sms.php:197
+#: src/backend-sms.php:209
+#: src/backend-sms.php:221
+msgid "Message"
+msgstr "Mesaj"
+
+#: src/backend-sms.php:151
+#: src/backend-sms.php:163
+#: src/backend-sms.php:175
+#: src/backend-sms.php:187
+#: src/backend-sms.php:199
+#: src/backend-sms.php:211
+#: src/backend-sms.php:223
+msgid "Variables"
+msgstr "Variabile"
+
+#: src/backend-sms.php:157
+msgid "Failed"
+msgstr "Eșuat (Failed)"
+
+#: src/backend-sms.php:169
+msgid "On Hold"
+msgstr "În așteptare (On Hold)"
+
+#: src/backend-sms.php:181
+msgid "Processing"
+msgstr "Prelucrare (Processing)"
+
+#: src/backend-sms.php:193
+msgid "Completed"
+msgstr "Finalizat (Completed)"
+
+#: src/backend-sms.php:205
+msgid "Refunded"
+msgstr "Rambursat (Refunded)"
+
+#: src/backend-sms.php:217
+msgid "Canceled"
+msgstr "Anulat (Canceled)"
+
+#: src/backend-sms.php:227
+msgid "SMS production debug"
+msgstr "Depanare in producție a mesajelor SMS"
+
+#: src/backend-sms.php:231
+msgid "Activate test mode"
+msgstr "Activează modul de testare"
+
+#: src/backend-sms.php:235
+msgid "The message will be sent to your specified phone and not to customer phone. SMS are sent on order status changes."
+msgstr "Mesajul va fi trimis pe telefonul specificat de dvs. și nu pe telefonul clientului. Se trimit SMS-uri la modificarea stării comenzii."
+
+#: src/backend-sms.php:240
+msgid "Phone for tests"
+msgstr "Telefon pentru teste"
+
+#: src/backend-sms.php:243
+#: src/backend-sms.php:254
+msgid "Ex:"
+msgstr "Ex:"
+
+#: src/backend-sms.php:247
+msgid "SMS send test"
+msgstr "Test de trimitere a mesajelor SMS"
+
+#: src/backend-sms.php:251
+msgid "Phone"
+msgstr "Telefon"
+
+#: src/backend-sms.php:259
+msgid "Test message"
+msgstr "Mesaj de test"
+
+#: src/backend-sms.php:267
+#: src/backend-sms.php:270
+msgid "Send now"
+msgstr "Trimite acum"
+
+#: src/backend-sync.php:60
+msgid "Select a list"
+msgstr "Selectați o listă"
+
+#: src/backend-sync.php:75
+msgid "Select a list of subscribers."
+msgstr "Selectați o listă de abonați."
+
+#: src/backend-sync.php:80
+msgid "Select a segment"
+msgstr "Selectați un segment"
+
+#: src/backend-sync.php:84
+msgid "-- select segment (optional) --"
+msgstr "-- selectați segmentul (opțional) --"
+
+#: src/backend-sync.php:95
+msgid "Select a segment of subscribers."
+msgstr "Selectați un segment de abonați."
+
+#: src/backend-sync.php:95
+msgid "The dropdown has the updated segments as options after the new list was saved."
+msgstr "Meniul derulant conține segmentele actualizate ca opțiuni după salvarea noii liste."
+
+#: src/backend-sync.php:101
+msgid "Select an SMS list"
+msgstr "Selectați o listă de SMS-uri"
+
+#: src/backend-sync.php:116
+msgid "Select a list of SMS to be synced with phone numbers"
+msgstr "Selectați o listă de SMS-uri care vor fi sincronizate cu numerele de telefon"
+
+#: src/backend-sync.php:122
+msgid "<em>Optionally and by case</em> synchronize all data."
+msgstr "<em>Opțional și după caz</em> sincronizați toate datele."
+
+#: src/backend-sync.php:123
+msgid "Or <em>optionally</em> synchronize data via CRON jobs (Task scheduler)."
+msgstr "Sau, <em>opțional</em>, sincronizați datele prin intermediul joburilor CRON (Task scheduler)."
+
+#: src/backend-sync.php:124
+msgid "Click the export buttons to push all data once."
+msgstr "Faceți clic pe butoanele de trimitere pentru a trimite toate datele o singură dată."
+
+#: src/backend-sync.php:125
+msgid "Or click"
+msgstr "Sau faceți clic"
+
+#: src/backend-sync.php:127
+msgid "<em>Optional</em> synchronize via CRON jobs (Task scheduler)."
+msgstr "Sincronizare <em>opțională</em> prin joburi CRON (Planificator de activități)."
+
+#: src/backend-sync.php:128
+msgid "Click"
+msgstr "Clic"
+
+#: src/backend-sync.php:130
+msgid "the links to begin synchronizing or setup task scheduler (cron) on your server/hosting."
+msgstr "linkurile pentru a începe sincronizarea sau a configura planificatorul de activități (cron) pe serverul/găzduirea dvs."
+
+#: src/backend-sync.php:132
+msgid "Synchronize with NewsMAN from latest number of records (ex: 5000)"
+msgstr "Sincronizare cu NewsMAN de la cel mai recent număr de înregistrări (ex: 5000)"
+
+#: src/backend-sync.php:139
+msgid "Export once all WordPress users with role subscriber (using Woo Commerce Action Scheduler)"
+msgstr "Trimiteți o singură dată toți utilizatorii WordPress cu rolul de abonat (folosind Woo Commerce Action Scheduler)"
+
+#: src/backend-sync.php:142
+msgid "Schedule Export Subscribers"
+msgstr "Programați trimiterea abonaților"
+
+#: src/backend-sync.php:149
+msgid "CRON url to export WordPress users with role subscriber"
+msgstr "URL CRON pentru trimiterea utilizatorilor WordPress cu rol de abonat"
+
+#: src/backend-sync.php:161
+msgid "Export once all buyers from orders with status complete (using Woo Commerce Action Scheduler)"
+msgstr "Trimiteți odată toți cumpărătorii din comenzile cu starea finalizată (folosind Woo Commerce Action Scheduler)"
+
+#: src/backend-sync.php:164
+msgid "Schedule Export Customers from Orders"
+msgstr "Programați trimiterea clienților din comenzi"
+
+#: src/backend-sync.php:171
+msgid "CRON url to export buyers from orders with status complete"
+msgstr "URL CRON pentru trimiterea cumpărătorilor din comenzile cu starea finalizată"
+
+#: src/backend-sync.php:182
+msgid "Export once all orders to NewsMAN after the date set in Remarketing > Export Orders After Date (using Woo Commerce Action Scheduler)"
+msgstr "Trimiteți o singură dată toate comenzile către NewsMAN după data setată în Remarketing > Trimiteți comenzi după data (folosind Planificatorul de acțiuni Woo Commerce)"
+
+#: src/backend-sync.php:185
+msgid "Schedule Export Orders"
+msgstr "Programați comenzile pentru trimitere"
+
+#: src/backend-sync.php:192
+msgid "CRON url to send orders to NewsMAN"
+msgstr "URL CRON pentru trimiterea comenzilor către NewsMAN"
+
+#: src/backend.php:38
+msgid "NewsMAN Info"
+msgstr "NewsMAN Informații"
+
+#: src/backend.php:52
+msgid "Menus"
+msgstr "Meniuri"
+
+#: src/backend.php:60
+msgid "You will be able to sync your shop customers and newsletter subscribers with NewsMAN list / segments"
+msgstr "Vei putea sincroniza clienții magazinului și abonații la newsletter cu listele/segmentele NewsMAN"
+
+#: src/backend.php:68
+msgid "Provide a valuable experience to your customer by automating communication with them. Create automatic email flows based on their actions on the site, such as product viewed, added to cart, completed order etc."
+msgstr "Oferă o experiență valoroasă clientului tău prin automatizarea comunicării cu acesta. Creează fluxuri automate de e-mailuri bazate pe acțiunile sale pe site, cum ar fi produsul vizualizat, adăugat în coș, comanda finalizată etc."
+
+#: src/backend.php:77
+msgid "SMS (short messages) is one of the most effective ways to get users’ attention. Create and manage campaigns or send transactional SMS directly from NewsMAN platform."
+msgstr "SMS-urile (mesaje scurte) reprezintă una dintre cele mai eficiente metode de a capta atenția utilizatorilor. Creați și gestionați campanii sau trimiteți SMS-uri tranzacționale direct de pe platforma NewsMAN."
+
+#: src/backend.php:86
+msgid "In the settings page enter your API Key and User id provided by NewsMAN."
+msgstr "În pagina de setări, introduceți cheia API și ID-ul de utilizator furnizate de NewsMAN."
+
+#: src/backend.php:87
+msgid "After entering and saving valid credentials you will be able to select a list to which subscribers will be added"
+msgstr "După introducerea și salvarea acreditărilor valide, veți putea selecta o listă la care vor fi adăugați abonații."
+
+#: src/backend.php:92
+msgid "Widget"
+msgstr "Widget"
+
+#: src/backend.php:95
+msgid "Transform your website visitors into subscribers and customers. Generate easy to integrate pop-ups, embedded signup forms and web layers to convert more."
+msgstr "Transformă vizitatorii site-ului tău web în abonați și clienți. Generează ferestre pop-up ușor de integrat, formulare de înscriere încorporate și straturi web pentru a converti mai mult."
+
+#: src/backend.php:96
+msgid "Log in to your NewsMAN account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget"
+msgstr "Conectați-vă la contul dvs. NewsMAN: Selectați Listă -> Setări -> Formulare de abonare -> Creare/Editare formular -> Fereastră modală -> Activare fereastră modală pentru abonare la newsletter -> Selectați formular încorporat. Copiați și lipiți codul scurt (shortcode) newsman_subscribe_widget"
+
+msgid "Subscribe to our newsletter"
+msgstr "Abonează-te la newsletter-ul nostru"
+
+msgid "Newsletter Subscription"
+msgstr "Abonare la newsletter"
+
+msgid "Newsletter"
+msgstr "Newsletter"

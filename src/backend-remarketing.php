@@ -24,22 +24,22 @@ $form_values = $this->get_form_values();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="NewsMAN" />
+		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" />
 	</a>
 </div>
 <div class="tabset">
 	<input type="radio" name="tabset" id="tabNewsman" aria-controls="">
-	<label for="tabNewsman" id="newsmanBtn">Newsman</label>
+	<label for="tabNewsman" id="newsmanBtn"><?php echo esc_html__( 'NewsMAN', 'newsman' ); ?></label>
 	<input type="radio" name="tabset" id="tabSync" aria-controls="">
-	<label for="tabSync" id="syncBtn">Sync</label>
+	<label for="tabSync" id="syncBtn"><?php echo esc_html__( 'Sync', 'newsman' ); ?></label>
 	<input type="radio" name="tabset" id="tabRemarketing" aria-controls="" checked>
-	<label for="tabRemarketing" id="remarketingBtn">Remarketing</label>
+	<label for="tabRemarketing" id="remarketingBtn"><?php echo esc_html__( 'Remarketing', 'newsman' ); ?></label>
 	<?php if ( $this->is_woo_commerce_exists() ) : ?>
 		<input type="radio" name="tabset" id="tabSms" aria-controls="">
-		<label for="tabSms" id="smsBtn">SMS</label>
+		<label for="tabSms" id="smsBtn"><?php echo esc_html__( 'SMS', 'newsman' ); ?></label>
 	<?php endif; ?>
 	<input type="radio" name="tabset" id="tabSettings" aria-controls="">
-	<label for="tabSettings" id="settingsBtn">Settings</label>
+	<label for="tabSettings" id="settingsBtn"><?php echo esc_html__( 'Settings', 'newsman' ); ?></label>
 	<div class="tab-panels">
 	<section id="tabRemarketing" class="tab-panel">
 		<div class="wrap wrap-settings-admin-page">
@@ -60,7 +60,7 @@ $form_values = $this->get_form_values();
 			<table class="form-table newsman-table newsman-tbl-fixed">
 				<tr>
 					<th scope="row">
-						<label class="nzm-label" for="newsman_useremarketing">Enable</label>
+						<label class="nzm-label" for="newsman_useremarketing"><?php echo esc_html__( 'Enable', 'newsman' ); ?></label>
 					</th>
 					<td>
 						<input name="newsman_useremarketing" type="checkbox"
@@ -69,48 +69,48 @@ $form_values = $this->get_form_values();
 				</tr>
 				<tr>
 					<th scope="row">
-						<label class="nzm-label" for="newsman_remarketingid">REMARKETING ID</label>
+						<label class="nzm-label" for="newsman_remarketingid"><?php echo esc_html__( 'REMARKETING ID', 'newsman' ); ?></label>
 					</th>
 					<td>
 						<input type="text" name="newsman_remarketingid" id="newsman_remarketingid" value="<?php echo esc_html( $form_values['newsman_remarketingid'] ); ?>" />
-						<p class="description">Your Newsman Remarketing ID</p>
+						<p class="description"><?php echo esc_html__( 'Your NewsMAN Remarketing ID', 'newsman' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">
-						<label class="nzm-label" for="newsman_remarketinganonymizeip">Anonymize IP</label>
+						<label class="nzm-label" for="newsman_remarketinganonymizeip"><?php echo esc_html__( 'Anonymize IP', 'newsman' ); ?></label>
 					</th>
 					<td>
 						<input name="newsman_remarketinganonymizeip" type="checkbox"
 							id="newsman_remarketinganonymizeip" <?php echo ( ! empty( $form_values['newsman_remarketinganonymizeip'] ) && 'on' === $form_values['newsman_remarketinganonymizeip'] ) ? 'checked' : ''; ?>/>
-						<p class="description">Anonymize User IP Address</p>
+						<p class="description"><?php echo esc_html__( 'Anonymize User IP Address', 'newsman' ); ?></p>
 					</td>
 				</tr>
 				<?php if ( $this->is_woo_commerce_exists() ) : ?>
 					<tr>
 						<th scope="row">
-							<label class="nzm-label" for="newsman_remarketingsendtelephone">Send telephone numbers</label>
+							<label class="nzm-label" for="newsman_remarketingsendtelephone"><?php echo esc_html__( 'Send telephone numbers', 'newsman' ); ?></label>
 						</th>
 						<td>
 							<input name="newsman_remarketingsendtelephone" type="checkbox"
 								id="newsman_remarketingsendtelephone" <?php echo ( ! empty( $form_values['newsman_remarketingsendtelephone'] ) && 'on' === $form_values['newsman_remarketingsendtelephone'] ) ? 'checked' : ''; ?>/>
-							<p class="description">Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders.</p>
+							<p class="description"><?php echo esc_html__( 'Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders.', 'newsman' ); ?></p>
 						</td>
 					</tr>
 					<?php if ( $this->is_action_scheduler_exists() ) : ?>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers">Export WordPress Subscribers</label>
+								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers"><?php echo esc_html__( 'Export WordPress Subscribers', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input name="newsman_remarketingexportwordpresssubscribers" type="checkbox"
 										id="newsman_remarketingexportwordpresssubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Export all WordPress users with role subscriber on regular basis (using Woo Commerce Action Scheduler)</p>
+								<p class="description"><?php echo esc_html__( 'Export all WordPress users with role subscriber on regular basis (using Woo Commerce Action Scheduler).', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers_recurring_short_days">Latest Short Period in Days</label>
+								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers_recurring_short_days"><?php echo esc_html__( 'Latest Short Period in Days', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwordpresssubscribers_recurring_short_days"
@@ -120,12 +120,13 @@ $form_values = $this->get_form_values();
 								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
 								$repeating_interval = $scheduler->get_recurring_short_interval();
 								?>
-								<p class="description">Export latest WordPress subscribers registered in last X days every <?php echo esc_html( $repeating_interval ); ?> hours.</p>
+								<?php /* translators: 1: Time Interval */ ?>
+								<p class="description"><?php printf( esc_html__( 'Export latest WordPress subscribers registered in last X days every %d hours.', 'newsman' ), esc_html( $repeating_interval ) ); ?></p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers_recurring_long_days">Latest Long Period in Days</label>
+								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers_recurring_long_days"><?php echo esc_html__( 'Latest Long Period in Days', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwordpresssubscribers_recurring_long_days"
@@ -135,22 +136,23 @@ $form_values = $this->get_form_values();
 								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
 								$repeating_interval = $scheduler->get_recurring_long_interval();
 								?>
-								<p class="description">Export latest WordPress subscribers registered in last X days every <?php echo esc_html( $repeating_interval / 24 ); ?> days.</p>
+								<?php /* translators: 1: Time Interval */ ?>
+								<p class="description"><?php printf( esc_html__( 'Export latest WordPress subscribers registered in last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers">Export WooCommerce Buyers as Subscribers</label>
+								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers"><?php echo esc_html__( 'Export WooCommerce Buyers as Subscribers', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input name="newsman_remarketingexportwoocommercesubscribers" type="checkbox"
 										id="newsman_remarketingexportwoocommercesubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Export all buyers from orders with status complete on regular basis (using Woo Commerce Action Scheduler)</p>
+								<p class="description"><?php echo esc_html__( 'Export all buyers from orders with status complete on regular basis (using Woo Commerce Action Scheduler).', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers_recurring_short_days">Latest Short Period in Days</label>
+								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers_recurring_short_days"><?php echo esc_html__( 'Latest Short Period in Days', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwoocommercesubscribers_recurring_short_days"
@@ -160,12 +162,13 @@ $form_values = $this->get_form_values();
 								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
 								$repeating_interval = $scheduler->get_recurring_short_interval();
 								?>
-								<p class="description">Export latest buyers from orders created in the last X days every <?php echo esc_html( $repeating_interval ); ?> hours.</p>
+								<?php /* translators: 1: Time Interval */ ?>
+								<p class="description"><?php printf( esc_html__( 'Export latest buyers from orders created in the last X days every %d hours.', 'newsman' ), esc_html( $repeating_interval ) ); ?></p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers_recurring_long_days">Latest Long Period in Days</label>
+								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers_recurring_long_days"><?php echo esc_html__( 'Latest Long Period in Days', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwoocommercesubscribers_recurring_long_days"
@@ -175,22 +178,23 @@ $form_values = $this->get_form_values();
 								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
 								$repeating_interval = $scheduler->get_recurring_long_interval();
 								?>
-								<p class="description">Export latest buyers from orders created in the last X days every <?php echo esc_html( $repeating_interval / 24 ); ?> days.</p>
+								<?php /* translators: 1: Time Interval */ ?>
+								<p class="description"><?php printf( esc_html__( 'Export latest buyers from orders created in the last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingexportorders">Export Orders</label>
+								<label class="nzm-label" for="newsman_remarketingexportorders"><?php echo esc_html__( 'Export Orders', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input name="newsman_remarketingexportorders" type="checkbox"
 										id="newsman_remarketingexportorders" <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'checked' : ''; ?>/>
-								<p class="description">Export orders on regular basis (using Woo Commerce Action Scheduler)</p>
+								<p class="description"><?php echo esc_html__( 'Export orders on regular basis (using Woo Commerce Action Scheduler).', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportorders_recurring_short_days">Latest Short Period in Days</label>
+								<label class="nzm-label" for="newsman_remarketingexportorders_recurring_short_days"><?php echo esc_html__( 'Latest Short Period in Days', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportorders_recurring_short_days"
@@ -200,12 +204,13 @@ $form_values = $this->get_form_values();
 								$scheduler          = new \Newsman\Scheduler\Export\Recurring\Orders();
 								$repeating_interval = $scheduler->get_recurring_short_interval();
 								?>
-								<p class="description">Export latest orders created in the last X days every <?php echo esc_html( $repeating_interval ); ?> hours.</p>
+								<?php /* translators: 1: Time Interval */ ?>
+								<p class="description"><?php printf( esc_html__( 'Export latest orders created in the last X days every %d hours.', 'newsman' ), esc_html( $repeating_interval ) ); ?></p>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'table-row' : 'none'; ?>;">
 							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportorders_recurring_long_days">Latest Long Period in Days</label>
+								<label class="nzm-label" for="newsman_remarketingexportorders_recurring_long_days"><?php echo esc_html__( 'Latest Long Period in Days', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportorders_recurring_long_days"
@@ -215,22 +220,23 @@ $form_values = $this->get_form_values();
 								$scheduler          = new \Newsman\Scheduler\Export\Recurring\Orders();
 								$repeating_interval = $scheduler->get_recurring_long_interval();
 								?>
-								<p class="description">Export latest orders created in the last X days every <?php echo esc_html( $repeating_interval / 24 ); ?> days.</p>
+								<?php /* translators: 1: Time Interval */ ?>
+								<p class="description"><?php printf( esc_html__( 'Export latest orders created in the last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingorderdate">Export Orders After Date</label>
+								<label class="nzm-label" for="newsman_remarketingorderdate"><?php echo esc_html__( 'Export Orders After Date', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<input class="nzm-small-input" type="text" name="newsman_remarketingorderdate" id="newsman_remarketingorderdate" value="<?php echo esc_html( $form_values['newsman_remarketingorderdate'] ); ?>" />
-								<p class="description">Export orders created after a specific date (including). Format: YYYY-MM-DD</p>
+								<p class="description"><?php echo esc_html__( 'Export orders created after a specific date (including). Format: YYYY-MM-DD', 'newsman' ); ?></p>
 							</td>
 						</tr>
 					<?php endif; ?>
 					<tr>
 						<th scope="row">
-							<label class="nzm-label" for="newsman_remarketingordersave">Export Orders on Status Change</label>
+							<label class="nzm-label" for="newsman_remarketingordersave"><?php echo esc_html__( 'Export Orders on Status Change', 'newsman' ); ?></label>
 						</th>
 						<td>
 							<select class="nzm-multiple-select" name="newsman_remarketingordersave[]" id="newsman_remarketingordersave" multiple="multiple">
@@ -249,13 +255,13 @@ $form_values = $this->get_form_values();
 								}
 								?>
 							</select>
-							<p class="description">Select order statuses. On each selected order status change, the order details will be sent to Newsman.</p>
+							<p class="description"><?php echo esc_html__( 'Select order statuses. On each selected order status change, the order details will be sent to NewsMAN.', 'newsman' ); ?></p>
 						</td>
 					</tr>
 					<?php if ( function_exists( 'wc_get_attribute_taxonomies' ) ) : ?>
 						<tr>
 							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingproductattributes">Export Additional Product Attributes</label>
+								<label class="nzm-label" for="newsman_remarketingproductattributes"><?php echo esc_html__( 'Export Additional Product Attributes', 'newsman' ); ?></label>
 							</th>
 							<td>
 								<select class="nzm-multiple-select" name="newsman_remarketingproductattributes[]" id="newsman_remarketingproductattributes" multiple="multiple">
@@ -275,13 +281,13 @@ $form_values = $this->get_form_values();
 									}
 									?>
 								</select>
-								<p class="description">Select multiple product attributes to include in your product feed.</p>
+								<p class="description"><?php echo esc_html__( 'Select multiple product attributes to include in your product feed.', 'newsman' ); ?></p>
 							</td>
 						</tr>
 					<?php endif; ?>
 					<tr>
 						<th scope="row">
-							<label class="nzm-label" for="newsman_remarketingcustomerattributes">Customer Attributes</label>
+							<label class="nzm-label" for="newsman_remarketingcustomerattributes"><?php echo esc_html__( 'Customer Attributes', 'newsman' ); ?></label>
 						</th>
 						<td>
 							<select class="nzm-multiple-select" name="newsman_remarketingcustomerattributes[]" id="newsman_remarketingcustomerattributes" multiple="multiple">
@@ -297,13 +303,13 @@ $form_values = $this->get_form_values();
 								}
 								?>
 							</select>
-							<p class="description">Select which customer attributes (from orders) to include in your remarketing data.</p>
+							<p class="description"><?php echo esc_html__( 'Select which customer attributes (from orders) to include in your remarketing data.', 'newsman' ); ?></p>
 						</td>
 					</tr>
 				<?php endif; ?>
 			</table>
 			<div style="padding-top: 5px;">
-				<input type="submit" value="Save Changes" class="button button-primary"/>
+				<input type="submit" value="<?php echo esc_attr__( 'Save Changes', 'newsman' ); ?>" class="button button-primary"/>
 			</div>
 			</form>
 		</div>

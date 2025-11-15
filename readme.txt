@@ -81,16 +81,16 @@ Composer:
 For this type of installation please visit the plugin's page on <a target="_blank" href="https://github.com/Newsman/WP-Plugin-NewsmanApp">Github</a>.
 
 Continue with:
-- Activate the plugin, NewsmanApp and Newsman Remarketing
-- Go to Admin > Newsman. You can login with Newsman via OAuth and automate the flow (API KEY, User ID, Remarketing ID), automated installer.
+- Activate the plugin, NewsmanApp and NewsMAN Remarketing
+- Go to Admin > NewsMAN. You can login with NewsMAN via OAuth and automate the flow (API KEY, User ID, Remarketing ID), automated installer.
 
 Widget configuration:
 
-- Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form ->  select landing page -> Activate for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
+- Log in to your <a target="_blank" href="https://newsman.app">NewsMAN account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form ->  select landing page -> Activate for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
 
 - If selected modal window -> Activate for newsletter subscription -> it will automatically be displayed on the website.
 
-Newsman Remarketing
+NewsMAN Remarketing
 
 You must be logged out of admin to be able to test Remarketing (forms, events).
 
@@ -100,7 +100,7 @@ After the plugin is installed, you will also have: feed products, events (produc
 
 Remarketing Id
 
-Go to Remarketing Tab and paste your Newsman Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
+Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
 
 == Frequently Asked Questions ==
 
@@ -163,5 +163,5 @@ No upgrade yet.
 2. Settings
 3. SMS
 4. Remarketing
-5. activation
-6. Newsman OAuth login
+5. Activation
+6. NewsMAN OAuth login

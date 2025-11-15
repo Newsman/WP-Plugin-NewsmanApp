@@ -30,7 +30,7 @@ if ( ! class_exists( '\Newsman\NewsmanPhp' ) ) {
 		 */
 		public static function notify_missing_vendor_composer() {
 			printf(
-				'<div id="newsman-vendor-missing" class="notice notice-error"><p>Dependencies for Newsman need to be installed. Run <code>composer install --no-dev</code> from the <code>%s</code> directory.</p></div>',
+				'<div id="newsman-vendor-missing" class="notice notice-error"><p>Dependencies for NewsmanApp WordPress plugin need to be installed. Run <code>composer install --no-dev</code> from the <code>%s</code> directory.</p></div>',
 				esc_html( dirname( __DIR__ ) )
 			);
 		}

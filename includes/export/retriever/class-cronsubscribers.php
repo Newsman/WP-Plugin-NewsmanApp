@@ -147,7 +147,7 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 		return array(
 			'status'  => sprintf(
 				/* translators: 1: Sent subscribers count, 2: Total subscribers count */
-				esc_html__( 'Sent to Newsman %1$d subscribers out of a total of %2$d.', 'newsman' ),
+				esc_html__( 'Sent to NewsMAN %1$d subscribers out of a total of %2$d.', 'newsman' ),
 				$count,
 				$count_subscribers
 			),

@@ -23,7 +23,7 @@ $this->process_forms();
 ?>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
-		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="NewsMAN" />
+		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" />
 	</a>
 </div>
 <div class="tabset">
@@ -35,7 +35,7 @@ $this->process_forms();
 				<div class="error"><p><strong><?php echo esc_html( $this->form_error_message ); ?></strong></p></div>
 			<?php } ?>
 			<div class="wrap wrap-settings-admin-page">
-				<h2>NewsMAN plugin for Wordpress-Woocommerce</h2>
+				<h2><?php echo esc_html__( 'NewsMAN plugin for Wordpress-Woocommerce', 'newsman' ); ?></h2>
 				<?php // OAuth step 1. ?>
 				<?php if ( 1 === $this->step ) { ?>
 					<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanOauth' ) ); ?>">
@@ -44,38 +44,38 @@ $this->process_forms();
 						<table class="form-table newsman-table newsman-tbl-fixed newsman-oauth">
 							<tr>
 								<td>
-									<p class="description"><b>Connect your site with NewsMAN for:</b></p>
+									<p class="description"><b><?php echo esc_html__( 'Connect your site with NewsMAN for:', 'newsman' ); ?></b></p>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="description">- Subscribers Sync</p>
+									<p class="description">- <?php echo esc_html__( 'Subscribers Sync', 'newsman' ); ?></p>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="description">- Ecommerce Remarketing</p>
+									<p class="description">- <?php echo esc_html__( 'Ecommerce Remarketing', 'newsman' ); ?></p>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="description">- Create and manage forms</p>
+									<p class="description">- <?php echo esc_html__( 'Create and manage forms', 'newsman' ); ?></p>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="description">- Create and manage popups</p>
+									<p class="description">- <?php echo esc_html__( 'Create and manage popups', 'newsman' ); ?></p>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<p class="description">- Connect your forms to automation</p>
+									<p class="description">- <?php echo esc_html__( 'Connect your forms to automation', 'newsman' ); ?></p>
 								</td>
 							</tr>
 						</table>
 						<div style="padding-top: 5px;">
 							<a style="background: #ad0100" href="<?php echo esc_url( $this->get_oauth_url() ); ?>"
-								class="button button-primary">Login with NewsMAN</a>
+								class="button button-primary"><?php echo esc_html__( 'Login with NewsMAN', 'newsman' ); ?></a>
 						</div>
 					</form>
 					<?php // List step 2. ?>
@@ -87,9 +87,9 @@ $this->process_forms();
 						<table class="form-table newsman-table newsman-tbl-fixed newsman-oauth">
 							<tr>
 								<td>
-									<label for="newsman_list" style="display: none;"><?php esc_html__( 'Select list:', 'newsman' ); ?></label>
+									<label for="newsman_list" style="display: none;"><?php echo esc_html__( 'Select list:', 'newsman' ); ?></label>
 									<select name="newsman_list" id="newsman_list">
-										<option value="0">-- select list --</option>
+										<option value="0"><?php echo esc_html__( '-- select list --', 'newsman' ); ?></option>
 										<?php
 										foreach ( $this->response_lists as $item ) {
 											if ( 'sms' === $item['type'] ) {
@@ -104,7 +104,7 @@ $this->process_forms();
 							</tr>
 						</table>
 						<div style="padding-top: 5px;">
-							<button type="submit" style="background: #ad0100" class="button button-primary">Save</button>
+							<button type="submit" style="background: #ad0100" class="button button-primary"><?php echo esc_html__( 'Save', 'newsman' ); ?></button>
 						</div>
 					</form>
 				<?php } ?>

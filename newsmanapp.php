@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp for WordPress
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 3.0.2
+ * Version: 3.1.0
  * Author: Newsman
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSMAN_VERSION', '3.0.2' );
+define( 'NEWSMAN_VERSION', '3.1.0' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'NEWSMAN_JS_SCRIPT_VERSION', '20251114010000' );
@@ -95,13 +95,13 @@ class WP_Newsman {
 	/**
 	 * Get class instance
 	 *
-	 * @return self WP_Newsman
+	 * @return self \WP_Newsman
 	 */
 	public static function init() {
 		static $instance = null;
 
 		if ( ! $instance ) {
-			$instance = new WP_Newsman();
+			$instance = new \WP_Newsman();
 		}
 
 		return $instance;
@@ -113,6 +113,7 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function init_hooks() {
+		add_action( 'init', array( $this, 'load_text_domain' ) );
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->get_plugin_lazy_priority() );
 		add_action( 'init', array( new \Newsman\Export\Router(), 'execute' ) );
 		// Widget auto init.
@@ -222,6 +223,16 @@ class WP_Newsman {
 		if ( class_exists( 'Newsman\Setup' ) ) {
 			\Newsman\Setup::one_time_setup();
 		}
+	}
+
+	/**
+	 * Load translation
+	 *
+	 * @return void
+	 */
+	public function load_text_domain() {
+		$plugin_rel_path = basename( __DIR__ ) . '/languages';
+		load_plugin_textdomain( 'newsman', false, $plugin_rel_path );
 	}
 }
 

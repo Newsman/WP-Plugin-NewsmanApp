@@ -33,13 +33,11 @@ composer dump-autoload -o
 
 ## Activate the plugin
 
-If you're using woocommerce you will also need to activate Newsman Remarketing plugin
-
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_activation.png)
 
 # Settings
 
-The initial setup is automated, you can login via OAuth with Newsman, follow the steps, installation will be ready in no time
+The initial setup is automated, you can login via OAuth with NewsMAN, follow the steps, installation will be ready in no time
 
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_oauth.png)
 
@@ -52,7 +50,7 @@ The initial setup is automated, you can login via OAuth with Newsman, follow the
 # SMS
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_sms.png)
 
-# Newsman Remarketing
+# NewsMAN Remarketing
 
 ## You must be logged out of admin to be able to test Remarketing (forms, events).
 
@@ -62,13 +60,13 @@ After the plugin is installed, you will also have: feed products, events (produc
 
 ## Remarketing Id
 
-Go to Remarketing Tab and paste your Newsman Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
+Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
 
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_remarketingId.png)
 
 # Widget
 
-- Log in to your <a target="_blank" href="https://newsman.app">Newsman account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form ->  select landing page -> Activate for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
+- Log in to your <a target="_blank" href="https://newsman.app">NewsMAN account</a>: Select List -> Settings -> Subscription forms -> Create/Edit form ->  select landing page -> Activate for newsletter subscription -> Select embedded form. Copy paste Shortcode `newsman_subscribe_widget`
 
 - If selected modal window -> Activate for newsletter subscription -> it will automatically be displayed on the website.
 

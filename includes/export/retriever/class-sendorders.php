@@ -167,7 +167,7 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 		return array(
 			'status'  => sprintf(
 				/* translators: 1: Sent orders count, 2: Total orders count */
-				esc_html__( 'Sent to Newsman %1$d orders out of a total of %2$d.', 'newsman' ),
+				esc_html__( 'Sent to NewsMAN %1$d orders out of a total of %2$d.', 'newsman' ),
 				$count,
 				$count_orders
 			),
