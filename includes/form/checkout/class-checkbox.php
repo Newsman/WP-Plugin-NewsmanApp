@@ -43,6 +43,9 @@ class Checkbox {
 	 * @return void
 	 */
 	public function add_field() {
+		if ( ! $this->config->is_enabled_with_api() ) {
+			return;
+		}
 
 		if ( ! $this->config->is_checkout_newsletter() ) {
 			return;
