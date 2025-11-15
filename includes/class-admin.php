@@ -116,8 +116,8 @@ class Admin {
 
 		add_submenu_page(
 			'Newsman',
-            esc_html__( 'Sync', 'newsman' ),
-            esc_html__( 'Sync', 'newsman' ),
+			esc_html__( 'Sync', 'newsman' ),
+			esc_html__( 'Sync', 'newsman' ),
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanSync',
 			array( new \Newsman\Admin\Settings\Sync(), 'include_page' )
@@ -125,8 +125,8 @@ class Admin {
 
 		add_submenu_page(
 			'Newsman',
-            esc_html__( 'Remarketing', 'newsman' ),
-            esc_html__( 'Remarketing', 'newsman' ),
+			esc_html__( 'Remarketing', 'newsman' ),
+			esc_html__( 'Remarketing', 'newsman' ),
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanRemarketing',
 			array( new \Newsman\Admin\Settings\Remarketing(), 'include_page' )
@@ -135,8 +135,8 @@ class Admin {
 		if ( $exist->exist() ) {
 			add_submenu_page(
 				'Newsman',
-                esc_html__( 'SMS', 'newsman' ),
-                esc_html__( 'SMS', 'newsman' ),
+				esc_html__( 'SMS', 'newsman' ),
+				esc_html__( 'SMS', 'newsman' ),
 				'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 				'NewsmanSMS',
 				array( new \Newsman\Admin\Settings\Sms(), 'include_page' )
@@ -145,8 +145,8 @@ class Admin {
 
 		add_submenu_page(
 			'Newsman',
-            esc_html__( 'Settings', 'newsman' ),
-            esc_html__( 'Settings', 'newsman' ),
+			esc_html__( 'Settings', 'newsman' ),
+			esc_html__( 'Settings', 'newsman' ),
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanSettings',
 			array( new \Newsman\Admin\Settings\Settings(), 'include_page' )
@@ -154,8 +154,8 @@ class Admin {
 
 		add_submenu_page(
 			'Newsman',
-            esc_html__( 'Oauth', 'newsman' ),
-            esc_html__( 'Oauth', 'newsman' ),
+			esc_html__( 'Oauth', 'newsman' ),
+			esc_html__( 'Oauth', 'newsman' ),
 			'administrator', // phpcs:ignore WordPress.WP.Capabilities.RoleFound
 			'NewsmanOauth',
 			array( new \Newsman\Admin\Settings\Oauth(), 'include_page' )
