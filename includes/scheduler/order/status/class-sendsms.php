@@ -58,6 +58,10 @@ class SendSms extends AbstractStatus {
 			return;
 		}
 
+		if ( ! $this->config->is_checkout_order_status() ) {
+			return;
+		}
+
 		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
 			if ( ! $this->sms_config->is_valid_sms_by_order_status( $status ) ) {
 				continue;
@@ -114,6 +118,10 @@ class SendSms extends AbstractStatus {
 	 */
 	public function send_sms( $order_id, $status, $is_scheduled = false ) {
 		if ( ! $this->sms_config->is_enabled_with_api() ) {
+			return false;
+		}
+
+		if ( ! $this->config->is_checkout_order_status() ) {
 			return false;
 		}
 

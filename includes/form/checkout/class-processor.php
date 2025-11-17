@@ -135,13 +135,19 @@ class Processor {
 			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['nzm_send_order_status'] ) ) )
 		);
 
-		// Is checkout page.
-		$is_checkout = function_exists( '\is_checkout' ) && is_checkout() && ! is_wc_endpoint_url();
-		$is_checkout = apply_filters( 'newsman_form_checkout_processor_is_checkout', $is_checkout );
+		// Is checkout pave order AJAX request.
+		$is_checkout_save = (
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			! empty( $_REQUEST['wc-ajax'] ) &&
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			( 'checkout' === sanitize_text_field( wp_unslash( $_REQUEST['wc-ajax'] ) ) )
+		);
 
-		if ( ! $is_checkout_newsletter && ! $is_checkout_send_order_status && ! $is_checkout ) {
+		$is_checkout_save = apply_filters( 'newsman_form_checkout_processor_is_checkout', $is_checkout_save );
+		if ( ! $is_checkout_newsletter && ! $is_checkout_send_order_status && ! $is_checkout_save ) {
 			return false;
 		}
+
 		if ( ! $this->config->is_checkout_newsletter() &&
 			! (
 				$this->sms_config->is_enabled_with_api() &&
