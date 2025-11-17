@@ -12,6 +12,7 @@
 namespace Newsman\Form\Checkout;
 
 use Newsman\Config;
+use Newsman\Config\Sms as SmsConfig;
 use Newsman\Logger;
 use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Util\Telephone;
@@ -69,6 +70,13 @@ class Processor {
 	protected $remarketing_config;
 
 	/**
+	 * SMS config
+	 *
+	 * @var SmsConfig
+	 */
+	protected $sms_config;
+
+	/**
 	 * Telephone
 	 *
 	 * @var Telephone
@@ -88,6 +96,7 @@ class Processor {
 	public function __construct() {
 		$this->config             = Config::init();
 		$this->remarketing_config = RemarketingConfig::init();
+		$this->sms_config         = SmsConfig::init();
 		$this->telephone          = new Telephone();
 		$this->logger             = Logger::init();
 	}
@@ -107,20 +116,38 @@ class Processor {
 	 * @return bool
 	 */
 	public function is_hook_enabled() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		$is_checkout_newsletter = ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && ( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) ) );
+		if ( ! $this->config->is_enabled_with_api() ) {
+			return false;
+		}
+
+		$is_checkout_newsletter = (
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			! empty( $_POST['newsmanCheckoutNewsletter'] ) &&
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) )
+		);
+
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		$is_checkout_send_order_status = ( ! empty( $_POST['nzm_send_order_status'] ) && ( 1 === (int) sanitize_text_field( wp_unslash( $_POST['nzm_send_order_status'] ) ) ) );
+		$is_checkout_send_order_status = (
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			! empty( $_POST['nzm_send_order_status'] ) &&
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['nzm_send_order_status'] ) ) )
+		);
+
 		// Is checkout page.
 		$is_checkout = function_exists( '\is_checkout' ) && is_checkout() && ! is_wc_endpoint_url();
+		$is_checkout = apply_filters( 'newsman_form_checkout_processor_is_checkout', $is_checkout );
 
 		if ( ! $is_checkout_newsletter && ! $is_checkout_send_order_status && ! $is_checkout ) {
 			return false;
 		}
-		if ( ! $this->config->is_enabled_with_api() ) {
-			return false;
-		}
-		if ( ! $this->config->is_checkout_newsletter() && ! $this->config->is_checkout_sms() ) {
+		if ( ! $this->config->is_checkout_newsletter() &&
+			! (
+				$this->sms_config->is_enabled_with_api() &&
+				( $this->config->is_checkout_sms() || $this->config->is_checkout_order_status() )
+			)
+		) {
 			return false;
 		}
 		return true;
@@ -134,11 +161,15 @@ class Processor {
 	 * @throws \Exception Exceptions.
 	 */
 	public function process( $order_id ) {
-		$order                 = wc_get_order( $order_id );
-		$order_data            = $order->get_data();
-		$is_subscribe_sms_list = ( '1' === (string) ( (int) $order->get_meta( '_nzm_send_order_status' ) ) );
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		$is_subscribe_newsletter = ( ! empty( $_POST['newsmanCheckoutNewsletter'] ) && ( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) ) );
+		$order                   = wc_get_order( $order_id );
+		$order_data              = $order->get_data();
+		$is_subscribe_sms_list   = ( '1' === (string) ( (int) $order->get_meta( '_nzm_send_order_status' ) ) );
+		$is_subscribe_newsletter = (
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			! empty( $_POST['newsmanCheckoutNewsletter'] ) &&
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) )
+		);
 
 		$properties = array();
 

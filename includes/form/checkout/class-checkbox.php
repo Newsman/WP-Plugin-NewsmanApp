@@ -12,6 +12,7 @@
 namespace Newsman\Form\Checkout;
 
 use Newsman\Config;
+use Newsman\Config\Sms as SmsConfig;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -31,10 +32,18 @@ class Checkbox {
 	protected $config;
 
 	/**
+	 * SMS config
+	 *
+	 * @var SmsConfig
+	 */
+	protected $sms_config;
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->config = Config::init();
+		$this->config     = Config::init();
+		$this->sms_config = SmsConfig::init();
 	}
 
 	/**
@@ -48,7 +57,16 @@ class Checkbox {
 		}
 
 		add_action( 'woocommerce_review_order_before_submit', array( $this, 'add_fields' ) );
+
+		// Do not handle nzm_send_order_status used to send SMS if flags are not set.
+		if ( ! ( $this->sms_config->is_enabled_with_api() && $this->config->is_checkout_order_status() ) ) {
+			return;
+		}
+
+		// Create order in checkout, save nzm_send_order_status as meta field.
 		add_action( 'woocommerce_checkout_create_order', array( $this, 'save_send_order_status_field' ), 10, 1 );
+
+		// Add nzm_send_order_status to API rest order.
 		add_filter(
 			'woocommerce_rest_prepare_shop_order_object',
 			array(
@@ -58,6 +76,8 @@ class Checkbox {
 			10,
 			2
 		);
+
+		// Add nzm_send_order_status checkbox in admin order page.
 		add_action(
 			'woocommerce_admin_order_data_after_billing_address',
 			array(
@@ -67,6 +87,8 @@ class Checkbox {
 			10,
 			1
 		);
+
+		// Save as meta field nzm_send_order_status in admin order save.
 		add_action(
 			'woocommerce_process_shop_order_meta',
 			array(
@@ -199,7 +221,7 @@ class Checkbox {
 	 * @return void
 	 */
 	public function add_field_order_status() {
-		if ( ! $this->config->is_enabled_with_api() ) {
+		if ( ! ( $this->config->is_enabled_with_api() && $this->sms_config->is_enabled_with_api() ) ) {
 			return;
 		}
 
