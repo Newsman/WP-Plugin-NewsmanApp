@@ -110,6 +110,11 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.1.0 =
+* Add Romanian i18n and better internationalization
+* Add in customer My Account Newsletter Subscription Page
+* Add checkbox to allow order status notifications by SMS message. Works on checkout classic.
+* Add other general improvements
 = 3.0.2 =
  * Change "Tested up to" to "6.8.3"
  * Updated installation documentation
