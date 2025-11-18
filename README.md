@@ -19,7 +19,7 @@ This is the easiest way to connect your Blog with Newsman.com. Generate an API K
 ## Composer
 1. The plugin is compatible with WordPress Composer managed installations.
 ```
-composer require newsman/newsmanapp
+composer require newsman/wordpress-plugin
 ```
 If Composer autoloader is not included already in your project than you may need to generate `vendor/autoload.php` inside `newsmanapp` plugin's directory (`wp-content/plugins/newsmanapp`). 
 You can either use:
