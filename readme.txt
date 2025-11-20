@@ -110,6 +110,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.1.1 =
+* Fix query limit set on buyers from orders
 = 3.1.0 =
 * Add Romanian i18n and better internationalization
 * Add in customer My Account Newsletter Subscription Page
