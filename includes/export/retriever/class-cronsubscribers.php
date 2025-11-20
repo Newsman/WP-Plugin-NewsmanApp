@@ -66,7 +66,7 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 			sprintf(
 			/* translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created */
 				esc_html__( 'Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s', 'newsman' ),
-				$data['method'],
+				isset( $data['method'] ) ? $data['method'] : 'unkown method',
 				$start,
 				$limit,
 				$blog_id,
@@ -90,11 +90,11 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 				if ( ! $this->is_valid_subscriber( $subscriber ) ) {
 					continue;
 				}
-				$data = $this->process_subscriber( $subscriber, $blog_id );
-				if ( false === $data ) {
+				$adata = $this->process_subscriber( $subscriber, $blog_id );
+				if ( false === $adata ) {
 					continue;
 				}
-				$result[] = $data;
+				$result[] = $adata;
 				++$count_subscribers;
 			} catch ( \Exception $e ) {
 				$this->logger->log_exception( $e );
@@ -132,7 +132,7 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 			sprintf(
 				/* translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created */
 				esc_html__( 'Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s', 'newsman' ),
-				$data['method'],
+				isset( $data['method'] ) ? $data['method'] : 'unkown method',
 				$start,
 				$limit,
 				$blog_id,

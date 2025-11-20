@@ -49,7 +49,7 @@ class SubscribersWoocommerce extends CronSubscribers {
 		$args = array(
 			'status'  => 'completed',
 			'offset'  => $start,
-			'number'  => $limit,
+			'limit'   => $limit,
 			'orderby' => 'date_created_gmt',
 			'order'   => 'DESC',
 		);
