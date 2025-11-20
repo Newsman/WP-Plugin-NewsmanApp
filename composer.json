@@ -1,8 +1,11 @@
 {
-	"name": "newsman/newsmanapp",
+	"name": "newsman/wordpress-plugin",
 	"description": "Newsman plugin for WordPress and WooCommerce.",
 	"license": "GPL-2.0-or-later",
 	"type": "wordpress-plugin",
+	"extra": {
+    	"installer-name": "newsmanapp"
+  	},
 	"authors": [
 		{
 			"name": "Newsman",
