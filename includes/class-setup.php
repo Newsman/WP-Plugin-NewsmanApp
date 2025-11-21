@@ -74,7 +74,7 @@ class Setup {
 		}
 
 		// Determine if this is a network-wide update.
-		$network_wide = is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
+		$network_wide = function_exists( 'is_multisite' ) && is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
 
 		self::setup( $network_wide );
 	}
@@ -107,7 +107,7 @@ class Setup {
 		if ( ! empty( self::get_current_version() ) ) {
 			return;
 		}
-		$network_wide = is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
+		$network_wide = function_exists( 'is_multisite' ) && is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
 		self::setup( $network_wide );
 	}
 
@@ -118,20 +118,24 @@ class Setup {
 	 * @return void
 	 */
 	protected static function setup( $network_wide = false ) {
-		self::$current_version = self::get_current_version();
+		if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+            self::$current_version = self::get_current_version();
 
-		if ( is_multisite() && $network_wide ) {
-			// Network activation - run for each site.
 			$sites = get_sites();
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
+                self::$current_version = self::get_current_version();
 				self::create_tables();
 				self::upgrade_newsman_options();
 				self::upgrade_rewrites();
 				self::upgrade_options();
 				restore_current_blog();
 			}
+            
+            // Get version from tables for the case where there was an error lopping the sites
+            self::$current_version = self::get_current_version();
 		} else {
+            self::$current_version = self::get_current_version();
 			// Single site activation.
 			self::create_tables();
 			self::upgrade_newsman_options();
@@ -308,6 +312,11 @@ js/retargeting/modal_{{api_key}}.js'
 			self::upgrade_options_three_zero_zero();
 			update_option( 'newsman_setup_version', '3.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '4.0.0', '<' ) ) {
+			self::update_newsman_autoload_options();
+			update_option( 'newsman_setup_version', '4.0.0', true );
+		}
 	}
 
 	/**
@@ -316,9 +325,9 @@ js/retargeting/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function upgrade_options_one_zero_zero() {
-		add_option( 'newsman_api', 'on' );
-		add_option( 'newsman_useremarketing', 'on' );
-		add_option( 'newsman_remarketingsendtelephone', 'on' );
+		add_option( 'newsman_api', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_useremarketing', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingsendtelephone', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option(
 			'newsman_remarketingordersave',
 			array(
@@ -328,27 +337,34 @@ js/retargeting/modal_{{api_key}}.js'
 				'wc-cancelled',
 				'wc-refunded',
 				'wc-failed',
-			)
+			),
+            '',
+            Config::AUTOLOAD_OPTIONS
 		);
-		add_option( 'newsman_checkoutnewsletter', 'on' );
-		add_option( 'newsman_senduserip', 'on' );
-		add_option( 'newsman_developeractiveuserip', '' );
-		add_option( 'newsman_developeruserip', '' );
-		add_option( 'newsman_developerpluginlazypriority', \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD );
-		add_option( 'newsman_developer_use_action_scheduler', 'on' );
-		add_option( 'newsman_developer_use_as_subscribe', 'on' );
-		add_option( 'newsman_remarketingexportorders', 'on' );
+		add_option( 'newsman_checkoutnewsletter', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_senduserip', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_developeractiveuserip', '', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_developeruserip', '', '', Config::AUTOLOAD_OPTIONS );
+		add_option(
+            'newsman_developerpluginlazypriority',
+            \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD,
+            '',
+            Config::AUTOLOAD_OPTIONS
+        );
+		add_option( 'newsman_developer_use_action_scheduler', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_developer_use_as_subscribe', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingexportorders', 'on', '', Config::AUTOLOAD_OPTIONS );
 
-		add_option( 'newsman_remarketingexportwordpresssubscribers_recurring_short_days', '7' );
-		add_option( 'newsman_remarketingexportwordpresssubscribers_recurring_long_days', '90' );
-		add_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_short_days', '7' );
-		add_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_long_days', '90' );
-		add_option( 'newsman_remarketingexportorders_recurring_short_days', '7' );
-		add_option( 'newsman_remarketingexportorders_recurring_long_days', '90' );
+		add_option( 'newsman_remarketingexportwordpresssubscribers_recurring_short_days', '7', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingexportwordpresssubscribers_recurring_long_days', '90', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_short_days', '7', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_long_days', '90', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingexportorders_recurring_short_days', '7', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_remarketingexportorders_recurring_long_days', '90', '', Config::AUTOLOAD_OPTIONS );
 
 		$current_date = new \DateTime();
 		$current_date->modify( '-5 years' );
-		add_option( 'newsman_remarketingorderdate', $current_date->format( 'Y-m-d' ) );
+		add_option( 'newsman_remarketingorderdate', $current_date->format( 'Y-m-d' ), '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**
@@ -357,23 +373,43 @@ js/retargeting/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function upgrade_options_three_zero_zero() {
-		add_option( 'newsman_checkoutnewslettermessage', 'Subscribe to our newsletter' );
+		add_option( 'newsman_checkoutnewslettermessage', 'Subscribe to our newsletter', '', Config::AUTOLOAD_OPTIONS );
 
-		add_option( 'newsman_myaccountnewsletter', 'on' );
-		add_option( 'newsman_myaccountnewsletter_menu_label', 'Newsletter' );
-		add_option( 'newsman_myaccountnewsletter_page_title', 'Newsletter Subscription' );
-		add_option( 'newsman_myaccountnewsletter_checkbox_label', 'Subscribe to our newsletter' );
+		add_option( 'newsman_myaccountnewsletter', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_myaccountnewsletter_menu_label', 'Newsletter', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_myaccountnewsletter_page_title', 'Newsletter Subscription', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_myaccountnewsletter_checkbox_label', 'Subscribe to our newsletter', '', Config::AUTOLOAD_OPTIONS );
 
-		add_option( 'newsman_checkout_order_status', 'on' );
-		add_option( 'newsman_checkout_order_status_label', 'I want to receive notifications about the status of my order on my phone (SMS messages)' );
+		add_option( 'newsman_checkout_order_status', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_checkout_order_status_label', 'I want to receive notifications about the status of my order on my phone (SMS messages)', '', Config::AUTOLOAD_OPTIONS );
 
 		$deprecated = get_option( 'newsman_checkoutnewslettertype' );
 		if ( ! empty( $deprecated ) ) {
-			add_option( 'newsman_newslettertype', $deprecated );
+			add_option( 'newsman_newslettertype', $deprecated, '', Config::AUTOLOAD_OPTIONS );
 		} else {
-			add_option( 'newsman_newslettertype', 'save' );
+			add_option( 'newsman_newslettertype', 'save', '', Config::AUTOLOAD_OPTIONS );
 		}
 	}
+
+    /**
+     * Updates all options starting with 'newsman_' prefix to have autoload='on'
+     *
+     * @return int Number of options updated
+     */
+    protected static function update_newsman_autoload_options() {
+        global $wpdb;
+
+        $count = $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$wpdb->options} 
+             SET autoload = 'on' 
+             WHERE option_name LIKE %s",
+                'newsman\_%'
+            )
+        );
+
+        return $count;
+    }
 
 	/**
 	 * Get current site prefix
@@ -383,7 +419,7 @@ js/retargeting/modal_{{api_key}}.js'
 	protected static function get_current_site_prefix() {
 		global $wpdb;
 
-		if ( is_multisite() ) {
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 			$blog_id = get_current_blog_id();
 			return $wpdb->get_blog_prefix( $blog_id );
 		}

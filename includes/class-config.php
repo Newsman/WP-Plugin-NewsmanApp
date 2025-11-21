@@ -517,6 +517,12 @@ class Config {
 	 */
 	public function is_active( $blog_id = null ) {
 		$active_plugins = $this->get_blog_option( $blog_id, 'active_plugins' );
+
+        if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+            $active_sitewide = array_keys( (array) get_site_option('active_sitewide_plugins', array()) );
+            $active_plugins = array_unique( array_merge( $active_plugins, $active_sitewide ) );
+        }
+
 		foreach ( $active_plugins as $plugin ) {
 			if ( stripos( $plugin, \WP_Newsman::NZ_PLUGIN_PATH ) !== false ) {
 				return true;

@@ -71,7 +71,7 @@ class AbstractRetriever {
 	 * @return bool
 	 */
 	public function is_different_blog( $blog_id = null ) {
-		if ( ! is_multisite() ) {
+		if ( ! ( function_exists( 'is_multisite' ) && is_multisite() ) ) {
 			return false;
 		}
 
