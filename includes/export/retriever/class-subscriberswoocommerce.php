@@ -81,33 +81,32 @@ class SubscribersWoocommerce extends CronSubscribers {
 	 */
 	public function process_subscriber( $subscriber, $blog_id = null ) {
 		$order = $subscriber;
-		$data  = json_decode( wp_json_encode( $order->data ), true );
 
-		if ( isset( $this->emails_cache[ $data['billing']['email'] ] ) ) {
+		if ( isset( $this->emails_cache[ $order->get_billing_email() ] ) ) {
 			return false;
 		}
-		$this->emails_cache[ $data['billing']['email'] ] = true;
+		$this->emails_cache[ $order->get_billing_email() ] = true;
 
 		$row = array(
-			'email'     => $data['billing']['email'],
-			'firstname' => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['first_name'] : '',
-			'lastname'  => ( ! empty( $data['billing']['first_name'] ) ) ? $data['billing']['last_name'] : '',
+			'email'     => $order->get_billing_email(),
+			'firstname' => ( ! empty( $order->get_billing_first_name() ) ) ? $order->get_billing_first_name() : '',
+			'lastname'  => ( ! empty( $order->get_billing_last_name() ) ) ? $order->get_billing_last_name() : '',
 		);
 
 		if ( $this->remarketing_config->is_send_telephone() ) {
 			$row = array_merge(
 				$row,
 				array(
-					'tel'                => ( ! empty( $data['billing']['phone'] ) ) ?
-						$this->clean_phone( $data['billing']['phone'] ) : '',
-					'phone'              => ( ! empty( $data['billing']['phone'] ) ) ?
-						$this->clean_phone( $data['billing']['phone'] ) : '',
-					'telephone'          => ( ! empty( $data['billing']['phone'] ) ) ?
-						$this->clean_phone( $data['billing']['phone'] ) : '',
-					'billing_telephone'  => ( ! empty( $data['billing']['phone'] ) ) ?
-						$this->clean_phone( $data['billing']['phone'] ) : '',
-					'shipping_telephone' => ( ! empty( $data['shipping']['phone'] ) ) ?
-						$this->clean_phone( $data['shipping']['phone'] ) : '',
+					'tel'                => ( ! empty( $order->get_billing_phone() ) ) ?
+						$this->clean_phone( $order->get_billing_phone() ) : '',
+					'phone'              => ( ! empty( $order->get_billing_phone() ) ) ?
+						$this->clean_phone( $order->get_billing_phone() ) : '',
+					'telephone'          => ( ! empty( $order->get_billing_phone() ) ) ?
+						$this->clean_phone( $order->get_billing_phone() ) : '',
+					'billing_telephone'  => ( ! empty( $order->get_billing_phone() ) ) ?
+						$this->clean_phone( $order->get_billing_phone() ) : '',
+					'shipping_telephone' => ( ! empty( $order->get_shipping_phone() ) ) ?
+						$this->clean_phone( $order->get_shipping_phone() ) : '',
 				)
 			);
 		}
@@ -135,22 +134,12 @@ class SubscribersWoocommerce extends CronSubscribers {
 	/**
 	 * Is valid subscriber
 	 *
-	 * @param mixed    $subscriber Subscriber.
-	 * @param null|int $blog_id WP blog ID.
+	 * @param \WC_Order $subscriber Subscriber.
+	 * @param null|int  $blog_id WP blog ID.
 	 * @return bool
 	 */
 	public function is_valid_subscriber( $subscriber, $blog_id = null ) {
-		$data = json_decode( wp_json_encode( $subscriber->data ), true );
-
-		if ( empty( $data ) ) {
-			return false;
-		}
-
-		if ( ! ( is_array( $data ) && isset( $data['billing'] ) ) ) {
-			return false;
-		}
-
-		return true;
+		return $subscriber instanceof \WC_Order && $subscriber->get_billing_email();
 	}
 
 	/**

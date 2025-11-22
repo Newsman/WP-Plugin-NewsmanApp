@@ -119,23 +119,23 @@ class Setup {
 	 */
 	protected static function setup( $network_wide = false ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
-            self::$current_version = self::get_current_version();
+			self::$current_version = self::get_current_version();
 
 			$sites = get_sites();
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
-                self::$current_version = self::get_current_version();
+				self::$current_version = self::get_current_version();
 				self::create_tables();
 				self::upgrade_newsman_options();
 				self::upgrade_rewrites();
 				self::upgrade_options();
 				restore_current_blog();
 			}
-            
-            // Get version from tables for the case where there was an error lopping the sites
-            self::$current_version = self::get_current_version();
+
+			// Get version from tables for the case where there was an error lopping the sites.
+			self::$current_version = self::get_current_version();
 		} else {
-            self::$current_version = self::get_current_version();
+			self::$current_version = self::get_current_version();
 			// Single site activation.
 			self::create_tables();
 			self::upgrade_newsman_options();
@@ -338,19 +338,19 @@ js/retargeting/modal_{{api_key}}.js'
 				'wc-refunded',
 				'wc-failed',
 			),
-            '',
-            Config::AUTOLOAD_OPTIONS
+			'',
+			Config::AUTOLOAD_OPTIONS
 		);
 		add_option( 'newsman_checkoutnewsletter', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_senduserip', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_developeractiveuserip', '', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_developeruserip', '', '', Config::AUTOLOAD_OPTIONS );
 		add_option(
-            'newsman_developerpluginlazypriority',
-            \WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD,
-            '',
-            Config::AUTOLOAD_OPTIONS
-        );
+			'newsman_developerpluginlazypriority',
+			\WP_Newsman::PLUGIN_PRIORITY_LAZY_LOAD,
+			'',
+			Config::AUTOLOAD_OPTIONS
+		);
 		add_option( 'newsman_developer_use_action_scheduler', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_developer_use_as_subscribe', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_remarketingexportorders', 'on', '', Config::AUTOLOAD_OPTIONS );
@@ -391,25 +391,26 @@ js/retargeting/modal_{{api_key}}.js'
 		}
 	}
 
-    /**
-     * Updates all options starting with 'newsman_' prefix to have autoload='on'
-     *
-     * @return int Number of options updated
-     */
-    protected static function update_newsman_autoload_options() {
-        global $wpdb;
+	/**
+	 * Updates all options starting with 'newsman_' prefix to have autoload='on'
+	 *
+	 * @return int Number of options updated
+	 */
+	protected static function update_newsman_autoload_options() {
+		global $wpdb;
 
-        $count = $wpdb->query(
-            $wpdb->prepare(
-                "UPDATE {$wpdb->options} 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$count = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->options} 
              SET autoload = 'on' 
              WHERE option_name LIKE %s",
-                'newsman\_%'
-            )
-        );
+				'newsman\_%'
+			)
+		);
 
-        return $count;
-    }
+		return $count;
+	}
 
 	/**
 	 * Get current site prefix
