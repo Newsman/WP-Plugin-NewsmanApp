@@ -207,6 +207,7 @@ class Remarketing {
 			'\Newsman\Scheduler\Order\Status\SendStatus',
 			'\Newsman\Scheduler\Order\Status\SendSms',
 			'\Newsman\Scheduler\Order\Status\SaveOrder',
+			'\Newsman\Scheduler\Order\Awb\Cargus\SendSms',
 		);
 
 		return apply_filters( 'newsman_known_remarketing_scheduled_classes', $classes );

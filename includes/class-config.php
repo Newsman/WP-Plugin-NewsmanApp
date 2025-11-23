@@ -516,19 +516,28 @@ class Config {
 	 * @return bool
 	 */
 	public function is_active( $blog_id = null ) {
-		$active_plugins = $this->get_blog_option( $blog_id, 'active_plugins' );
-
-		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-			$active_sitewide = array_keys( (array) get_site_option( 'active_sitewide_plugins', array() ) );
-			$active_plugins  = array_unique( array_merge( $active_plugins, $active_sitewide ) );
-		}
-
+		$active_plugins = $this->get_active_plugins( $blog_id );
 		foreach ( $active_plugins as $plugin ) {
 			if ( stripos( $plugin, \WP_Newsman::NZ_PLUGIN_PATH ) !== false ) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Get WordPress active plugins
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return array
+	 */
+	public function get_active_plugins( $blog_id = null ) {
+		$active_plugins = $this->get_blog_option( $blog_id, 'active_plugins' );
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+			$active_sitewide = array_keys( (array) get_site_option( 'active_sitewide_plugins', array() ) );
+			$active_plugins  = array_unique( array_merge( $active_plugins, $active_sitewide ) );
+		}
+		return $active_plugins;
 	}
 
 	/**
@@ -647,6 +656,22 @@ class Config {
 		$order_status_to_name = $this->get_order_status_to_name();
 		if ( isset( $order_status_to_name[ $status ] ) ) {
 			return $order_status_to_name[ $status ];
+		}
+		return false;
+	}
+
+	/**
+	 * Is Cargus shipping plugin active
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_cargus_plugin_active( $blog_id = null ) {
+		$active_plugins = $this->get_active_plugins( $blog_id );
+		foreach ( $active_plugins as $plugin ) {
+			if ( stripos( $plugin, 'cargus/cargus.php' ) !== false ) {
+				return true;
+			}
 		}
 		return false;
 	}

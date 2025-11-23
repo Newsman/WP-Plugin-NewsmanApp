@@ -53,6 +53,11 @@ class ActionScheduler {
 	public const GROUP_MASS_EXPORT_ORDERS = 'newsman_mass_export_orders';
 
 	/**
+	 * Action scheduler group for order AWB
+	 */
+	public const GROUP_ORDER_SMS_AWB = 'newsman_order_sms_awb';
+
+	/**
 	 * Newsman Config
 	 *
 	 * @var Config
@@ -197,5 +202,14 @@ class ActionScheduler {
 	 */
 	public function get_group_mass_export_orders() {
 		return self::GROUP_MASS_EXPORT_ORDERS;
+	}
+
+	/**
+	 * Get action scheduler group for order SMS awb
+	 *
+	 * @return string
+	 */
+	public function get_group_order_sms_awb() {
+		return self::GROUP_ORDER_SMS_AWB;
 	}
 }

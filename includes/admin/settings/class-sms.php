@@ -68,6 +68,24 @@ class Sms extends Settings {
 		'newsman_smsrefundedtext',
 		'newsman_smscancelledactivate',
 		'newsman_smscancelledtext',
+		'newsman_sms_send_cargus_awb',
+		'newsman_sms_cargus_awb_message',
+	);
+
+	/**
+	 * Placeholders in SMS message
+	 *
+	 * @var array
+	 */
+	protected $message_placeholders = array(
+		'billing_first_name',
+		'billing_last_name',
+		'shipping_first_name',
+		'shipping_last_name',
+		'order_number',
+		'order_date',
+		'order_total',
+		'email',
 	);
 
 	/**
@@ -246,6 +264,45 @@ class Sms extends Settings {
 				$this->set_message_backend( 'error', esc_html__( 'The SMS was not sent. ', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		}
+	}
+
+	/**
+	 * Get SMS message placeholders
+	 *
+	 * @param string $only_for Only for.
+	 * @return array
+	 */
+	public function get_message_placeholders( $only_for = '' ) {
+		$is_cargus_plugin_active = $this->config->is_cargus_plugin_active();
+		if ( $is_cargus_plugin_active ) {
+			if ( ! in_array( 'if_cargus_awb', $this->message_placeholders, true ) ) {
+				$this->message_placeholders[] = 'if_cargus_awb';
+			}
+			if ( ! in_array( 'cargus_awb', $this->message_placeholders, true ) ) {
+				$this->message_placeholders[] = 'cargus_awb';
+			}
+			if ( ! in_array( 'endif_cargus_awb', $this->message_placeholders, true ) ) {
+				$this->message_placeholders[] = 'endif_cargus_awb';
+			}
+		}
+		$message_placeholders = $this->message_placeholders;
+
+		if ( 'cargus' === $only_for ) {
+			$key = array_search( 'if_cargus_awb', $message_placeholders, true );
+			if ( false !== $key ) {
+				unset( $message_placeholders[ $key ] );
+			}
+			$key = array_search( 'endif_cargus_awb', $message_placeholders, true );
+			if ( false !== $key ) {
+				unset( $message_placeholders[ $key ] );
+			}
+		}
+
+		return apply_filters(
+			'newsman_admin_settings_sms_get_message_placeholders',
+			$message_placeholders,
+			$only_for
+		);
 	}
 
 	/**

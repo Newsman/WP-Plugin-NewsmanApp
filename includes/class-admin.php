@@ -94,6 +94,9 @@ class Admin {
 		$exist = new \Newsman\Util\WooCommerceExist();
 		if ( $exist->exist() ) {
 			$this->init_scheduled_hooks();
+
+			$sms_awb_cargus = new \Newsman\Admin\Action\Order\Sms\Awb\Cargus();
+			$sms_awb_cargus->init_hooks();
 		}
 	}
 

@@ -23,8 +23,7 @@ $this->process_form();
 $form_values = $this->get_form_values();
 ?>
 <script>
-	jQuery(document).ready(function()
-	{
+	jQuery(document).ready(function() {
 		jQuery('.newsman_smspendingdescription .nzm-variable').on('click', function(){
 			jQuery('#newsman_smspendingtext').append(jQuery(this).html());
 		});	
@@ -46,7 +45,10 @@ $form_values = $this->get_form_values();
 		jQuery('.newsman_smscancelleddescription .nzm-variable').on('click', function(){
 			jQuery('#newsman_smscancelledtext').append(jQuery(this).html());
 		});
-	})	
+		jQuery('.newsman_sms_cargus_awb_message_description .nzm-variable').on('click', function(){
+			jQuery('#newsman_sms_cargus_awb_message').append(jQuery(this).html());
+		});
+	});
 </script>
 <div class="tabset-img">
 	<a href="https://newsman.com" target="_blank">
@@ -148,7 +150,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smspendingtextPanel" <?php echo ( empty( $form_values['newsman_smspendingactivate'] ) || 'off' === $form_values['newsman_smspendingactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smspendingtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smspendingtext" name="newsman_smspendingtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smspendingtext'] ) ) ? esc_html( $form_values['newsman_smspendingtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smspendingdescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smspendingdescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+									<?php
+									foreach ( $this->get_message_placeholders() as $placeholder ) :
+										?>
+										<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -160,7 +166,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smsfailedtextPanel" <?php echo ( empty( $form_values['newsman_smsfailedactivate'] ) || 'off' === $form_values['newsman_smsfailedactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsfailedtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smsfailedtext" name="newsman_smsfailedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsfailedtext'] ) ) ? esc_html( $form_values['newsman_smsfailedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smsfaileddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smsfaileddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+									<?php
+									foreach ( $this->get_message_placeholders() as $placeholder ) :
+										?>
+										<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -172,7 +182,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smsonholdtextPanel" <?php echo ( empty( $form_values['newsman_smsonholdactivate'] ) || 'off' === $form_values['newsman_smsonholdactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsonholdtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smsonholdtext" name="newsman_smsonholdtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsonholdtext'] ) ) ? esc_html( $form_values['newsman_smsonholdtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smsonholddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smsonholddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: 
+								<?php
+								foreach ( $this->get_message_placeholders() as $placeholder ) :
+									?>
+									<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -184,7 +198,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smsprocessingtextPanel" <?php echo ( empty( $form_values['newsman_smsprocessingactivate'] ) || 'off' === $form_values['newsman_smsprocessingactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsprocessingtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smsprocessingtext" name="newsman_smsprocessingtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsprocessingtext'] ) ) ? esc_html( $form_values['newsman_smsprocessingtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smsprocessingdescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smsprocessingdescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+									<?php
+									foreach ( $this->get_message_placeholders() as $placeholder ) :
+										?>
+										<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -196,7 +214,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smscompletedtextPanel" <?php echo ( empty( $form_values['newsman_smscompletedactivate'] ) || 'off' === $form_values['newsman_smscompletedactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smscompletedtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smscompletedtext" name="newsman_smscompletedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smscompletedtext'] ) ) ? esc_html( $form_values['newsman_smscompletedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smscompleteddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smscompleteddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+									<?php
+									foreach ( $this->get_message_placeholders() as $placeholder ) :
+										?>
+										<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -208,7 +230,11 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smsrefundedtextPanel" <?php echo ( empty( $form_values['newsman_smsrefundedactivate'] ) || 'off' === $form_values['newsman_smsrefundedactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smsrefundedtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smsrefundedtext" name="newsman_smsrefundedtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smsrefundedtext'] ) ) ? esc_html( $form_values['newsman_smsrefundedtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smsrefundeddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smsrefundeddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+									<?php
+									foreach ( $this->get_message_placeholders() as $placeholder ) :
+										?>
+										<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -220,10 +246,41 @@ $form_values = $this->get_form_values();
 							<td class="newsman_smscancelledtextPanel" <?php echo ( empty( $form_values['newsman_smscancelledactivate'] ) || 'off' === $form_values['newsman_smscancelledactivate'] ) ? 'style="display: none;"' : ''; ?>>
 								<label style="display: none;" for="newsman_smscancelledtext"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
 								<textarea id="newsman_smscancelledtext" name="newsman_smscancelledtext" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_smscancelledtext'] ) ) ? esc_html( $form_values['newsman_smscancelledtext'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com'; ?></textarea>
-								<p class="newsman_smscancelleddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>: <span class="nzm-variable">{{billing_first_name}}</span><span class="nzm-variable">{{billing_last_name}}</span><span class="nzm-variable">{{shipping_first_name}}</span><span class="nzm-variable">{{shipping_last_name}}</span><span class="nzm-variable">{{order_number}}</span><span class="nzm-variable">{{order_date}}</span><span class="nzm-variable">{{order_total}}</span><span class="nzm-variable">{{email}}</span></p>
+								<p class="newsman_smscancelleddescription" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+									<?php
+									foreach ( $this->get_message_placeholders() as $placeholder ) :
+										?>
+										<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 							</td>
 						</tr>
 					</table>
+					<?php if ( $this->is_woo_commerce_exists() && $this->config->is_cargus_plugin_active() ) : ?>
+						<h2><?php echo esc_html__( 'Send SMS with Cargus AWB', 'newsman' ); ?> <?php echo esc_html__( '(from official Cargus plugin)', 'newsman' ); ?></h2>
+						<table class="form-table newsman-table newsman-tbl-fixed">
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_sms_send_cargus_awb"><?php echo esc_html__( 'Enable', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input name="newsman_sms_send_cargus_awb" type="checkbox" id="newsman_sms_send_cargus_awb" <?php echo ( 'on' === $form_values['newsman_sms_send_cargus_awb'] ) ? 'checked' : ''; ?>/>
+									<p class="description"><?php echo esc_html__( 'Send SMS with Cargus AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a Cargus AWB.', 'newsman' ); ?></p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_sms_send_cargus_awb'] ) && 'on' === $form_values['newsman_sms_send_cargus_awb'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_sms_send_cargus_awb"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<textarea id="newsman_sms_cargus_awb_message" name="newsman_sms_cargus_awb_message" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_sms_cargus_awb_message'] ) ) ? esc_html( $form_values['newsman_sms_cargus_awb_message'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com, Cargus AWB {{cargus_awb}}'; ?></textarea>
+									<p class="newsman_sms_cargus_awb_message_description" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+										<?php
+										foreach ( $this->get_message_placeholders( 'cargus' ) as $placeholder ) :
+											?>
+											<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
+								</td>
+							</tr>
+						</table>
+					<?php endif; ?>
 					<h2><?php echo esc_html__( 'SMS production debug', 'newsman' ); ?></h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
 					<tr>

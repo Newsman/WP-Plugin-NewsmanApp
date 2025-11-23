@@ -169,4 +169,24 @@ class Sms {
 
 		return true;
 	}
+
+	/**
+	 * Is SMS send Cargus AWB
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function is_sms_send_cargus_awb( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_sms_send_cargus_awb', '' );
+	}
+
+	/**
+	 * Get SMS Cargus AWB Message
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_sms_cargus_awb_message( $blog_id = null ) {
+		return (string) $this->config->get_blog_option( $blog_id, 'newsman_sms_cargus_awb_message', '' );
+	}
 }
