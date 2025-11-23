@@ -100,9 +100,7 @@ class Cargus {
 	 * @return void
 	 */
 	public function execute( $order ) {
-		$awb = get_post_meta( $order->get_id(), '_cargus_awb', true );
-		$awb = 'asd';
-
+		$awb   = get_post_meta( $order->get_id(), '_cargus_awb', true );
 		$phone = $order->get_billing_phone();
 
 		try {
