@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the NewsmanApp for WordPress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp for WordPress 3.1.0\n"
+"Project-Id-Version: NewsmanApp for WordPress 3.1.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-15T10:38:38+02:00\n"
-"PO-Revision-Date: 2025-11-15T10:38:38+02:00\n"
+"POT-Creation-Date: 2025-11-24T08:00:00+02:00\n"
+"PO-Revision-Date: 2025-11-24T08:00:00+02:00\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
 
@@ -53,6 +53,17 @@ msgstr "Toți cumpărătorii din comenzi complete au fost programați pentru tri
 msgid "All subscribers were scheduled for export."
 msgstr "Toți abonații au fost programați pentru trimitere."
 
+#: includes/admin/action/order/sms/awb/class-cargus.php:92
+#: src/backend-sms.php:258
+msgid "Send SMS with Cargus AWB"
+msgstr "Trimite SMS cu Cargus AWB"
+
+#. translators: 1: AWB, 2: Phone number
+#: includes/admin/action/order/sms/awb/class-cargus.php:113
+#, php-format
+msgid "SMS with AWB (%1$s) sent to %2$s"
+msgstr "SMS cu AWB (%1$s) trimis către %2$s"
+
 #: includes/admin/settings/class-oauth.php:110
 msgid "Access is denied"
 msgstr "Accesul este refuzat"
@@ -63,7 +74,7 @@ msgstr "Nu există liste în contul dvs. NewsMAN"
 
 #: includes/admin/settings/class-remarketing.php:97
 #: includes/admin/settings/class-settings.php:90
-#: includes/admin/settings/class-sms.php:131
+#: includes/admin/settings/class-sms.php:149
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Utilizator neautorizat"
@@ -85,36 +96,36 @@ msgstr "Credențiale invalide. Vă rugăm să le configurați în fila Setări."
 msgid "Invalid Credentials"
 msgstr "Credențiale invalide"
 
-#: includes/admin/settings/class-sms.php:153
-#: includes/admin/settings/class-sms.php:157
-#: includes/admin/settings/class-sms.php:176
-#: includes/admin/settings/class-sms.php:180
+#: includes/admin/settings/class-sms.php:171
+#: includes/admin/settings/class-sms.php:175
+#: includes/admin/settings/class-sms.php:194
+#: includes/admin/settings/class-sms.php:198
 msgid "Invalid credentials."
 msgstr "Credențiale invalide."
 
-#: includes/admin/settings/class-sms.php:159
-#: includes/admin/settings/class-sms.php:182
+#: includes/admin/settings/class-sms.php:177
+#: includes/admin/settings/class-sms.php:200
 msgid "No SMS list found."
 msgstr "Nu a fost găsită nicio listă de SMS-uri."
 
-#: includes/admin/settings/class-sms.php:166
+#: includes/admin/settings/class-sms.php:184
 msgid "An error has occurred."
 msgstr "A apărut o eroare."
 
-#: includes/admin/settings/class-sms.php:226
-#: includes/admin/settings/class-sms.php:246
+#: includes/admin/settings/class-sms.php:244
+#: includes/admin/settings/class-sms.php:264
 msgid "The SMS was not sent. "
 msgstr "SMS-ul nu a fost trimis."
 
-#: includes/admin/settings/class-sms.php:228
+#: includes/admin/settings/class-sms.php:246
 msgid "Test SMS was sent."
 msgstr "SMS-ul de test a fost trimis."
 
-#: includes/admin/settings/class-sms.php:233
+#: includes/admin/settings/class-sms.php:251
 msgid "The SMS was not sent. Please select or keep the configured SMS list."
 msgstr "SMS-ul nu a fost trimis. Vă rugăm să selectați sau să păstrați lista de SMS-uri configurată."
 
-#: includes/admin/settings/class-sms.php:238
+#: includes/admin/settings/class-sms.php:256
 msgid "The SMS was not sent. Please fill the test phone number and the test message."
 msgstr "SMS-ul nu a fost trimis. Vă rugăm să completați numărul de telefon de test și mesajul de test."
 
@@ -128,14 +139,14 @@ msgstr "Nu s-au putut obține listele sau segmentele."
 msgid "Could not update feed list"
 msgstr "Nu s-a putut actualiza lista de fluxuri de produse"
 
-#: includes/class-admin.php:110
+#: includes/class-admin.php:113
 #: src/backend-oauth.php:26
 #: src/backend-remarketing.php:27
 #: src/backend-remarketing.php:32
 #: src/backend-settings.php:27
 #: src/backend-settings.php:32
-#: src/backend-sms.php:53
-#: src/backend-sms.php:58
+#: src/backend-sms.php:55
+#: src/backend-sms.php:60
 #: src/backend-sync.php:27
 #: src/backend-sync.php:32
 #: src/backend.php:19
@@ -143,51 +154,51 @@ msgstr "Nu s-a putut actualiza lista de fluxuri de produse"
 msgid "NewsMAN"
 msgstr "NewsMAN"
 
-#: includes/class-admin.php:119
-#: includes/class-admin.php:120
+#: includes/class-admin.php:122
+#: includes/class-admin.php:123
 #: src/backend-remarketing.php:34
 #: src/backend-settings.php:34
-#: src/backend-sms.php:60
+#: src/backend-sms.php:62
 #: src/backend-sync.php:34
 #: src/backend.php:26
 #: src/backend.php:57
 msgid "Sync"
 msgstr "Sincronizare"
 
-#: includes/class-admin.php:128
-#: includes/class-admin.php:129
+#: includes/class-admin.php:131
+#: includes/class-admin.php:132
 #: src/backend-remarketing.php:36
 #: src/backend-settings.php:36
-#: src/backend-sms.php:62
+#: src/backend-sms.php:64
 #: src/backend-sync.php:36
 #: src/backend.php:28
 #: src/backend.php:65
 msgid "Remarketing"
 msgstr "Remarketing"
 
-#: includes/class-admin.php:138
-#: includes/class-admin.php:139
+#: includes/class-admin.php:141
+#: includes/class-admin.php:142
 #: src/backend-remarketing.php:39
 #: src/backend-settings.php:39
-#: src/backend-sms.php:65
+#: src/backend-sms.php:67
 #: src/backend-sync.php:39
 #: src/backend.php:31
 msgid "SMS"
 msgstr "SMS"
 
-#: includes/class-admin.php:148
-#: includes/class-admin.php:149
+#: includes/class-admin.php:151
+#: includes/class-admin.php:152
 #: src/backend-remarketing.php:42
 #: src/backend-settings.php:42
-#: src/backend-sms.php:68
+#: src/backend-sms.php:70
 #: src/backend-sync.php:42
 #: src/backend.php:34
 #: src/backend.php:83
 msgid "Settings"
 msgstr "Setări"
 
-#: includes/class-admin.php:157
-#: includes/class-admin.php:158
+#: includes/class-admin.php:160
+#: includes/class-admin.php:161
 msgid "Oauth"
 msgstr "Oauth"
 
@@ -376,7 +387,7 @@ msgstr "Procesul de dezabonare durează de obicei mai puțin de un minut. După 
 msgid "There was an error subscribing to the newsletter. Please try again."
 msgstr "A apărut o eroare la abonarea la newsletter. Vă rugăm să încercați din nou."
 
-#: includes/form/checkout/class-checkbox.php:126
+#: includes/form/checkout/class-checkbox.php:148
 msgid "Send Order Status SMS"
 msgstr "Trimite SMS cu starea comenzii"
 #: includes/form/patterns/account/subscribe.php:32
@@ -623,6 +634,7 @@ msgstr "Salvează"
 
 #: src/backend-remarketing.php:63
 #: src/backend-settings.php:292
+#: src/backend-sms.php:262
 msgid "Enable"
 msgstr "Permite"
 
@@ -756,7 +768,7 @@ msgstr "Selectați atributele clienților (din comenzi) pe care să le includeț
 
 #: src/backend-remarketing.php:312
 #: src/backend-settings.php:472
-#: src/backend-sms.php:275
+#: src/backend-sms.php:332
 #: src/backend-sync.php:200
 msgid "Save Changes"
 msgstr "Salvați modificările"
@@ -774,19 +786,19 @@ msgid "User ID"
 msgstr "ID-ul de utilizator"
 
 #: src/backend-settings.php:76
-#: src/backend-sms.php:89
+#: src/backend-sms.php:91
 #: src/backend.php:42
 msgid "Credentials Status"
 msgstr "Starea credențialelor"
 
 #: src/backend-settings.php:80
-#: src/backend-sms.php:93
+#: src/backend-sms.php:95
 #: src/backend.php:46
 msgid "Valid"
 msgstr "Valid"
 
 #: src/backend-settings.php:80
-#: src/backend-sms.php:93
+#: src/backend-sms.php:95
 #: src/backend.php:46
 msgid "Invalid"
 msgstr "Invalid"
@@ -995,131 +1007,141 @@ msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr "În magazinul virtual, utilizați planificatorul de acțiuni pentru acțiunea de dezabonare de la listele de e-mail."
 
-#: src/backend-sms.php:96
+#: src/backend-sms.php:98
 msgid "Please configure the credentials in Settings tab."
 msgstr "Vă rugăm să configurați acreditările în fila Setări."
 
-#: src/backend-sms.php:102
+#: src/backend-sms.php:104
 msgid "Use SMS"
 msgstr "Folosește SMS-uri"
 
-#: src/backend-sms.php:110
+#: src/backend-sms.php:112
 msgid "Select SMS List"
 msgstr "Selectați lista SMS-uri"
 
-#: src/backend-sms.php:124
+#: src/backend-sms.php:126
 msgid "Please save a SMS list to start sending SMS."
 msgstr "Vă rugăm să salvați o listă de SMS-uri pentru a începe să trimiteți SMS-uri."
 
-#: src/backend-sms.php:127
+#: src/backend-sms.php:129
 msgid "The SMS lists dropdown is displayed when Use SMS is enabled."
 msgstr "Meniul derulant al listelor SMS este afișat când este activată opțiunea Utilizare SMS."
 
-#: src/backend-sms.php:133
+#: src/backend-sms.php:135
 msgid "SMS Message"
 msgstr "Mesaj SMS"
 
-#: src/backend-sms.php:136
+#: src/backend-sms.php:138
 msgid "Order Status"
 msgstr "Starea comenzii"
 
-#: src/backend-sms.php:139
+#: src/backend-sms.php:141
 msgid "Message / Variables"
 msgstr "Mesaj / Variabile"
 
-#: src/backend-sms.php:145
+#: src/backend-sms.php:147
 msgid "Pending"
 msgstr "În așteptare (Pending)"
 
-#: src/backend-sms.php:145
-#: src/backend-sms.php:157
-#: src/backend-sms.php:169
-#: src/backend-sms.php:181
-#: src/backend-sms.php:193
-#: src/backend-sms.php:205
-#: src/backend-sms.php:217
+#: src/backend-sms.php:147
+#: src/backend-sms.php:163
+#: src/backend-sms.php:179
+#: src/backend-sms.php:195
+#: src/backend-sms.php:211
+#: src/backend-sms.php:227
+#: src/backend-sms.php:243
 msgid "Active"
 msgstr "Activ"
 
-#: src/backend-sms.php:149
-#: src/backend-sms.php:161
-#: src/backend-sms.php:173
-#: src/backend-sms.php:185
-#: src/backend-sms.php:197
-#: src/backend-sms.php:209
-#: src/backend-sms.php:221
+#: src/backend-sms.php:151
+#: src/backend-sms.php:167
+#: src/backend-sms.php:183
+#: src/backend-sms.php:199
+#: src/backend-sms.php:215
+#: src/backend-sms.php:231
+#: src/backend-sms.php:247
+#: src/backend-sms.php:271
 msgid "Message"
 msgstr "Mesaj"
 
-#: src/backend-sms.php:151
-#: src/backend-sms.php:163
-#: src/backend-sms.php:175
-#: src/backend-sms.php:187
-#: src/backend-sms.php:199
-#: src/backend-sms.php:211
-#: src/backend-sms.php:223
+#: src/backend-sms.php:153
+#: src/backend-sms.php:169
+#: src/backend-sms.php:185
+#: src/backend-sms.php:201
+#: src/backend-sms.php:217
+#: src/backend-sms.php:233
+#: src/backend-sms.php:249
+#: src/backend-sms.php:275
 msgid "Variables"
 msgstr "Variabile"
 
-#: src/backend-sms.php:157
+#: src/backend-sms.php:163
 msgid "Failed"
 msgstr "Eșuat (Failed)"
 
-#: src/backend-sms.php:169
+#: src/backend-sms.php:179
 msgid "On Hold"
 msgstr "În așteptare (On Hold)"
 
-#: src/backend-sms.php:181
+#: src/backend-sms.php:195
 msgid "Processing"
 msgstr "Prelucrare (Processing)"
 
-#: src/backend-sms.php:193
+#: src/backend-sms.php:211
 msgid "Completed"
 msgstr "Finalizat (Completed)"
 
-#: src/backend-sms.php:205
+#: src/backend-sms.php:227
 msgid "Refunded"
 msgstr "Rambursat (Refunded)"
 
-#: src/backend-sms.php:217
+#: src/backend-sms.php:243
 msgid "Canceled"
 msgstr "Anulat (Canceled)"
 
-#: src/backend-sms.php:227
+#: src/backend-sms.php:258
+msgid "(from official Cargus plugin)"
+msgstr "(din pluginul oficial Cargus)"
+
+#: src/backend-sms.php:266
+msgid "Send SMS with Cargus AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a Cargus AWB."
+msgstr "Trimiteți SMS cu numărul Cargus AWB. Adaugă o acțiune în vizualizarea comenzii administrative Acțiuni comandă pentru a trimite mesajul SMS. Linkul va fi afișat după ce comanda conține un AWB Cargus."
+
+#: src/backend-sms.php:284
 msgid "SMS production debug"
 msgstr "Depanare in producție a mesajelor SMS"
 
-#: src/backend-sms.php:231
+#: src/backend-sms.php:288
 msgid "Activate test mode"
 msgstr "Activează modul de testare"
 
-#: src/backend-sms.php:235
+#: src/backend-sms.php:292
 msgid "The message will be sent to your specified phone and not to customer phone. SMS are sent on order status changes."
 msgstr "Mesajul va fi trimis pe telefonul specificat de dvs. și nu pe telefonul clientului. Se trimit SMS-uri la modificarea stării comenzii."
 
-#: src/backend-sms.php:240
+#: src/backend-sms.php:297
 msgid "Phone for tests"
 msgstr "Telefon pentru teste"
 
-#: src/backend-sms.php:243
-#: src/backend-sms.php:254
+#: src/backend-sms.php:300
+#: src/backend-sms.php:311
 msgid "Ex:"
 msgstr "Ex:"
 
-#: src/backend-sms.php:247
+#: src/backend-sms.php:304
 msgid "SMS send test"
 msgstr "Test de trimitere a mesajelor SMS"
 
-#: src/backend-sms.php:251
+#: src/backend-sms.php:308
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/backend-sms.php:259
+#: src/backend-sms.php:316
 msgid "Test message"
 msgstr "Mesaj de test"
 
-#: src/backend-sms.php:267
-#: src/backend-sms.php:270
+#: src/backend-sms.php:324
+#: src/backend-sms.php:327
 msgid "Send now"
 msgstr "Trimite acum"
 
