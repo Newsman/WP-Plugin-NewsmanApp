@@ -110,6 +110,11 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.2.0 =
+* Fix multi-site case. Now the plugin should work with multi-site network.
+* Add Cargus AWB in SMS messages (from official Cargus plugin).
+* Use getters from order instead of accessing properties in buyers export.
+* Minor fix on codding standards
 = 3.1.2 =
 * Fix query limit set on buyers from orders
 = 3.1.1 =
