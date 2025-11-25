@@ -48,6 +48,12 @@ $form_values = $this->get_form_values();
 		jQuery('.newsman_sms_cargus_awb_message_description .nzm-variable').on('click', function(){
 			jQuery('#newsman_sms_cargus_awb_message').append(jQuery(this).html());
 		});
+		jQuery('.newsman_sms_sameday_awb_message_description .nzm-variable').on('click', function(){
+			jQuery('#newsman_sms_sameday_awb_message').append(jQuery(this).html());
+		});
+		jQuery('.newsman_sms_fancourier_awb_message_description .nzm-variable').on('click', function(){
+			jQuery('#newsman_sms_fancourier_awb_message').append(jQuery(this).html());
+		});
 	});
 </script>
 <div class="tabset-img">
@@ -275,6 +281,60 @@ $form_values = $this->get_form_values();
 									<p class="newsman_sms_cargus_awb_message_description" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
 										<?php
 										foreach ( $this->get_message_placeholders( 'cargus' ) as $placeholder ) :
+											?>
+											<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
+								</td>
+							</tr>
+						</table>
+					<?php endif; ?>
+					<?php if ( $this->is_woo_commerce_exists() && $this->config->is_sameday_plugin_active() ) : ?>
+						<h2><?php echo esc_html__( 'Send SMS with SamedayCourier AWB', 'newsman' ); ?> <?php echo esc_html__( '(from official SamedayCourier plugin)', 'newsman' ); ?></h2>
+						<table class="form-table newsman-table newsman-tbl-fixed">
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_sms_send_sameday_awb"><?php echo esc_html__( 'Enable', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input name="newsman_sms_send_sameday_awb" type="checkbox" id="newsman_sms_send_sameday_awb" <?php echo ( 'on' === $form_values['newsman_sms_send_sameday_awb'] ) ? 'checked' : ''; ?>/>
+									<p class="description"><?php echo esc_html__( 'Send SMS with SamedayCourier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a SamedayCourier AWB.', 'newsman' ); ?></p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_sms_send_sameday_awb'] ) && 'on' === $form_values['newsman_sms_send_sameday_awb'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_sms_send_sameday_awb"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<textarea id="newsman_sms_sameday_awb_message" name="newsman_sms_sameday_awb_message" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_sms_sameday_awb_message'] ) ) ? esc_html( $form_values['newsman_sms_sameday_awb_message'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com, SamedayCourier AWB {{sameday_awb}}'; ?></textarea>
+									<p class="newsman_sms_sameday_awb_message_description" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+										<?php
+										foreach ( $this->get_message_placeholders( 'sameday' ) as $placeholder ) :
+											?>
+											<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
+								</td>
+							</tr>
+						</table>
+					<?php endif; ?>
+					<?php if ( $this->is_woo_commerce_exists() && $this->config->is_fancourier_plugin_active() ) : ?>
+						<h2><?php echo esc_html__( 'Send SMS with FAN Courier AWB', 'newsman' ); ?> <?php echo esc_html__( '(from official FAN Courier plugin)', 'newsman' ); ?></h2>
+						<table class="form-table newsman-table newsman-tbl-fixed">
+							<tr>
+								<th scope="row">
+									<label class="nzm-label" for="newsman_sms_send_fancourier_awb"><?php echo esc_html__( 'Enable', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<input name="newsman_sms_send_fancourier_awb" type="checkbox" id="newsman_sms_send_fancourier_awb" <?php echo ( 'on' === $form_values['newsman_sms_send_fancourier_awb'] ) ? 'checked' : ''; ?>/>
+									<p class="description"><?php echo esc_html__( 'Send SMS with FAN Courier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a FAN Courier AWB.', 'newsman' ); ?></p>
+								</td>
+							</tr>
+							<tr style="display: <?php echo ( ! empty( $form_values['newsman_sms_send_fancourier_awb'] ) && 'on' === $form_values['newsman_sms_send_fancourier_awb'] ) ? 'table-row' : 'none'; ?>;">
+								<th scope="row">
+									<label class="nzm-label" for="newsman_sms_send_fancourier_awb"><?php echo esc_html__( 'Message', 'newsman' ); ?></label>
+								</th>
+								<td>
+									<textarea id="newsman_sms_fancourier_awb_message" name="newsman_sms_fancourier_awb_message" style="width: 100%; min-height: 100px;"><?php echo ( ! empty( $form_values['newsman_sms_fancourier_awb_message'] ) ) ? esc_html( $form_values['newsman_sms_fancourier_awb_message'] ) : 'Order no. {{order_number}}, in total of {{order_total}} EURO, from example.com, FAN Courier AWB {{fancourier_awb}}'; ?></textarea>
+									<p class="newsman_sms_fancourier_awb_message_description" style="padding: 5px;"><?php echo esc_html__( 'Variables', 'newsman' ); ?>:
+										<?php
+										foreach ( $this->get_message_placeholders( 'fancourier' ) as $placeholder ) :
 											?>
 											<span class="nzm-variable">{{<?php echo esc_html( $placeholder ); ?>}}</span><?php endforeach; ?></p>
 								</td>

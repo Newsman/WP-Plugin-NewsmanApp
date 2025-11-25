@@ -70,6 +70,10 @@ class Sms extends Settings {
 		'newsman_smscancelledtext',
 		'newsman_sms_send_cargus_awb',
 		'newsman_sms_cargus_awb_message',
+		'newsman_sms_send_sameday_awb',
+		'newsman_sms_sameday_awb_message',
+		'newsman_sms_send_fancourier_awb',
+		'newsman_sms_fancourier_awb_message',
 	);
 
 	/**
@@ -275,27 +279,21 @@ class Sms extends Settings {
 	public function get_message_placeholders( $only_for = '' ) {
 		$is_cargus_plugin_active = $this->config->is_cargus_plugin_active();
 		if ( $is_cargus_plugin_active ) {
-			if ( ! in_array( 'if_cargus_awb', $this->message_placeholders, true ) ) {
-				$this->message_placeholders[] = 'if_cargus_awb';
-			}
-			if ( ! in_array( 'cargus_awb', $this->message_placeholders, true ) ) {
-				$this->message_placeholders[] = 'cargus_awb';
-			}
-			if ( ! in_array( 'endif_cargus_awb', $this->message_placeholders, true ) ) {
-				$this->message_placeholders[] = 'endif_cargus_awb';
-			}
+			$this->add_courier_placeholders( 'cargus' );
 		}
+		$is_sameday_plugin_active = $this->config->is_sameday_plugin_active();
+		if ( $is_sameday_plugin_active ) {
+			$this->add_courier_placeholders( 'sameday' );
+		}
+		$is_fancourier_plugin_active = $this->config->is_fancourier_plugin_active();
+		if ( $is_fancourier_plugin_active ) {
+			$this->add_courier_placeholders( 'fancourier' );
+		}
+
 		$message_placeholders = $this->message_placeholders;
 
-		if ( 'cargus' === $only_for ) {
-			$key = array_search( 'if_cargus_awb', $message_placeholders, true );
-			if ( false !== $key ) {
-				unset( $message_placeholders[ $key ] );
-			}
-			$key = array_search( 'endif_cargus_awb', $message_placeholders, true );
-			if ( false !== $key ) {
-				unset( $message_placeholders[ $key ] );
-			}
+		if ( ! empty( $only_for ) ) {
+			$message_placeholders = $this->get_only_carrier_placeholders( $only_for, $message_placeholders );
 		}
 
 		return apply_filters(
@@ -303,6 +301,63 @@ class Sms extends Settings {
 			$message_placeholders,
 			$only_for
 		);
+	}
+
+	/**
+	 * Add placeholders of shipping courier
+	 *
+	 * @param string $name Courier name.
+	 * @return void
+	 */
+	public function add_courier_placeholders( $name ) {
+		if ( ! in_array( 'if_' . $name . '_awb', $this->message_placeholders, true ) ) {
+			$this->message_placeholders[] = 'if_' . $name . '_awb';
+		}
+		if ( ! in_array( '' . $name . '_awb', $this->message_placeholders, true ) ) {
+			$this->message_placeholders[] = $name . '_awb';
+		}
+		if ( ! in_array( 'endif_' . $name . '_awb', $this->message_placeholders, true ) ) {
+			$this->message_placeholders[] = 'endif_' . $name . '_awb';
+		}
+	}
+
+	/**
+	 * Get placeholders only for a carrier
+	 *
+	 * @param string $name Courier name.
+	 * @param array  $message_placeholders Message placeholders array.
+	 * @return array
+	 */
+	public function get_only_carrier_placeholders( $name, $message_placeholders ) {
+		$key = array_search( 'if_' . $name . '_awb', $message_placeholders, true );
+		if ( false !== $key ) {
+			unset( $message_placeholders[ $key ] );
+		}
+
+		$key = array_search( 'endif_' . $name . '_awb', $message_placeholders, true );
+		if ( false !== $key ) {
+			unset( $message_placeholders[ $key ] );
+		}
+
+		$couriers = array_diff( $this->config->get_known_courier_names(), array( $name ) );
+		foreach ( $couriers as $courier ) {
+			$key = array_search( 'if_' . $courier . '_awb', $message_placeholders, true );
+			if ( false !== $key ) {
+				unset( $message_placeholders[ $key ] );
+			}
+
+			$key = array_search( $courier . '_awb', $message_placeholders, true );
+			if ( false !== $key ) {
+				unset( $message_placeholders[ $key ] );
+			}
+
+			$key = array_search( 'end_' . $courier . '_awb', $message_placeholders, true );
+			if ( false !== $key ) {
+				unset( $message_placeholders[ $key ] );
+			}
+		}
+
+		return $message_placeholders;
 	}
 
 	/**

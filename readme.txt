@@ -7,6 +7,7 @@ Tested up to: 6.8.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Languages: English (US), Romanian
 
 NewsmanApp, you have the power to streamline your email and SMS marketing efforts. This tool enables you to manage subscription forms, contact lists, newsletters, email campaigns, SMS functionalities, smart automations, detailed analytics, and ensure reliable transactional emails - all accessed through the NewsMAN platform, providing you with enhanced marketing capabilities.
 
@@ -110,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.3.0 =
+* Add SamedayCourier AWB in SMS messages (from official SamedayCourier Shipping plugin).
+* Add FAN Courier AWB in SMS messages (from official FAN Courier plugin).
 = 3.2.0 =
 * Fix multi-site case. Now the plugin should work with multi-site network.
 * Add Cargus AWB in SMS messages (from official Cargus plugin).

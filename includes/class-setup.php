@@ -318,6 +318,11 @@ js/retargeting/modal_{{api_key}}.js'
 			self::update_newsman_autoload_options();
 			update_option( 'newsman_setup_version', '4.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '5.0.0', '<' ) ) {
+			self::upgrade_options_five_zero_zero();
+			update_option( 'newsman_setup_version', '5.0.0', true );
+		}
 	}
 
 	/**
@@ -402,6 +407,16 @@ js/retargeting/modal_{{api_key}}.js'
 	}
 
 	/**
+	 * Version 5.0.0 options update
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_five_zero_zero() {
+		add_option( 'newsman_sms_send_sameday_awb', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_sms_send_fancourier_awb', 'on', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
 	 * Updates all options starting with 'newsman_' prefix to have autoload='on'
 	 *
 	 * @return int Number of options updated
@@ -467,6 +482,8 @@ js/retargeting/modal_{{api_key}}.js'
 			'newsman_subscribe_email',
 			'newsman_subscribe_phone',
 			'newsman_order_sms_cargus_awb',
+			'newsman_order_sms_sameday_awb',
+			'newsman_order_sms_fancourier_awb',
 		);
 		foreach ( $hooks as $hook ) {
 			as_unschedule_all_actions( $hook );

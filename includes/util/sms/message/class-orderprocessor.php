@@ -60,6 +60,8 @@ class OrderProcessor {
 		$message = str_replace( '{{order_total}}', $item_data['total'], $message );
 
 		$message = $this->process_cargus( $message, $order );
+		$message = $this->process_sameday( $message, $order );
+		$message = $this->process_fancourier( $message, $order );
 
 		$message = trim( $message );
 
@@ -72,7 +74,7 @@ class OrderProcessor {
 	 * @param string    $name Name of shipping service.
 	 * @param string    $message SMS message.
 	 * @param \WC_Order $order Order instance.
-	 * @param \WC_Order $awb AWB value.
+	 * @param string    $awb AWB value.
 	 * @return string
 	 */
 	public function process_awb( $name, $message, $order, $awb ) {
@@ -125,7 +127,40 @@ class OrderProcessor {
 		if ( ! $this->config->is_cargus_plugin_active() ) {
 			return $message;
 		}
-		$awb = get_post_meta( $order->get_id(), '_cargus_awb', true );
+		$get_order_awb = new \Newsman\Carrier\Cargus\GetOrderAwb();
+		$awb           = $get_order_awb->get( $order->get_id() );
 		return $this->process_awb( 'cargus', $message, $order, $awb );
+	}
+
+	/**
+	 * Replace message SamedayCourier AWB placeholders
+	 *
+	 * @param string    $message SMS message.
+	 * @param \WC_Order $order Order instance.
+	 * @return string
+	 */
+	public function process_sameday( $message, $order ) {
+		if ( ! $this->config->is_sameday_plugin_active() ) {
+			return $message;
+		}
+		$get_order_awb = new \Newsman\Carrier\Sameday\GetOrderAwb();
+		$awb           = $get_order_awb->get( $order->get_id() );
+		return $this->process_awb( 'sameday', $message, $order, $awb );
+	}
+
+	/**
+	 * Replace message FAN Courier AWB placeholders
+	 *
+	 * @param string    $message SMS message.
+	 * @param \WC_Order $order Order instance.
+	 * @return string
+	 */
+	public function process_fancourier( $message, $order ) {
+		if ( ! $this->config->is_fancourier_plugin_active() ) {
+			return $message;
+		}
+		$get_order_awb = new \Newsman\Carrier\Fancourier\GetOrderAwb();
+		$awb           = $get_order_awb->get( $order->get_id() );
+		return $this->process_awb( 'fancourier', $message, $order, $awb );
 	}
 }

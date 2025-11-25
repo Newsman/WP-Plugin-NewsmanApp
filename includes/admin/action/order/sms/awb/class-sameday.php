@@ -20,11 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Admin order view action send SMS with Cargus AWB
+ * Admin order view action send SMS with Sameday AWB
  *
- * @class \Newsman\Admin\Action\Order\Sms\Cargus
+ * @class \Newsman\Admin\Action\Order\Sms\Sameday
  */
-class Cargus {
+class Sameday {
 	/**
 	 * Config
 	 *
@@ -65,32 +65,32 @@ class Cargus {
 			return;
 		}
 
-		if ( ! $this->config->is_cargus_plugin_active() ) {
+		if ( ! $this->config->is_sameday_plugin_active() ) {
 			return;
 		}
 
-		if ( ! ( $this->sms_config->is_sms_send_cargus_awb() && ! empty( $this->sms_config->get_sms_cargus_awb_message() ) ) ) {
+		if ( ! ( $this->sms_config->is_sms_send_sameday_awb() && ! empty( $this->sms_config->get_sms_sameday_awb_message() ) ) ) {
 			return;
 		}
 
 		add_filter( 'woocommerce_order_actions', array( $this, 'add_menu_action' ), 10, 2 );
-		add_action( 'woocommerce_order_action_newsman_send_sms_awb_cargus', array( $this, 'execute' ), 10, 1 );
+		add_action( 'woocommerce_order_action_newsman_send_sms_awb_sameday', array( $this, 'execute' ), 10, 1 );
 	}
 
 	/**
-	 * Add action to send SMS with Cargus AWB in Order actions in admin order view page
+	 * Add action to send SMS with SamedayCourier AWB in Order actions in admin order view page
 	 *
 	 * @param array     $actions Order actions.
 	 * @param \WC_Order $order Order.
 	 * @return array
 	 */
 	public function add_menu_action( $actions, $order ) {
-		$get_order_awb = new \Newsman\Carrier\Cargus\GetOrderAwb();
+		$get_order_awb = new \Newsman\Carrier\Sameday\GetOrderAwb();
 		$awb           = $get_order_awb->get( $order->get_id() );
 		if ( empty( $awb ) ) {
 			return $actions;
 		}
-		$actions['newsman_send_sms_awb_cargus'] = __( 'Send SMS with Cargus AWB', 'newsman' );
+		$actions['newsman_send_sms_awb_sameday'] = __( 'Send SMS with SamedayCourier AWB', 'newsman' );
 		return $actions;
 	}
 
@@ -101,12 +101,12 @@ class Cargus {
 	 * @return void
 	 */
 	public function execute( $order ) {
-		$get_order_awb = new \Newsman\Carrier\Cargus\GetOrderAwb();
+		$get_order_awb = new \Newsman\Carrier\Sameday\GetOrderAwb();
 		$awb           = $get_order_awb->get( $order->get_id() );
 		$phone         = $order->get_billing_phone();
 
 		try {
-			$send_sms = new \Newsman\Scheduler\Order\Awb\Cargus\SendSms();
+			$send_sms = new \Newsman\Scheduler\Order\Awb\SameDay\SendSms();
 			$send_sms->notify( $order->get_id() );
 
 			$order->add_order_note(

@@ -189,4 +189,44 @@ class Sms {
 	public function get_sms_cargus_awb_message( $blog_id = null ) {
 		return (string) $this->config->get_blog_option( $blog_id, 'newsman_sms_cargus_awb_message', '' );
 	}
+
+	/**
+	 * Is SMS send SamedayCourier AWB
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function is_sms_send_sameday_awb( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_sms_send_sameday_awb', '' );
+	}
+
+	/**
+	 * Get SMS SamedayCourier AWB Message
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_sms_sameday_awb_message( $blog_id = null ) {
+		return (string) $this->config->get_blog_option( $blog_id, 'newsman_sms_sameday_awb_message', '' );
+	}
+
+	/**
+	 * Is SMS send FAN Courier AWB
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function is_sms_send_fancourier_awb( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_sms_send_fancourier_awb', '' );
+	}
+
+	/**
+	 * Get SMS FAN Courier AWB Message
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_sms_fancourier_awb_message( $blog_id = null ) {
+		return (string) $this->config->get_blog_option( $blog_id, 'newsman_sms_fancourier_awb_message', '' );
+	}
 }

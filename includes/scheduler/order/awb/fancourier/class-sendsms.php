@@ -9,7 +9,7 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Scheduler\Order\Awb\Cargus;
+namespace Newsman\Scheduler\Order\Awb\Fancourier;
 
 use Newsman\Config\Sms as SmsConfig;
 use Newsman\Scheduler\AbstractScheduler;
@@ -19,16 +19,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Send SMS for order with Cargus AWB.
+ * Send SMS for order with FAN Courier AWB.
  *
- * @class \Newsman\Scheduler\Order\Awb\Cargus\SendSms
+ * @class \Newsman\Scheduler\Order\Awb\Fancourier\SendSms
  */
 class SendSms extends AbstractScheduler {
 
 	/**
-	 * Background event hook send order SMS with Cargus AWB
+	 * Background event hook send order SMS with FAN Courier AWB
 	 */
-	public const BACKGROUND_HOOK_EVENT = 'newsman_order_sms_cargus_awb';
+	public const BACKGROUND_HOOK_EVENT = 'newsman_order_sms_fancourier_awb';
 
 	/**
 	 * Wait in micro seconds before retry notify order SMS
@@ -60,11 +60,11 @@ class SendSms extends AbstractScheduler {
 			return;
 		}
 
-		if ( ! $this->config->is_cargus_plugin_active() ) {
+		if ( ! $this->config->is_fancourier_plugin_active() ) {
 			return;
 		}
 
-		if ( ! ( $this->sms_config->is_sms_send_cargus_awb() && ! empty( $this->sms_config->get_sms_cargus_awb_message() ) ) ) {
+		if ( ! ( $this->sms_config->is_sms_send_fancourier_awb() && ! empty( $this->sms_config->get_sms_fancourier_awb_message() ) ) ) {
 			return;
 		}
 
@@ -76,13 +76,13 @@ class SendSms extends AbstractScheduler {
 	}
 
 	/**
-	 * Notify SMS via Newsman with order Cargus AWB
+	 * Notify SMS via Newsman with order FAN Courier AWB
 	 *
 	 * @param int $order_id Order ID.
 	 * @return void
 	 */
 	public function notify( $order_id ) {
-		$get_order_awb = new \Newsman\Carrier\Cargus\GetOrderAwb();
+		$get_order_awb = new \Newsman\Carrier\Fancourier\GetOrderAwb();
 		$awb           = $get_order_awb->get( $order_id );
 		if ( empty( $awb ) ) {
 			return;
@@ -106,10 +106,10 @@ class SendSms extends AbstractScheduler {
 	}
 
 	/**
-	 * Send SMS for order with Cargus AWB via Newsman API
+	 * Send SMS for order with FAN Courier AWB via Newsman API
 	 *
 	 * @param int    $order_id     Order ID.
-	 * @param string $awb          Order Cargus AWB.
+	 * @param string $awb          Order FAN Courier AWB.
 	 * @param string $is_scheduled Is action scheduled.
 	 * @return bool Sent SMS successfully
 	 * @throws \Exception On API errors or other.
@@ -119,11 +119,11 @@ class SendSms extends AbstractScheduler {
 			return false;
 		}
 
-		if ( ! $this->config->is_cargus_plugin_active() ) {
+		if ( ! $this->config->is_fancourier_plugin_active() ) {
 			return false;
 		}
 
-		if ( ! ( $this->sms_config->is_sms_send_cargus_awb() && ! empty( $this->sms_config->get_sms_cargus_awb_message() ) ) ) {
+		if ( ! ( $this->sms_config->is_sms_send_fancourier_awb() && ! empty( $this->sms_config->get_sms_fancourier_awb_message() ) ) ) {
 			return false;
 		}
 
@@ -134,7 +134,7 @@ class SendSms extends AbstractScheduler {
 		$list_id    = $this->sms_config->get_list_id();
 		$is_test    = $this->sms_config->is_test_mode();
 		$test_phone = $this->sms_config->get_test_phone_number();
-		$message    = $this->sms_config->get_sms_cargus_awb_message();
+		$message    = $this->sms_config->get_sms_fancourier_awb_message();
 
 		if ( empty( $message ) ) {
 			return false;
@@ -143,7 +143,7 @@ class SendSms extends AbstractScheduler {
 		try {
 			$order = wc_get_order( $order_id );
 
-			do_action( 'newsman_order_sms_awb_cargus_send_sms_before', $order, $awb, $is_scheduled );
+			do_action( 'newsman_order_sms_awb_fancourier_send_sms_before', $order, $awb, $is_scheduled );
 
 			$message_order_processor = new \Newsman\Util\Sms\Message\OrderProcessor();
 			$message                 = $message_order_processor->process( $order, $message );
@@ -164,7 +164,7 @@ class SendSms extends AbstractScheduler {
 			$context->set_list_id( $list_id )
 				->set_text( $message )
 				->set_to( $phone );
-			$context = apply_filters( 'newsman_order_sms_awb_cargus_send_sms_context', $context, $order, $awb, $is_scheduled );
+			$context = apply_filters( 'newsman_order_sms_awb_fancourier_send_sms_context', $context, $order, $awb, $is_scheduled );
 
 			try {
 				$send_one = new \Newsman\Service\Sms\SendOne();
@@ -183,7 +183,7 @@ class SendSms extends AbstractScheduler {
 				}
 			}
 
-			do_action( 'newsman_order_sms_awb_cargus_send_sms_after', $order, $awb, $is_scheduled );
+			do_action( 'newsman_order_sms_awb_fancourier_send_sms_after', $order, $awb, $is_scheduled );
 
 			return ! empty( $result );
 		} catch ( \Exception $e ) {

@@ -673,6 +673,50 @@ class Config {
 				return true;
 			}
 		}
-		return false;
+		return apply_filters( 'newsman_config_is_cargus_plugin_active', false, $blog_id );
+	}
+
+	/**
+	 * Is SamedayCourier shipping plugin active
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_sameday_plugin_active( $blog_id = null ) {
+		$active_plugins = $this->get_active_plugins( $blog_id );
+		foreach ( $active_plugins as $plugin ) {
+			if ( stripos( $plugin, 'samedaycourier-shipping/samedaycourier-shipping.php' ) !== false ) {
+				return true;
+			}
+		}
+		return apply_filters( 'newsman_config_is_sameday_plugin_active', false, $blog_id );
+	}
+
+	/**
+	 * Is FAN Courier shipping plugin active
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_fancourier_plugin_active( $blog_id = null ) {
+		$active_plugins = $this->get_active_plugins( $blog_id );
+		foreach ( $active_plugins as $plugin ) {
+			if ( stripos( $plugin, 'fan_courier.php' ) !== false ) {
+				return true;
+			}
+		}
+		return apply_filters( 'newsman_config_is_fancourier_plugin_active', false, $blog_id );
+	}
+
+	/**
+	 * Get all known couriers
+	 *
+	 * @return array
+	 */
+	public function get_known_courier_names() {
+		return apply_filters(
+			'newsman_config_get_known_courier_names',
+			array( 'cargus', 'samedaycourier', 'fancourier' )
+		);
 	}
 }

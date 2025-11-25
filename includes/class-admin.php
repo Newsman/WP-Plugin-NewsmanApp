@@ -97,6 +97,10 @@ class Admin {
 
 			$sms_awb_cargus = new \Newsman\Admin\Action\Order\Sms\Awb\Cargus();
 			$sms_awb_cargus->init_hooks();
+			$sms_awb_sameday = new \Newsman\Admin\Action\Order\Sms\Awb\Sameday();
+			$sms_awb_sameday->init_hooks();
+			$sms_awb_fancourier = new \Newsman\Admin\Action\Order\Sms\Awb\Fancourier();
+			$sms_awb_fancourier->init_hooks();
 		}
 	}
 
