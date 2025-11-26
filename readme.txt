@@ -111,6 +111,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.3.2 =
+* Improved test on setup executed for latest version
 = 3.3.1 =
 * Fix sameday typo in courier placeholders
 = 3.3.0 =

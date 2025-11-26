@@ -22,6 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Setup {
 	/**
+	 * Current version of setup in this file.
+	 * The version should or must be in database after setup execution.
+	 *
+	 * @var string
+	 */
+	protected static $setup_version = '5.0.0';
+
+	/**
 	 * Current version of setup in database
 	 *
 	 * @var string|null
@@ -103,12 +111,24 @@ class Setup {
 	 *
 	 * @return void
 	 */
-	public static function one_time_setup() {
-		if ( ! empty( self::get_current_version() ) ) {
+	public static function is_setup_executed() {
+		if ( ! empty( self::get_current_version() ) && self::get_current_version() === self::$setup_version ) {
 			return;
 		}
+
 		$network_wide = function_exists( 'is_multisite' ) && is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
 		self::setup( $network_wide );
+	}
+
+	/**
+	 * One time setup to make sure the initial setup was run.
+	 * This can happen when the plugin is installed or updated with various tools outside WP admin.
+	 *
+	 * @return void
+	 * @deprecated since 3.3.2
+	 */
+	public static function one_time_setup() {
+		self::is_setup_executed();
 	}
 
 	/**
