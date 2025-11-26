@@ -716,7 +716,7 @@ class Config {
 	public function get_known_courier_names() {
 		return apply_filters(
 			'newsman_config_get_known_courier_names',
-			array( 'cargus', 'samedaycourier', 'fancourier' )
+			array( 'cargus', 'sameday', 'fancourier' )
 		);
 	}
 }

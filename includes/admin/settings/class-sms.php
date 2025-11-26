@@ -351,7 +351,7 @@ class Sms extends Settings {
 				unset( $message_placeholders[ $key ] );
 			}
 
-			$key = array_search( 'end_' . $courier . '_awb', $message_placeholders, true );
+			$key = array_search( 'endif_' . $courier . '_awb', $message_placeholders, true );
 			if ( false !== $key ) {
 				unset( $message_placeholders[ $key ] );
 			}

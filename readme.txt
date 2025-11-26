@@ -111,6 +111,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.3.1 =
+* Fix sameday typo in courier placeholders
 = 3.3.0 =
 * Add SamedayCourier AWB in SMS messages (from official SamedayCourier Shipping plugin).
 * Add FAN Courier AWB in SMS messages (from official FAN Courier plugin).
