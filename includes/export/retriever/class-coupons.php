@@ -34,7 +34,7 @@ class Coupons extends AbstractRetriever implements RetrieverInterface {
 		/* translators: 1: Input data */
 		$this->logger->info( sprintf( esc_html__( 'Add coupons: %s', 'newsman' ), wp_json_encode( $data ) ) );
 
-		if ( ! class_exists( 'WC_Coupon' ) ) {
+		if ( ! class_exists( '\WC_Coupon' ) ) {
 			include_once WC()->plugin_path() . '/includes/class-wc-coupon.php';
 		}
 

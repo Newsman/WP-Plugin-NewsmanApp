@@ -49,7 +49,7 @@ class Purchase extends AbstractAction {
 
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '7.1.0', '>=' ) ) {
 			if ( function_exists( 'wc_get_container' ) &&
-				class_exists( 'Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore' )
+				class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore' )
 			) {
 				$order_data_store = wc_get_container()->get(
 					\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableDataStore::class

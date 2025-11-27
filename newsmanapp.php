@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp for WordPress
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 3.3.2
+ * Version: 3.3.3
  * Author: Newsman
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSMAN_VERSION', '3.3.2' );
+define( 'NEWSMAN_VERSION', '3.3.3' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'NEWSMAN_JS_SCRIPT_VERSION', '20251125010000' );
@@ -26,7 +26,7 @@ define( 'NEWSMAN_CSS_SCRIPT_VERSION', '20251114010000' );
 require_once __DIR__ . '/includes/class-newsmanphp.php';
 
 // If there isn't already in place no autoload with composer.
-if ( ! ( class_exists( 'Newsman\Admin' ) && class_exists( 'Newsman\Remarketing' ) && class_exists( 'Newsman\Config' ) ) ) {
+if ( ! ( class_exists( '\Newsman\Admin' ) && class_exists( '\Newsman\Remarketing' ) && class_exists( '\Newsman\Config' ) ) ) {
 	// Composer autoload from newsmanapp/vendor/ .
 	if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		add_action( 'all_admin_notices', '\Newsman\NewsmanPhp::notify_missing_vendor_composer' );
@@ -120,6 +120,9 @@ class WP_Newsman {
 		// Widget auto init.
 		add_action( 'init', array( $this, 'init_widgets' ) );
 
+		// Check URL rewrites endpoints was run.
+		add_action( 'init', array( $this, 'check_setup_rewrite_endpoints_run' ) );
+
 		$admin = \Newsman\Admin::init();
 		$admin->init_hooks();
 
@@ -146,7 +149,7 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function plugins_loaded_lazy() {
-		if ( class_exists( 'WC_Logger' ) ) {
+		if ( class_exists( '\WC_Logger' ) ) {
 			\Newsman\Logger::$is_wc_logging = true;
 		}
 
@@ -221,8 +224,20 @@ class WP_Newsman {
 	 * @return void
 	 */
 	public function check_setup_not_run() {
-		if ( class_exists( 'Newsman\Setup' ) ) {
+		if ( class_exists( '\Newsman\Setup' ) ) {
 			\Newsman\Setup::is_setup_executed();
+		}
+	}
+
+	/**
+	 * Verify that the setup was run at least one time.
+	 * This can happen when the plugin is installed or updated with various tools outside WP admin.
+	 *
+	 * @return void
+	 */
+	public function check_setup_rewrite_endpoints_run() {
+		if ( class_exists( '\Newsman\Setup' ) ) {
+			\Newsman\Setup::is_myaccount_newsletter_rewrite_endpoint();
 		}
 	}
 

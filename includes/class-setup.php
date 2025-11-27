@@ -106,7 +106,7 @@ class Setup {
 	}
 
 	/**
-	 * One time setup to make sure the initial setup was run.
+	 * Make sure the setup was run.
 	 * This can happen when the plugin is installed or updated with various tools outside WP admin.
 	 *
 	 * @return void
@@ -305,11 +305,48 @@ js/retargeting/modal_{{api_key}}.js'
 	 * Upgrade rewrites 3.0.0
 	 *
 	 * @return void
+	 * @deprecated since 3.3.3
 	 */
 	public static function upgrade_rewrites_three_zero_zero() {
+		$deprecated = 1;
+	}
+
+	/**
+	 * Add newsletter my account rewrite endpoint
+	 *
+	 * @return void
+	 */
+	public static function add_myaccount_newsletter_rewrite_endpoint() {
 		$account_processor = new \Newsman\Form\Account\Processor();
 		$account_processor->add_endpoint();
 		flush_rewrite_rules();
+	}
+
+	/**
+	 * Make sure the myaccount newsman rewrite endpoint was added.
+	 *
+	 * @return void
+	 */
+	public static function is_myaccount_newsletter_rewrite_endpoint() {
+		$is_added = get_option( 'newsman_setup_myaccount_endpoint_added', '' );
+		if ( ! empty( $is_added ) ) {
+			return;
+		}
+
+		$network_wide = function_exists( 'is_multisite' ) && is_multisite() && isset( $options['network_wide'] ) && $options['network_wide'];
+
+		if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+			$sites = get_sites();
+			foreach ( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				self::add_myaccount_newsletter_rewrite_endpoint();
+				update_option( 'newsman_setup_myaccount_endpoint_added', 'on', true );
+				restore_current_blog();
+			}
+		} else {
+			self::add_myaccount_newsletter_rewrite_endpoint();
+			update_option( 'newsman_setup_myaccount_endpoint_added', 'on', true );
+		}
 	}
 
 	/**
