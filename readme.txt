@@ -111,6 +111,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.3.4 =
+* Emphase wording in admin related to export emails from orders
 = 3.3.3 =
 * Hotfix on setup add my account newsletter endpoint
 = 3.3.2 =
