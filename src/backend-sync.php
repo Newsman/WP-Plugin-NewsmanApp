@@ -136,7 +136,10 @@ $form_values = $this->get_form_values();
 									<?php
 										$schedule_url = $this->get_action_nonce_url( 'newsman_export_wordpress_subscribers', admin_url( 'admin.php?page=NewsmanSync' ) );
 									?>
-									<?php echo esc_html__( 'Export once all WordPress users with role subscriber (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+									<span class="dashicons dashicons-info" title="<?php echo esc_attr__( 'It may be necessary to switch to another package if the number of subscribers exceeds the maximum of the current package.', 'newsman' ); ?>"></span>
+									<span title="<?php echo esc_attr__( 'It may be necessary to switch to another package if the number of subscribers exceeds the maximum of the current package.', 'newsman' ); ?>">
+										<?php echo esc_html__( 'Export once all WordPress users with role subscriber (using Woo Commerce Action Scheduler)', 'newsman' ); ?>
+									</span>:
 									<br>
 									<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
 										<?php echo esc_html__( 'Schedule Export Subscribers', 'newsman' ); ?>
@@ -158,7 +161,10 @@ $form_values = $this->get_form_values();
 										<?php
 										$schedule_url = $this->get_action_nonce_url( 'newsman_export_subscribers_orders', admin_url( 'admin.php?page=NewsmanSync' ) );
 										?>
-										<?php echo esc_html__( 'Export once all buyers from orders with status complete (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
+										<span class="dashicons dashicons-info" title="<?php echo esc_attr__( 'It may be necessary to switch to another package if the number of subscribers exceeds the maximum of the current package.', 'newsman' ); ?>"></span>
+										<span title="<?php echo esc_attr__( 'It may be necessary to switch to another package if the number of subscribers exceeds the maximum of the current package.', 'newsman' ); ?>">
+											<?php echo esc_html__( 'Export once as subscribers all buyers from orders with status complete (using Woo Commerce Action Scheduler)', 'newsman' ); ?>
+										</span>:
 										<br>
 										<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
 											<?php echo esc_html__( 'Schedule Export Customers from Orders', 'newsman' ); ?>

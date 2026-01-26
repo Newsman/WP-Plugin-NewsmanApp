@@ -185,4 +185,15 @@ p.nzm-description-error {
 	width: 200px !important;
 }
 
+span[title] {
+	cursor: help;
+	border-bottom: 1px dotted #666;
+}
+
+.dashicons.dashicons-info {
+	color: #0073aa;
+	vertical-align: middle;
+	margin-right: 4px;
+}
+
 /*tabs*/

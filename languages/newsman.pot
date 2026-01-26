@@ -1,15 +1,15 @@
-# Copyright (C) 2025 Newsman
+# Copyright (C) 2026 Newsman
 # This file is distributed under the same license as the NewsmanApp for WordPress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp for WordPress 3.3.0\n"
+"Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-25T10:00:31+02:00\n"
+"POT-Creation-Date: 2026-01-26T17:33:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -785,7 +785,7 @@ msgstr ""
 #: src/backend-remarketing.php:312
 #: src/backend-settings.php:472
 #: src/backend-sms.php:392
-#: src/backend-sync.php:200
+#: src/backend-sync.php:206
 msgid "Save Changes"
 msgstr ""
 
@@ -1246,38 +1246,45 @@ msgid "Synchronize with NewsMAN from latest number of records (ex: 5000)"
 msgstr ""
 
 #: src/backend-sync.php:139
+#: src/backend-sync.php:140
+#: src/backend-sync.php:164
+#: src/backend-sync.php:165
+msgid "It may be necessary to switch to another package if the number of subscribers exceeds the maximum of the current package."
+msgstr ""
+
+#: src/backend-sync.php:141
 msgid "Export once all WordPress users with role subscriber (using Woo Commerce Action Scheduler)"
 msgstr ""
 
-#: src/backend-sync.php:142
+#: src/backend-sync.php:145
 msgid "Schedule Export Subscribers"
 msgstr ""
 
-#: src/backend-sync.php:149
+#: src/backend-sync.php:152
 msgid "CRON url to export WordPress users with role subscriber"
 msgstr ""
 
-#: src/backend-sync.php:161
-msgid "Export once all buyers from orders with status complete (using Woo Commerce Action Scheduler)"
+#: src/backend-sync.php:166
+msgid "Export once as subscribers all buyers from orders with status complete (using Woo Commerce Action Scheduler)"
 msgstr ""
 
-#: src/backend-sync.php:164
+#: src/backend-sync.php:170
 msgid "Schedule Export Customers from Orders"
 msgstr ""
 
-#: src/backend-sync.php:171
+#: src/backend-sync.php:177
 msgid "CRON url to export buyers from orders with status complete"
 msgstr ""
 
-#: src/backend-sync.php:182
+#: src/backend-sync.php:188
 msgid "Export once all orders to NewsMAN after the date set in Remarketing > Export Orders After Date (using Woo Commerce Action Scheduler)"
 msgstr ""
 
-#: src/backend-sync.php:185
+#: src/backend-sync.php:191
 msgid "Schedule Export Orders"
 msgstr ""
 
-#: src/backend-sync.php:192
+#: src/backend-sync.php:198
 msgid "CRON url to send orders to NewsMAN"
 msgstr ""
 
