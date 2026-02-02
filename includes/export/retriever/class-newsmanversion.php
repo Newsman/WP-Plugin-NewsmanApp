@@ -16,21 +16,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Export Retriever Version
+ * Class Export Retriever Newsman Version
  *
- * @class \Newsman\Export\Retriever\Version
+ * @class \Newsman\Export\Retriever\NewsmanVersion
  */
-class Version extends AbstractRetriever implements RetrieverInterface {
+class NewsmanVersion extends AbstractRetriever implements RetrieverInterface {
 	/**
-	 * Process version retriever
+	 * Process newsman version retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		global $wp_version;
-
-		return array( 'version' => 'Wordpress ' . $wp_version );
+		return array( 'version' => NEWSMAN_VERSION );
 	}
 }

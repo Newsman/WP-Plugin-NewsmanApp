@@ -29,9 +29,14 @@ class Pool {
 	 * @var array
 	 */
 	protected $retriever_list = array(
-		'version'     => array(
+		'version'          => array(
 			'code'             => 'version',
 			'class'            => '\Newsman\Export\Retriever\Version',
+			'only_woocommerce' => false,
+		),
+		'newsman_version'  => array(
+			'code'             => 'newsman_version',
+			'class'            => '\Newsman\Export\Retriever\NewsmanVersion',
 			'only_woocommerce' => false,
 		),
 		'orders'      => array(
