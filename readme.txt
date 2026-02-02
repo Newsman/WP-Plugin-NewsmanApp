@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter, create, form
 Requires at least: 3.7
-Tested up to: 6.8.3
+Tested up to: 6.9
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -113,6 +113,7 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 = 3.4.0 =
 * Change retargeting URL
+* Change "Tested up to" from "6.8.3" into "6.9"
 = 3.3.5 =
 * Minor fix, fix typos
 = 3.3.4 =
