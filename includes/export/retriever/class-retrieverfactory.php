@@ -29,7 +29,7 @@ class RetrieverFactory {
 	 * @return RetrieverInterface
 	 * @throws \InvalidArgumentException Invalid retriever class.
 	 */
-	public function create( $class_name, $data = array() ) {
+	public function create( $class_name, $data = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		if ( ! class_exists( $class_name ) ) {
 			throw new \InvalidArgumentException( esc_html( 'Type "' . $class_name . '" does not exist.' ) );
 		}
