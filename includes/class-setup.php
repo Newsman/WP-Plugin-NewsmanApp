@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '5.0.0';
+	protected static $setup_version = '6.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -216,6 +216,10 @@ class Setup {
 			// Run 1.0.0 again as a hotfix to a bug fixed here.
 			self::upgrade_newsman_options_one_zero_zero();
 		}
+
+		if ( version_compare( self::$current_version, '6.0.0', '<' ) ) {
+			self::upgrade_newsman_options_six_zero_zero();
+		}
 	}
 
 	/**
@@ -287,6 +291,23 @@ js/retargeting/modal_{{api_key}}.js'
 		$options->add_option(
 			'newsman_jstrackrunfunc',
 			'_nzm.run'
+		);
+	}
+
+	/**
+	 * Upgrade admin options 6.0.0
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_newsman_options_six_zero_zero() {
+		$options = new \Newsman\Options();
+		$options->update_option(
+			'newsman_trackingscripturl',
+			'https://jcdn.newsmanapp.com/js/retargeting/track.js'
+		);
+		$options->update_option(
+			'newsman_httpresourceurl',
+			'https://jcdn.newsmanapp.com/'
 		);
 	}
 
@@ -375,7 +396,7 @@ js/retargeting/modal_{{api_key}}.js'
 			self::update_newsman_autoload_options();
 			update_option( 'newsman_setup_version', '4.0.0', true );
 		}
-
+        
 		if ( version_compare( self::$current_version, '5.0.0', '<' ) ) {
 			self::upgrade_options_five_zero_zero();
 			update_option( 'newsman_setup_version', '5.0.0', true );
