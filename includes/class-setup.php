@@ -396,12 +396,12 @@ js/retargeting/modal_{{api_key}}.js'
 			self::update_newsman_autoload_options();
 			update_option( 'newsman_setup_version', '4.0.0', true );
 		}
-        
+
 		if ( version_compare( self::$current_version, '5.0.0', '<' ) ) {
 			self::upgrade_options_five_zero_zero();
 			update_option( 'newsman_setup_version', '5.0.0', true );
 		}
-        
+
 		if ( version_compare( self::$current_version, '6.0.0', '<' ) ) {
 			update_option( 'newsman_setup_version', '6.0.0', true );
 		}

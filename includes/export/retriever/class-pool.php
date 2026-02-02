@@ -29,57 +29,57 @@ class Pool {
 	 * @var array
 	 */
 	protected $retriever_list = array(
-		'version'          => array(
+		'version'         => array(
 			'code'             => 'version',
 			'class'            => '\Newsman\Export\Retriever\Version',
 			'only_woocommerce' => false,
 		),
-		'newsman_version'  => array(
+		'newsman_version' => array(
 			'code'             => 'newsman_version',
 			'class'            => '\Newsman\Export\Retriever\NewsmanVersion',
 			'only_woocommerce' => false,
 		),
-		'orders'      => array(
+		'orders'          => array(
 			'code'             => 'orders',
 			'class'            => '\Newsman\Export\Retriever\Orders',
 			'only_woocommerce' => true,
 		),
-		'products'    => array(
+		'products'        => array(
 			'code'             => 'products',
 			'class'            => '\Newsman\Export\Retriever\Products',
 			'only_woocommerce' => true,
 		),
-		'customers'   => array(
+		'customers'       => array(
 			'code'             => 'customers',
 			'class'            => '\Newsman\Export\Retriever\Customers',
 			'only_woocommerce' => true,
 		),
-		'subscribers' => array(
+		'subscribers'     => array(
 			'code'             => 'subscribers',
 			'class'            => '\Newsman\Export\Retriever\Subscribers',
 			'only_woocommerce' => false,
 		),
-		'count'       => array(
+		'count'           => array(
 			'code'             => 'count',
 			'class'            => '\Newsman\Export\Retriever\Count',
 			'only_woocommerce' => false,
 		),
-		'coupons'     => array(
+		'coupons'         => array(
 			'code'             => 'coupons',
 			'class'            => '\Newsman\Export\Retriever\Coupons',
 			'only_woocommerce' => true,
 		),
-		'wordpress'   => array(
+		'wordpress'       => array(
 			'code'             => 'wordpress',
 			'class'            => '\Newsman\Export\Retriever\SubscribersWordpress',
 			'only_woocommerce' => false,
 		),
-		'woocommerce' => array(
+		'woocommerce'     => array(
 			'code'             => 'woocommerce',
 			'class'            => '\Newsman\Export\Retriever\SubscribersWoocommerce',
 			'only_woocommerce' => true,
 		),
-		'send-orders' => array(
+		'send-orders'     => array(
 			'code'             => 'send-orders',
 			'class'            => '\Newsman\Export\Retriever\SendOrders',
 			'only_woocommerce' => true,
