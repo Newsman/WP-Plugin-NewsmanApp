@@ -34,7 +34,7 @@ class RetrieverFactory {
 			throw new \InvalidArgumentException( esc_html( 'Type "' . $class_name . '" does not exist.' ) );
 		}
 
-		$instance = new $class_name( $data );
+		$instance = new $class_name();
 
 		if ( ! $instance instanceof RetrieverInterface ) {
 			throw new \InvalidArgumentException(

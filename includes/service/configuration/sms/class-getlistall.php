@@ -41,7 +41,7 @@ class GetListAll extends AbstractService {
 	public function execute( $context ) {
 		$api_context = $this->create_api_context()
 			->set_user_id( $context->get_user_id() )
-			->set_api_key( $context->get_api_hey() )
+			->set_api_key( $context->get_api_key() )
 			->set_endpoint( self::ENDPOINT );
 
 		$client = $this->create_api_client();

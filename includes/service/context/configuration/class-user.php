@@ -73,7 +73,17 @@ class User extends Blog {
 	 *
 	 * @return string
 	 */
-	public function get_api_hey() {
+	public function get_api_key() {
 		return $this->api_key;
+	}
+
+	/**
+	 * Get API key
+	 *
+	 * @return string
+	 * @deprecated since 3.3.5
+	 */
+	public function get_api_hey() {
+		return $this->get_api_key();
 	}
 }

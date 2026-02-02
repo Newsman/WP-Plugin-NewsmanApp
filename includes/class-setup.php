@@ -22,8 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Setup {
 	/**
-	 * Current version of setup in this file.
-	 * The version should or must be in database after setup execution.
+	 * The current version of setup in this file.
+	 * The version should or must be in the database after setup execution.
 	 *
 	 * @var string
 	 */

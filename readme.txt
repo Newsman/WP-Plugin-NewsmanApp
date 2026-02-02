@@ -111,6 +111,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.3.5 =
+* Minor fix, fix typos
 = 3.3.4 =
 * Emphase wording in admin related to export emails from orders
 = 3.3.3 =

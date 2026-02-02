@@ -159,7 +159,7 @@ class Client implements ClientInterface {
 			$context->get_endpoint()
 		);
 		$request_uri = apply_filters(
-			'newsman_api_client_request_params',
+			'newsman_api_client_request_url',
 			$request_uri,
 			array(
 				'api_version' => $this->config->get_api_version(),
