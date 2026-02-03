@@ -303,12 +303,20 @@ js/retargeting/modal_{{api_key}}.js'
 		$options = new \Newsman\Options();
 		$options->update_option(
 			'newsman_trackingscripturl',
-			'https://jcdn.newsmanapp.com/js/retargeting/track.js'
+			'https://t.newsmanapp.com/jt/t.js'
 		);
 		$options->update_option(
 			'newsman_httpresourceurl',
-			'https://jcdn.newsmanapp.com/'
+			'https://t.newsmanapp.com/'
 		);
+
+        $options->update_option(
+            'newsman_httprequiredfilepatterns',
+            'jt/t.js
+jt/nzm_custom_{{api_key}}.js
+jt/ecommerce.js
+jt/modal_{{api_key}}.js'
+        );
 	}
 
 	/**
