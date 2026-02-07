@@ -210,6 +210,9 @@ class Oauth extends Settings {
 		update_option( 'newsman_apikey', esc_html( $creds->newsman_apikey ), \Newsman\Config::AUTOLOAD_OPTIONS );
 		update_option( 'newsman_list', esc_html( $list_id ), \Newsman\Config::AUTOLOAD_OPTIONS );
 
+		$authenticate_token = $this->generate_random_password( 32 );
+		update_option( 'newsman_authenticate_token', $authenticate_token, \Newsman\Config::AUTOLOAD_OPTIONS );
+
 		$settings = $this->get_remarketing_settings( $list_id, $creds->newsman_userid, $creds->newsman_apikey );
 		if ( ! empty( $settings ) && is_array( $settings ) ) {
 			$remarketing_id = $settings['site_id'] . '-' . $settings['list_id'] . '-' . $settings['form_id'] .

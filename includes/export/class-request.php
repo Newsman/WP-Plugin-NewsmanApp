@@ -13,6 +13,7 @@ namespace Newsman\Export;
 
 use Newsman\Config;
 use Newsman\Export\Retriever\Authenticator;
+use Newsman\Export\Retriever\Pool;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -30,6 +31,13 @@ class Request {
 	 * @var Config
 	 */
 	protected $config;
+
+	/**
+	 * Retriever pool
+	 *
+	 * @var Pool
+	 */
+	protected $pool;
 
 	/**
 	 * Known HTTP GET parameters intercepted
@@ -94,6 +102,7 @@ class Request {
 	 */
 	public function __construct() {
 		$this->config = Config::init();
+		$this->pool   = new Pool();
 	}
 
 	/**
@@ -136,6 +145,8 @@ class Request {
 	protected function get_all_known_parameters() {
 		$parameters = array();
 
+		$dynamic_params = $this->get_dynamic_parameters();
+
 		$hash_key = Authenticator::API_KEY_PARAM;
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_GET[ $hash_key ] ) ) {
@@ -147,23 +158,65 @@ class Request {
 			$parameters[ $hash_key ] = sanitize_text_field( wp_unslash( $_POST[ $hash_key ] ) );
 		}
 
-		foreach ( $this->known_get_parameters as $parameter ) {
+		$known_get = array_merge( $this->known_get_parameters, $dynamic_params );
+		foreach ( $known_get as $parameter ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 			if ( isset( $_GET[ $parameter ] ) ) {
-				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-				$parameters[ $parameter ] = sanitize_text_field( wp_unslash( $_GET[ $parameter ] ) );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$parameters[ $parameter ] = $this->sanitize_parameter( $_GET[ $parameter ] );
 			}
 		}
 
-		foreach ( $this->known_post_parameters as $parameter ) {
+		$known_post = array_merge( $this->known_post_parameters, $dynamic_params );
+		foreach ( $known_post as $parameter ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
 			if ( isset( $_POST[ $parameter ] ) ) {
-				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-				$parameters[ $parameter ] = sanitize_text_field( wp_unslash( $_POST[ $parameter ] ) );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				$parameters[ $parameter ] = $this->sanitize_parameter( $_POST[ $parameter ] );
 			}
 		}
 
 		return apply_filters( 'newsman_export_request_get_all_known_parameters', $parameters );
+	}
+
+	/**
+	 * Sanitize parameter
+	 *
+	 * @param mixed $value Value.
+	 * @return mixed
+	 */
+	protected function sanitize_parameter( $value ) {
+		$value = wp_unslash( $value );
+		if ( is_array( $value ) ) {
+			return map_deep( $value, 'sanitize_text_field' );
+		}
+		return sanitize_text_field( $value );
+	}
+
+	/**
+	 * Get dynamic parameters from retrievers
+	 *
+	 * @return array
+	 */
+	protected function get_dynamic_parameters() {
+		$dynamic_params = array( 'sort', 'order' );
+		$retrievers     = $this->pool->get_retrievers_with_filters();
+
+		foreach ( $retrievers as $retriever_def ) {
+			try {
+				$instance = $this->pool->get_retriever_by_code( $retriever_def['code'], array() );
+				if ( method_exists( $instance, 'get_where_parameters_mapping' ) ) {
+					$dynamic_params = array_merge( $dynamic_params, array_keys( $instance->get_where_parameters_mapping() ) );
+				}
+				if ( method_exists( $instance, 'get_allowed_sort_fields' ) ) {
+					$dynamic_params = array_merge( $dynamic_params, array_keys( $instance->get_allowed_sort_fields() ) );
+				}
+			} catch ( \Exception $e ) {
+				continue;
+			}
+		}
+
+		return array_unique( $dynamic_params );
 	}
 
 	/**
@@ -196,7 +249,8 @@ class Request {
 		if ( stripos( $auth, 'Bearer' ) !== false ) {
 			return trim( str_ireplace( 'Bearer', '', $auth ) );
 		}
-		return '';
+
+		return $auth;
 	}
 
 	/**

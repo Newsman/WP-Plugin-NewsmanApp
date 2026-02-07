@@ -16,18 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Export Retriever Customers
+ * Class Export Retriever Subscribers WordPress Feed
  *
- * @class \Newsman\Export\Retriever\Customers
+ * @class \Newsman\Export\Retriever\SubscribersWordpressFeed
  */
-class Customers extends Users {
+class SubscribersWordpressFeed extends Users {
 	/**
 	 * User role
 	 */
-	public const USER_ROLE = 'customer';
+	public const USER_ROLE = 'subscriber';
 
 	/**
-	 * Process customers retriever
+	 * Process subscribers retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
@@ -51,22 +51,23 @@ class Customers extends Users {
 		$data = get_user_meta( $customer->data->ID );
 
 		$row = array(
-			'customer_id'  => $customer->data->ID,
-			'firstname'    => $data['first_name'][0],
-			'lastname'     => $data['last_name'][0],
-			'email'        => $customer->data->user_email,
-			'date_created' => $customer->data->user_registered,
-			'source'       => 'WooCommerce users role ' . self::USER_ROLE,
+			'subscriber_id'   => $customer->data->ID,
+			'firstname'       => $data['first_name'][0],
+			'lastname'        => $data['last_name'][0],
+			'email'           => $customer->data->user_email,
+			'date_subscribed' => $customer->data->user_registered,
+			'confirmed'       => 1,
+			'source'          => 'WordPress users role ' . self::USER_ROLE,
 		);
 
-		$telephone = $this->get_telphone_from_customer( $customer );
+		$telephone = $this->get_telphone_from_user_data( $data );
 		if ( ! empty( $telephone ) ) {
 			$row['phone'] = $telephone;
 		}
 
 		$ip = '';
 		$ip = apply_filters(
-			'newsman_export_retriever_customers_get_user_ip',
+			'newsman_export_retriever_subscribers_wordpress_feed_get_user_ip',
 			$ip,
 			array(
 				'data'    => $data,
@@ -82,17 +83,8 @@ class Customers extends Users {
 			}
 		}
 
-		foreach ( $this->remarketing_config->get_customer_attributes() as $attribute ) {
-			if ( strpos( $attribute, 'billing_' ) === 0 || strpos( $attribute, 'shipping_' ) === 0 ) {
-				$getter = 'get_' . $attribute;
-				if ( method_exists( $customer, $getter ) ) {
-					$row[ $attribute ] = $customer->$getter();
-				}
-			}
-		}
-
 		return apply_filters(
-			'newsman_export_retriever_customers_process_customer',
+			'newsman_export_retriever_subscribers_wordpress_feed_process_customer',
 			$row,
 			array(
 				'customer' => $customer,

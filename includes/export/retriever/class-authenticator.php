@@ -43,7 +43,7 @@ class Authenticator {
 	}
 
 	/**
-	 * Authenticate incoming Newsman export request
+	 * Authenticate the incoming Newsman export request
 	 *
 	 * @param string   $api_key Newsman API key.
 	 * @param null|int $blog_id WP blog ID.
@@ -55,7 +55,8 @@ class Authenticator {
 			throw new \OutOfBoundsException( esc_html__( 'Empty API key provided.', 'newsman' ) );
 		}
 
-		$config_api_key = $this->config->get_api_key( $blog_id );
+		$config_api_key    = $this->config->get_api_key( $blog_id );
+		$config_auth_token = $this->config->get_authenticate_token( $blog_id );
 
 		$alternate_name = $this->config->get_export_authorize_header_name( $blog_id );
 		$alternate_key  = $this->config->get_export_authorize_header_key( $blog_id );
@@ -64,8 +65,16 @@ class Authenticator {
 			$is_alternate = true;
 		}
 
+		$is_alternate_with_token = false;
+		if ( ! empty( $config_auth_token ) ) {
+			$is_alternate_with_token = true;
+		}
+
 		$is_authenticated = false;
 		if ( $config_api_key === $api_key ) {
+			$is_authenticated = true;
+		}
+		if ( $is_alternate_with_token && ( $config_auth_token === $api_key ) ) {
 			$is_authenticated = true;
 		}
 		if ( $is_alternate && ( $alternate_key === $api_key ) ) {

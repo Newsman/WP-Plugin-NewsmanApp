@@ -11,8 +11,6 @@
  * @var \Newsman\Admin\Settings\Oauth $this
  */
 
-$this->is_oauth( true );
-
 if ( ! $this->validate_nonce( array( $this->form_id, $this->form_id_step_two, 'error', 'code' ) ) ) {
 	wp_nonce_ays( $this->nonce_action );
 	return;
@@ -34,6 +32,9 @@ $this->process_forms();
 				?>
 				<div class="error"><p><strong><?php echo esc_html( $this->form_error_message ); ?></strong></p></div>
 			<?php } ?>
+			<div style="font-size: 16px;">
+				&nbsp;<?php echo esc_html__( 'Site ', 'newsman' ); ?><strong><?php echo esc_html( get_bloginfo( 'name' ) ); ?></strong><?php echo ' (ID: <strong>' . esc_html( get_current_blog_id() ) . '</strong>)'; ?>
+			</div>
 			<div class="wrap wrap-settings-admin-page">
 				<h2><?php echo esc_html__( 'NewsMAN plugin for Wordpress-Woocommerce', 'newsman' ); ?></h2>
 				<?php // OAuth step 1. ?>
@@ -76,6 +77,8 @@ $this->process_forms();
 						<div style="padding-top: 5px;">
 							<a style="background: #ad0100" href="<?php echo esc_url( $this->get_oauth_url() ); ?>"
 								class="button button-primary"><?php echo esc_html__( 'Login with NewsMAN', 'newsman' ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSettings' ) ); ?>"
+								class="button"><?php echo esc_html__( 'Cancel', 'newsman' ); ?></a>
 						</div>
 					</form>
 					<?php // List step 2. ?>
@@ -105,6 +108,8 @@ $this->process_forms();
 						</table>
 						<div style="padding-top: 5px;">
 							<button type="submit" style="background: #ad0100" class="button button-primary"><?php echo esc_html__( 'Save', 'newsman' ); ?></button>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSettings' ) ); ?>"
+								class="button"><?php echo esc_html__( 'Cancel', 'newsman' ); ?></a>
 						</div>
 					</form>
 				<?php } ?>

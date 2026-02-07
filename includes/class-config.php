@@ -239,6 +239,16 @@ class Config {
 	}
 
 	/**
+	 * Get authenticate token.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_authenticate_token( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_authenticate_token' );
+	}
+
+	/**
 	 * Get export request authorize header name
 	 *
 	 * @param null|int $blog_id WP blog ID.

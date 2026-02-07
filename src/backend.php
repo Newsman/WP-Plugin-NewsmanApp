@@ -49,6 +49,19 @@ $is_valid_credentials = $this->is_valid_credentials();
 					</tr>
 					<tr>
 						<th scope="row">
+							&nbsp;
+						</th>
+						<td>
+							<button type="button" class="button button-primary" style="vertical-align: middle;" onclick="if(confirm('<?php echo esc_js( __( 'Reconfigure with Newsman Oauth ?', 'newsman' ) ); ?>')) { window.location.href = '<?php echo esc_url( admin_url( 'admin.php?page=NewsmanOauth' ) ); ?>'; }">
+								<?php echo esc_html__( 'Reconfigure with Newsman Oauth', 'newsman' ); ?>
+							</button>
+							<span style="font-size: 16px; vertical-align: middle;">
+								&nbsp;<?php echo esc_html__( 'Site ', 'newsman' ); ?><strong><?php echo esc_html( get_bloginfo( 'name' ) ); ?></strong><?php echo ' (ID: <strong>' . esc_html( get_current_blog_id() ) . '</strong>)'; ?>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<strong><?php echo esc_html__( 'Menus', 'newsman' ); ?>:</strong>
 						</th>
 					</tr>

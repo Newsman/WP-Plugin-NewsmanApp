@@ -19,14 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Subscribers
  *
  * @class \Newsman\Export\Retriever\Subscribers
- * @deprecated since 3.0.0
  */
-class Subscribers extends Users {
-	/**
-	 * User role
-	 */
-	public const USER_ROLE = 'subscriber';
-
+class Subscribers extends AbstractRetriever implements RetrieverInterface {
 	/**
 	 * Process subscribers retriever
 	 *
@@ -36,7 +30,16 @@ class Subscribers extends Users {
 	 * @throws \Exception On errors.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		$data['wp_newsman_internal_role'] = self::USER_ROLE;
-		return parent::process( $data, $blog_id );
+		if ( $this->remarketing_config->is_export_woocommerce_subscribers( $blog_id ) ) {
+			$retriever = new SubscribersWoocommerceFeed();
+			return $retriever->process( $data, $blog_id );
+		}
+
+		if ( $this->remarketing_config->is_export_wordpress_subscribers( $blog_id ) ) {
+			$retriever = new SubscribersWordpressFeed();
+			return $retriever->process( $data, $blog_id );
+		}
+
+		throw new \Exception( 'No subscriber export enabled.' );
 	}
 }
