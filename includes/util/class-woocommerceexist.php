@@ -33,4 +33,15 @@ class WooCommerceExist {
 		}
 		return $exists;
 	}
+
+	/**
+	 * Check if the current WooCommerce version is less than a given version.
+	 *
+	 * @param string $version Version to compare.
+	 * @return bool
+	 */
+	public function is_wc_before( $version ) {
+		$wc_version = defined( 'WC_VERSION' ) ? constant( 'WC_VERSION' ) : ( function_exists( 'WC' ) && isset( WC()->version ) ? WC()->version : '0.0.0' );
+		return version_compare( $wc_version, $version, '<' );
+	}
 }
