@@ -310,13 +310,13 @@ js/retargeting/modal_{{api_key}}.js'
 			'https://t.newsmanapp.com/'
 		);
 
-        $options->update_option(
-            'newsman_httprequiredfilepatterns',
-            'jt/t.js
+		$options->update_option(
+			'newsman_httprequiredfilepatterns',
+			'jt/t.js
 jt/nzm_custom_{{api_key}}.js
 jt/ecommerce.js
 jt/modal_{{api_key}}.js'
-        );
+		);
 	}
 
 	/**

@@ -34,11 +34,11 @@ class Pool {
 			'class'            => '\Newsman\Export\Retriever\Version',
 			'only_woocommerce' => false,
 		),
-        'newsman_version' => array(
-            'code'             => 'newsman_version',
-            'class'            => '\Newsman\Export\Retriever\NewsmanVersion',
-            'only_woocommerce' => false,
-        ),
+		'newsman_version'              => array(
+			'code'             => 'newsman_version',
+			'class'            => '\Newsman\Export\Retriever\NewsmanVersion',
+			'only_woocommerce' => false,
+		),
 		'orders'                       => array(
 			'code'             => 'orders',
 			'class'            => '\Newsman\Export\Retriever\Orders',
