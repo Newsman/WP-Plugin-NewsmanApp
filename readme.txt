@@ -111,8 +111,10 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
-= next =
+= 3.4.0 =
+* Change retargeting URL
 * Compatibility with WooCommerce 10.4.0, change wc_enqueue_js into wp_add_inline_script
+* Change "Tested up to" from "6.8.3" into "6.9"
 = 3.3.5 =
 * Minor fix, fix typos
 = 3.3.4 =
