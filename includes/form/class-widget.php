@@ -62,7 +62,7 @@ class Widget {
 			$attributes['formid'] = str_replace( 'nzm-container-', '', $attributes['formid'] );
 
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-			$html = '<script async src="https://retargeting.newsmanapp.com/js/embed-form.js" data-nzmform="' .
+			$html = '<script async src="https://t.newsmanapp.com/js/embed-form.js" data-nzmform="' .
 				esc_attr( $attributes['formid'] ) . '"></script>';
 			return apply_filters( 'newsman_subscribe_widget_html', $html, array( 'attributes' => $attributes ) );
 		}

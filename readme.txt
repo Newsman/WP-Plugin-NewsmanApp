@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter, create, form
 Requires at least: 3.7
-Tested up to: 6.8.3
+Tested up to: 6.9.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -111,10 +111,14 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.4.0 =
+* Change retargeting URL
+* Compatibility with WooCommerce 10.4.0, change wc_enqueue_js into wp_add_inline_script
+* Change "Tested up to" from "6.8.3" into "6.9"
 = 3.3.5 =
 * Minor fix, fix typos
 = 3.3.4 =
-* Emphase wording in admin related to export emails from orders
+* Emphasis wording in admin related to export emails from orders
 = 3.3.3 =
 * Hotfix on setup add my account newsletter endpoint
 = 3.3.2 =
