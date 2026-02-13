@@ -105,6 +105,11 @@ class Pool {
 			'class'            => '\Newsman\Export\Retriever\SendOrders',
 			'only_woocommerce' => true,
 		),
+		'custom-sql'                   => array(
+			'code'             => 'custom-sql',
+			'class'            => '\Newsman\Export\Retriever\CustomSql',
+			'only_woocommerce' => false,
+		),
 	);
 
 	/**
