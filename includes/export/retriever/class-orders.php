@@ -11,10 +11,6 @@
 
 namespace Newsman\Export\Retriever;
 
-use Newsman\Logger;
-use Newsman\Remarketing\Config as RemarketingConfig;
-use Newsman\Util\Telephone;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

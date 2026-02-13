@@ -11,9 +11,6 @@
 
 namespace Newsman\Export\Retriever;
 
-use Newsman\Logger;
-use Newsman\Remarketing\Config as RemarketingConfig;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

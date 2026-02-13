@@ -11,8 +11,6 @@
 
 namespace Newsman\Export\Retriever;
 
-use Newsman\Logger;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
