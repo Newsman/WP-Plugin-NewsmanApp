@@ -33,20 +33,59 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 	 * @var array
 	 */
 	protected $disallowed_statements = array(
+		// DML (write).
 		'INSERT',
 		'UPDATE',
 		'DELETE',
-		'DROP',
-		'ALTER',
-		'TRUNCATE',
-		'CREATE',
 		'REPLACE',
+		// DDL.
+		'CREATE',
+		'ALTER',
+		'DROP',
+		'TRUNCATE',
 		'RENAME',
-		'SET',
+		// Privileges.
 		'GRANT',
 		'REVOKE',
+		// Locking.
 		'LOCK',
 		'UNLOCK',
+		// Stored procedures / dynamic SQL.
+		'CALL',
+		'EXECUTE',
+		'PREPARE',
+		'DEALLOCATE',
+		// File and handler operations.
+		'LOAD',
+		'HANDLER',
+		// Server administration.
+		'SET',
+		'DO',
+		'FLUSH',
+		'RESET',
+		'PURGE',
+		'KILL',
+		'SHUTDOWN',
+		'INSTALL',
+		'UNINSTALL',
+		// Table maintenance.
+		'ANALYZE',
+		'CHECK',
+		'CHECKSUM',
+		'OPTIMIZE',
+		'REPAIR',
+		// Schema disclosure / database switching.
+		'SHOW',
+		'DESCRIBE',
+		'EXPLAIN',
+		'USE',
+		// Transaction control.
+		'BEGIN',
+		'COMMIT',
+		'ROLLBACK',
+		'SAVEPOINT',
+		'RELEASE',
+		'XA',
 	);
 
 	/**
