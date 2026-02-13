@@ -140,7 +140,7 @@ class Remarketing {
 			if ( $this->woo_commerce_exists->is_wc_before( '10.4.0' ) ) {
 				wc_enqueue_js( $script );
 			} else {
-				wp_register_script( 'newsman_remarketing_listing', '', array(), false, true );
+				wp_register_script( 'newsman_remarketing_listing', '', array(), NEWSMAN_VERSION, true );
 				wp_add_inline_script( 'newsman_remarketing_listing', $script );
 				wp_enqueue_script( 'newsman_remarketing_listing' );
 			}
@@ -165,7 +165,7 @@ class Remarketing {
 			if ( $this->woo_commerce_exists->is_wc_before( '10.4.0' ) ) {
 				wc_enqueue_js( $script );
 			} else {
-				wp_register_script( 'newsman_remarketing_product_detail', '', array(), false, true );
+				wp_register_script( 'newsman_remarketing_product_detail', '', array(), NEWSMAN_VERSION, true );
 				wp_add_inline_script( 'newsman_remarketing_product_detail', $script );
 				wp_enqueue_script( 'newsman_remarketing_product_detail' );
 			}
@@ -185,7 +185,7 @@ class Remarketing {
 			if ( $this->woo_commerce_exists->is_wc_before( '10.4.0' ) ) {
 				wc_enqueue_js( $script );
 			} else {
-				wp_register_script( 'newsman_remarketing_page_view', '', array(), false, true );
+				wp_register_script( 'newsman_remarketing_page_view', '', array(), NEWSMAN_VERSION, true );
 				wp_add_inline_script( 'newsman_remarketing_page_view', $script );
 				wp_enqueue_script( 'newsman_remarketing_page_view' );
 			}

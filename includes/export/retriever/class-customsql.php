@@ -122,7 +122,7 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 			)
 		);
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom SQL export requires direct query execution; caching is not appropriate for arbitrary user queries.
 		$result = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( $this->is_different_blog( $blog_id ) ) {
@@ -130,7 +130,7 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 		}
 
 		if ( null === $result ) {
-			throw new \Exception( 'SQL query error: ' . $wpdb->last_error );
+			throw new \Exception( 'SQL query error: ' . esc_html( $wpdb->last_error ) );
 		}
 
 		$this->logger->notice(
@@ -151,10 +151,10 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 	 * @return string
 	 */
 	protected function get_raw_sql() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- SQL input is validated by validateSelectOnly(); sanitize_text_field corrupts SQL operators.
 		$sql = isset( $_POST['sql'] ) ? wp_unslash( $_POST['sql'] ) : '';
 		if ( empty( $sql ) ) {
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Same as above.
 			$sql = isset( $_GET['sql'] ) ? wp_unslash( $_GET['sql'] ) : '';
 		}
 		return trim( (string) $sql );
@@ -180,7 +180,7 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 		$statement_type = key( $parsed );
 
 		if ( 'SELECT' !== $statement_type ) {
-			throw new \Exception( 'Only SELECT queries are allowed. Got: ' . $statement_type );
+			throw new \Exception( 'Only SELECT queries are allowed. Got: ' . esc_html( $statement_type ) );
 		}
 
 		if ( isset( $parsed['INTO'] ) ) {

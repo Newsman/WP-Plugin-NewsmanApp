@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Main plugin file, renaming would break existing installations.
 /**
  * Plugin Name: NewsmanApp for WordPress
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
