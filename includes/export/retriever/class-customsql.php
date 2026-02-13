@@ -73,6 +73,16 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 		}
 
 		global $wpdb;
+
+		$this->logger->notice(
+			sprintf(
+				/* translators: 1: Store/blog ID, 2: SQL query */
+				esc_html__( 'Custom SQL export, store ID %1$s - Query: %2$s', 'newsman' ),
+				$blog_id,
+				$sql
+			)
+		);
+
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -83,6 +93,15 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 		if ( null === $result ) {
 			throw new \Exception( 'SQL query error: ' . $wpdb->last_error );
 		}
+
+		$this->logger->notice(
+			sprintf(
+				/* translators: 1: Store/blog ID, 2: Number of rows returned */
+				esc_html__( 'Custom SQL export, store ID %1$s - Rows returned: %2$d', 'newsman' ),
+				$blog_id,
+				count( $result )
+			)
+		);
 
 		return $result;
 	}
