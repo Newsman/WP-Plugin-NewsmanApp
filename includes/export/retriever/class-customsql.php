@@ -110,6 +110,8 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 	 * @throws \Exception Throws exception if query is not SELECT-only.
 	 */
 	protected function validate_select_only( $sql ) {
+		$this->validate_no_multiple_statements( $sql );
+
 		$parser = new PHPSQLParser();
 		$parsed = $parser->parse( $sql );
 
@@ -125,6 +127,22 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 
 		if ( isset( $parsed['INTO'] ) ) {
 			throw new \Exception( 'SELECT INTO is not allowed.' );
+		}
+	}
+
+	/**
+	 * Check for semicolons outside of string literals.
+	 *
+	 * @param string $sql SQL query.
+	 * @return void
+	 * @throws \Exception Throws exception if multiple statements detected.
+	 */
+	protected function validate_no_multiple_statements( $sql ) {
+		$stripped = preg_replace( "/'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'/s", '', $sql );
+		$stripped = preg_replace( '/"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"/s', '', $stripped );
+
+		if ( strpos( $stripped, ';' ) !== false ) {
+			throw new \Exception( 'Multiple statements are not allowed.' );
 		}
 	}
 
