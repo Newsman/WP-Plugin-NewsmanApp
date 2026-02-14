@@ -100,8 +100,24 @@ class Sync extends Settings {
 
 		if ( 'Y' === $form_id_value ) {
 			$this->init_form_values_from_post();
+			$previous_list_id = get_option( 'newsman_list' );
 			$this->save_form_values();
 			$this->is_oauth();
+
+			if ( ! empty( $this->get_form_value( 'newsman_list' ) ) ) {
+				$authenticate_token = $this->ensure_authenticate_token();
+				$integration_result = $this->save_list_integration_setup(
+					$this->get_form_value( 'newsman_list' ),
+					get_site_url(),
+					$authenticate_token
+				);
+				if ( false === $integration_result ) {
+					update_option( 'newsman_list', $previous_list_id, Config::AUTOLOAD_OPTIONS );
+					$this->set_form_value( 'newsman_list', $previous_list_id );
+					$this->set_message_backend( 'error', esc_html__( 'Could not save integration setup. The list was not changed.', 'newsman' ) );
+				}
+			}
+
 			$this->install_products_feed();
 
 			try {

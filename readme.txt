@@ -111,6 +111,10 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.5.0 =
+* Send integration setup to Newsman API on OAuth connect
+* Add custom SQL query retriever
+* Refactor data retrievers
 = 3.4.0 =
 * Change retargeting URL
 * Compatibility with WooCommerce 10.4.0, change wc_enqueue_js into wp_add_inline_script

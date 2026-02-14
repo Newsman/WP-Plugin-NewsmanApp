@@ -318,6 +318,78 @@ class Settings {
 	}
 
 	/**
+	 * Get existing authenticate token or generate a new one if it doesn't exist.
+	 *
+	 * @return string
+	 */
+	public function ensure_authenticate_token() {
+		$token = get_option( 'newsman_authenticate_token' );
+		if ( ! empty( $token ) ) {
+			return $token;
+		}
+
+		$token = $this->generate_random_password( 32 );
+		update_option( 'newsman_authenticate_token', $token, Config::AUTOLOAD_OPTIONS );
+
+		return $token;
+	}
+
+	/**
+	 * Call API save list integration setup
+	 *
+	 * @param string $list_id List ID.
+	 * @param string $api_url URL where Newsman calls the exposed API.
+	 * @param string $api_key Authorization key for API access.
+	 * @return bool|array
+	 */
+	public function save_list_integration_setup( $list_id, $api_url, $api_key ) {
+		try {
+			if ( null === $list_id ) {
+				$list_id = $this->get_config()->get_list_id();
+			}
+
+			$payload = array(
+				'api_url'                   => $api_url,
+				'api_key'                   => $api_key,
+				'plugin_version'            => defined( 'NEWSMAN_VERSION' ) ? NEWSMAN_VERSION : '',
+				'platform_version'          => get_bloginfo( 'version' ),
+				'platform_language'         => 'PHP',
+				'platform_language_version' => phpversion(),
+			);
+
+			$context = new \Newsman\Service\Context\Configuration\SaveListIntegrationSetup();
+			$context->set_list_id( $list_id )
+				// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- API parameter value, not display text.
+				->set_integration( 'wordpress' )
+				->set_payload( $payload );
+			$context = apply_filters(
+				'newsman_admin_settings_save_list_integration_setup_context',
+				$context,
+				array(
+					'list_id' => $list_id,
+					'api_url' => $api_url,
+					'api_key' => $api_key,
+				)
+			);
+
+			$service = new \Newsman\Service\Configuration\Integration\SaveListIntegrationSetup();
+			$result  = $service->execute( $context );
+			return apply_filters(
+				'newsman_admin_settings_save_list_integration_setup',
+				$result,
+				array(
+					'list_id' => $list_id,
+					'api_url' => $api_url,
+					'api_key' => $api_key,
+				)
+			);
+		} catch ( \Exception $e ) {
+			$this->logger->log_exception( $e );
+			return false;
+		}
+	}
+
+	/**
 	 * Call API update feed and set authorize header name and secret
 	 *
 	 * @param string $list_id List ID.

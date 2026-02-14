@@ -210,8 +210,33 @@ class Oauth extends Settings {
 		update_option( 'newsman_apikey', esc_html( $creds->newsman_apikey ), \Newsman\Config::AUTOLOAD_OPTIONS );
 		update_option( 'newsman_list', esc_html( $list_id ), \Newsman\Config::AUTOLOAD_OPTIONS );
 
-		$authenticate_token = $this->generate_random_password( 32 );
-		update_option( 'newsman_authenticate_token', $authenticate_token, \Newsman\Config::AUTOLOAD_OPTIONS );
+		$authenticate_token = $this->ensure_authenticate_token();
+
+		$integration_result = $this->save_list_integration_setup( $list_id, get_site_url(), $authenticate_token );
+		if ( false === $integration_result ) {
+			$this->form_error_message = esc_html__( 'Could not save integration setup. Please try again.', 'newsman' );
+			$this->step               = 2;
+
+			$this->view_state['creds'] = wp_json_encode(
+				array(
+					'newsman_userid' => $creds->newsman_userid,
+					'newsman_apikey' => $creds->newsman_apikey,
+				)
+			);
+
+			$lists = $this->retrieve_api_all_lists( $creds->newsman_userid, $creds->newsman_apikey );
+			if ( is_array( $lists ) ) {
+				foreach ( $lists as $l ) {
+					$this->response_lists[] = array(
+						'id'   => $l['list_id'],
+						'name' => $l['list_name'],
+						'type' => isset( $l['list_type'] ) ? $l['list_type'] : '',
+					);
+				}
+			}
+
+			return;
+		}
 
 		$settings = $this->get_remarketing_settings( $list_id, $creds->newsman_userid, $creds->newsman_apikey );
 		if ( ! empty( $settings ) && is_array( $settings ) ) {
