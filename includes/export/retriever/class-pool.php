@@ -62,6 +62,16 @@ class Pool {
 			'only_woocommerce' => true,
 			'has_filters'      => true,
 		),
+		'subscriber-subscribe'         => array(
+			'code'             => 'subscriber-subscribe',
+			'class'            => '\Newsman\Export\Retriever\SubscriberSubscribe',
+			'only_woocommerce' => false,
+		),
+		'subscriber-unsubscribe'       => array(
+			'code'             => 'subscriber-unsubscribe',
+			'class'            => '\Newsman\Export\Retriever\SubscriberUnsubscribe',
+			'only_woocommerce' => false,
+		),
 		'subscribers'                  => array(
 			'code'             => 'subscribers',
 			'class'            => '\Newsman\Export\Retriever\Subscribers',
