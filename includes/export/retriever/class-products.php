@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Products
  *
  * @class \Newsman\Export\Retriever\Products
+ * @deprecated since 3.5.0
  */
 class Products extends AbstractRetriever implements RetrieverInterface {
 	/**

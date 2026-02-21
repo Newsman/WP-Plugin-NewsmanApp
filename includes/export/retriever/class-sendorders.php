@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Send Orders
  *
  * @class \Newsman\Export\Retriever\SendOrders
+ * @deprecated since 3.5.0
  */
 class SendOrders extends AbstractRetriever implements RetrieverInterface {
 	/**

@@ -174,9 +174,10 @@ class Pool {
 	public function get_retriever_by_code( $code, $data ) {
 		$code = strtolower( $code );
 
-		if ( 'cron' === $code ) {
-			$code = $data['method'];
-		}
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		// if ( 'cron' === $code ) {
+		//	$code = $data['method'];
+		//}
 
 		$exist  = new WooCommerceExist();
 		$is_woo = $exist->exist();

@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Cron Subscribers WooCommerce to API Newsman
  *
  * @class \Newsman\Export\Retriever\SubscribersWoocommerce
+ * @deprecated since 3.5.0
  */
 class SubscribersWoocommerce extends CronSubscribers {
 	/**

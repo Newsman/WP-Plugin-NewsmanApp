@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Cron Subscribers to API Newsman
  *
  * @class \Newsman\Export\Retriever\CronSubscribers
+ * @deprecated since 3.5.0
  */
 class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	/**
