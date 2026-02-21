@@ -179,27 +179,6 @@ $form_values = $this->get_form_values();
 									<a href="<?php echo esc_url( $woocommerce_url ); ?>" target="_blank"><?php echo esc_html( $woocommerce_url ); ?></a>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<?php if ( $this->is_single_action_schedule() ) : ?>
-										<?php
-										$schedule_url = $this->get_action_nonce_url( 'newsman_export_orders', admin_url( 'admin.php?page=NewsmanSync' ) );
-										?>
-										<?php echo esc_html__( 'Export once all orders to NewsMAN after the date set in Remarketing > Export Orders After Date (using Woo Commerce Action Scheduler)', 'newsman' ); ?>:
-										<br>
-										<a style="margin-top: 5px;" href="<?php echo esc_url( $schedule_url ); ?>" class="button button-primary">
-											<?php echo esc_html__( 'Schedule Export Orders', 'newsman' ); ?>
-										</a>
-										<br><br>
-									<?php endif; ?>
-									<?php
-									$send_orders_url = get_site_url() . '/?newsman=cron.json&method=send-orders&nzmhash=' . $this->get_config()->get_api_key() . '&start=0&limit=100&cronlast=true';
-									?>
-									<?php echo esc_html__( 'CRON url to send orders to NewsMAN', 'newsman' ); ?>:
-									<br>
-									<a href="<?php echo esc_url( $send_orders_url ); ?>" target="_blank"><?php echo esc_html( $send_orders_url ); ?></a>
-								</td>
-							</tr>
 						<?php endif; ?>
 					</table>
 					<div style="padding-top: 5px;">
