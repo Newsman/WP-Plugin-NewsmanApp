@@ -252,6 +252,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return bool
+     * @deprecated since 3.5.0
 	 */
 	public function is_export_orders( $blog_id = null ) {
 		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingexportorders', '' );
@@ -262,6 +263,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return int
+     * @deprecated since 3.5.0
 	 */
 	public function get_export_orders_recurring_short_days( $blog_id = null ) {
 		$days = (int) $this->config->get_blog_option(
@@ -280,6 +282,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return int
+     * @deprecated since 3.5.0
 	 */
 	public function get_export_orders_recurring_long_days( $blog_id = null ) {
 		$days = (int) $this->config->get_blog_option(
@@ -298,6 +301,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return string
+     * @deprecated since 3.5.0
 	 */
 	public function get_order_date( $blog_id = null ) {
 		$date_string = $this->config->get_blog_option( $blog_id, 'newsman_remarketingorderdate', '' );

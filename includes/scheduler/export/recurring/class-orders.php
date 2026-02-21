@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Scheduler Export WooCommerce Recurring Orders
  *
  * @class \Newsman\Scheduler\Export\Recurring\Orders
+ * @deprecated since 3.5.0
  */
 class Orders extends AbstractScheduler {
 	/**

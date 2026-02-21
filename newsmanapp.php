@@ -204,8 +204,8 @@ class WP_Newsman {
 	 */
 	public function get_known_scheduled_classes() {
 		$classes = array(
-			'\Newsman\Scheduler\Export\Recurring\Orders',
-			'\Newsman\Scheduler\Export\Orders',
+			//'\Newsman\Scheduler\Export\Recurring\Orders',
+			//'\Newsman\Scheduler\Export\Orders',
 			'\Newsman\Scheduler\Export\Recurring\SubscribersWordpress',
 			'\Newsman\Scheduler\Export\SubscribersWordpress',
 			'\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',

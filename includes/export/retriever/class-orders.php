@@ -82,7 +82,7 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 			)
 		);
 
-		$date_limit        = $this->remarketing_config->get_order_date() . ' 00:00:00';
+		//$date_limit        = $this->remarketing_config->get_order_date() . ' 00:00:00';
 		$all_statuses      = array_keys( wc_get_order_statuses() );
 		$filtered_statuses = array_diff( $all_statuses, array( 'wc-checkout-draft' ) );
 
@@ -90,7 +90,7 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 			'limit'        => $processed_params['limit'],
 			'offset'       => $processed_params['start'],
 			'status'       => $filtered_statuses,
-			'date_created' => '>=' . $date_limit,
+			//'date_created' => '>=' . $date_limit,
 		);
 
 		if ( isset( $processed_params['sort'] ) ) {

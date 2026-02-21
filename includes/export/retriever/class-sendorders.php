@@ -188,7 +188,8 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 	 * @return \WC_Order[]
 	 */
 	public function get_orders( $data, $start, $limit, $cronlast, $blog_id = null, $date_created = null, $pre_count = null ) {
-		$date_limit = $this->remarketing_config->get_order_date() . ' 00:00:00';
+		//$date_limit = $this->remarketing_config->get_order_date() . ' 00:00:00';
+        $date_limit = '2000-01-01 00:00:00';
 		if ( ! empty( $date_created ) ) {
 			$date_limit = $date_created . ' 00:00:00';
 		}
@@ -280,7 +281,8 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			switch_to_blog( $blog_id );
 		}
 
-		$date_limit = $this->remarketing_config->get_order_date() . ' 00:00:00';
+		//$date_limit = $this->remarketing_config->get_order_date() . ' 00:00:00';
+        $date_limit = '2000-01-01 00:00:00';
 		if ( ! empty( $date_created ) ) {
 			$date_limit = $date_created . ' 00:00:00';
 		}

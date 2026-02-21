@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Admin action schedule export WooCommerce orders
  *
  * @class \Newsman\Admin\Action\Export\Orders
+ * @deprecated since 3.5.0
  */
 class Orders extends AbstractAction {
 	/**

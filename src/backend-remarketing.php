@@ -182,57 +182,6 @@ $form_values = $this->get_form_values();
 								<p class="description"><?php printf( esc_html__( 'Export latest buyers from orders created in the last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
 							</td>
 						</tr>
-						<tr>
-							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingexportorders"><?php echo esc_html__( 'Export Orders', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input name="newsman_remarketingexportorders" type="checkbox"
-										id="newsman_remarketingexportorders" <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'checked' : ''; ?>/>
-								<p class="description"><?php echo esc_html__( 'Export orders on regular basis (using Woo Commerce Action Scheduler).', 'newsman' ); ?></p>
-							</td>
-						</tr>
-						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportorders_recurring_short_days"><?php echo esc_html__( 'Latest Short Period in Days', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportorders_recurring_short_days"
-										name="newsman_remarketingexportorders_recurring_short_days"
-										value="<?php echo ( ! empty( $form_values['newsman_remarketingexportorders_recurring_short_days'] ) ) ? esc_attr( $form_values['newsman_remarketingexportorders_recurring_short_days'] ) : ''; ?>"/>
-								<?php
-								$scheduler          = new \Newsman\Scheduler\Export\Recurring\Orders();
-								$repeating_interval = $scheduler->get_recurring_short_interval();
-								?>
-								<?php /* translators: 1: Time Interval */ ?>
-								<p class="description"><?php printf( esc_html__( 'Export latest orders created in the last X days every %d hours.', 'newsman' ), esc_html( $repeating_interval ) ); ?></p>
-							</td>
-						</tr>
-						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportorders'] ) && 'on' === $form_values['newsman_remarketingexportorders'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportorders_recurring_long_days"><?php echo esc_html__( 'Latest Long Period in Days', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportorders_recurring_long_days"
-										name="newsman_remarketingexportorders_recurring_long_days"
-										value="<?php echo ( ! empty( $form_values['newsman_remarketingexportorders_recurring_long_days'] ) ) ? esc_attr( $form_values['newsman_remarketingexportorders_recurring_long_days'] ) : ''; ?>"/>
-								<?php
-								$scheduler          = new \Newsman\Scheduler\Export\Recurring\Orders();
-								$repeating_interval = $scheduler->get_recurring_long_interval();
-								?>
-								<?php /* translators: 1: Time Interval */ ?>
-								<p class="description"><?php printf( esc_html__( 'Export latest orders created in the last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label class="nzm-label" for="newsman_remarketingorderdate"><?php echo esc_html__( 'Export Orders After Date', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="text" name="newsman_remarketingorderdate" id="newsman_remarketingorderdate" value="<?php echo esc_html( $form_values['newsman_remarketingorderdate'] ); ?>" />
-								<p class="description"><?php echo esc_html__( 'Export orders created after a specific date (including). Format: YYYY-MM-DD', 'newsman' ); ?></p>
-							</td>
-						</tr>
 					<?php endif; ?>
 					<tr>
 						<th scope="row">

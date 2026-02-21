@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '6.0.0';
+	protected static $setup_version = '7.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -146,6 +146,7 @@ class Setup {
 				switch_to_blog( $site->blog_id );
 				self::$current_version = self::get_current_version();
 				self::create_tables();
+				self::remove_scheduled_actions_setup();
 				self::upgrade_newsman_options();
 				self::upgrade_rewrites();
 				self::upgrade_options();
@@ -158,6 +159,7 @@ class Setup {
 			self::$current_version = self::get_current_version();
 			// Single site activation.
 			self::create_tables();
+			self::remove_scheduled_actions_setup();
 			self::upgrade_newsman_options();
 			self::upgrade_rewrites();
 			self::upgrade_options();
@@ -199,6 +201,48 @@ class Setup {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
+	}
+
+	/**
+	 * Remove scheduled actions on setup
+	 *
+	 * @return void
+	 */
+	protected static function remove_scheduled_actions_setup() {
+		if ( version_compare( self::$current_version, '7.0.0', '<' ) ) {
+			self::remove_scheduled_actions_setup_seven_zero_zero();
+		}
+	}
+
+	/**
+	 * Remove scheduled actions on setup 7.0.0
+	 *
+	 * @return void
+	 */
+	protected static function remove_scheduled_actions_setup_seven_zero_zero() {
+        if ( ! ( class_exists( \ActionScheduler::class ) &&
+            \ActionScheduler::is_initialized() &&
+            function_exists( 'as_unschedule_all_actions' )
+        ) ) {
+            return;
+        }
+
+        $hooks = array(
+            'newsman_recurring_export_orders_short',
+            'newsman_recurring_export_orders_long',
+            'newsman_export_orders',
+            'newsman_recurring_export_woocommerce_subscribers_short',
+            'newsman_recurring_export_woocommerce_subscribers_long',
+            'newsman_export_woocommerce_subscribers',
+            'newsman_recurring_export_wordpress_subscribers_short',
+            'newsman_recurring_export_wordpress_subscribers_long',
+            'newsman_export_wordpress_subscribers',
+        );
+        foreach ( $hooks as $hook ) {
+            as_unschedule_all_actions( $hook );
+        }
+
+        update_option( 'newsman_setup_version', '7.0.0', true );
 	}
 
 	/**
