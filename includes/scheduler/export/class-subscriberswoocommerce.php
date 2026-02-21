@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Scheduler Export WooCommerce Subscribers
  *
  * @class \Newsman\Scheduler\Export\SubscribersWoocommerce
+ * @deprecated since 3.5.0
  */
 class SubscribersWoocommerce extends AbstractScheduler {
 	/**

@@ -170,6 +170,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return int
+	 * @deprecated since 3.5.0
 	 */
 	public function get_export_wordpress_recurring_short_days( $blog_id = null ) {
 		$days = (int) $this->config->get_blog_option(
@@ -188,6 +189,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return int
+	 * @deprecated since 3.5.0
 	 */
 	public function get_export_wordpress_recurring_long_days( $blog_id = null ) {
 		$days = (int) $this->config->get_blog_option(
@@ -216,6 +218,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return int
+	 * @deprecated since 3.5.0
 	 */
 	public function get_export_woocommerce_recurring_short_days( $blog_id = null ) {
 		$days = (int) $this->config->get_blog_option(
@@ -234,6 +237,7 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return int
+	 * @deprecated since 3.5.0
 	 */
 	public function get_export_woocommerce_recurring_long_days( $blog_id = null ) {
 		$days = (int) $this->config->get_blog_option(

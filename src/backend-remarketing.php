@@ -105,39 +105,7 @@ $form_values = $this->get_form_values();
 							<td>
 								<input name="newsman_remarketingexportwordpresssubscribers" type="checkbox"
 										id="newsman_remarketingexportwordpresssubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'checked' : ''; ?>/>
-								<p class="description"><?php echo esc_html__( 'Export all WordPress users with role subscriber on regular basis (using Woo Commerce Action Scheduler).', 'newsman' ); ?></p>
-							</td>
-						</tr>
-						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers_recurring_short_days"><?php echo esc_html__( 'Latest Short Period in Days', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwordpresssubscribers_recurring_short_days"
-										name="newsman_remarketingexportwordpresssubscribers_recurring_short_days"
-										value="<?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers_recurring_short_days'] ) ) ? esc_attr( $form_values['newsman_remarketingexportwordpresssubscribers_recurring_short_days'] ) : ''; ?>"/>
-								<?php
-								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
-								$repeating_interval = $scheduler->get_recurring_short_interval();
-								?>
-								<?php /* translators: 1: Time Interval */ ?>
-								<p class="description"><?php printf( esc_html__( 'Export latest WordPress subscribers registered in last X days every %d hours.', 'newsman' ), esc_html( $repeating_interval ) ); ?></p>
-							</td>
-						</tr>
-						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwordpresssubscribers_recurring_long_days"><?php echo esc_html__( 'Latest Long Period in Days', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwordpresssubscribers_recurring_long_days"
-										name="newsman_remarketingexportwordpresssubscribers_recurring_long_days"
-										value="<?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers_recurring_long_days'] ) ) ? esc_attr( $form_values['newsman_remarketingexportwordpresssubscribers_recurring_long_days'] ) : ''; ?>"/>
-								<?php
-								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
-								$repeating_interval = $scheduler->get_recurring_long_interval();
-								?>
-								<?php /* translators: 1: Time Interval */ ?>
-								<p class="description"><?php printf( esc_html__( 'Export latest WordPress subscribers registered in last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Export all WordPress users with role subscriber (Newsman.app fetches the data).', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -147,39 +115,7 @@ $form_values = $this->get_form_values();
 							<td>
 								<input name="newsman_remarketingexportwoocommercesubscribers" type="checkbox"
 										id="newsman_remarketingexportwoocommercesubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'checked' : ''; ?>/>
-								<p class="description"><?php echo esc_html__( 'Export all buyers from orders with status complete on regular basis (using Woo Commerce Action Scheduler).', 'newsman' ); ?></p>
-							</td>
-						</tr>
-						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers_recurring_short_days"><?php echo esc_html__( 'Latest Short Period in Days', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwoocommercesubscribers_recurring_short_days"
-										name="newsman_remarketingexportwoocommercesubscribers_recurring_short_days"
-										value="<?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers_recurring_short_days'] ) ) ? esc_attr( $form_values['newsman_remarketingexportwoocommercesubscribers_recurring_short_days'] ) : ''; ?>"/>
-								<?php
-								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
-								$repeating_interval = $scheduler->get_recurring_short_interval();
-								?>
-								<?php /* translators: 1: Time Interval */ ?>
-								<p class="description"><?php printf( esc_html__( 'Export latest buyers from orders created in the last X days every %d hours.', 'newsman' ), esc_html( $repeating_interval ) ); ?></p>
-							</td>
-						</tr>
-						<tr style="display: <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'table-row' : 'none'; ?>;">
-							<th scope="row" class="nzm-child-config">
-								<label class="nzm-label" for="newsman_remarketingexportwoocommercesubscribers_recurring_long_days"><?php echo esc_html__( 'Latest Long Period in Days', 'newsman' ); ?></label>
-							</th>
-							<td>
-								<input class="nzm-small-input" type="number" step="1" id="newsman_remarketingexportwoocommercesubscribers_recurring_long_days"
-										name="newsman_remarketingexportwoocommercesubscribers_recurring_long_days"
-										value="<?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers_recurring_long_days'] ) ) ? esc_attr( $form_values['newsman_remarketingexportwoocommercesubscribers_recurring_long_days'] ) : ''; ?>"/>
-								<?php
-								$scheduler          = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
-								$repeating_interval = $scheduler->get_recurring_long_interval();
-								?>
-								<?php /* translators: 1: Time Interval */ ?>
-								<p class="description"><?php printf( esc_html__( 'Export latest buyers from orders created in the last X days every %d days.', 'newsman' ), esc_html( $repeating_interval / 24 ) ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Export all buyers from orders with status complete (Newsman.app fetches the data).', 'newsman' ); ?></p>
 							</td>
 						</tr>
 					<?php endif; ?>

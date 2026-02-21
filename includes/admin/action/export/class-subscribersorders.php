@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Admin action schedule export WooCommerce buyers from complete orders
  *
  * @class \Newsman\Admin\Action\Export\SubscribersOrders
+ * @deprecated since 3.5.0
  */
 class SubscribersOrders extends AbstractAction {
 	/**

@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Admin action schedule export WordPress subscribers
  *
  * @class \Newsman\Admin\Action\Export\WordpressSubscribers
+ * @deprecated since 3.5.0
  */
 class WordpressSubscribers extends AbstractAction {
 	/**

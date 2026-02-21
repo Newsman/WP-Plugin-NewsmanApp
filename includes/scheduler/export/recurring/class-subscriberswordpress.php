@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Scheduler Export Users with Role Subscriber from WordPress Recurring
  *
  * @class \Newsman\Scheduler\Export\Recurring\SubscribersWordpress
+ * @deprecated since 3.5.0
  */
 class SubscribersWordpress extends AbstractScheduler {
 	/**

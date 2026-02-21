@@ -51,15 +51,7 @@ class Remarketing extends Settings {
 		'newsman_remarketingcustomerattributes',
 		'newsman_remarketingordersave',
 		'newsman_remarketingexportwordpresssubscribers',
-		'newsman_remarketingexportwordpresssubscribers_recurring_short_days',
-		'newsman_remarketingexportwordpresssubscribers_recurring_long_days',
 		'newsman_remarketingexportwoocommercesubscribers',
-		'newsman_remarketingexportwoocommercesubscribers_recurring_short_days',
-		'newsman_remarketingexportwoocommercesubscribers_recurring_long_days',
-		'newsman_remarketingexportorders',
-		'newsman_remarketingexportorders_recurring_short_days',
-		'newsman_remarketingexportorders_recurring_long_days',
-		'newsman_remarketingorderdate',
 	);
 
 	/**
@@ -153,27 +145,10 @@ class Remarketing extends Settings {
 	 * Unschedule recurring hooks in Action Scheduler.
 	 *
 	 * @return array
+	 * @deprecated since 3.5.0
 	 */
 	public function save_form_values() {
 		$form_values = parent::save_form_values();
-
-		if ( isset( $form_values['newsman_remarketingexportwordpresssubscribers'] ) &&
-			'on' !== $form_values['newsman_remarketingexportwordpresssubscribers']
-		) {
-			$scheduler = new \Newsman\Scheduler\Export\Recurring\SubscribersWordpress();
-			$scheduler->unschedule_all_actions();
-			$scheduler = new \Newsman\Scheduler\Export\SubscribersWordpress();
-			$scheduler->unschedule_all_actions();
-		}
-
-		if ( isset( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) &&
-			'on' !== $form_values['newsman_remarketingexportwoocommercesubscribers']
-		) {
-			$scheduler = new \Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce();
-			$scheduler->unschedule_all_actions();
-			$scheduler = new \Newsman\Scheduler\Export\SubscribersWoocommerce();
-			$scheduler->unschedule_all_actions();
-		}
 
 		return $form_values;
 	}

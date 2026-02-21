@@ -228,11 +228,13 @@ class Admin {
 	 * @return array
 	 */
 	public function get_known_scheduled_classes() {
+		// phpcs:disable Squiz.PHP.CommentedOutCode.Found
 		$classes = array(
 			// '\Newsman\Scheduler\Export\Recurring\Orders',
-			'\Newsman\Scheduler\Export\Recurring\SubscribersWordpress',
-			'\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',
+			// '\Newsman\Scheduler\Export\Recurring\SubscribersWordpress',
+			// '\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',
 		);
+		// phpcs:enable Squiz.PHP.CommentedOutCode.Found
 
 		return apply_filters( 'newsman_known_admin_scheduled_classes', $classes );
 	}

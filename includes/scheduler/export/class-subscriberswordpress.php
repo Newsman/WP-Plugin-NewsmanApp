@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Scheduler Export WordPress Subscribers
  *
  * @class \Newsman\Scheduler\Export\SubscribersWordpress
+ * @deprecated since 3.5.0
  */
 class SubscribersWordpress extends AbstractScheduler {
 	/**

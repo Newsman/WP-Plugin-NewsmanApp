@@ -208,10 +208,14 @@ class WP_Newsman {
 			// '\Newsman\Scheduler\Export\Recurring\Orders',
 			// phpcs:enable Squiz.PHP.CommentedOutCode.Found
 			// '\Newsman\Scheduler\Export\Orders',
-			'\Newsman\Scheduler\Export\Recurring\SubscribersWordpress',
-			'\Newsman\Scheduler\Export\SubscribersWordpress',
-			'\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',
-			'\Newsman\Scheduler\Export\SubscribersWoocommerce',
+			// phpcs:enable Squiz.PHP.CommentedOutCode.Found
+			// '\Newsman\Scheduler\Export\Recurring\SubscribersWordpress',
+			// phpcs:enable Squiz.PHP.CommentedOutCode.Found
+			// '\Newsman\Scheduler\Export\SubscribersWordpress',
+			// phpcs:enable Squiz.PHP.CommentedOutCode.Found
+			// '\Newsman\Scheduler\Export\Recurring\SubscribersWoocommerce',
+			// phpcs:enable Squiz.PHP.CommentedOutCode.Found
+			// '\Newsman\Scheduler\Export\SubscribersWoocommerce',
 			'\Newsman\Scheduler\Subscribe\Email',
 			'\Newsman\Scheduler\Subscribe\Phone',
 		);

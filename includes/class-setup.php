@@ -491,6 +491,7 @@ jt/modal_{{api_key}}.js'
 		}
 
 		if ( version_compare( self::$current_version, '7.0.0', '<' ) ) {
+			self::upgrade_options_seven_zero_zero();
 			update_option( 'newsman_setup_version', '7.0.0', true );
 		}
 	}
@@ -584,6 +585,22 @@ jt/modal_{{api_key}}.js'
 	protected static function upgrade_options_five_zero_zero() {
 		add_option( 'newsman_sms_send_sameday_awb', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_sms_send_fancourier_awb', 'on', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
+	 * Version 7.0.0 options update
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_seven_zero_zero() {
+		delete_option( 'newsman_remarketingexportorders' );
+		delete_option( 'newsman_remarketingexportorders_recurring_short_days' );
+		delete_option( 'newsman_remarketingexportorders_recurring_long_days' );
+		delete_option( 'newsman_remarketingorderdate' );
+		delete_option( 'newsman_remarketingexportwordpresssubscribers_recurring_short_days' );
+		delete_option( 'newsman_remarketingexportwordpresssubscribers_recurring_long_days' );
+		delete_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_short_days' );
+		delete_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_long_days' );
 	}
 
 	/**

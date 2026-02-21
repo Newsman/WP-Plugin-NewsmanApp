@@ -139,33 +139,6 @@
 				],
 				'table-row'
 			);
-			$show(
-				'#newsman_remarketingexportwordpresssubscribers',
-				true,
-				[
-					'#newsman_remarketingexportwordpresssubscribers_recurring_short_days',
-					'#newsman_remarketingexportwordpresssubscribers_recurring_long_days'
-				],
-				'table-row'
-			);
-			$show(
-				'#newsman_remarketingexportwoocommercesubscribers',
-				true,
-				[
-					'#newsman_remarketingexportwoocommercesubscribers_recurring_short_days',
-					'#newsman_remarketingexportwoocommercesubscribers_recurring_long_days'
-				],
-				'table-row'
-			);
-			$show(
-				'#newsman_remarketingexportorders',
-				true,
-				[
-					'#newsman_remarketingexportorders_recurring_short_days',
-					'#newsman_remarketingexportorders_recurring_long_days'
-				],
-				'table-row'
-			);
 
 			$show( '#newsman_smsrefundedactivate', true, ['.newsman_smsrefundedtextPanel'], 'block', false );
 			$show( '#newsman_smscancelledactivate', true, ['.newsman_smscancelledtextPanel'], 'block', false );
