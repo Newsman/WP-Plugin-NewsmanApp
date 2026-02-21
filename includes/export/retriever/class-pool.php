@@ -171,13 +171,14 @@ class Pool {
 	 * @return RetrieverInterface
 	 * @throws \InvalidArgumentException Throws invalid argument code retriever exception.
 	 */
-	public function get_retriever_by_code( $code, $data ) {
+	public function get_retriever_by_code( $code, $data ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$code = strtolower( $code );
 
-        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		// phpcs:disable Squiz.PHP.CommentedOutCode.Found,Squiz.Commenting.InlineComment.InvalidEndChar
 		// if ( 'cron' === $code ) {
-		//	$code = $data['method'];
-		//}
+		// $code = $data['method'];
+		// }
+		// phpcs:enable Squiz.PHP.CommentedOutCode.Found,Squiz.Commenting.InlineComment.InvalidEndChar
 
 		$exist  = new WooCommerceExist();
 		$is_woo = $exist->exist();
