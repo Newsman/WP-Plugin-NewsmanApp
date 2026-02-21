@@ -220,29 +220,29 @@ class Setup {
 	 * @return void
 	 */
 	protected static function remove_scheduled_actions_setup_seven_zero_zero() {
-        if ( ! ( class_exists( \ActionScheduler::class ) &&
-            \ActionScheduler::is_initialized() &&
-            function_exists( 'as_unschedule_all_actions' )
-        ) ) {
-            return;
-        }
+		if ( ! ( class_exists( \ActionScheduler::class ) &&
+			\ActionScheduler::is_initialized() &&
+			function_exists( 'as_unschedule_all_actions' )
+		) ) {
+			return;
+		}
 
-        $hooks = array(
-            'newsman_recurring_export_orders_short',
-            'newsman_recurring_export_orders_long',
-            'newsman_export_orders',
-            'newsman_recurring_export_woocommerce_subscribers_short',
-            'newsman_recurring_export_woocommerce_subscribers_long',
-            'newsman_export_woocommerce_subscribers',
-            'newsman_recurring_export_wordpress_subscribers_short',
-            'newsman_recurring_export_wordpress_subscribers_long',
-            'newsman_export_wordpress_subscribers',
-        );
-        foreach ( $hooks as $hook ) {
-            as_unschedule_all_actions( $hook );
-        }
+		$hooks = array(
+			'newsman_recurring_export_orders_short',
+			'newsman_recurring_export_orders_long',
+			'newsman_export_orders',
+			'newsman_recurring_export_woocommerce_subscribers_short',
+			'newsman_recurring_export_woocommerce_subscribers_long',
+			'newsman_export_woocommerce_subscribers',
+			'newsman_recurring_export_wordpress_subscribers_short',
+			'newsman_recurring_export_wordpress_subscribers_long',
+			'newsman_export_wordpress_subscribers',
+		);
+		foreach ( $hooks as $hook ) {
+			as_unschedule_all_actions( $hook );
+		}
 
-        update_option( 'newsman_setup_version', '7.0.0', true );
+		update_option( 'newsman_setup_version', '7.0.0', true );
 	}
 
 	/**

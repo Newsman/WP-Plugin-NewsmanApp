@@ -61,11 +61,13 @@ class Router {
 			'only_woocommerce' => true,
 			'has_admin_notice' => true,
 		),
-		/*'newsman_export_orders'                => array(
-			'class'            => '\Newsman\Admin\Action\Export\Orders',
-			'only_woocommerce' => true,
-			'has_admin_notice' => true,
-		),*/
+		// phpcs:disable Squiz.PHP.CommentedOutCode.Found
+		// 'newsman_export_orders'                => array(
+		// 'class'            => '\Newsman\Admin\Action\Export\Orders',
+		// 'only_woocommerce' => true,
+		// 'has_admin_notice' => true,
+		// ),
+		// phpcs:enable Squiz.PHP.CommentedOutCode.Found
 	);
 
 	/**
