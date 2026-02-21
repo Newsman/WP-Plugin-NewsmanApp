@@ -217,6 +217,12 @@ class Setup {
 	/**
 	 * Remove scheduled actions on setup 7.0.0
 	 *
+	 * ActionScheduler may not be initialized yet when setup runs (e.g. when
+	 * the plugin is installed/updated via CLI or file copy). In that case we
+	 * register a deferred callback on the init hook so the unscheduling still
+	 * happens in the same request once AS is ready.
+	 * The version bump is always handled by upgrade_options().
+	 *
 	 * @return void
 	 */
 	protected static function remove_scheduled_actions_setup_seven_zero_zero() {
@@ -224,9 +230,37 @@ class Setup {
 			\ActionScheduler::is_initialized() &&
 			function_exists( 'as_unschedule_all_actions' )
 		) ) {
+			add_action( 'init', array( __CLASS__, 'deferred_unschedule_actions_seven_zero_zero' ), 20 );
 			return;
 		}
 
+		self::do_unschedule_actions_seven_zero_zero();
+	}
+
+	/**
+	 * Deferred unscheduling callback for 7.0.0 upgrade.
+	 * Hooked to init (priority 20) when ActionScheduler is not yet initialized
+	 * at the time setup runs.
+	 *
+	 * @return void
+	 */
+	public static function deferred_unschedule_actions_seven_zero_zero() {
+		if ( ! ( class_exists( \ActionScheduler::class ) &&
+			\ActionScheduler::is_initialized() &&
+			function_exists( 'as_unschedule_all_actions' )
+		) ) {
+			return;
+		}
+
+		self::do_unschedule_actions_seven_zero_zero();
+	}
+
+	/**
+	 * Perform the actual AS hook removal for 7.0.0.
+	 *
+	 * @return void
+	 */
+	protected static function do_unschedule_actions_seven_zero_zero() {
 		$hooks = array(
 			'newsman_recurring_export_orders_short',
 			'newsman_recurring_export_orders_long',
@@ -241,8 +275,6 @@ class Setup {
 		foreach ( $hooks as $hook ) {
 			as_unschedule_all_actions( $hook );
 		}
-
-		update_option( 'newsman_setup_version', '7.0.0', true );
 	}
 
 	/**
@@ -456,6 +488,10 @@ jt/modal_{{api_key}}.js'
 
 		if ( version_compare( self::$current_version, '6.0.0', '<' ) ) {
 			update_option( 'newsman_setup_version', '6.0.0', true );
+		}
+
+		if ( version_compare( self::$current_version, '7.0.0', '<' ) ) {
+			update_option( 'newsman_setup_version', '7.0.0', true );
 		}
 	}
 
