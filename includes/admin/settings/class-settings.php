@@ -99,10 +99,31 @@ class Settings extends \Newsman\Admin\Settings {
 		}
 
 		if ( 'Y' === $form_id_value ) {
+			$previous_userid = get_option( 'newsman_userid' );
+			$previous_apikey = get_option( 'newsman_apikey' );
 			$this->init_form_values_from_post();
 			$this->save_form_values();
 
 			$this->is_oauth();
+
+			$new_userid = $this->get_form_value( 'newsman_userid' );
+			$new_apikey = $this->get_form_value( 'newsman_apikey' );
+
+			if (
+				! empty( $new_userid ) &&
+				! empty( $new_apikey ) &&
+				( $new_userid !== $previous_userid || $new_apikey !== $previous_apikey )
+			) {
+				$list_id = get_option( 'newsman_list' );
+				if ( ! empty( $list_id ) ) {
+					$authenticate_token = $this->ensure_authenticate_token();
+					$this->save_list_integration_setup(
+						$list_id,
+						get_site_url(),
+						$authenticate_token
+					);
+				}
+			}
 
 			try {
 				$available_lists = $this->retrieve_api_all_lists(
