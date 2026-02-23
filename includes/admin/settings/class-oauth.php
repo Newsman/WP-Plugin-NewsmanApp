@@ -247,6 +247,7 @@ class Oauth extends Settings {
 		}
 
 		// Set feed.
+		// @deprecated.
 		$url = get_site_url() . '/?newsman=products.json&nzmhash=' . $creds->newsman_apikey;
 
 		try {
@@ -263,7 +264,8 @@ class Oauth extends Settings {
 				if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
 					$auth_name  = $this->generate_random_header_name();
 					$auth_value = $this->generate_random_password();
-					$result     = $this->update_feed_authorize(
+					// @deprecated.
+					$result = $this->update_feed_authorize(
 						$list_id,
 						$result['feed_id'],
 						$auth_name,
