@@ -90,6 +90,12 @@ class Settings extends \Newsman\Admin\Settings {
 			wp_die( esc_html__( 'Unauthorized user', 'newsman' ) );
 		}
 
+		$feed_flash = get_transient( 'newsman_feed_message_' . get_current_user_id() );
+		if ( ! empty( $feed_flash ) && is_array( $feed_flash ) ) {
+			delete_transient( 'newsman_feed_message_' . get_current_user_id() );
+			$this->set_message_backend( $feed_flash['status'], $feed_flash['message'] );
+		}
+
 		$form_id_value           = '';
 		$this->valid_credentials = true;
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing

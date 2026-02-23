@@ -272,11 +272,35 @@ class Oauth extends Settings {
 					if ( false !== $result ) {
 						$this->update_export_authorize_header( $auth_name, $auth_value );
 					}
+					set_transient(
+						'newsman_feed_message_' . get_current_user_id(),
+						array(
+							'status'  => 'updated',
+							'message' => esc_html__( 'Products feed installed in Newsman.', 'newsman' ),
+						),
+						60
+					);
+				} else {
+					set_transient(
+						'newsman_feed_message_' . get_current_user_id(),
+						array(
+							'status'  => 'notice-warning',
+							'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
+						),
+						60
+					);
 				}
 			}
-			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( \Exception $e ) {
-			// The feed already exists.
+			$this->logger->log_exception( $e );
+			set_transient(
+				'newsman_feed_message_' . get_current_user_id(),
+				array(
+					'status'  => 'notice-warning',
+					'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
+				),
+				60
+			);
 		}
 
 		$this->is_oauth( true );
