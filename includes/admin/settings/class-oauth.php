@@ -246,64 +246,65 @@ class Oauth extends Settings {
 			update_option( 'newsman_remarketingid', esc_html( $remarketing_id ), \Newsman\Config::AUTOLOAD_OPTIONS );
 		}
 
+		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		// Set feed.
 		// @deprecated.
-		$url = get_site_url() . '/?newsman=products.json&nzmhash=' . $creds->newsman_apikey;
-
-		try {
-			$exists = new WooCommerceExist();
-			if ( $exists->exist() ) {
-				$result = $this->set_feed_on_list(
-					$list_id,
-					$url,
-					get_site_url(),
-					'NewsMAN',
-					true,
-				);
-
-				if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
-					$auth_name  = $this->generate_random_header_name();
-					$auth_value = $this->generate_random_password();
-					// @deprecated.
-					$result = $this->update_feed_authorize(
-						$list_id,
-						$result['feed_id'],
-						$auth_name,
-						$auth_value
-					);
-					if ( false !== $result ) {
-						$this->update_export_authorize_header( $auth_name, $auth_value );
-					}
-					set_transient(
-						'newsman_feed_message_' . get_current_user_id(),
-						array(
-							'status'  => 'updated',
-							'message' => esc_html__( 'Products feed installed in Newsman.', 'newsman' ),
-						),
-						60
-					);
-				} else {
-					set_transient(
-						'newsman_feed_message_' . get_current_user_id(),
-						array(
-							'status'  => 'notice-warning',
-							'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
-						),
-						60
-					);
-				}
-			}
-		} catch ( \Exception $e ) {
-			$this->logger->log_exception( $e );
-			set_transient(
-				'newsman_feed_message_' . get_current_user_id(),
-				array(
-					'status'  => 'notice-warning',
-					'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
-				),
-				60
-			);
-		}
+		// $url = get_site_url() . '/?newsman=products.json&nzmhash=' . $creds->newsman_apikey;
+		//
+		// try {
+		// $exists = new WooCommerceExist();
+		// if ( $exists->exist() ) {
+		// $result = $this->set_feed_on_list(
+		// $list_id,
+		// $url,
+		// get_site_url(),
+		// 'NewsMAN',
+		// true,
+		// );
+		//
+		// if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
+		// $auth_name  = $this->generate_random_header_name();
+		// $auth_value = $this->generate_random_password();
+		// @deprecated.
+		// $result     = $this->update_feed_authorize(
+		// $list_id,
+		// $result['feed_id'],
+		// $auth_name,
+		// $auth_value
+		// );
+		// if ( false !== $result ) {
+		// $this->update_export_authorize_header( $auth_name, $auth_value );
+		// }
+		// set_transient(
+		// 'newsman_feed_message_' . get_current_user_id(),
+		// array(
+		// 'status'  => 'updated',
+		// 'message' => esc_html__( 'Products feed installed in Newsman.', 'newsman' ),
+		// ),
+		// 60
+		// );
+		// } else {
+		// set_transient(
+		// 'newsman_feed_message_' . get_current_user_id(),
+		// array(
+		// 'status'  => 'notice-warning',
+		// 'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
+		// ),
+		// 60
+		// );
+		// }
+		// }
+		// } catch ( \Exception $e ) {
+		// $this->logger->log_exception( $e );
+		// set_transient(
+		// 'newsman_feed_message_' . get_current_user_id(),
+		// array(
+		// 'status'  => 'notice-warning',
+		// 'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
+		// ),
+		// 60
+		// );
+		// }.
 
 		$this->is_oauth( true );
 	}
