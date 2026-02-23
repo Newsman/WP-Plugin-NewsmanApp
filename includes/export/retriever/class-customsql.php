@@ -97,7 +97,7 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 	 * @throws \Exception Throws exception on invalid input.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		$sql = $this->get_raw_sql();
+		$sql = $this->get_raw_sql( $data );
 
 		if ( empty( $sql ) ) {
 			throw new \Exception( 'The "sql" parameter is required.' );
@@ -146,11 +146,15 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 	}
 
 	/**
-	 * Get raw SQL from request, bypassing sanitize_text_field which corrupts SQL operators.
+	 * Get raw SQL from request data or superglobals, bypassing sanitize_text_field which corrupts SQL operators.
 	 *
+	 * @param array $data Parsed request data (e.g. from API v1 JSON payload).
 	 * @return string
 	 */
-	protected function get_raw_sql() {
+	protected function get_raw_sql( $data = array() ) {
+		if ( ! empty( $data['sql'] ) ) {
+			return trim( (string) $data['sql'] );
+		}
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- SQL input is validated by validateSelectOnly(); sanitize_text_field corrupts SQL operators.
 		$sql = isset( $_POST['sql'] ) ? wp_unslash( $_POST['sql'] ) : '';
 		if ( empty( $sql ) ) {
