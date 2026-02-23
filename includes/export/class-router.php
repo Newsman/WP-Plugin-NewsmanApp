@@ -68,12 +68,11 @@ class Router {
 			$page->display_json( $result );
 		}
 
-		// Check for API v1 JSON payload before the legacy query-string check.
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$raw_body     = (string) file_get_contents( 'php://input' );
-		$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['CONTENT_TYPE'] ) ) : '';
-		$v1_parser    = new \Newsman\Export\V1\PayloadParser();
-		if ( $v1_parser->is_v1_payload( $raw_body, $content_type ) ) {
+		// Check for API v1 JSON payload via explicit GET parameter.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['newsman_api'] ) && 'v1' === sanitize_text_field( wp_unslash( $_GET['newsman_api'] ) ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$raw_body = (string) file_get_contents( 'php://input' );
 			$this->execute_v1( $raw_body, get_current_blog_id() );
 			return;
 		}

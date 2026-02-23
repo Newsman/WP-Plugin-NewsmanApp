@@ -125,7 +125,7 @@ class Settings extends \Newsman\Admin\Settings {
 					$authenticate_token = $this->ensure_authenticate_token();
 					$this->save_list_integration_setup(
 						$list_id,
-						get_site_url(),
+						get_site_url() . '/?newsman_api=v1',
 						$authenticate_token
 					);
 				}

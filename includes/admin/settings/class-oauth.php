@@ -212,7 +212,7 @@ class Oauth extends Settings {
 
 		$authenticate_token = $this->ensure_authenticate_token();
 
-		$integration_result = $this->save_list_integration_setup( $list_id, get_site_url(), $authenticate_token );
+		$integration_result = $this->save_list_integration_setup( $list_id, get_site_url() . '/?newsman_api=v1', $authenticate_token );
 		if ( false === $integration_result ) {
 			$this->form_error_message = esc_html__( 'Could not save integration setup. Please try again.', 'newsman' );
 			$this->step               = 2;

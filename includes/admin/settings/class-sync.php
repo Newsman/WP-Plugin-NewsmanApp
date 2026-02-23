@@ -108,7 +108,7 @@ class Sync extends Settings {
 				$authenticate_token = $this->ensure_authenticate_token();
 				$integration_result = $this->save_list_integration_setup(
 					$this->get_form_value( 'newsman_list' ),
-					get_site_url(),
+					get_site_url() . '/?newsman_api=v1',
 					$authenticate_token
 				);
 				if ( false === $integration_result ) {
