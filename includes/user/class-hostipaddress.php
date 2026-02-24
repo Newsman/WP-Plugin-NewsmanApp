@@ -84,6 +84,14 @@ class HostIpAddress {
 			return $this->ip;
 		}
 
+		$resolver = new \Newsman\Util\ServerIpResolver();
+		$ip       = $resolver->resolve();
+		if ( ! empty( $ip ) ) {
+			update_option( 'newsman_serverip', $ip, Config::AUTOLOAD_OPTIONS );
+			$this->ip = $ip;
+			return $this->ip;
+		}
+
 		$url = $this->get_url();
 		$ip  = '';
 		if ( false !== $url ) {

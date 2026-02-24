@@ -16,21 +16,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Export Retriever Version
+ * Class Export Retriever Server IP
  *
- * @class \Newsman\Export\Retriever\Version
+ * @class \Newsman\Export\Retriever\ServerIp
  */
-class Version extends AbstractRetriever implements RetrieverInterface {
+class ServerIp extends AbstractRetriever implements RetrieverInterface {
 	/**
-	 * Process version retriever
+	 * Process server IP retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		global $wp_version;
+		$resolver = new \Newsman\Util\ServerIpResolver();
 
-		return array( 'version' => 'Wordpress ' . $wp_version );
+		return array( 'ip' => $resolver->resolve() );
 	}
 }

@@ -31,15 +31,24 @@ class PayloadParser {
 	 * @var array
 	 */
 	public static $method_map = array(
-		'customer.list'          => 'customers',
-		'subscriber.list'        => 'subscribers',
-		'subscriber.subscribe'   => 'subscriber-subscribe',
-		'subscriber.unsubscribe' => 'subscriber-unsubscribe',
-		'product.list'           => 'products-feed',
-		'order.list'             => 'orders',
-		'coupon.create'          => 'coupons',
-		'custom.sql'             => 'custom-sql',
-		'version'                => 'version',
+		'customer.list'             => 'customers',
+		'subscriber.list'           => 'subscribers',
+		'subscriber.subscribe'      => 'subscriber-subscribe',
+		'subscriber.unsubscribe'    => 'subscriber-unsubscribe',
+		'product.list'              => 'products-feed',
+		'order.list'                => 'orders',
+		'coupon.create'             => 'coupons',
+		'custom.sql'                => 'custom-sql',
+		'platform.name'             => 'platform-name',
+		'platform.version'          => 'platform-version',
+		'platform.language'         => 'platform-language',
+		'platform.language_version' => 'platform-language-version',
+		'integration.name'          => 'integration-name',
+		'integration.version'       => 'integration-version',
+		'server.ip'                 => 'server-ip',
+		'server.cloudflare'         => 'server-cloudflare',
+		'sql.name'                  => 'sql-name',
+		'sql.version'               => 'sql-version',
 	);
 
 	/**

@@ -16,19 +16,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Export Retriever Newsman Version
+ * Class Export Retriever Platform Language
  *
- * @class \Newsman\Export\Retriever\NewsmanVersion
+ * @class \Newsman\Export\Retriever\PlatformLanguage
  */
-class NewsmanVersion extends AbstractRetriever implements RetrieverInterface {
+class PlatformLanguage extends AbstractRetriever implements RetrieverInterface {
 	/**
-	 * Process newsman version retriever
+	 * Process platform language retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
 	 */
 	public function process( $data = array(), $blog_id = null ) {
-		return array( 'version' => NEWSMAN_VERSION );
+		return array( 'language' => 'PHP' );
 	}
 }

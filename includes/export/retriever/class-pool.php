@@ -29,14 +29,54 @@ class Pool {
 	 * @var array
 	 */
 	protected $retriever_list = array(
-		'version'                      => array(
-			'code'             => 'version',
-			'class'            => '\Newsman\Export\Retriever\Version',
+		'platform-name'                => array(
+			'code'             => 'platform-name',
+			'class'            => '\Newsman\Export\Retriever\PlatformName',
 			'only_woocommerce' => false,
 		),
-		'newsman_version'              => array(
-			'code'             => 'newsman_version',
-			'class'            => '\Newsman\Export\Retriever\NewsmanVersion',
+		'platform-version'             => array(
+			'code'             => 'platform-version',
+			'class'            => '\Newsman\Export\Retriever\PlatformVersion',
+			'only_woocommerce' => false,
+		),
+		'platform-language'            => array(
+			'code'             => 'platform-language',
+			'class'            => '\Newsman\Export\Retriever\PlatformLanguage',
+			'only_woocommerce' => false,
+		),
+		'platform-language-version'    => array(
+			'code'             => 'platform-language-version',
+			'class'            => '\Newsman\Export\Retriever\PlatformLanguageVersion',
+			'only_woocommerce' => false,
+		),
+		'integration-name'             => array(
+			'code'             => 'integration-name',
+			'class'            => '\Newsman\Export\Retriever\IntegrationName',
+			'only_woocommerce' => false,
+		),
+		'integration-version'          => array(
+			'code'             => 'integration-version',
+			'class'            => '\Newsman\Export\Retriever\IntegrationVersion',
+			'only_woocommerce' => false,
+		),
+		'server-ip'                    => array(
+			'code'             => 'server-ip',
+			'class'            => '\Newsman\Export\Retriever\ServerIp',
+			'only_woocommerce' => false,
+		),
+		'server-cloudflare'            => array(
+			'code'             => 'server-cloudflare',
+			'class'            => '\Newsman\Export\Retriever\ServerCloudflare',
+			'only_woocommerce' => false,
+		),
+		'sql-name'                     => array(
+			'code'             => 'sql-name',
+			'class'            => '\Newsman\Export\Retriever\SqlName',
+			'only_woocommerce' => false,
+		),
+		'sql-version'                  => array(
+			'code'             => 'sql-version',
+			'class'            => '\Newsman\Export\Retriever\SqlVersion',
 			'only_woocommerce' => false,
 		),
 		'orders'                       => array(
