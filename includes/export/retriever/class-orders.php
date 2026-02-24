@@ -290,6 +290,7 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 			'billing_company_name' => $order->get_billing_company(),
 			'billing_phone'        => $this->telephone->clean( $item_data['billing']['phone'] ),
 			'customer_email'       => $order->get_billing_email(),
+			'customer_id'          => $order->get_customer_id() ? (string) $order->get_customer_id() : '',
 			'shipping_amount'      => (float) $item_data['shipping_total'],
 			'tax_amount'           => (float) wc_format_decimal( $order->get_total_tax(), 2 ),
 			'total_amount'         => (float) wc_format_decimal( $order->get_total(), 2 ),
