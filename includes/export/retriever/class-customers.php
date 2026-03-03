@@ -51,12 +51,13 @@ class Customers extends Users {
 		$data = get_user_meta( $customer->data->ID );
 
 		$row = array(
-			'customer_id'  => $customer->data->ID,
-			'firstname'    => $data['first_name'][0],
-			'lastname'     => $data['last_name'][0],
-			'email'        => $customer->data->user_email,
-			'date_created' => $customer->data->user_registered,
-			'source'       => 'WooCommerce users role ' . self::USER_ROLE,
+			'customer_id'     => $customer->data->ID,
+			'firstname'       => $data['first_name'][0],
+			'lastname'        => $data['last_name'][0],
+			'email'           => $customer->data->user_email,
+			'date_created'    => $customer->data->user_registered,
+			'source'          => 'WooCommerce users role ' . self::USER_ROLE,
+			'customer_groups' => array(),
 		);
 
 		$telephone = $this->get_telphone_from_customer( $customer );
