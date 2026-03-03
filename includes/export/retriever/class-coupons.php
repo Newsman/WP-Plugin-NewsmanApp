@@ -11,6 +11,8 @@
 
 namespace Newsman\Export\Retriever;
 
+use Newsman\Export\V1\ApiV1Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -27,6 +29,7 @@ class Coupons extends AbstractRetriever implements RetrieverInterface {
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
+	 * @throws ApiV1Exception On invalid parameters in API v1 context.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
 		/* translators: 1: Input data */
@@ -36,24 +39,71 @@ class Coupons extends AbstractRetriever implements RetrieverInterface {
 			include_once WC()->plugin_path() . '/includes/class-wc-coupon.php';
 		}
 
-		$discount_type = ! isset( $data['type'] ) ? -1 : (int) $data['type'];
-		$value         = ! isset( $data['value'] ) ? -1 : (int) $data['value'];
-		$batch_size    = ! isset( $data['batch_size'] ) ? 1 : (int) $data['batch_size'];
-		$prefix        = ! isset( $data['prefix'] ) ? '' : $data['prefix'];
-		$expire_date   = isset( $data['expire_date'] ) ? $data['expire_date'] : null;
-		$min_amount    = ! isset( $data['min_amount'] ) ? -1 : (float) $data['min_amount'];
-		$currency      = isset( $data['currency'] ) ? $data['currency'] : '';
+		$is_v1       = isset( $data['_v1_filter_fields'] );
+		$batch_size  = ! isset( $data['batch_size'] ) ? 1 : (int) $data['batch_size'];
+		$prefix      = ! isset( $data['prefix'] ) ? '' : $data['prefix'];
+		$expire_date = isset( $data['expire_date'] ) ? $data['expire_date'] : null;
+		$min_amount  = ! isset( $data['min_amount'] ) ? -1 : (float) $data['min_amount'];
+		$currency    = isset( $data['currency'] ) ? $data['currency'] : '';
 
-		if ( -1 === $discount_type || '-1' === $discount_type ) {
+		if ( ! isset( $data['type'] ) ) {
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8001, 'Missing "type" parameter', 400 );
+			}
 			return array(
 				'status' => 0,
 				'msg'    => 'Missing type param',
 			);
-		} elseif ( -1 === $value || '-1' === $value ) {
+		}
+
+		$discount_type = (int) $data['type'];
+		if ( ! in_array( $discount_type, array( 0, 1 ), true ) ) {
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8002, 'Invalid "type" parameter: must be 0 (fixed) or 1 (percent)', 400 );
+			}
+			return array(
+				'status' => 0,
+				'msg'    => 'Invalid type param',
+			);
+		}
+
+		if ( ! isset( $data['value'] ) ) {
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8003, 'Missing "value" parameter', 400 );
+			}
 			return array(
 				'status' => 0,
 				'msg'    => 'Missing value param',
 			);
+		}
+
+		$value = (float) $data['value'];
+		if ( $value <= 0 ) {
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8004, 'Invalid "value" parameter: must be greater than 0', 400 );
+			}
+			return array(
+				'status' => 0,
+				'msg'    => 'Invalid value param',
+			);
+		}
+
+		if ( $batch_size < 1 ) {
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8005, 'Invalid "batch_size" parameter: must be >= 1', 400 );
+			}
+		}
+
+		if ( null !== $expire_date && ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $expire_date ) ) {
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8006, 'Invalid "expire_date" format: expected YYYY-MM-DD', 400 );
+			}
 		}
 
 		try {
@@ -88,6 +138,11 @@ class Coupons extends AbstractRetriever implements RetrieverInterface {
 			}
 
 			$this->logger->log_exception( $e );
+
+			if ( $is_v1 ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 8007, 'Failed to create coupons', 500 );
+			}
 
 			return array(
 				'status' => 0,
