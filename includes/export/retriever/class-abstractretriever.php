@@ -12,6 +12,7 @@
 namespace Newsman\Export\Retriever;
 
 use Newsman\Config;
+use Newsman\Export\V1\ApiV1Exception;
 use Newsman\Logger;
 use Newsman\Remarketing\Config as RemarketingConfig;
 use Newsman\Util\Telephone;
@@ -98,6 +99,7 @@ class AbstractRetriever {
 	 * @param array    $data Data.
 	 * @param int|null $blog_id WP blog ID.
 	 * @return array
+	 * @throws ApiV1Exception On invalid sort field in API v1 context.
 	 */
 	public function process_list_parameters( $data = array(), $blog_id = null ) {
 		$params = $this->process_list_where_parameters( $data, $blog_id );
@@ -108,6 +110,9 @@ class AbstractRetriever {
 			if ( isset( $allowed_sort[ $data['sort'] ] ) ) {
 				$params['sort'] = $allowed_sort[ $data['sort'] ];
 				$sort_found     = true;
+			} elseif ( ! empty( $data['_v1_filter_fields'] ) ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ApiV1Exception( 1008, 'Invalid sort field: ' . $data['sort'], 400 );
 			}
 		}
 		$params['order'] = 'ASC';
@@ -136,9 +141,21 @@ class AbstractRetriever {
 	 * @param array    $data Data.
 	 * @param int|null $blog_id WP blog ID.
 	 * @return array
+	 * @throws ApiV1Exception On invalid filter field or operator in API v1 context.
 	 */
 	public function process_list_where_parameters( $data = array(), $blog_id = null ) {
 		$blog_id;
+
+		if ( ! empty( $data['_v1_filter_fields'] ) ) {
+			$allowed_mapping = $this->get_where_parameters_mapping();
+			foreach ( $data['_v1_filter_fields'] as $field ) {
+				if ( ! isset( $allowed_mapping[ $field ] ) ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+					throw new ApiV1Exception( 1006, 'Invalid filter field: ' . $field, 400 );
+				}
+			}
+		}
+
 		$params = array( 'filters' => array() );
 
 		$operators = array_keys( $this->get_expressions_definition() );
@@ -153,6 +170,10 @@ class AbstractRetriever {
 			if ( is_array( $data[ $request_name ] ) && ! empty( array_intersect( array_keys( $data[ $request_name ] ), $operators ) ) ) {
 				foreach ( $data[ $request_name ] as $operator => $value ) {
 					if ( ! in_array( $operator, $operators, true ) ) {
+						if ( ! empty( $data['_v1_filter_fields'] ) ) {
+							// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+							throw new ApiV1Exception( 1007, 'Invalid filter operator: ' . $operator, 400 );
+						}
 						continue;
 					}
 

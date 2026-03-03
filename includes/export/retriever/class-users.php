@@ -184,9 +184,13 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 	 * @param int|null $blog_id WP blog ID.
 	 * @return array
 	 * @throws \Exception On errors.
+	 * @throws \Newsman\Export\V1\ApiV1Exception On unsupported filter in API v1 context.
 	 */
 	public function process_list_parameters( $data = array(), $blog_id = null ) {
 		if ( isset( $data['modified_at'] ) ) {
+			if ( ! empty( $data['_v1_filter_fields'] ) ) {
+				throw new \Newsman\Export\V1\ApiV1Exception( 1010, 'Filter not supported on this platform: modified_at', 400 );
+			}
 			throw new \Exception( 'modified_at is not implemented for users.' );
 		}
 
