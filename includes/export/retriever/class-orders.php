@@ -253,34 +253,20 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 	 * @return array
 	 */
 	public function process_order( $order, $blog_id = null ) {
-		$products      = $order->get_items();
 		$products_data = array();
 
 		$item_data = $order->get_data();
 
-		foreach ( $products as $prod ) {
-			$_prod = wc_get_product( $prod['product_id'] );
-
-			$image_id  = $_prod->get_image_id();
-			$image_url = wp_get_attachment_image_url( $image_id, 'full' );
-			$url       = get_permalink( $_prod->get_id() );
-
-			$_price_old = 0;
-			if ( empty( $_prod->get_sale_price() ) ) {
-				$_price = $_prod->get_price();
-			} else {
-				$_price     = $_prod->get_sale_price();
-				$_price_old = $_prod->get_regular_price();
-			}
+		foreach ( $order->get_items() as $item ) {
+			$quantity   = (int) $item->get_quantity();
+			$unit_price = $quantity > 0 ? (float) $item->get_subtotal() / $quantity : 0.0;
 
 			$products_data[] = array(
-				'id'        => $prod['product_id'],
-				'name'      => $prod['name'],
-				'quantity'  => (int) $prod['quantity'],
-				'price'     => (float) $_price,
-				'price_old' => (float) $_price_old,
-				'image_url' => $image_url,
-				'url'       => $url,
+				'id'         => $item->get_product_id(),
+				'name'       => $item->get_name(),
+				'quantity'   => $quantity,
+				'unit_price' => $unit_price,
+				'variant_id' => $item->get_variation_id() ? (string) $item->get_variation_id() : '',
 			);
 		}
 
@@ -296,10 +282,12 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 			'total_amount'         => (float) wc_format_decimal( $order->get_total(), 2 ),
 			'currency'             => $order->get_currency(),
 			'subtotal_amount'      => (float) wc_format_decimal( $order->get_subtotal(), 2 ),
+			'discount'             => (float) wc_format_decimal( $order->get_discount_total(), 2 ),
+			'discount_code'        => implode( ',', $order->get_coupon_codes() ),
 			'status'               => $order->get_status(),
 			'date_created'         => $order->get_date_created()->format( 'Y-m-d H:i:s' ),
 			'date_modified'        => $order->get_date_modified()->format( 'Y-m-d H:i:s' ),
-			'line_items'           => $products_data,
+			'products'             => $products_data,
 		);
 
 		return apply_filters(
