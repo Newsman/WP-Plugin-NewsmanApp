@@ -352,7 +352,7 @@ class Settings {
 				'api_url'                   => $api_url,
 				'api_key'                   => $api_key,
 				'plugin_version'            => defined( 'NEWSMAN_VERSION' ) ? NEWSMAN_VERSION : '',
-				'platform_name'             => 'WordPress',
+				// 'platform_name'             => 'WordPress',
 				'platform_version'          => get_bloginfo( 'version' ),
 				'platform_language'         => 'PHP',
 				'platform_language_version' => phpversion(),
