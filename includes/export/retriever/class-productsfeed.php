@@ -34,6 +34,13 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 	protected $additional_attributes = array();
 
 	/**
+	 * All-categories cache per blog ID: [blog_id => [term_id => ['name' => ..., 'parent' => ...]]]
+	 *
+	 * @var array
+	 */
+	protected $categories_cache = array();
+
+	/**
 	 * Process products retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
@@ -64,6 +71,7 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 				switch_to_blog( $blog_id );
 			}
 			$product = wc_get_product( $data['product_id'] );
+			$this->load_categories( $blog_id );
 			if ( $this->is_different_blog( $blog_id ) ) {
 				restore_current_blog();
 			}
@@ -159,6 +167,8 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 			return array();
 		}
 
+		$this->load_categories( $blog_id );
+
 		$result = array();
 		foreach ( $products as $product ) {
 			try {
@@ -183,6 +193,68 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Load all product_cat terms for a blog into a flat cache.
+	 *
+	 * Returns [term_id => ['name' => string, 'parent' => int]]
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return array
+	 */
+	public function load_categories( $blog_id = null ) {
+		$cache_key = (int) $blog_id;
+		if ( isset( $this->categories_cache[ $cache_key ] ) ) {
+			return $this->categories_cache[ $cache_key ];
+		}
+
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+				'number'     => 0,
+			)
+		);
+
+		$map = array();
+		if ( ! is_wp_error( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$map[ $term->term_id ] = array(
+					'name'   => $term->name,
+					'parent' => (int) $term->parent,
+				);
+			}
+		}
+
+		$this->categories_cache[ $cache_key ] = $map;
+		return $map;
+	}
+
+	/**
+	 * Build a top-to-bottom breadcrumb path for a category.
+	 *
+	 * @param int      $category_id Term ID.
+	 * @param null|int $blog_id WP blog ID.
+	 * @return array List of category names from top-most ancestor to leaf.
+	 */
+	public function get_category_path( $category_id, $blog_id = null ) {
+		$map       = $this->load_categories( $blog_id );
+		$path      = array();
+		$current   = (int) $category_id;
+		$fail_safe = 0;
+
+		while ( isset( $map[ $current ] ) && $fail_safe < 30 ) {
+			array_unshift( $path, $map[ $current ]['name'] );
+			$parent = $map[ $current ]['parent'];
+			if ( 0 === $parent || $parent === $current ) {
+				break;
+			}
+			$current = $parent;
+			++$fail_safe;
+		}
+
+		return $path;
 	}
 
 	/**
@@ -242,15 +314,28 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 		}
 		$url = get_permalink( $product->get_id() );
 
-		$category_ids = $product->get_category_ids();
-		$category     = '';
+		$category_ids  = $product->get_category_ids();
+		$category      = '';
+		$subcategories = '';
 
+		$category_paths = array();
 		foreach ( (array) $category_ids as $category_id ) {
-			$category_term = get_term_by( 'id', (int) $category_id, 'product_cat' );
-			if ( ! empty( $category_term ) ) {
-				$category = $category_term->name;
-				break;
+			$path = $this->get_category_path( (int) $category_id, $blog_id );
+			if ( ! empty( $path ) ) {
+				$category_paths[] = $path;
 			}
+		}
+
+		if ( ! empty( $category_paths ) ) {
+			// Use the deepest path (most ancestors) as the primary category.
+			usort(
+				$category_paths,
+				function ( $a, $b ) {
+					return count( $b ) - count( $a );
+				}
+			);
+			$category      = end( $category_paths[0] );
+			$subcategories = $category_paths;
 		}
 
 		$quantity = (float) $product->get_stock_quantity();
@@ -264,6 +349,7 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 			'name'           => $product->get_name(),
 			'image_url'      => $image_url,
 			'category'       => $category,
+			'subcategories'  => $subcategories,
 			'in_stock'       => $quantity > 0 ? '1' : '0',
 			'stock_quantity' => $quantity,
 			'sku'            => $product->get_sku(),
