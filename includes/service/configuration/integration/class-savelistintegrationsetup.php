@@ -46,6 +46,8 @@ class SaveListIntegrationSetup extends AbstractService {
 		}
 
 		$api_context = $this->create_api_context()
+			->set_user_id( $context->get_user_id() )
+			->set_api_key( $context->get_api_key() )
 			->set_list_id( $context->get_list_id() )
 			->set_blog_id( $context->get_blog_id() )
 			->set_endpoint( self::ENDPOINT );
