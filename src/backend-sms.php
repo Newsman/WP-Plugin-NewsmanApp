@@ -57,9 +57,8 @@ $form_values = $this->get_form_values();
 	});
 </script>
 <div class="tabset-img">
-	<a href="https://newsman.com" target="_blank">
-		<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" />
-	</a>
+	<img src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png" alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" />
+	<a class="nzm-link" href="https://www.newsman.com/" target="_blank">www.newsman.com</a>
 </div>
 <div class="nzm-tabset">
 	<input type="radio" name="tabset" id="tabNewsman" aria-controls="">

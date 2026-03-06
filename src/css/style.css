@@ -164,6 +164,12 @@ p.nzm-description-error {
 	padding: 20px 0;
 }
 
+.nzm-link {
+	display: block;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
 #tab-oauth {
 	text-align: center;
 }

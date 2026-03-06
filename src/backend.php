@@ -15,9 +15,8 @@ $this->is_oauth();
 $is_valid_credentials = $this->is_valid_credentials();
 ?>
 <div class="tabset-img">
-	<a href="https://newsman.com" target="_blank">
-		<img alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png"/>
-	</a>
+	<img alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png"/>
+	<a class="nzm-link" href="https://www.newsman.com/" target="_blank">www.newsman.com</a>
 </div>
 <div class="nzm-tabset">
 	<input type="radio" name="tabset" id="tabNewsman" aria-controls="" checked>
@@ -46,6 +45,12 @@ $is_valid_credentials = $this->is_valid_credentials();
 								<span><?php echo $is_valid_credentials ? esc_html__( 'Valid', 'newsman' ) : esc_html__( 'Invalid', 'newsman' ); ?></span>
 							</div>
 						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<strong><?php echo esc_html__( 'Newsman Plugin Version', 'newsman' ); ?></strong>
+						</th>
+						<td><?php echo esc_html( NEWSMAN_VERSION ); ?></td>
 					</tr>
 					<tr>
 						<th scope="row">
