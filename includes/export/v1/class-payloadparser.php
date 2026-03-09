@@ -26,11 +26,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class PayloadParser {
 	/**
-	 * Mapping from API v1 method name to internal retriever code.
+	 * Base mapping from API v1 method name to internal retriever code.
+	 *
+	 * Use get_method_map() instead of accessing this directly.
 	 *
 	 * @var array
 	 */
-	public static $method_map = array(
+	private static $method_map = array(
 		'customer.list'             => 'customers',
 		'subscriber.list'           => 'subscribers',
 		'subscriber.subscribe'      => 'subscriber-subscribe',
@@ -50,6 +52,45 @@ class PayloadParser {
 		'sql.name'                  => 'sql-name',
 		'sql.version'               => 'sql-version',
 	);
+
+	/**
+	 * Methods that require WooCommerce to be active.
+	 *
+	 * @var string[]
+	 */
+	private static $woocommerce_methods = array(
+		'customer.list',
+		'product.list',
+		'order.list',
+		'coupon.create',
+	);
+
+	/**
+	 * Return the active method map, excluding methods whose dependencies are
+	 * not met (e.g. WooCommerce methods when WooCommerce is not installed).
+	 *
+	 * Applies the `newsman_api_v1_method_map` filter so third-party code can
+	 * add, remove or remap methods.
+	 *
+	 * @return array
+	 */
+	public static function get_method_map() {
+		$map = self::$method_map;
+
+		$woo = new \Newsman\Util\WooCommerceExist();
+		if ( ! $woo->exist() ) {
+			foreach ( self::$woocommerce_methods as $method ) {
+				unset( $map[ $method ] );
+			}
+		}
+
+		/**
+		 * Filter the API v1 method map.
+		 *
+		 * @param array $map Method name => retriever code pairs.
+		 */
+		return apply_filters( 'newsman_api_v1_method_map', $map );
+	}
 
 	/**
 	 * Determine whether the raw request body should be handled as an API v1 payload.
@@ -95,8 +136,9 @@ class PayloadParser {
 			throw new ApiV1Exception( 1003, 'Missing "method" parameter', 400 );
 		}
 
-		$method = $payload['method'];
-		if ( ! isset( self::$method_map[ $method ] ) ) {
+		$method     = $payload['method'];
+		$method_map = self::get_method_map();
+		if ( ! isset( $method_map[ $method ] ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			throw new ApiV1Exception( 1004, 'Unknown method: ' . $method, 404 );
 		}
@@ -123,7 +165,7 @@ class PayloadParser {
 		$data['_v1_filter_fields'] = $filter_fields;
 
 		return array(
-			'code' => self::$method_map[ $method ],
+			'code' => $method_map[ $method ],
 			'data' => $data,
 		);
 	}

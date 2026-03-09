@@ -813,7 +813,7 @@ msgid "Export WordPress Subscribers"
 msgstr ""
 
 #: src/backend-remarketing.php:108
-msgid "Export all WordPress users with role subscriber (Newsman.app fetches the data)."
+msgid "Optional. Include WordPress users with the subscriber role when syncing subscribers."
 msgstr ""
 
 #: src/backend-remarketing.php:113
@@ -821,7 +821,7 @@ msgid "Export WooCommerce Buyers as Subscribers"
 msgstr ""
 
 #: src/backend-remarketing.php:118
-msgid "Export all buyers from orders with status complete (Newsman.app fetches the data)."
+msgid "Optional. Include buyers from completed orders when syncing subscribers."
 msgstr ""
 
 #: src/backend-remarketing.php:124

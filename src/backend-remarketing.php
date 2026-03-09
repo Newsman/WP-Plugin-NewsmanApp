@@ -104,7 +104,7 @@ $form_values = $this->get_form_values();
 							<td>
 								<input name="newsman_remarketingexportwordpresssubscribers" type="checkbox"
 										id="newsman_remarketingexportwordpresssubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwordpresssubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwordpresssubscribers'] ) ? 'checked' : ''; ?>/>
-								<p class="description"><?php echo esc_html__( 'Export all WordPress users with role subscriber (Newsman.app fetches the data).', 'newsman' ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Optional. Include WordPress users with the subscriber role when syncing subscribers.', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<tr>
@@ -114,7 +114,7 @@ $form_values = $this->get_form_values();
 							<td>
 								<input name="newsman_remarketingexportwoocommercesubscribers" type="checkbox"
 										id="newsman_remarketingexportwoocommercesubscribers" <?php echo ( ! empty( $form_values['newsman_remarketingexportwoocommercesubscribers'] ) && 'on' === $form_values['newsman_remarketingexportwoocommercesubscribers'] ) ? 'checked' : ''; ?>/>
-								<p class="description"><?php echo esc_html__( 'Export all buyers from orders with status complete (Newsman.app fetches the data).', 'newsman' ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Optional. Include buyers from completed orders when syncing subscribers.', 'newsman' ); ?></p>
 							</td>
 						</tr>
 					<?php endif; ?>

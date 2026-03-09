@@ -810,20 +810,16 @@ msgid "Export WordPress Subscribers"
 msgstr "Trimite abonați WordPress"
 
 #: src/backend-remarketing.php:108
-msgid ""
-"Export all WordPress users with role subscriber (Newsman.app fetches the "
-"data)."
-msgstr "Exportați toți utilizatorii WordPress cu rolul de abonat (Newsman.app preia datele)."
+msgid "Optional. Include WordPress users with the subscriber role when syncing subscribers."
+msgstr "Opțional. Include utilizatorii WordPress cu rolul de abonat la sincronizarea abonaților."
 
 #: src/backend-remarketing.php:113
 msgid "Export WooCommerce Buyers as Subscribers"
 msgstr "Trimite cumpărătorii WooCommerce ca abonați"
 
 #: src/backend-remarketing.php:118
-msgid ""
-"Export all buyers from orders with status complete (Newsman.app fetches the "
-"data)."
-msgstr "Exportați toți cumpărătorii din comenzile cu starea finalizată (Newsman.app preia datele)."
+msgid "Optional. Include buyers from completed orders when syncing subscribers."
+msgstr "Opțional. Include cumpărătorii din comenzile finalizate la sincronizarea abonaților."
 
 #: src/backend-remarketing.php:124
 msgid "Export Orders on Status Change"
