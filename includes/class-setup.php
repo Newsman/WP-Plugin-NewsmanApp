@@ -652,6 +652,8 @@ jt/modal_{{api_key}}.js'
 
 			$service = new \Newsman\Service\Configuration\Integration\SaveListIntegrationSetup();
 			$service->execute( $context );
+
+			update_option( 'newsman_save_integration_run', gmdate( 'Y-m-d H:i:s' ), Config::AUTOLOAD_OPTIONS );
 		} catch ( \Exception $e ) {
 			$logger = Logger::init();
 			$logger->log_exception( $e );
