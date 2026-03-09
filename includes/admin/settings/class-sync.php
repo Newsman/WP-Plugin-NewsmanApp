@@ -232,7 +232,7 @@ class Sync extends Settings {
 
 		if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
 			$auth_name  = $this->generate_random_header_name();
-			$auth_value = $this->generate_random_password();
+			$auth_value = \Newsman\Util\RandomPassword::generate();
 			$result     = $this->update_feed_authorize(
 				$this->get_form_value( 'newsman_list' ),
 				$result['feed_id'],

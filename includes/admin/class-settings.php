@@ -328,7 +328,7 @@ class Settings {
 			return $token;
 		}
 
-		$token = $this->generate_random_password( 32 );
+		$token = \Newsman\Util\RandomPassword::generate( 32 );
 		update_option( 'newsman_authenticate_token', $token, Config::AUTOLOAD_OPTIONS );
 
 		return $token;
@@ -476,10 +476,11 @@ class Settings {
 	}
 
 	/**
-	 * Generates a random password consisting of uppercase letters, lowercase letters, and numbers.
+	 * Generate a random alphanumeric password.
 	 *
-	 * @param int $length The length of the password to generate. Default is 16.
-	 * @return string The randomly generated password.
+	 * @param int $length Password length.
+	 * @return string
+	 * @deprecated Use \Newsman\Util\RandomPassword::generate() instead.
 	 */
 	protected function generate_random_password( $length = 16 ) {
 		$lowercase = 'abcdefghijklmnopqrstuvwxyz';

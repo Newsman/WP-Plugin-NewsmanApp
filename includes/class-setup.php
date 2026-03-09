@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '7.0.0';
+	protected static $setup_version = '8.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -494,6 +494,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_seven_zero_zero();
 			update_option( 'newsman_setup_version', '7.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '8.0.0', '<' ) ) {
+			self::upgrade_options_eight_zero_zero();
+			update_option( 'newsman_setup_version', '8.0.0', true );
+		}
 	}
 
 	/**
@@ -601,6 +606,56 @@ jt/modal_{{api_key}}.js'
 		delete_option( 'newsman_remarketingexportwordpresssubscribers_recurring_long_days' );
 		delete_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_short_days' );
 		delete_option( 'newsman_remarketingexportwoocommercesubscribers_recurring_long_days' );
+	}
+
+	/**
+	 * Version 8.0.0 — send integration setup to Newsman API.
+	 *
+	 * Best-effort: failures are logged but never break the upgrade.
+	 * The version is bumped regardless so this does not retry on every page load.
+	 * If it fails, the call will still happen when the user saves settings or
+	 * changes the list in the admin.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_eight_zero_zero() {
+		try {
+			$user_id = get_option( 'newsman_userid' );
+			$api_key = get_option( 'newsman_apikey' );
+			$list_id = get_option( 'newsman_list' );
+
+			if ( empty( $user_id ) || empty( $api_key ) || empty( $list_id ) ) {
+				return;
+			}
+
+			$authenticate_token = get_option( 'newsman_authenticate_token' );
+			if ( empty( $authenticate_token ) ) {
+				$authenticate_token = \Newsman\Util\RandomPassword::generate( 32 );
+				update_option( 'newsman_authenticate_token', $authenticate_token, Config::AUTOLOAD_OPTIONS );
+			}
+
+			$payload = array(
+				'api_url'                   => get_site_url() . '/?newsman_api=v1',
+				'api_key'                   => $authenticate_token,
+				'plugin_version'            => defined( 'NEWSMAN_VERSION' ) ? NEWSMAN_VERSION : '',
+				'platform_version'          => get_bloginfo( 'version' ),
+				'platform_language'         => 'PHP',
+				'platform_language_version' => phpversion(),
+				'platform_server_ip'        => ( new \Newsman\Util\ServerIpResolver() )->resolve(),
+			);
+
+			$context = new \Newsman\Service\Context\Configuration\SaveListIntegrationSetup();
+			$context->set_list_id( $list_id )
+				// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- API parameter value, not display text.
+				->set_integration( 'wordpress' )
+				->set_payload( $payload );
+
+			$service = new \Newsman\Service\Configuration\Integration\SaveListIntegrationSetup();
+			$service->execute( $context );
+		} catch ( \Exception $e ) {
+			$logger = Logger::init();
+			$logger->log_exception( $e );
+		}
 	}
 
 	/**
