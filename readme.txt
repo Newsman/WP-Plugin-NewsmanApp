@@ -112,9 +112,16 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 == Changelog ==
 
 = 3.5.0 =
+* Add API v1 with JSON payload support for all data endpoints
+* Add custom SQL query endpoint for advanced data retrieval
+* Add platform, integration, server and database info endpoints
+* Add customer groups to customer data and subcategories to product feed
+* Add inbound webhook handling
 * Send integration setup to Newsman API on OAuth connect
-* Add custom SQL query retriever
-* Refactor data retrievers
+* Show plugin version and Newsman logo in admin
+* Remove recurring export schedulers in favor of on-demand API fetching
+* WooCommerce-specific endpoints now return proper error when WooCommerce is not installed
+* Updated Romanian translations
 = 3.4.0 =
 * Change retargeting URL
 * Compatibility with WooCommerce 10.4.0, change wc_enqueue_js into wp_add_inline_script
