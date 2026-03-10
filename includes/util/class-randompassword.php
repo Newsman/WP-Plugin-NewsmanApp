@@ -29,6 +29,7 @@ class RandomPassword {
 	 * @return string
 	 */
 	public static function generate( $length = 16 ) {
+		// phpcs:disable WordPress.WP.AlternativeFunctions.rand_mt_rand -- wp_rand() is not available during plugin upgrade.
 		$lowercase = 'abcdefghijklmnopqrstuvwxyz';
 		$uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$numbers   = '0123456789';
@@ -39,7 +40,7 @@ class RandomPassword {
 
 		$password = '';
 		for ( $i = 0; $i < $length; $i++ ) {
-			$password .= $all_chars[ wp_rand( 0, $chars_length - 1 ) ];
+			$password .= $all_chars[ mt_rand( 0, $chars_length - 1 ) ];
 		}
 
 		// Ensure password has at least one character from each required set.
@@ -49,17 +50,18 @@ class RandomPassword {
 
 		// Replace characters if any required type is missing.
 		if ( ! $has_lowercase ) {
-			$password[ wp_rand( 0, $length - 1 ) ] = $lowercase[ wp_rand( 0, strlen( $lowercase ) - 1 ) ];
+			$password[ mt_rand( 0, $length - 1 ) ] = $lowercase[ mt_rand( 0, strlen( $lowercase ) - 1 ) ];
 		}
 
 		if ( ! $has_uppercase ) {
-			$password[ wp_rand( 0, $length - 1 ) ] = $uppercase[ wp_rand( 0, strlen( $uppercase ) - 1 ) ];
+			$password[ mt_rand( 0, $length - 1 ) ] = $uppercase[ mt_rand( 0, strlen( $uppercase ) - 1 ) ];
 		}
 
 		if ( ! $has_number ) {
-			$password[ wp_rand( 0, $length - 1 ) ] = $numbers[ wp_rand( 0, strlen( $numbers ) - 1 ) ];
+			$password[ mt_rand( 0, $length - 1 ) ] = $numbers[ mt_rand( 0, strlen( $numbers ) - 1 ) ];
 		}
 
 		return $password;
 	}
+	// phpcs:enable WordPress.WP.AlternativeFunctions.rand_mt_rand
 }
