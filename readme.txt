@@ -111,6 +111,8 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.6.0 =
+* Hotfix for wp_rand in setup context when automatic installation is used
 = 3.5.0 =
 * Add API v1 with JSON payload support for all data endpoints
 * Add custom SQL query endpoint for advanced data retrieval
