@@ -213,6 +213,8 @@ If you use one of the supported Romanian courier plugins (Cargus, SameDay, or Fa
 
 The same pattern works for SameDay (`{{if_sameday_awb}}...{{sameday_awb}}...{{endif_sameday_awb}}`) and FanCourier (`{{if_fancourier_awb}}...{{fancourier_awb}}...{{endif_fancourier_awb}}`).
 
+AWB SMS messages are **not sent automatically**. This is by design, because courier plugin implementations vary greatly between stores and have many customizations. Instead, for each supported courier, when an order has an AWB number attached to it, a **Send SMS** option appears in the **Order Actions** dropdown (top right of the admin order page). The admin can manually trigger the SMS from there. If needed, your store's developers can extend this feature to send AWB SMS automatically based on your store's specific business logic.
+
 ### Testing SMS
 
 At the bottom of the SMS page, you'll find a test form. Enter a phone number and a message, then click **Send Test SMS** to verify that everything works before going live.

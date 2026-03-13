@@ -213,6 +213,8 @@ Daca folositi unul dintre plugin-urile de curierat romanesti suportate (Cargus, 
 
 Acelasi tipar functioneaza pentru SameDay (`{{if_sameday_awb}}...{{sameday_awb}}...{{endif_sameday_awb}}`) si FanCourier (`{{if_fancourier_awb}}...{{fancourier_awb}}...{{endif_fancourier_awb}}`).
 
+Mesajele SMS cu AWB **nu se trimit automat**. Aceasta este prin design, deoarece implementarile plugin-urilor de curierat variaza foarte mult intre magazine si au multe personalizari. In schimb, pentru fiecare curier suportat, cand o comanda are un numar AWB atasat, o optiune **Send SMS** apare in dropdown-ul **Order Actions** (coltul din dreapta sus al paginii de administrare a comenzii). Administratorul poate declansa manual SMS-ul de acolo. Daca este necesar, dezvoltatorii magazinului pot extinde aceasta functionalitate pentru a trimite automat SMS-uri cu AWB in functie de logica de business specifica a magazinului.
+
 ### Testare SMS
 
 In partea de jos a paginii SMS, veti gasi un formular de test. Introduceti un numar de telefon si un mesaj, apoi faceti click pe **Send Test SMS** pentru a verifica ca totul functioneaza inainte de a activa.
