@@ -161,6 +161,7 @@ class Track {
 	 *
 	 * @return string|void
 	 * @throws \Exception Not implemented yet exception.
+	 * @deprecated since 3.7.0
 	 */
 	public function get_tracking_url() {
 		throw new \Exception( 'Not implemented' );
@@ -171,6 +172,7 @@ class Track {
 	 *
 	 * @return string
 	 * @throws \Exception Not implemented yet exception.
+	 * @deprecated since 3.7.0
 	 */
 	public function get_script_final_url() {
 		$url = '';
@@ -188,6 +190,7 @@ class Track {
 	 * It will be implemented in near future.
 	 *
 	 * @return string
+	 * @deprecated since 3.7.0
 	 */
 	public function get_resources_url() {
 		return '';

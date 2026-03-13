@@ -160,6 +160,11 @@ class Pool {
 			'class'            => '\Newsman\Export\Retriever\CustomSql',
 			'only_woocommerce' => false,
 		),
+		'refresh-remarketing'          => array(
+			'code'             => 'refresh-remarketing',
+			'class'            => '\Newsman\Export\Retriever\RefreshRemarketing',
+			'only_woocommerce' => false,
+		),
 	);
 
 	/**

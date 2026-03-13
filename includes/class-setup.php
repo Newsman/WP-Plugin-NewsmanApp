@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '8.0.0';
+	protected static $setup_version = '9.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -499,6 +499,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_eight_zero_zero();
 			update_option( 'newsman_setup_version', '8.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '9.0.0', '<' ) ) {
+			self::upgrade_options_nine_zero_zero();
+			update_option( 'newsman_setup_version', '9.0.0', true );
+		}
 	}
 
 	/**
@@ -654,6 +659,45 @@ jt/modal_{{api_key}}.js'
 			$service->execute( $context );
 
 			update_option( 'newsman_save_integration_run', gmdate( 'Y-m-d H:i:s' ), Config::AUTOLOAD_OPTIONS );
+		} catch ( \Exception $e ) {
+			$logger = Logger::init();
+			$logger->log_exception( $e );
+		}
+	}
+
+	/**
+	 * Version 9.0.0 — fetch a remarketing script from Newsman API and store it.
+	 *
+	 * Best-effort: failures are logged but never break the upgrade.
+	 * If it fails, the script will still be fetched when the user saves
+	 * settings, changes the list, or completes the OAuth flow.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_nine_zero_zero() {
+		try {
+			$user_id = get_option( 'newsman_userid' );
+			$api_key = get_option( 'newsman_apikey' );
+			$list_id = get_option( 'newsman_list' );
+
+			if ( empty( $user_id ) || empty( $api_key ) || empty( $list_id ) ) {
+				return;
+			}
+
+			$context = new \Newsman\Service\Context\Configuration\EmailList();
+			$context->set_user_id( $user_id )
+				->set_api_key( $api_key )
+				->set_list_id( $list_id );
+
+			$get_settings = new \Newsman\Service\Configuration\Remarketing\GetSettings();
+			$settings     = $get_settings->execute( $context );
+
+			if ( ! empty( $settings ) && is_array( $settings ) && ! empty( $settings['javascript'] ) ) {
+				$newsman_options = new \Newsman\Options();
+				$newsman_options->update_option( 'newsman_scriptjs', $settings['javascript'] );
+
+				update_option( 'newsman_save_remarketing_js_run', gmdate( 'Y-m-d H:i:s' ), Config::AUTOLOAD_OPTIONS );
+			}
 		} catch ( \Exception $e ) {
 			$logger = Logger::init();
 			$logger->log_exception( $e );

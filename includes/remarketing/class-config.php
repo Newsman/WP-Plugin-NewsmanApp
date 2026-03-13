@@ -394,10 +394,10 @@ class Config {
 
 	/**
 	 * Use proxy.
-	 * It will be implemented.
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return false
+	 * @deprecated since 3.7.0
 	 */
 	public function use_proxy( $blog_id = null ) {
 		$blog_id;

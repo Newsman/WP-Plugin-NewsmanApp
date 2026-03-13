@@ -128,6 +128,12 @@ class Settings extends \Newsman\Admin\Settings {
 						get_site_url() . '/?newsman_api=v1',
 						$authenticate_token
 					);
+
+					$settings = $this->get_remarketing_settings( $list_id, $new_userid, $new_apikey );
+					if ( ! empty( $settings ) && is_array( $settings ) && ! empty( $settings['javascript'] ) ) {
+						$newsman_options = new \Newsman\Options();
+						$newsman_options->update_option( 'newsman_scriptjs', $settings['javascript'] );
+					}
 				}
 			}
 

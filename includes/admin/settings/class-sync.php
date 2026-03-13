@@ -115,6 +115,12 @@ class Sync extends Settings {
 					update_option( 'newsman_list', $previous_list_id, Config::AUTOLOAD_OPTIONS );
 					$this->set_form_value( 'newsman_list', $previous_list_id );
 					$this->set_message_backend( 'error', esc_html__( 'Could not save integration setup. The list was not changed.', 'newsman' ) );
+				} else {
+					$settings = $this->get_remarketing_settings( $this->get_form_value( 'newsman_list' ) );
+					if ( ! empty( $settings ) && is_array( $settings ) && ! empty( $settings['javascript'] ) ) {
+						$newsman_options = new \Newsman\Options();
+						$newsman_options->update_option( 'newsman_scriptjs', $settings['javascript'] );
+					}
 				}
 			}
 

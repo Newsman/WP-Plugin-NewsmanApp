@@ -352,6 +352,7 @@ class Settings {
 				'api_url'                   => $api_url,
 				'api_key'                   => $api_key,
 				'plugin_version'            => defined( 'NEWSMAN_VERSION' ) ? NEWSMAN_VERSION : '',
+				// phpcs:ignore Squiz.PHP.CommentedOutCode.Found -- kept for reference.
 				// 'platform_name'             => 'WordPress',
 				'platform_version'          => get_bloginfo( 'version' ),
 				'platform_language'         => 'PHP',
@@ -527,6 +528,35 @@ class Settings {
 	 */
 	public function is_valid_credentials( $user_id = null, $api_key = null ) {
 		return ( false !== $this->retrieve_api_all_lists( $user_id, $api_key ) );
+	}
+
+	/**
+	 * API get remarketing settings
+	 *
+	 * @param string      $list_id List ID.
+	 * @param null|string $user_id User ID.
+	 * @param null|string $api_key API key.
+	 * @return array|false
+	 */
+	public function get_remarketing_settings( $list_id, $user_id = null, $api_key = null ) {
+		try {
+			if ( null === $user_id ) {
+				$user_id = $this->config->get_user_id();
+			}
+			if ( null === $api_key ) {
+				$api_key = $this->config->get_api_key();
+			}
+
+			$context = new \Newsman\Service\Context\Configuration\EmailList();
+			$context->set_user_id( $user_id )
+				->set_api_key( $api_key )
+				->set_list_id( $list_id );
+			$get_settings = new \Newsman\Service\Configuration\Remarketing\GetSettings();
+			return $get_settings->execute( $context );
+		} catch ( \Exception $e ) {
+			$this->logger->log_exception( $e );
+			return false;
+		}
 	}
 
 	/**
