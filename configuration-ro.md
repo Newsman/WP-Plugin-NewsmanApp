@@ -25,7 +25,11 @@ Inainte de a putea folosi orice functionalitate, trebuie sa conectati plugin-ul 
 
 1. Accesati **NewsMAN > OAuth** in panoul de administrare WordPress.
 2. Faceti click pe **Connect with Newsman**.
-3. Veti fi redirectionat catre site-ul Newsman. Autentificati-va daca este necesar si acordati acces.
+3. Veti fi redirectionat catre site-ul Newsman. Autentificati-va daca este necesar si acordati acces:
+
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/clienti.png)
+
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/comenzi_integrari.png)
 4. Veti fi redirectionat inapoi catre o pagina de administrare Newsman in WordPress, unde alegeti lista de email dintr-un dropdown. Selectati lista pe care doriti sa o folositi si faceti click pe **Save**.
 5. Asta e tot - API Key, User ID si Lista sunt toate configurate.
 
@@ -51,8 +55,11 @@ Daca trebuie sa reconectati plugin-ul la un alt cont Newsman, sau daca credentia
 Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
 
 ### Setari Generale
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/setari.png)
 
 - **Allow API access** - Activati aceasta optiune daca doriti ca Newsman sa poata prelua date (precum produse sau abonati) direct din magazinul dvs. Aceasta este necesara pentru functionalitati precum feed-urile de produse in newslettere. Lasati-o dezactivata daca nu aveti nevoie de ea.
+
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/cheie.png)
 
 - **Send User IP Address** - Cand un vizitator se aboneaza, plugin-ul poate trimite adresa IP a acestuia catre Newsman. Acest lucru poate ajuta la analiza si conformitate. Daca dezactivati aceasta optiune, plugin-ul va folosi in schimb **Server IP Address** pe care il introduceti mai jos.
 
@@ -61,6 +68,8 @@ Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
 - **Import Authorize Header Name / Key** - Aceasta este o optiune veche (legacy) pentru protejarea feed-ului de produse cu credentiale de securitate personalizate. Daca v-ati conectat prin OAuth, nu trebuie sa le setati - plugin-ul gestioneaza autentificarea automat. Trebuie sa le completati doar daca ati configurat conexiunea manual si doriti sa adaugati un nivel suplimentar de securitate la importurile de feed-uri de produse.
 
 ### Abonare la Newsletter
+
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/inscriere.png)
 
 - **Newsletter Opt-in type** - Alegeti cum sunt adaugati noii abonati:
   - **Opt-in** - Abonatul este adaugat imediat.
@@ -71,6 +80,8 @@ Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
 ### Optiuni Checkout (doar WooCommerce)
 
 Aceste setari adauga un checkbox de newsletter pe pagina de checkout a magazinului, astfel incat clientii se pot abona in timp ce plaseaza o comanda.
+
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/finalizare.png)
 
 - **Enable Newsletter Checkbox** - Activati pentru a afisa un checkbox "Aboneaza-te la newsletter" pe pagina de checkout.
 
