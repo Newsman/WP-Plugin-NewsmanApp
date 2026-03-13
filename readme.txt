@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.0 =
+* Add remarketing refresh endpoint
+* Run get remarketing JS after sending integration setup
 = 3.6.0 =
 * Hotfix for wp_rand in setup context when automatic installation is used
 = 3.5.0 =
