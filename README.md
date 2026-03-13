@@ -37,32 +37,8 @@ composer dump-autoload -o
 
 # Settings
 
-The initial setup is automated, you can login via OAuth with NewsMAN, follow the steps, installation will be ready in no time
-
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_oauth.png)
-
-# Newsman plugin settings
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_settings.png)
-
-# Import subscribers to NewsmanApp
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_sync.png)
-
-# SMS
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_sms.png)
-
-# NewsMAN Remarketing
-
-## You must be logged out of admin to be able to test Remarketing (forms, events).
-
-NewsmanApp plugin for Woocommerce allows you to track your shop customers.
-
-After the plugin is installed, you will also have: feed products, events (product impressions, AddToCart, purchase) automatically implemented. 
-
-## Remarketing Id
-
-Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those in your account section in NewsmanApp - https://www.newsman.com)
-
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/wp_remarketingId.png)
+- [Configuration Guide (English)](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/dev/configuration-en.md)
+- [Ghid de Configurare (Romana)](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/dev/configuration-ro.md)
 
 # Widget
 
