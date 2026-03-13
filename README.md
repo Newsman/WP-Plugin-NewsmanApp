@@ -37,8 +37,8 @@ composer dump-autoload -o
 
 # Settings
 
-- [Configuration Guide (English)](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/dev/configuration-en.md)
-- [Ghid de Configurare (Romana)](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/dev/configuration-ro.md)
+- [Configuration Guide (English)](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/master/configuration-en.md)
+- [Ghid de Configurare (Romana)](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/master/configuration-ro.md)
 
 # Widget
 
