@@ -27,9 +27,9 @@ Inainte de a putea folosi orice functionalitate, trebuie sa conectati plugin-ul 
 2. Faceti click pe **Connect with Newsman**.
 3. Veti fi redirectionat catre site-ul Newsman. Autentificati-va daca este necesar si acordati acces:
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/c739db50d6bd67396d9767f6046058403e576790/assets/clienti.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/clienti.png)
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/c739db50d6bd67396d9767f6046058403e576790/assets/comenzi_integrari.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/comenzi_integrari.png)
 4. Veti fi redirectionat inapoi catre o pagina de administrare Newsman in WordPress, unde alegeti lista de email dintr-un dropdown. Selectati lista pe care doriti sa o folositi si faceti click pe **Save**.
 5. Asta e tot - API Key, User ID si Lista sunt toate configurate.
 
@@ -55,11 +55,11 @@ Daca trebuie sa reconectati plugin-ul la un alt cont Newsman, sau daca credentia
 Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
 
 ### Setari Generale
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/d9991109249f0b63b680b162fa30775ca81e878b/assets/setari.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/setari.png)
 
 - **Allow API access** - Activati aceasta optiune daca doriti ca Newsman sa poata prelua date (precum produse sau abonati) direct din magazinul dvs. Aceasta este necesara pentru functionalitati precum feed-urile de produse in newslettere. Lasati-o dezactivata daca nu aveti nevoie de ea.
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/d9991109249f0b63b680b162fa30775ca81e878b/assets/cheie.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/cheie.png)
 
 - **Send User IP Address** - Cand un vizitator se aboneaza, plugin-ul poate trimite adresa IP a acestuia catre Newsman. Acest lucru poate ajuta la analiza si conformitate. Daca dezactivati aceasta optiune, plugin-ul va folosi in schimb **Server IP Address** pe care il introduceti mai jos.
 
@@ -69,7 +69,7 @@ Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
 
 ### Abonare la Newsletter
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/d9991109249f0b63b680b162fa30775ca81e878b/assets/inscriere.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/inscriere.png)
 
 - **Newsletter Opt-in type** - Alegeti cum sunt adaugati noii abonati:
   - **Opt-in** - Abonatul este adaugat imediat.
@@ -81,7 +81,7 @@ Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
 
 Aceste setari adauga un checkbox de newsletter pe pagina de checkout a magazinului, astfel incat clientii se pot abona in timp ce plaseaza o comanda.
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/d9991109249f0b63b680b162fa30775ca81e878b/assets/finalizare.png)
+![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/refs/heads/master/assets/finalizare.png)
 
 - **Enable Newsletter Checkbox** - Activati pentru a afisa un checkbox "Aboneaza-te la newsletter" pe pagina de checkout.
 
