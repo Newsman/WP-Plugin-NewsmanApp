@@ -91,6 +91,8 @@ class Admin {
 			return;
 		}
 
+		add_action( 'init', array( $this, 'setup_upgrade_remarketing_js' ) );
+
 		$exist = new \Newsman\Util\WooCommerceExist();
 		if ( $exist->exist() ) {
 			$this->init_scheduled_hooks();
@@ -101,6 +103,80 @@ class Admin {
 			$sms_awb_sameday->init_hooks();
 			$sms_awb_fancourier = new \Newsman\Admin\Action\Order\Sms\Awb\Fancourier();
 			$sms_awb_fancourier->init_hooks();
+		}
+	}
+
+	/**
+	 * Fetch remarketing JS from Newsman API if not already done.
+	 * Shows an admin notice per site with success or failure status.
+	 *
+	 * @return void
+	 */
+	public function setup_upgrade_remarketing_js() {
+		if ( ! empty( get_option( 'newsman_save_remarketing_js_run' ) ) ) {
+			return;
+		}
+
+		$results      = \Newsman\Setup::upgrade_remarketing_js();
+		$is_multisite = function_exists( 'is_multisite' ) && is_multisite();
+
+		foreach ( $results as $result ) {
+			$status  = $result['status'];
+			$blog_id = $result['blog_id'];
+
+			if ( $status ) {
+				add_action(
+					'admin_notices',
+					function () use ( $is_multisite, $blog_id ) {
+						if ( $is_multisite ) {
+							$blog_name = get_site( $blog_id )->blogname;
+							printf(
+								'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+								sprintf(
+									/* translators: 1: blog name, 2: blog ID */
+									esc_html__( 'Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d).', 'newsman' ),
+									esc_html( $blog_name ),
+									absint( $blog_id )
+								)
+							);
+						} else {
+							printf(
+								'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+								esc_html__( 'Newsman: Remarketing script updated successfully.', 'newsman' )
+							);
+						}
+					}
+				);
+			} else {
+				add_action(
+					'admin_notices',
+					function () use ( $is_multisite, $blog_id ) {
+						if ( $is_multisite ) {
+							$blog_name = get_site( $blog_id )->blogname;
+							$oauth_url = get_admin_url( $blog_id, 'admin.php?page=NewsmanOauth' );
+							printf(
+								'<div class="notice notice-error"><p>%s <a href="%s">%s</a></p></div>',
+								sprintf(
+									/* translators: 1: blog name, 2: blog ID */
+									esc_html__( 'Newsman: Failed to fetch the remarketing script for site %1$s (ID: %2$d).', 'newsman' ),
+									esc_html( $blog_name ),
+									absint( $blog_id )
+								),
+								esc_url( $oauth_url ),
+								esc_html__( 'Reconfigure with Newsman login', 'newsman' )
+							);
+						} else {
+							$oauth_url = admin_url( 'admin.php?page=NewsmanOauth' );
+							printf(
+								'<div class="notice notice-error"><p>%s <a href="%s">%s</a></p></div>',
+								esc_html__( 'Newsman: Failed to fetch the remarketing script.', 'newsman' ),
+								esc_url( $oauth_url ),
+								esc_html__( 'Reconfigure with Newsman login', 'newsman' )
+							);
+						}
+					}
+				);
+			}
 		}
 	}
 

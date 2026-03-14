@@ -79,8 +79,10 @@ class RefreshRemarketing extends AbstractRetriever implements RetrieverInterface
 			throw new ApiV1Exception( 9004, 'Newsman API returned empty remarketing script', 500 );
 		}
 
-		$newsman_options = new \Newsman\Options();
-		$newsman_options->update_option( 'newsman_scriptjs', $settings['javascript'] );
+		$newsman_options    = new \Newsman\Options();
+		$old_remarketing_js = $newsman_options->get_option( 'newsman_scriptjs' );
+		$new_remarketing_js = $settings['javascript'];
+		$newsman_options->update_option( 'newsman_scriptjs', $new_remarketing_js );
 
 		if ( $this->is_different_blog( $blog_id ) ) {
 			restore_current_blog();
@@ -93,8 +95,12 @@ class RefreshRemarketing extends AbstractRetriever implements RetrieverInterface
 				(int) $blog_id
 			)
 		);
-		$this->logger->warning( $settings['javascript'] );
+		$this->logger->warning( $new_remarketing_js );
 
-		return array( 'status' => 1 );
+		return array(
+			'status'             => 1,
+			'old_remarketing_js' => ! empty( $old_remarketing_js ) ? $old_remarketing_js : '',
+			'new_remarketing_js' => $new_remarketing_js,
+		);
 	}
 }

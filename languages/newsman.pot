@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the NewsmanApp for WordPress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp for WordPress 3.5.0\n"
+"Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-24T16:16:07+00:00\n"
+"POT-Creation-Date: 2026-03-14T08:20:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -54,7 +54,7 @@ msgid "All subscribers were scheduled for export."
 msgstr ""
 
 #: includes/admin/action/order/sms/awb/class-cargus.php:93
-#: src/backend-sms.php:264
+#: src/backend-sms.php:263
 msgid "Send SMS with Cargus AWB"
 msgstr ""
 
@@ -67,12 +67,12 @@ msgid "SMS with AWB (%1$s) sent to %2$s"
 msgstr ""
 
 #: includes/admin/action/order/sms/awb/class-fancourier.php:93
-#: src/backend-sms.php:318
+#: src/backend-sms.php:317
 msgid "Send SMS with FAN Courier AWB"
 msgstr ""
 
 #: includes/admin/action/order/sms/awb/class-sameday.php:93
-#: src/backend-sms.php:291
+#: src/backend-sms.php:290
 msgid "Send SMS with SamedayCourier AWB"
 msgstr ""
 
@@ -96,8 +96,8 @@ msgid "Unauthorized user"
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:109
-#: includes/admin/settings/class-settings.php:144
-#: includes/admin/settings/class-sync.php:157
+#: includes/admin/settings/class-settings.php:150
+#: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr ""
 
@@ -106,9 +106,9 @@ msgstr ""
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:148
-#: includes/admin/settings/class-settings.php:162
-#: includes/admin/settings/class-sync.php:161
+#: includes/admin/settings/class-settings.php:154
+#: includes/admin/settings/class-settings.php:168
+#: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr ""
 
@@ -149,76 +149,101 @@ msgstr ""
 msgid "Could not save integration setup. The list was not changed."
 msgstr ""
 
-#: includes/admin/settings/class-sync.php:149
-#: includes/admin/settings/class-sync.php:183
-#: includes/admin/settings/class-sync.php:193
+#: includes/admin/settings/class-sync.php:155
+#: includes/admin/settings/class-sync.php:189
+#: includes/admin/settings/class-sync.php:199
 msgid "Could not get the lists or the segments."
 msgstr ""
 
-#: includes/admin/settings/class-sync.php:230
+#: includes/admin/settings/class-sync.php:236
 msgid "Could not update feed list"
 msgstr ""
 
-#: includes/class-admin.php:117
-#: src/backend-oauth.php:24
-#: src/backend-remarketing.php:27
-#: src/backend-remarketing.php:32
-#: src/backend-settings.php:27
-#: src/backend-settings.php:32
-#: src/backend-sms.php:61
-#: src/backend-sms.php:66
-#: src/backend-sync.php:27
-#: src/backend-sync.php:32
-#: src/backend.php:19
-#: src/backend.php:24
-msgid "NewsMAN"
-msgstr ""
-
-#: includes/class-admin.php:126
-#: includes/class-admin.php:127
-#: src/backend-remarketing.php:34
-#: src/backend-settings.php:34
-#: src/backend-sms.php:68
-#: src/backend-sync.php:34
-#: src/backend.php:26
-#: src/backend.php:70
-msgid "Sync"
-msgstr ""
-
-#: includes/class-admin.php:135
-#: includes/class-admin.php:136
-#: src/backend-remarketing.php:36
-#: src/backend-settings.php:36
-#: src/backend-sms.php:70
-#: src/backend-sync.php:36
-#: src/backend.php:28
-#: src/backend.php:78
-msgid "Remarketing"
+#. translators: 1: blog name, 2: blog ID
+#: includes/class-admin.php:137
+#, php-format
+msgid "Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d)."
 msgstr ""
 
 #: includes/class-admin.php:145
-#: includes/class-admin.php:146
-#: src/backend-remarketing.php:39
-#: src/backend-settings.php:39
-#: src/backend-sms.php:73
-#: src/backend-sync.php:39
-#: src/backend.php:31
+msgid "Newsman: Remarketing script updated successfully."
+msgstr ""
+
+#. translators: 1: blog name, 2: blog ID
+#: includes/class-admin.php:161
+#, php-format
+msgid "Newsman: Failed to fetch the remarketing script for site %1$s (ID: %2$d)."
+msgstr ""
+
+#: includes/class-admin.php:166
+#: includes/class-admin.php:174
+msgid "Reconfigure with Newsman login"
+msgstr ""
+
+#: includes/class-admin.php:172
+msgid "Newsman: Failed to fetch the remarketing script."
+msgstr ""
+
+#: includes/class-admin.php:193
+#: src/backend-oauth.php:23
+#: src/backend-remarketing.php:26
+#: src/backend-remarketing.php:31
+#: src/backend-settings.php:26
+#: src/backend-settings.php:31
+#: src/backend-sms.php:60
+#: src/backend-sms.php:65
+#: src/backend-sync.php:26
+#: src/backend-sync.php:31
+#: src/backend.php:18
+#: src/backend.php:23
+msgid "NewsMAN"
+msgstr ""
+
+#: includes/class-admin.php:202
+#: includes/class-admin.php:203
+#: src/backend-remarketing.php:33
+#: src/backend-settings.php:33
+#: src/backend-sms.php:67
+#: src/backend-sync.php:33
+#: src/backend.php:25
+#: src/backend.php:75
+msgid "Sync"
+msgstr ""
+
+#: includes/class-admin.php:211
+#: includes/class-admin.php:212
+#: src/backend-remarketing.php:35
+#: src/backend-settings.php:35
+#: src/backend-sms.php:69
+#: src/backend-sync.php:35
+#: src/backend.php:27
+#: src/backend.php:83
+msgid "Remarketing"
+msgstr ""
+
+#: includes/class-admin.php:221
+#: includes/class-admin.php:222
+#: src/backend-remarketing.php:38
+#: src/backend-settings.php:38
+#: src/backend-sms.php:72
+#: src/backend-sync.php:38
+#: src/backend.php:30
 msgid "SMS"
 msgstr ""
 
-#: includes/class-admin.php:155
-#: includes/class-admin.php:156
-#: src/backend-remarketing.php:42
-#: src/backend-settings.php:42
-#: src/backend-sms.php:76
-#: src/backend-sync.php:42
-#: src/backend.php:34
-#: src/backend.php:96
+#: includes/class-admin.php:231
+#: includes/class-admin.php:232
+#: src/backend-remarketing.php:41
+#: src/backend-settings.php:41
+#: src/backend-sms.php:75
+#: src/backend-sync.php:41
+#: src/backend.php:33
+#: src/backend.php:101
 msgid "Settings"
 msgstr ""
 
-#: includes/class-admin.php:164
-#: includes/class-admin.php:165
+#: includes/class-admin.php:240
+#: includes/class-admin.php:241
 msgid "Oauth"
 msgstr ""
 
@@ -291,13 +316,13 @@ msgid "Invalid API key for blog ID %d"
 msgstr ""
 
 #. translators: 1: Input data
-#: includes/export/retriever/class-coupons.php:33
+#: includes/export/retriever/class-coupons.php:36
 #, php-format
 msgid "Add coupons: %s"
 msgstr ""
 
 #. translators: 1: Coupons count, 2: All coupons codes added
-#: includes/export/retriever/class-coupons.php:71
+#: includes/export/retriever/class-coupons.php:121
 #, php-format
 msgid "Added %1$d coupons %2$s"
 msgstr ""
@@ -368,30 +393,36 @@ msgstr ""
 
 #. translators: 1: Product ID, 2: WordPress blog ID
 #: includes/export/retriever/class-products.php:61
-#: includes/export/retriever/class-productsfeed.php:60
+#: includes/export/retriever/class-productsfeed.php:67
 #, php-format
 msgid "Export product %1$d, store ID %2$s"
 msgstr ""
 
 #. translators: 1: Product ID, 2: WordPress blog ID
 #: includes/export/retriever/class-products.php:78
-#: includes/export/retriever/class-productsfeed.php:77
+#: includes/export/retriever/class-productsfeed.php:85
 #, php-format
 msgid "Exported product %1$d, store ID %2$s"
 msgstr ""
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
 #: includes/export/retriever/class-products.php:94
-#: includes/export/retriever/class-productsfeed.php:94
+#: includes/export/retriever/class-productsfeed.php:102
 #, php-format
 msgid "Export products %1$d, %2$d, blog ID %3$s"
 msgstr ""
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
 #: includes/export/retriever/class-products.php:136
-#: includes/export/retriever/class-productsfeed.php:174
+#: includes/export/retriever/class-productsfeed.php:184
 #, php-format
 msgid "Exported products %1$d, %2$d, blog ID %3$s"
+msgstr ""
+
+#. translators: 1: Blog ID
+#: includes/export/retriever/class-refreshremarketing.php:92
+#, php-format
+msgid "refresh.remarketing: updated newsman_scriptjs, blog %1$d"
 msgstr ""
 
 #. translators: 1: Order ID, 2: WordPress blog ID
@@ -623,13 +654,13 @@ msgid "Updated the feed %s"
 msgstr ""
 
 #. translators: 1: list ID, 2: integration name
-#: includes/service/configuration/integration/class-savelistintegrationsetup.php:56
+#: includes/service/configuration/integration/class-savelistintegrationsetup.php:58
 #, php-format
 msgid "Saving list integration setup for list %1$s, integration %2$s"
 msgstr ""
 
 #. translators: 1: list ID, 2: integration name
-#: includes/service/configuration/integration/class-savelistintegrationsetup.php:82
+#: includes/service/configuration/integration/class-savelistintegrationsetup.php:84
 #, php-format
 msgid "Saved list integration setup for list %1$s, integration %2$s"
 msgstr ""
@@ -718,613 +749,617 @@ msgstr ""
 msgid "Unsubscribed telephone %s"
 msgstr ""
 
-#: src/backend-oauth.php:36
-#: src/backend-settings.php:93
-#: src/backend.php:59
+#: src/backend-oauth.php:35
+#: src/backend-settings.php:92
+#: src/backend.php:64
 msgid "Site "
 msgstr ""
 
-#: src/backend-oauth.php:39
+#: src/backend-oauth.php:38
 msgid "NewsMAN plugin for Wordpress-Woocommerce"
 msgstr ""
 
-#: src/backend-oauth.php:48
+#: src/backend-oauth.php:47
 msgid "Connect your site with NewsMAN for:"
 msgstr ""
 
-#: src/backend-oauth.php:53
+#: src/backend-oauth.php:52
 msgid "Subscribers Sync"
 msgstr ""
 
-#: src/backend-oauth.php:58
+#: src/backend-oauth.php:57
 msgid "Ecommerce Remarketing"
 msgstr ""
 
-#: src/backend-oauth.php:63
+#: src/backend-oauth.php:62
 msgid "Create and manage forms"
 msgstr ""
 
-#: src/backend-oauth.php:68
+#: src/backend-oauth.php:67
 msgid "Create and manage popups"
 msgstr ""
 
-#: src/backend-oauth.php:73
+#: src/backend-oauth.php:72
 msgid "Connect your forms to automation"
 msgstr ""
 
-#: src/backend-oauth.php:79
+#: src/backend-oauth.php:78
 msgid "Login with NewsMAN"
 msgstr ""
 
-#: src/backend-oauth.php:81
-#: src/backend-oauth.php:112
+#: src/backend-oauth.php:80
+#: src/backend-oauth.php:111
 msgid "Cancel"
 msgstr ""
 
-#: src/backend-oauth.php:93
+#: src/backend-oauth.php:92
 msgid "Select list:"
 msgstr ""
 
-#: src/backend-oauth.php:95
-#: src/backend-sms.php:123
-#: src/backend-sync.php:64
-#: src/backend-sync.php:105
+#: src/backend-oauth.php:94
+#: src/backend-sms.php:122
+#: src/backend-sync.php:63
+#: src/backend-sync.php:104
 msgid "-- select list --"
 msgstr ""
 
-#: src/backend-oauth.php:110
+#: src/backend-oauth.php:109
 msgid "Save"
 msgstr ""
 
-#: src/backend-remarketing.php:63
-#: src/backend-settings.php:305
-#: src/backend-sms.php:268
-#: src/backend-sms.php:295
-#: src/backend-sms.php:322
+#: src/backend-remarketing.php:62
+#: src/backend-settings.php:304
+#: src/backend-sms.php:267
+#: src/backend-sms.php:294
+#: src/backend-sms.php:321
 msgid "Enable"
 msgstr ""
 
-#: src/backend-remarketing.php:72
+#: src/backend-remarketing.php:71
 msgid "REMARKETING ID"
 msgstr ""
 
-#: src/backend-remarketing.php:76
+#: src/backend-remarketing.php:75
 msgid "Your NewsMAN Remarketing ID"
 msgstr ""
 
-#: src/backend-remarketing.php:81
+#: src/backend-remarketing.php:80
 msgid "Anonymize IP"
 msgstr ""
 
-#: src/backend-remarketing.php:86
+#: src/backend-remarketing.php:85
 msgid "Anonymize User IP Address"
 msgstr ""
 
-#: src/backend-remarketing.php:92
+#: src/backend-remarketing.php:91
 msgid "Send telephone numbers"
 msgstr ""
 
-#: src/backend-remarketing.php:97
+#: src/backend-remarketing.php:96
 msgid "Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders."
 msgstr ""
 
-#: src/backend-remarketing.php:103
+#: src/backend-remarketing.php:102
 msgid "Export WordPress Subscribers"
 msgstr ""
 
-#: src/backend-remarketing.php:108
+#: src/backend-remarketing.php:107
 msgid "Optional. Include WordPress users with the subscriber role when syncing subscribers."
 msgstr ""
 
-#: src/backend-remarketing.php:113
+#: src/backend-remarketing.php:112
 msgid "Export WooCommerce Buyers as Subscribers"
 msgstr ""
 
-#: src/backend-remarketing.php:118
+#: src/backend-remarketing.php:117
 msgid "Optional. Include buyers from completed orders when syncing subscribers."
 msgstr ""
 
-#: src/backend-remarketing.php:124
+#: src/backend-remarketing.php:123
 msgid "Export Orders on Status Change"
 msgstr ""
 
-#: src/backend-remarketing.php:143
+#: src/backend-remarketing.php:142
 msgid "Select order statuses. On each selected order status change, the order details will be sent to NewsMAN."
 msgstr ""
 
-#: src/backend-remarketing.php:149
+#: src/backend-remarketing.php:148
 msgid "Export Additional Product Attributes"
 msgstr ""
 
-#: src/backend-remarketing.php:169
+#: src/backend-remarketing.php:168
 msgid "Select multiple product attributes to include in your product feed."
 msgstr ""
 
-#: src/backend-remarketing.php:175
+#: src/backend-remarketing.php:174
 msgid "Customer Attributes"
 msgstr ""
 
-#: src/backend-remarketing.php:191
+#: src/backend-remarketing.php:190
 msgid "Select which customer attributes (from orders) to include in your remarketing data."
 msgstr ""
 
-#: src/backend-remarketing.php:197
-#: src/backend-settings.php:485
-#: src/backend-sms.php:392
-#: src/backend-sync.php:121
+#: src/backend-remarketing.php:196
+#: src/backend-settings.php:484
+#: src/backend-sms.php:391
+#: src/backend-sync.php:120
 msgid "Save Changes"
 msgstr ""
 
-#: src/backend-settings.php:54
+#: src/backend-settings.php:53
 msgid "NewsMAN Connection"
 msgstr ""
 
-#: src/backend-settings.php:58
+#: src/backend-settings.php:57
 msgid "API KEY"
 msgstr ""
 
-#: src/backend-settings.php:67
+#: src/backend-settings.php:66
 msgid "User ID"
 msgstr ""
 
-#: src/backend-settings.php:76
-#: src/backend-sms.php:97
-#: src/backend.php:42
+#: src/backend-settings.php:75
+#: src/backend-sms.php:96
+#: src/backend.php:41
 msgid "Credentials Status"
 msgstr ""
 
-#: src/backend-settings.php:80
-#: src/backend-sms.php:101
-#: src/backend.php:46
+#: src/backend-settings.php:79
+#: src/backend-sms.php:100
+#: src/backend.php:45
 msgid "Valid"
 msgstr ""
 
-#: src/backend-settings.php:80
-#: src/backend-sms.php:101
-#: src/backend.php:46
+#: src/backend-settings.php:79
+#: src/backend-sms.php:100
+#: src/backend.php:45
 msgid "Invalid"
 msgstr ""
 
-#: src/backend-settings.php:89
-#: src/backend.php:55
+#: src/backend-settings.php:88
+#: src/backend.php:60
 msgid "Reconfigure with Newsman Oauth ?"
 msgstr ""
 
-#: src/backend-settings.php:90
-#: src/backend.php:56
+#: src/backend-settings.php:89
+#: src/backend.php:61
 msgid "Reconfigure with Newsman Oauth"
 msgstr ""
 
-#: src/backend-settings.php:102
+#: src/backend-settings.php:101
 msgid "Allow API access"
 msgstr ""
 
-#: src/backend-settings.php:111
+#: src/backend-settings.php:110
 msgid "Send User IP Address"
 msgstr ""
 
-#: src/backend-settings.php:120
+#: src/backend-settings.php:119
 msgid "Server IP Address"
 msgstr ""
 
-#: src/backend-settings.php:126
+#: src/backend-settings.php:125
 msgid "Please set the public IP address of the server if the user IP address is not sent. NewsMAN subscribe to newsletter requires an IP address."
 msgstr ""
 
-#: src/backend-settings.php:131
+#: src/backend-settings.php:130
 msgid "Import Authorize Header Name"
 msgstr ""
 
-#: src/backend-settings.php:136
+#: src/backend-settings.php:135
 msgid "HTTP Header Authorization Name. Please set only alphanumeric characters and minus character."
 msgstr ""
 
 #. translators: 1: Link to NewsMAN
-#: src/backend-settings.php:141
-#: src/backend-settings.php:168
+#: src/backend-settings.php:140
+#: src/backend-settings.php:167
 #, php-format
 msgid "Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization."
 msgstr ""
 
-#: src/backend-settings.php:152
-#: src/backend-settings.php:179
+#: src/backend-settings.php:151
+#: src/backend-settings.php:178
 msgid "NewsMAN will be able to import product feeds securely."
 msgstr ""
 
-#: src/backend-settings.php:158
+#: src/backend-settings.php:157
 msgid "Import Authorize Header Key"
 msgstr ""
 
-#: src/backend-settings.php:163
+#: src/backend-settings.php:162
 msgid "HTTP Header Authorization Key. Please set only alphanumeric characters and minus character."
 msgstr ""
 
-#: src/backend-settings.php:188
+#: src/backend-settings.php:187
 msgid "Newsletter Opt-in type"
 msgstr ""
 
-#: src/backend-settings.php:193
+#: src/backend-settings.php:192
 msgid "Opt-in"
 msgstr ""
 
-#: src/backend-settings.php:196
+#: src/backend-settings.php:195
 msgid "Double Opt-in"
 msgstr ""
 
-#: src/backend-settings.php:199
+#: src/backend-settings.php:198
 msgid "Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions."
 msgstr ""
 
-#: src/backend-settings.php:204
+#: src/backend-settings.php:203
 msgid "Confirmation email Form ID."
 msgstr ""
 
-#: src/backend-settings.php:210
+#: src/backend-settings.php:209
 msgid "Form ID used for the confirmation email / form settings."
 msgstr ""
 
-#: src/backend-settings.php:214
+#: src/backend-settings.php:213
 msgid "Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/manager\">newsman.app</a> &gt; Forms."
 msgstr ""
 
-#: src/backend-settings.php:230
+#: src/backend-settings.php:229
 msgid "Checkout Subscribe to Newsletter and SMS"
 msgstr ""
 
-#: src/backend-settings.php:234
+#: src/backend-settings.php:233
 msgid "Enable Newsletter Checkbox"
 msgstr ""
 
-#: src/backend-settings.php:239
+#: src/backend-settings.php:238
 msgid "Enable checkbox to subscribe to newsletter in checkout."
 msgstr ""
 
-#: src/backend-settings.php:244
+#: src/backend-settings.php:243
 msgid "Newsletter Checkbox Label"
 msgstr ""
 
-#: src/backend-settings.php:254
+#: src/backend-settings.php:253
 msgid "Is newsletter checkbox checked by default ?"
 msgstr ""
 
-#: src/backend-settings.php:263
+#: src/backend-settings.php:262
 msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr ""
 
-#: src/backend-settings.php:268
+#: src/backend-settings.php:267
 msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
 msgstr ""
 
-#: src/backend-settings.php:273
+#: src/backend-settings.php:272
 msgid "Enable Order Status Checkbox"
 msgstr ""
 
-#: src/backend-settings.php:278
+#: src/backend-settings.php:277
 msgid "Enable checkbox to send SMS about order status in checkout."
 msgstr ""
 
-#: src/backend-settings.php:283
+#: src/backend-settings.php:282
 msgid "Order Status Checkbox Label"
 msgstr ""
 
-#: src/backend-settings.php:293
+#: src/backend-settings.php:292
 msgid "Is order status checkbox checked by default ?"
 msgstr ""
 
-#: src/backend-settings.php:301
+#: src/backend-settings.php:300
 msgid "My Account Subscribe to Newsletter"
 msgstr ""
 
-#: src/backend-settings.php:310
+#: src/backend-settings.php:309
 msgid "Enable page and checkbox to subscribe to newsletter in customers account."
 msgstr ""
 
-#: src/backend-settings.php:315
+#: src/backend-settings.php:314
 msgid "Page Menu Label"
 msgstr ""
 
-#: src/backend-settings.php:321
+#: src/backend-settings.php:320
 msgid "The label on the link on the left side menu in customer account."
 msgstr ""
 
-#: src/backend-settings.php:326
+#: src/backend-settings.php:325
 msgid "Page Title"
 msgstr ""
 
-#: src/backend-settings.php:332
+#: src/backend-settings.php:331
 msgid "The title of subscribe to newsletter page in customer account."
 msgstr ""
 
-#: src/backend-settings.php:337
+#: src/backend-settings.php:336
 msgid "Checkbox Label"
 msgstr ""
 
-#: src/backend-settings.php:343
+#: src/backend-settings.php:342
 msgid "The label on subscribe to newsletter checkbox in customer account."
 msgstr ""
 
-#: src/backend-settings.php:352
+#: src/backend-settings.php:351
 msgid "Logging level"
 msgstr ""
 
-#: src/backend-settings.php:361
+#: src/backend-settings.php:360
 msgid "No Logging"
 msgstr ""
 
-#: src/backend-settings.php:408
+#: src/backend-settings.php:407
 msgid "API Timeout"
 msgstr ""
 
-#: src/backend-settings.php:420
+#: src/backend-settings.php:419
 msgid "Enable Test User IP"
 msgstr ""
 
-#: src/backend-settings.php:425
+#: src/backend-settings.php:424
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr ""
 
-#: src/backend-settings.php:430
+#: src/backend-settings.php:429
 msgid "Test User IP address"
 msgstr ""
 
-#: src/backend-settings.php:441
+#: src/backend-settings.php:440
 msgid "Plugin Loaded Priority"
 msgstr ""
 
-#: src/backend-settings.php:447
+#: src/backend-settings.php:446
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr ""
 
-#: src/backend-settings.php:453
+#: src/backend-settings.php:452
 msgid "Use Action Scheduler"
 msgstr ""
 
-#: src/backend-settings.php:458
+#: src/backend-settings.php:457
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 
-#: src/backend-settings.php:463
+#: src/backend-settings.php:462
 msgid "Use Action Scheduler for Subscribe"
 msgstr ""
 
-#: src/backend-settings.php:468
+#: src/backend-settings.php:467
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr ""
 
-#: src/backend-settings.php:473
+#: src/backend-settings.php:472
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr ""
 
-#: src/backend-settings.php:478
+#: src/backend-settings.php:477
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
 
-#: src/backend-sms.php:104
+#: src/backend-sms.php:103
 msgid "Please configure the credentials in Settings tab."
 msgstr ""
 
-#: src/backend-sms.php:110
+#: src/backend-sms.php:109
 msgid "Use SMS"
 msgstr ""
 
-#: src/backend-sms.php:118
+#: src/backend-sms.php:117
 msgid "Select SMS List"
 msgstr ""
 
-#: src/backend-sms.php:132
+#: src/backend-sms.php:131
 msgid "Please save a SMS list to start sending SMS."
 msgstr ""
 
-#: src/backend-sms.php:135
+#: src/backend-sms.php:134
 msgid "The SMS lists dropdown is displayed when Use SMS is enabled."
 msgstr ""
 
-#: src/backend-sms.php:141
+#: src/backend-sms.php:140
 msgid "SMS Message"
 msgstr ""
 
-#: src/backend-sms.php:144
+#: src/backend-sms.php:143
 msgid "Order Status"
 msgstr ""
 
-#: src/backend-sms.php:147
+#: src/backend-sms.php:146
 msgid "Message / Variables"
 msgstr ""
 
-#: src/backend-sms.php:153
+#: src/backend-sms.php:152
 msgid "Pending"
 msgstr ""
 
-#: src/backend-sms.php:153
-#: src/backend-sms.php:169
-#: src/backend-sms.php:185
-#: src/backend-sms.php:201
-#: src/backend-sms.php:217
-#: src/backend-sms.php:233
-#: src/backend-sms.php:249
+#: src/backend-sms.php:152
+#: src/backend-sms.php:168
+#: src/backend-sms.php:184
+#: src/backend-sms.php:200
+#: src/backend-sms.php:216
+#: src/backend-sms.php:232
+#: src/backend-sms.php:248
 msgid "Active"
 msgstr ""
 
-#: src/backend-sms.php:157
-#: src/backend-sms.php:173
-#: src/backend-sms.php:189
-#: src/backend-sms.php:205
-#: src/backend-sms.php:221
-#: src/backend-sms.php:237
-#: src/backend-sms.php:253
-#: src/backend-sms.php:277
-#: src/backend-sms.php:304
-#: src/backend-sms.php:331
+#: src/backend-sms.php:156
+#: src/backend-sms.php:172
+#: src/backend-sms.php:188
+#: src/backend-sms.php:204
+#: src/backend-sms.php:220
+#: src/backend-sms.php:236
+#: src/backend-sms.php:252
+#: src/backend-sms.php:276
+#: src/backend-sms.php:303
+#: src/backend-sms.php:330
 msgid "Message"
 msgstr ""
 
-#: src/backend-sms.php:159
-#: src/backend-sms.php:175
-#: src/backend-sms.php:191
-#: src/backend-sms.php:207
-#: src/backend-sms.php:223
-#: src/backend-sms.php:239
-#: src/backend-sms.php:255
-#: src/backend-sms.php:281
-#: src/backend-sms.php:308
-#: src/backend-sms.php:335
+#: src/backend-sms.php:158
+#: src/backend-sms.php:174
+#: src/backend-sms.php:190
+#: src/backend-sms.php:206
+#: src/backend-sms.php:222
+#: src/backend-sms.php:238
+#: src/backend-sms.php:254
+#: src/backend-sms.php:280
+#: src/backend-sms.php:307
+#: src/backend-sms.php:334
 msgid "Variables"
 msgstr ""
 
-#: src/backend-sms.php:169
+#: src/backend-sms.php:168
 msgid "Failed"
 msgstr ""
 
-#: src/backend-sms.php:185
+#: src/backend-sms.php:184
 msgid "On Hold"
 msgstr ""
 
-#: src/backend-sms.php:201
+#: src/backend-sms.php:200
 msgid "Processing"
 msgstr ""
 
-#: src/backend-sms.php:217
+#: src/backend-sms.php:216
 msgid "Completed"
 msgstr ""
 
-#: src/backend-sms.php:233
+#: src/backend-sms.php:232
 msgid "Refunded"
 msgstr ""
 
-#: src/backend-sms.php:249
+#: src/backend-sms.php:248
 msgid "Canceled"
 msgstr ""
 
-#: src/backend-sms.php:264
+#: src/backend-sms.php:263
 msgid "(from official Cargus plugin)"
 msgstr ""
 
-#: src/backend-sms.php:272
+#: src/backend-sms.php:271
 msgid "Send SMS with Cargus AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a Cargus AWB."
 msgstr ""
 
-#: src/backend-sms.php:291
+#: src/backend-sms.php:290
 msgid "(from official SamedayCourier plugin)"
 msgstr ""
 
-#: src/backend-sms.php:299
+#: src/backend-sms.php:298
 msgid "Send SMS with SamedayCourier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a SamedayCourier AWB."
 msgstr ""
 
-#: src/backend-sms.php:318
+#: src/backend-sms.php:317
 msgid "(from official FAN Courier plugin)"
 msgstr ""
 
-#: src/backend-sms.php:326
+#: src/backend-sms.php:325
 msgid "Send SMS with FAN Courier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a FAN Courier AWB."
 msgstr ""
 
-#: src/backend-sms.php:344
+#: src/backend-sms.php:343
 msgid "SMS production debug"
 msgstr ""
 
-#: src/backend-sms.php:348
+#: src/backend-sms.php:347
 msgid "Activate test mode"
 msgstr ""
 
-#: src/backend-sms.php:352
+#: src/backend-sms.php:351
 msgid "The message will be sent to your specified phone and not to customer phone. SMS are sent on order status changes."
 msgstr ""
 
-#: src/backend-sms.php:357
+#: src/backend-sms.php:356
 msgid "Phone for tests"
 msgstr ""
 
-#: src/backend-sms.php:360
-#: src/backend-sms.php:371
+#: src/backend-sms.php:359
+#: src/backend-sms.php:370
 msgid "Ex:"
 msgstr ""
 
-#: src/backend-sms.php:364
+#: src/backend-sms.php:363
 msgid "SMS send test"
 msgstr ""
 
-#: src/backend-sms.php:368
+#: src/backend-sms.php:367
 msgid "Phone"
 msgstr ""
 
-#: src/backend-sms.php:376
+#: src/backend-sms.php:375
 msgid "Test message"
 msgstr ""
 
-#: src/backend-sms.php:384
-#: src/backend-sms.php:387
+#: src/backend-sms.php:383
+#: src/backend-sms.php:386
 msgid "Send now"
 msgstr ""
 
-#: src/backend-sync.php:60
+#: src/backend-sync.php:59
 msgid "Select a list"
 msgstr ""
 
-#: src/backend-sync.php:75
+#: src/backend-sync.php:74
 msgid "Select a list of subscribers."
 msgstr ""
 
-#: src/backend-sync.php:80
+#: src/backend-sync.php:79
 msgid "Select a segment"
 msgstr ""
 
-#: src/backend-sync.php:84
+#: src/backend-sync.php:83
 msgid "-- select segment (optional) --"
 msgstr ""
 
-#: src/backend-sync.php:95
+#: src/backend-sync.php:94
 msgid "Select a segment of subscribers."
 msgstr ""
 
-#: src/backend-sync.php:95
+#: src/backend-sync.php:94
 msgid "The dropdown has the updated segments as options after the new list was saved."
 msgstr ""
 
-#: src/backend-sync.php:101
+#: src/backend-sync.php:100
 msgid "Select an SMS list"
 msgstr ""
 
-#: src/backend-sync.php:116
+#: src/backend-sync.php:115
 msgid "Select a list of SMS to be synced with phone numbers"
 msgstr ""
 
-#: src/backend.php:38
+#: src/backend.php:37
 msgid "NewsMAN Info"
 msgstr ""
 
-#: src/backend.php:65
+#: src/backend.php:51
+msgid "Newsman Plugin Version"
+msgstr ""
+
+#: src/backend.php:70
 msgid "Menus"
 msgstr ""
 
-#: src/backend.php:73
+#: src/backend.php:78
 msgid "You will be able to sync your shop customers and newsletter subscribers with NewsMAN list / segments"
 msgstr ""
 
-#: src/backend.php:81
+#: src/backend.php:86
 msgid "Provide a valuable experience to your customer by automating communication with them. Create automatic email flows based on their actions on the site, such as product viewed, added to cart, completed order etc."
 msgstr ""
 
-#: src/backend.php:90
+#: src/backend.php:95
 msgid "SMS (short messages) is one of the most effective ways to get users’ attention. Create and manage campaigns or send transactional SMS directly from NewsMAN platform."
 msgstr ""
 
-#: src/backend.php:99
+#: src/backend.php:104
 msgid "In the settings page enter your API Key and User id provided by NewsMAN."
 msgstr ""
 
-#: src/backend.php:100
+#: src/backend.php:105
 msgid "After entering and saving valid credentials you will be able to select a list to which subscribers will be added"
 msgstr ""
 
-#: src/backend.php:105
+#: src/backend.php:110
 msgid "Widget"
 msgstr ""
 
-#: src/backend.php:108
+#: src/backend.php:113
 msgid "Transform your website visitors into subscribers and customers. Generate easy to integrate pop-ups, embedded signup forms and web layers to convert more."
 msgstr ""
 
-#: src/backend.php:109
+#: src/backend.php:114
 msgid "Log in to your NewsMAN account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget"
 msgstr ""

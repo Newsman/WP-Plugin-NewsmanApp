@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '9.0.0';
+	protected static $setup_version = '8.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -499,11 +499,6 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_eight_zero_zero();
 			update_option( 'newsman_setup_version', '8.0.0', true );
 		}
-
-		if ( version_compare( self::$current_version, '9.0.0', '<' ) ) {
-			self::upgrade_options_nine_zero_zero();
-			update_option( 'newsman_setup_version', '9.0.0', true );
-		}
 	}
 
 	/**
@@ -666,22 +661,51 @@ jt/modal_{{api_key}}.js'
 	}
 
 	/**
-	 * Version 9.0.0 — fetch a remarketing script from Newsman API and store it.
+	 * Fetch a remarketing script from Newsman API and store it.
 	 *
-	 * Best-effort: failures are logged but never break the upgrade.
-	 * If it fails, the script will still be fetched when the user saves
-	 * settings, changes the list, or completes the OAuth flow.
+	 * Called from admin on every page load until it succeeds.
+	 * On failure an admin notice is displayed so the user can reconfigure.
 	 *
-	 * @return void
+	 * @return array[] Array of results, each with 'status' (bool) and 'blog_id' (int).
 	 */
-	protected static function upgrade_options_nine_zero_zero() {
+	public static function upgrade_remarketing_js() {
+		$results = array();
+
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+			$sites = get_sites();
+			foreach ( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				$results[] = array(
+					'status'  => self::do_upgrade_remarketing_js(),
+					'blog_id' => (int) $site->blog_id,
+				);
+				restore_current_blog();
+			}
+
+			return $results;
+		}
+
+		$results[] = array(
+			'status'  => self::do_upgrade_remarketing_js(),
+			'blog_id' => get_current_blog_id(),
+		);
+
+		return $results;
+	}
+
+	/**
+	 * Perform the actual remarketing JS fetch for a single site.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	protected static function do_upgrade_remarketing_js() {
 		try {
 			$user_id = get_option( 'newsman_userid' );
 			$api_key = get_option( 'newsman_apikey' );
 			$list_id = get_option( 'newsman_list' );
 
 			if ( empty( $user_id ) || empty( $api_key ) || empty( $list_id ) ) {
-				return;
+				return true;
 			}
 
 			$context = new \Newsman\Service\Context\Configuration\EmailList();
@@ -698,9 +722,13 @@ jt/modal_{{api_key}}.js'
 
 				update_option( 'newsman_save_remarketing_js_run', gmdate( 'Y-m-d H:i:s' ), Config::AUTOLOAD_OPTIONS );
 			}
+
+			return true;
 		} catch ( \Exception $e ) {
 			$logger = Logger::init();
 			$logger->log_exception( $e );
+
+			return false;
 		}
 	}
 
