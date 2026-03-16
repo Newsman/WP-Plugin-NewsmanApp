@@ -705,6 +705,7 @@ jt/modal_{{api_key}}.js'
 			$list_id = get_option( 'newsman_list' );
 
 			if ( empty( $user_id ) || empty( $api_key ) || empty( $list_id ) ) {
+				update_option( 'newsman_save_remarketing_js_run', gmdate( 'Y-m-d H:i:s' ), Config::AUTOLOAD_OPTIONS );
 				return true;
 			}
 
