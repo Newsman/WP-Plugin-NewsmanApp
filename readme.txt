@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.1 =
+* Fix upgrade remarketing JS flag not set for sites without API key
+
 = 3.7.0 =
 * Add remarketing refresh endpoint
 * Run get remarketing JS after sending integration setup
