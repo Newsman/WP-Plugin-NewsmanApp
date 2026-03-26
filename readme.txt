@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.2 =
+* Add API v1 error 1011 - reject requests when plugin is not active or not configured
+
 = 3.7.1 =
 * Fix upgrade remarketing JS flag not set for sites without API key
 

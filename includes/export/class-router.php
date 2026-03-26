@@ -173,6 +173,11 @@ class Router {
 				$blog_id = (int) $data['blog_id'];
 			}
 
+			$config = new \Newsman\Config();
+			if ( ! $config->is_enabled_with_api( $blog_id ) ) {
+				throw new \Newsman\Export\V1\ApiV1Exception( 1011, 'API not available', 403 );
+			}
+
 			// Inject API key so the Processor authenticator can validate it.
 			if ( ! empty( $api_key ) ) {
 				$data[ \Newsman\Export\Retriever\Authenticator::API_KEY_PARAM ] = $api_key;
