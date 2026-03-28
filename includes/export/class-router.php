@@ -93,8 +93,21 @@ class Router {
 		try {
 			$parameters = $export_request->get_request_parameters();
 			$processor  = new \Newsman\Export\Retriever\Processor();
-			$result     = $processor->process(
-				$processor->get_code_by_data( $parameters ),
+			$code       = $processor->get_code_by_data( $parameters );
+
+			// Block legacy access for endpoints available in API v1.
+			if ( false !== $code && in_array( $code, \Newsman\Export\V1\PayloadParser::get_method_map(), true ) ) {
+				$page = new \Newsman\Page\Renderer();
+				$page->display_json(
+					array(
+						'error' => 'This endpoint is only available via API v1 (JSON POST).',
+					)
+				);
+				return;
+			}
+
+			$result = $processor->process(
+				$code,
 				get_current_blog_id(),
 				$parameters
 			);
