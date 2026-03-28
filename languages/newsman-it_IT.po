@@ -1,0 +1,1475 @@
+# Italian translation for NewsmanApp for WordPress plugin.
+# Copyright (C) 2026 Newsman
+# This file is distributed under the same license as the NewsmanApp for WordPress plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
+"POT-Creation-Date: 2026-03-14T08:20:52+00:00\n"
+"PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
+"Last-Translator: NewsMAN <contact@newsman.com>\n"
+"Language-Team: NewsMAN <contact@newsman.com>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: newsman\n"
+
+#. Plugin Name of the plugin
+#: newsmanapp.php
+msgid "NewsmanApp for WordPress"
+msgstr "NewsmanApp per WordPress"
+
+#. Plugin URI of the plugin
+#: newsmanapp.php
+msgid "https://github.com/Newsman/WP-Plugin-NewsmanApp"
+msgstr "https://github.com/Newsman/WP-Plugin-NewsmanApp"
+
+#. Description of the plugin
+#: newsmanapp.php
+msgid "NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)"
+msgstr ""
+"NewsmanApp per WordPress (widget di iscrizione, sincronizzazione abbonati, "
+"creazione e invio di newsletter dagli articoli del blog)"
+
+#. Author of the plugin
+#: newsmanapp.php
+msgid "Newsman"
+msgstr "Newsman"
+
+#. Author URI of the plugin
+#: newsmanapp.php
+msgid "https://www.newsman.com"
+msgstr "https://www.newsman.com"
+
+#. translators: 1: After date export orders
+#: includes/admin/action/export/class-orders.php:89
+#, php-format
+msgid "All orders after date %s were scheduled for export."
+msgstr "Tutti gli ordini dopo la data %s sono stati programmati per l'esportazione."
+
+#: includes/admin/action/export/class-subscribersorders.php:87
+msgid "All buyers from complete orders were scheduled for export."
+msgstr ""
+"Tutti gli acquirenti degli ordini completati sono stati programmati per "
+"l'esportazione."
+
+#: includes/admin/action/export/class-wordpresssubscribers.php:87
+msgid "All subscribers were scheduled for export."
+msgstr "Tutti gli abbonati sono stati programmati per l'esportazione."
+
+#: includes/admin/action/order/sms/awb/class-cargus.php:93
+#: src/backend-sms.php:263
+msgid "Send SMS with Cargus AWB"
+msgstr "Invia SMS con Cargus AWB"
+
+#. translators: 1: AWB, 2: Phone number
+#: includes/admin/action/order/sms/awb/class-cargus.php:115
+#: includes/admin/action/order/sms/awb/class-fancourier.php:115
+#: includes/admin/action/order/sms/awb/class-sameday.php:115
+#, php-format
+msgid "SMS with AWB (%1$s) sent to %2$s"
+msgstr "SMS con AWB (%1$s) inviato a %2$s"
+
+#: includes/admin/action/order/sms/awb/class-fancourier.php:93
+#: src/backend-sms.php:317
+msgid "Send SMS with FAN Courier AWB"
+msgstr "Invia SMS con FAN Courier AWB"
+
+#: includes/admin/action/order/sms/awb/class-sameday.php:93
+#: src/backend-sms.php:290
+msgid "Send SMS with SamedayCourier AWB"
+msgstr "Invia SMS con SamedayCourier AWB"
+
+#: includes/admin/settings/class-oauth.php:110
+msgid "Access is denied"
+msgstr "Accesso negato"
+
+#: includes/admin/settings/class-oauth.php:113
+msgid "There are no lists in your NewsMAN account"
+msgstr "Non ci sono liste nel tuo account NewsMAN"
+
+#: includes/admin/settings/class-oauth.php:217
+msgid "Could not save integration setup. Please try again."
+msgstr ""
+"Impossibile salvare la configurazione dell'integrazione. Si prega di "
+"riprovare."
+
+#: includes/admin/settings/class-remarketing.php:89
+#: includes/admin/settings/class-settings.php:90
+#: includes/admin/settings/class-sms.php:153
+#: includes/admin/settings/class-sync.php:90
+msgid "Unauthorized user"
+msgstr "Utente non autorizzato"
+
+#: includes/admin/settings/class-remarketing.php:109
+#: includes/admin/settings/class-settings.php:150
+#: includes/admin/settings/class-sync.php:163
+msgid "Options saved."
+msgstr "Opzioni salvate."
+
+#: includes/admin/settings/class-remarketing.php:113
+#: includes/admin/settings/class-remarketing.php:126
+msgid "Invalid Credentials. Please configure them in Settings tab."
+msgstr "Credenziali non valide. Si prega di configurarle nella scheda Impostazioni."
+
+#: includes/admin/settings/class-settings.php:154
+#: includes/admin/settings/class-settings.php:168
+#: includes/admin/settings/class-sync.php:167
+msgid "Invalid Credentials"
+msgstr "Credenziali non valide"
+
+#: includes/admin/settings/class-sms.php:175
+#: includes/admin/settings/class-sms.php:179
+#: includes/admin/settings/class-sms.php:198
+#: includes/admin/settings/class-sms.php:202
+msgid "Invalid credentials."
+msgstr "Credenziali non valide."
+
+#: includes/admin/settings/class-sms.php:181
+#: includes/admin/settings/class-sms.php:204
+msgid "No SMS list found."
+msgstr "Nessuna lista SMS trovata."
+
+#: includes/admin/settings/class-sms.php:188
+msgid "An error has occurred."
+msgstr "Si è verificato un errore."
+
+#: includes/admin/settings/class-sms.php:248
+#: includes/admin/settings/class-sms.php:268
+msgid "The SMS was not sent. "
+msgstr "L'SMS non è stato inviato. "
+
+#: includes/admin/settings/class-sms.php:250
+msgid "Test SMS was sent."
+msgstr "L'SMS di test è stato inviato."
+
+#: includes/admin/settings/class-sms.php:255
+msgid "The SMS was not sent. Please select or keep the configured SMS list."
+msgstr ""
+"L'SMS non è stato inviato. Si prega di selezionare o mantenere la lista "
+"SMS configurata."
+
+#: includes/admin/settings/class-sms.php:260
+msgid "The SMS was not sent. Please fill the test phone number and the test message."
+msgstr ""
+"L'SMS non è stato inviato. Si prega di compilare il numero di telefono di "
+"test e il messaggio di test."
+
+#: includes/admin/settings/class-sync.php:117
+msgid "Could not save integration setup. The list was not changed."
+msgstr ""
+"Impossibile salvare la configurazione dell'integrazione. La lista non è "
+"stata modificata."
+
+#: includes/admin/settings/class-sync.php:155
+#: includes/admin/settings/class-sync.php:189
+#: includes/admin/settings/class-sync.php:199
+msgid "Could not get the lists or the segments."
+msgstr "Impossibile ottenere le liste o i segmenti."
+
+#: includes/admin/settings/class-sync.php:236
+msgid "Could not update feed list"
+msgstr "Impossibile aggiornare la lista dei feed"
+
+#. translators: 1: blog name, 2: blog ID
+#: includes/class-admin.php:137
+#, php-format
+msgid "Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d)."
+msgstr ""
+"Newsman: Script di remarketing aggiornato con successo per il sito %1$s "
+"(ID: %2$d)."
+
+#: includes/class-admin.php:145
+msgid "Newsman: Remarketing script updated successfully."
+msgstr "Newsman: Script di remarketing aggiornato con successo."
+
+#. translators: 1: blog name, 2: blog ID
+#: includes/class-admin.php:161
+#, php-format
+msgid "Newsman: Failed to fetch the remarketing script for site %1$s (ID: %2$d)."
+msgstr ""
+"Newsman: Impossibile recuperare lo script di remarketing per il sito %1$s "
+"(ID: %2$d)."
+
+#: includes/class-admin.php:166
+#: includes/class-admin.php:174
+msgid "Reconfigure with Newsman login"
+msgstr "Riconfigura con l'accesso Newsman"
+
+#: includes/class-admin.php:172
+msgid "Newsman: Failed to fetch the remarketing script."
+msgstr "Newsman: Impossibile recuperare lo script di remarketing."
+
+#: includes/class-admin.php:193
+#: src/backend-oauth.php:23
+#: src/backend-remarketing.php:26
+#: src/backend-remarketing.php:31
+#: src/backend-settings.php:26
+#: src/backend-settings.php:31
+#: src/backend-sms.php:60
+#: src/backend-sms.php:65
+#: src/backend-sync.php:26
+#: src/backend-sync.php:31
+#: src/backend.php:18
+#: src/backend.php:23
+msgid "NewsMAN"
+msgstr "NewsMAN"
+
+#: includes/class-admin.php:202
+#: includes/class-admin.php:203
+#: src/backend-remarketing.php:33
+#: src/backend-settings.php:33
+#: src/backend-sms.php:67
+#: src/backend-sync.php:33
+#: src/backend.php:25
+#: src/backend.php:75
+msgid "Sync"
+msgstr "Sincronizzazione"
+
+#: includes/class-admin.php:211
+#: includes/class-admin.php:212
+#: src/backend-remarketing.php:35
+#: src/backend-settings.php:35
+#: src/backend-sms.php:69
+#: src/backend-sync.php:35
+#: src/backend.php:27
+#: src/backend.php:83
+msgid "Remarketing"
+msgstr "Remarketing"
+
+#: includes/class-admin.php:221
+#: includes/class-admin.php:222
+#: src/backend-remarketing.php:38
+#: src/backend-settings.php:38
+#: src/backend-sms.php:72
+#: src/backend-sync.php:38
+#: src/backend.php:30
+msgid "SMS"
+msgstr "SMS"
+
+#: includes/class-admin.php:231
+#: includes/class-admin.php:232
+#: src/backend-remarketing.php:41
+#: src/backend-settings.php:41
+#: src/backend-sms.php:75
+#: src/backend-sync.php:41
+#: src/backend.php:33
+#: src/backend.php:101
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: includes/class-admin.php:240
+#: includes/class-admin.php:241
+msgid "Oauth"
+msgstr "Oauth"
+
+#: includes/class-webhooks.php:53
+msgid "newsman_events: invalid events format"
+msgstr "newsman_events: formato eventi non valido"
+
+#: includes/class-webhooks.php:57
+msgid "Processing newsman webhook events"
+msgstr "Elaborazione eventi webhook Newsman"
+
+#. translators: 1: Event type
+#: includes/class-webhooks.php:69
+#, php-format
+msgid "Processing webhook event type: %s"
+msgstr "Elaborazione tipo di evento webhook: %s"
+
+#. translators: 1: Event type
+#: includes/class-webhooks.php:92
+#, php-format
+msgid "Unknown webhook type: %s"
+msgstr "Tipo di webhook sconosciuto: %s"
+
+#: includes/class-webhooks.php:115
+msgid "webhook subscribe: email not found in event data"
+msgstr "webhook subscribe: e-mail non trovata nei dati dell'evento"
+
+#. translators: 1: Email
+#: includes/class-webhooks.php:125
+#, php-format
+msgid "webhook subscribe: invalid email address %s"
+msgstr "webhook subscribe: indirizzo e-mail non valido %s"
+
+#. translators: 1: Email 2: Blog ID
+#: includes/class-webhooks.php:138
+#, php-format
+msgid "webhook subscribe: %1$s, blog %2$d"
+msgstr "webhook subscribe: %1$s, blog %2$d"
+
+#: includes/class-webhooks.php:174
+msgid "webhook unsubscribe: email not found in event data"
+msgstr "webhook unsubscribe: e-mail non trovata nei dati dell'evento"
+
+#. translators: 1: Email
+#: includes/class-webhooks.php:184
+#, php-format
+msgid "webhook unsubscribe: invalid email address %s"
+msgstr "webhook unsubscribe: indirizzo e-mail non valido %s"
+
+#. translators: 1: Email 2: Blog ID
+#: includes/class-webhooks.php:197
+#, php-format
+msgid "webhook unsubscribe: %1$s, blog %2$d"
+msgstr "webhook unsubscribe: %1$s, blog %2$d"
+
+#. translators: 1: Blog ID
+#: includes/class-webhooks.php:235
+#, php-format
+msgid "webhook import received, blog %d"
+msgstr "webhook import ricevuto, blog %d"
+
+#: includes/export/retriever/class-authenticator.php:55
+msgid "Empty API key provided."
+msgstr "Chiave API vuota fornita."
+
+#. translators: 1: WordPress blog ID
+#: includes/export/retriever/class-authenticator.php:87
+#, php-format
+msgid "Invalid API key for blog ID %d"
+msgstr "Chiave API non valida per l'ID blog %d"
+
+#. translators: 1: Input data
+#: includes/export/retriever/class-coupons.php:36
+#, php-format
+msgid "Add coupons: %s"
+msgstr "Aggiungi coupon: %s"
+
+#. translators: 1: Coupons count, 2: All coupons codes added
+#: includes/export/retriever/class-coupons.php:121
+#, php-format
+msgid "Added %1$d coupons %2$s"
+msgstr "Aggiunti %1$d coupon %2$s"
+
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
+#: includes/export/retriever/class-cronsubscribers.php:64
+#, php-format
+msgid "Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
+msgstr "Esporta abbonati %1$s %2$d, %3$d, blog ID %4$s, data %5$s"
+
+#: includes/export/retriever/class-cronsubscribers.php:80
+msgid "No subscribers found."
+msgstr "Nessun abbonato trovato."
+
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
+#: includes/export/retriever/class-cronsubscribers.php:130
+#, php-format
+msgid "Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
+msgstr "Abbonati esportati %1$s %2$d, %3$d, blog ID %4$s, data %5$s"
+
+#. translators: 1: Sent subscribers count, 2: Total subscribers count
+#: includes/export/retriever/class-cronsubscribers.php:146
+#, php-format
+msgid "Sent to NewsMAN %1$d subscribers out of a total of %2$d."
+msgstr "Inviati a NewsMAN %1$d abbonati su un totale di %2$d."
+
+#. translators: 1: Store/blog ID, 2: SQL query
+#: includes/export/retriever/class-customsql.php:119
+#, php-format
+msgid "Custom SQL export, store ID %1$s - Query: %2$s"
+msgstr "Esportazione SQL personalizzata, ID negozio %1$s - Query: %2$s"
+
+#. translators: 1: Store/blog ID, 2: Number of rows returned
+#: includes/export/retriever/class-customsql.php:139
+#, php-format
+msgid "Custom SQL export, store ID %1$s - Rows returned: %2$d"
+msgstr "Esportazione SQL personalizzata, ID negozio %1$s - Righe restituite: %2$d"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-orders.php:44
+#, php-format
+msgid "Export order %1$d, store ID %2$s"
+msgstr "Esporta ordine %1$d, ID negozio %2$s"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-orders.php:61
+#, php-format
+msgid "Exported order %1$d, store ID %2$s"
+msgstr "Ordine %1$d esportato, ID negozio %2$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-orders.php:78
+#, php-format
+msgid "Export orders %1$d, %2$d, blog ID %3$s"
+msgstr "Esporta ordini %1$d, %2$d, blog ID %3$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-orders.php:185
+#, php-format
+msgid "Exported orders %1$d, %2$d, blog ID %3$s"
+msgstr "Ordini esportati %1$d, %2$d, blog ID %3$s"
+
+#. translators: 1: Code, 2: WordPress blog ID
+#: includes/export/retriever/class-processor.php:78
+#, php-format
+msgid "Processing fetch data (%1$s) for blog ID %2$d."
+msgstr "Elaborazione dati di recupero (%1$s) per blog ID %2$d."
+
+#. translators: 1: Product ID, 2: WordPress blog ID
+#: includes/export/retriever/class-products.php:61
+#: includes/export/retriever/class-productsfeed.php:67
+#, php-format
+msgid "Export product %1$d, store ID %2$s"
+msgstr "Esporta prodotto %1$d, ID negozio %2$s"
+
+#. translators: 1: Product ID, 2: WordPress blog ID
+#: includes/export/retriever/class-products.php:78
+#: includes/export/retriever/class-productsfeed.php:85
+#, php-format
+msgid "Exported product %1$d, store ID %2$s"
+msgstr "Prodotto %1$d esportato, ID negozio %2$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-products.php:94
+#: includes/export/retriever/class-productsfeed.php:102
+#, php-format
+msgid "Export products %1$d, %2$d, blog ID %3$s"
+msgstr "Esporta prodotti %1$d, %2$d, blog ID %3$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-products.php:136
+#: includes/export/retriever/class-productsfeed.php:184
+#, php-format
+msgid "Exported products %1$d, %2$d, blog ID %3$s"
+msgstr "Prodotti esportati %1$d, %2$d, blog ID %3$s"
+
+#. translators: 1: Blog ID
+#: includes/export/retriever/class-refreshremarketing.php:92
+#, php-format
+msgid "refresh.remarketing: updated newsman_scriptjs, blog %1$d"
+msgstr "refresh.remarketing: newsman_scriptjs aggiornato, blog %1$d"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-sendorders.php:67
+#, php-format
+msgid "Send order %1$d, store ID %2$s"
+msgstr "Invia ordine %1$d, ID negozio %2$s"
+
+#. translators: 1: Order ID, 2: WordPress blog ID
+#: includes/export/retriever/class-sendorders.php:84
+#, php-format
+msgid "Sent order %1$d, store ID %2$s"
+msgstr "Ordine %1$d inviato, ID negozio %2$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
+#: includes/export/retriever/class-sendorders.php:103
+#, php-format
+msgid "Send orders %1$d, %2$d, blog ID %3$s, date %4$s"
+msgstr "Invia ordini %1$d, %2$d, blog ID %3$s, data %4$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
+#: includes/export/retriever/class-sendorders.php:156
+#, php-format
+msgid "Sent orders %1$d, %2$d, blog ID %3$s, Date %4$s"
+msgstr "Ordini inviati %1$d, %2$d, blog ID %3$s, Data %4$s"
+
+#. translators: 1: Sent orders count, 2: Total orders count
+#: includes/export/retriever/class-sendorders.php:171
+#, php-format
+msgid "Sent to NewsMAN %1$d orders out of a total of %2$d."
+msgstr "Inviati a NewsMAN %1$d ordini su un totale di %2$d."
+
+#. translators: 1: Email 2: Blog ID
+#: includes/export/retriever/class-subscribersubscribe.php:73
+#, php-format
+msgid "subscriber.subscribe: %1$s, blog %2$d"
+msgstr "subscriber.subscribe: %1$s, blog %2$d"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-subscriberswoocommercefeed.php:56
+#, php-format
+msgid "Export WooCommerce subscribers %1$d, %2$d, blog ID %3$s"
+msgstr "Esporta abbonati WooCommerce %1$d, %2$d, blog ID %3$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-subscriberswoocommercefeed.php:138
+#, php-format
+msgid "Exported WooCommerce subscribers %1$d, %2$d, blog ID %3$s"
+msgstr "Abbonati WooCommerce esportati %1$d, %2$d, blog ID %3$s"
+
+#. translators: 1: Email 2: Blog ID
+#: includes/export/retriever/class-subscriberunsubscribe.php:73
+#, php-format
+msgid "subscriber.unsubscribe: %1$s, blog %2$d"
+msgstr "subscriber.unsubscribe: %1$s, blog %2$d"
+
+#. translators: 1: User role
+#: includes/export/retriever/class-users.php:57
+#, php-format
+msgid "wp_newsman_internal_role %s is not allowed!"
+msgstr "wp_newsman_internal_role %s non è consentito!"
+
+#. translators: 1: User role, 2: Batch start, 3: Batch end, 4: WP blog ID
+#: includes/export/retriever/class-users.php:74
+#, php-format
+msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
+msgstr "Esporta %1$s %2$d, %3$d, blog ID %4$s"
+
+#. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
+#: includes/export/retriever/class-users.php:165
+#, php-format
+msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
+msgstr "Esportato %1$s %2$d, %3$d, blog ID %4$s"
+
+#: includes/form/account/class-processor.php:130
+msgid "Security check failed. Please try again."
+msgstr "Controllo di sicurezza fallito. Si prega di riprovare."
+
+#: includes/form/account/class-processor.php:148
+msgid "You have already subscribed to our newsletter!"
+msgstr "Ti sei già iscritto alla nostra newsletter!"
+
+#: includes/form/account/class-processor.php:154
+msgid "You have already unsubscribed from our newsletter!"
+msgstr "Ti sei già disiscritto dalla nostra newsletter!"
+
+#: includes/form/account/class-processor.php:215
+msgid "A subscription confirmation email will be sent to you shortly."
+msgstr "Un'e-mail di conferma dell'iscrizione ti verrà inviata a breve."
+
+#: includes/form/account/class-processor.php:222
+msgid "You have successfully subscribed to our newsletter!"
+msgstr "Ti sei iscritto con successo alla nostra newsletter!"
+
+#: includes/form/account/class-processor.php:227
+msgid "The subscription process usually takes less than a minute. After that the status of your subscription will be shown here. Thank you!"
+msgstr ""
+"Il processo di iscrizione richiede generalmente meno di un minuto. Dopo di "
+"che lo stato della tua iscrizione verrà mostrato qui. Grazie!"
+
+#: includes/form/account/class-processor.php:252
+msgid "You have unsubscribed from our newsletter! An unsubscription confirmation email will be sent to you shortly."
+msgstr ""
+"Ti sei disiscritto dalla nostra newsletter! Un'e-mail di conferma della "
+"disiscrizione ti verrà inviata a breve."
+
+#: includes/form/account/class-processor.php:259
+msgid "You have unsubscribed from our newsletter!"
+msgstr "Ti sei disiscritto dalla nostra newsletter!"
+
+#: includes/form/account/class-processor.php:264
+msgid "The unsubscription process usually takes less than a minute. After that the status of your subscription will be shown here. Thank you!"
+msgstr ""
+"Il processo di disiscrizione richiede generalmente meno di un minuto. Dopo "
+"di che lo stato della tua iscrizione verrà mostrato qui. Grazie!"
+
+#: includes/form/account/class-processor.php:278
+msgid "There was an error subscribing to the newsletter. Please try again."
+msgstr ""
+"Si è verificato un errore durante l'iscrizione alla newsletter. Si prega "
+"di riprovare."
+
+#: includes/form/checkout/class-checkbox.php:148
+msgid "Send Order Status SMS"
+msgstr "Invia SMS stato ordine"
+
+#: includes/form/patterns/account/subscribe.php:32
+msgid "Subscribe"
+msgstr "Iscriviti"
+
+#. translators: 1: Email
+#: includes/service/class-abstractservice.php:156
+msgid "Invalid email address %1"
+msgstr "Indirizzo e-mail non valido %1"
+
+#. translators: 1: Count subscribers
+#: includes/service/class-exportcsvsubscribers.php:48
+#, php-format
+msgid "Try to export CSV with %s subscribers"
+msgstr "Tentativo di esportazione CSV con %s abbonati"
+
+#. translators: 1: Count subscribers
+#: includes/service/class-exportcsvsubscribers.php:74
+#, php-format
+msgid "Sent export CSV with %s subscribers"
+msgstr "CSV di esportazione inviato con %s abbonati"
+
+#. translators: 1: Email
+#: includes/service/class-getbyemail.php:49
+#, php-format
+msgid "Try to get by email %s"
+msgstr "Tentativo di recupero per e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-getbyemail.php:72
+#, php-format
+msgid "Done get by email %s"
+msgstr "Recupero per e-mail completato %s"
+
+#. translators: 1: Email
+#: includes/service/class-initsubscribeemail.php:49
+#, php-format
+msgid "Try to init subscribe email %s"
+msgstr "Tentativo di inizializzazione iscrizione e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-initsubscribeemail.php:78
+#, php-format
+msgid "Init subscribe successful for email %s"
+msgstr "Inizializzazione iscrizione riuscita per l'e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-initunsubscribeemail.php:49
+#, php-format
+msgid "Try to init unsubscribe email %s"
+msgstr "Tentativo di inizializzazione disiscrizione e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-initunsubscribeemail.php:75
+#, php-format
+msgid "Init unsubscribed successful for email %s"
+msgstr "Inizializzazione disiscrizione riuscita per l'e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-subscribeemail.php:49
+#, php-format
+msgid "Try to subscribe email %s"
+msgstr "Tentativo di iscrizione e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-subscribeemail.php:77
+#, php-format
+msgid "Subscribed email %s"
+msgstr "E-mail %s iscritta"
+
+#. translators: 1: Email
+#: includes/service/class-unsubscribeemail.php:49
+#, php-format
+msgid "Try to unsubscribe email %s"
+msgstr "Tentativo di disiscrizione e-mail %s"
+
+#. translators: 1: Email
+#: includes/service/class-unsubscribeemail.php:74
+#, php-format
+msgid "Unsubscribed email %s"
+msgstr "E-mail %s disiscritta"
+
+#: includes/service/configuration/class-getsegmentall.php:43
+#: includes/service/configuration/class-setfeedonlist.php:42
+#: includes/service/configuration/class-updatefeed.php:42
+#: includes/service/configuration/integration/class-savelistintegrationsetup.php:43
+msgid "List ID is required."
+msgstr "L'ID della lista è obbligatorio."
+
+#. translators: 1: WP url
+#: includes/service/configuration/class-setfeedonlist.php:53
+#, php-format
+msgid "Try to install products feed %s"
+msgstr "Tentativo di installazione feed prodotti %s"
+
+#. translators: 1: WP url
+#: includes/service/configuration/class-setfeedonlist.php:75
+#, php-format
+msgid "Installed products feed %s"
+msgstr "Feed prodotti %s installato"
+
+#. translators: 1: Feed ID
+#: includes/service/configuration/class-updatefeed.php:53
+#, php-format
+msgid "Try to update feed %s"
+msgstr "Tentativo di aggiornamento feed %s"
+
+#. translators: 1: Feed ID
+#: includes/service/configuration/class-updatefeed.php:73
+#, php-format
+msgid "Updated the feed %s"
+msgstr "Feed %s aggiornato"
+
+#. translators: 1: list ID, 2: integration name
+#: includes/service/configuration/integration/class-savelistintegrationsetup.php:58
+#, php-format
+msgid "Saving list integration setup for list %1$s, integration %2$s"
+msgstr ""
+"Salvataggio della configurazione di integrazione per la lista %1$s, "
+"integrazione %2$s"
+
+#. translators: 1: list ID, 2: integration name
+#: includes/service/configuration/integration/class-savelistintegrationsetup.php:84
+#, php-format
+msgid "Saved list integration setup for list %1$s, integration %2$s"
+msgstr "Configurazione di integrazione salvata per la lista %1$s, integrazione %2$s"
+
+#. translators: 1: Order ID
+#: includes/service/remarketing/class-saveorder.php:55
+#, php-format
+msgid "Try to save order %s"
+msgstr "Tentativo di salvataggio ordine %s"
+
+#. translators: 1: Order ID
+#: includes/service/remarketing/class-saveorder.php:80
+#, php-format
+msgid "Saved order %s"
+msgstr "Ordine %s salvato"
+
+#. translators: 1: Number of orders
+#: includes/service/remarketing/class-saveorders.php:50
+#, php-format
+msgid "Try to %s save orders"
+msgstr "Tentativo di %s salvataggio ordini"
+
+#. translators: 1: Number of orders
+#: includes/service/remarketing/class-saveorders.php:74
+#, php-format
+msgid "Saved %s save orders"
+msgstr "%s ordini salvati"
+
+#. translators: 1: Order ID, 2: Order status
+#: includes/service/remarketing/class-setpurchasestatus.php:50
+#, php-format
+msgid "Try to send order %1$s status %2$s"
+msgstr "Tentativo di invio stato %2$s dell'ordine %1$s"
+
+#. translators: 1: Order ID, 2: Order status
+#: includes/service/remarketing/class-setpurchasestatus.php:75
+#, php-format
+msgid "Sent order %1$s status %2$s"
+msgstr "Stato %2$s dell'ordine %1$s inviato"
+
+#. translators: 1: Newsman segment ID, 2: Newsman subscriber ID
+#: includes/service/segment/class-addsubscriber.php:49
+#, php-format
+msgid "Try to add to segment %1$s subscriber ID %2$s"
+msgstr "Tentativo di aggiunta al segmento %1$s dell'abbonato ID %2$s"
+
+#. translators: 1: Newsman segment ID, 2: Newsman subscriber ID
+#: includes/service/segment/class-addsubscriber.php:75
+#, php-format
+msgid "Added to segment %1$s subscriber ID %2$s"
+msgstr "Aggiunto al segmento %1$s l'abbonato ID %2$s"
+
+#. translators: 1: Phone number
+#: includes/service/sms/class-sendone.php:47
+#, php-format
+msgid "Try to send one SMS to %s"
+msgstr "Tentativo di invio di un SMS a %s"
+
+#. translators: 1: Phone number
+#: includes/service/sms/class-sendone.php:67
+#, php-format
+msgid "Sent SMS to %s"
+msgstr "SMS inviato a %s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-subscribe.php:49
+#, php-format
+msgid "Try to subscribe telephone %s"
+msgstr "Tentativo di iscrizione telefono %s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-subscribe.php:77
+#, php-format
+msgid "Subscribed telephone %s"
+msgstr "Telefono %s iscritto"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-unsubscribe.php:49
+#, php-format
+msgid "Try to unsubscribe telephone %s"
+msgstr "Tentativo di disiscrizione telefono %s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-unsubscribe.php:74
+#, php-format
+msgid "Unsubscribed telephone %s"
+msgstr "Telefono %s disiscritto"
+
+#: src/backend-oauth.php:35
+#: src/backend-settings.php:92
+#: src/backend.php:64
+msgid "Site "
+msgstr "Sito "
+
+#: src/backend-oauth.php:38
+msgid "NewsMAN plugin for Wordpress-Woocommerce"
+msgstr "Plugin NewsMAN per WordPress-WooCommerce"
+
+#: src/backend-oauth.php:47
+msgid "Connect your site with NewsMAN for:"
+msgstr "Collega il tuo sito con NewsMAN per:"
+
+#: src/backend-oauth.php:52
+msgid "Subscribers Sync"
+msgstr "Sincronizzazione abbonati"
+
+#: src/backend-oauth.php:57
+msgid "Ecommerce Remarketing"
+msgstr "Remarketing E-commerce"
+
+#: src/backend-oauth.php:62
+msgid "Create and manage forms"
+msgstr "Crea e gestisci moduli"
+
+#: src/backend-oauth.php:67
+msgid "Create and manage popups"
+msgstr "Crea e gestisci popup"
+
+#: src/backend-oauth.php:72
+msgid "Connect your forms to automation"
+msgstr "Collega i tuoi moduli all'automazione"
+
+#: src/backend-oauth.php:78
+msgid "Login with NewsMAN"
+msgstr "Accedi con NewsMAN"
+
+#: src/backend-oauth.php:80
+#: src/backend-oauth.php:111
+msgid "Cancel"
+msgstr "Annulla"
+
+#: src/backend-oauth.php:92
+msgid "Select list:"
+msgstr "Seleziona lista:"
+
+#: src/backend-oauth.php:94
+#: src/backend-sms.php:122
+#: src/backend-sync.php:63
+#: src/backend-sync.php:104
+msgid "-- select list --"
+msgstr "-- seleziona lista --"
+
+#: src/backend-oauth.php:109
+msgid "Save"
+msgstr "Salva"
+
+#: src/backend-remarketing.php:62
+#: src/backend-settings.php:304
+#: src/backend-sms.php:267
+#: src/backend-sms.php:294
+#: src/backend-sms.php:321
+msgid "Enable"
+msgstr "Attiva"
+
+#: src/backend-remarketing.php:71
+msgid "REMARKETING ID"
+msgstr "ID REMARKETING"
+
+#: src/backend-remarketing.php:75
+msgid "Your NewsMAN Remarketing ID"
+msgstr "Il tuo ID di remarketing NewsMAN"
+
+#: src/backend-remarketing.php:80
+msgid "Anonymize IP"
+msgstr "Anonimizza IP"
+
+#: src/backend-remarketing.php:85
+msgid "Anonymize User IP Address"
+msgstr "Anonimizza l'indirizzo IP dell'utente"
+
+#: src/backend-remarketing.php:91
+msgid "Send telephone numbers"
+msgstr "Invia numeri di telefono"
+
+#: src/backend-remarketing.php:96
+msgid "Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders."
+msgstr ""
+"Invia i numeri di telefono degli abbonati (liste e-mail) e i numeri di "
+"telefono dei clienti che hanno effettuato ordini."
+
+#: src/backend-remarketing.php:102
+msgid "Export WordPress Subscribers"
+msgstr "Esporta abbonati WordPress"
+
+#: src/backend-remarketing.php:107
+msgid "Optional. Include WordPress users with the subscriber role when syncing subscribers."
+msgstr ""
+"Opzionale. Includi gli utenti WordPress con il ruolo abbonato durante la "
+"sincronizzazione degli abbonati."
+
+#: src/backend-remarketing.php:112
+msgid "Export WooCommerce Buyers as Subscribers"
+msgstr "Esporta acquirenti WooCommerce come abbonati"
+
+#: src/backend-remarketing.php:117
+msgid "Optional. Include buyers from completed orders when syncing subscribers."
+msgstr ""
+"Opzionale. Includi gli acquirenti degli ordini completati durante la "
+"sincronizzazione degli abbonati."
+
+#: src/backend-remarketing.php:123
+msgid "Export Orders on Status Change"
+msgstr "Esporta ordini al cambio di stato"
+
+#: src/backend-remarketing.php:142
+msgid "Select order statuses. On each selected order status change, the order details will be sent to NewsMAN."
+msgstr ""
+"Seleziona gli stati dell'ordine. Ad ogni cambio di stato dell'ordine "
+"selezionato, i dettagli dell'ordine verranno inviati a NewsMAN."
+
+#: src/backend-remarketing.php:148
+msgid "Export Additional Product Attributes"
+msgstr "Esporta attributi di prodotto aggiuntivi"
+
+#: src/backend-remarketing.php:168
+msgid "Select multiple product attributes to include in your product feed."
+msgstr "Seleziona più attributi di prodotto da includere nel tuo feed di prodotti."
+
+#: src/backend-remarketing.php:174
+msgid "Customer Attributes"
+msgstr "Attributi cliente"
+
+#: src/backend-remarketing.php:190
+msgid "Select which customer attributes (from orders) to include in your remarketing data."
+msgstr ""
+"Seleziona quali attributi del cliente (dagli ordini) includere nei tuoi "
+"dati di remarketing."
+
+#: src/backend-remarketing.php:196
+#: src/backend-settings.php:484
+#: src/backend-sms.php:391
+#: src/backend-sync.php:120
+msgid "Save Changes"
+msgstr "Salva modifiche"
+
+#: src/backend-settings.php:53
+msgid "NewsMAN Connection"
+msgstr "Connessione NewsMAN"
+
+#: src/backend-settings.php:57
+msgid "API KEY"
+msgstr "CHIAVE API"
+
+#: src/backend-settings.php:66
+msgid "User ID"
+msgstr "ID utente"
+
+#: src/backend-settings.php:75
+#: src/backend-sms.php:96
+#: src/backend.php:41
+msgid "Credentials Status"
+msgstr "Stato delle credenziali"
+
+#: src/backend-settings.php:79
+#: src/backend-sms.php:100
+#: src/backend.php:45
+msgid "Valid"
+msgstr "Valido"
+
+#: src/backend-settings.php:79
+#: src/backend-sms.php:100
+#: src/backend.php:45
+msgid "Invalid"
+msgstr "Non valido"
+
+#: src/backend-settings.php:88
+#: src/backend.php:60
+msgid "Reconfigure with Newsman Oauth ?"
+msgstr "Riconfigurare con Newsman Oauth?"
+
+#: src/backend-settings.php:89
+#: src/backend.php:61
+msgid "Reconfigure with Newsman Oauth"
+msgstr "Riconfigura con Newsman Oauth"
+
+#: src/backend-settings.php:101
+msgid "Allow API access"
+msgstr "Consenti accesso API"
+
+#: src/backend-settings.php:110
+msgid "Send User IP Address"
+msgstr "Invia l'indirizzo IP dell'utente"
+
+#: src/backend-settings.php:119
+msgid "Server IP Address"
+msgstr "Indirizzo IP del server"
+
+#: src/backend-settings.php:125
+msgid "Please set the public IP address of the server if the user IP address is not sent. NewsMAN subscribe to newsletter requires an IP address."
+msgstr ""
+"Si prega di impostare l'indirizzo IP pubblico del server se l'indirizzo IP "
+"dell'utente non viene inviato. L'iscrizione alla newsletter di NewsMAN "
+"richiede un indirizzo IP."
+
+#: src/backend-settings.php:130
+msgid "Import Authorize Header Name"
+msgstr "Nome dell'header di autorizzazione importazione"
+
+#: src/backend-settings.php:135
+msgid "HTTP Header Authorization Name. Please set only alphanumeric characters and minus character."
+msgstr ""
+"Nome dell'autorizzazione HTTP Header. Si prega di utilizzare solo "
+"caratteri alfanumerici e il trattino."
+
+#. translators: 1: Link to NewsMAN
+#: src/backend-settings.php:140
+#: src/backend-settings.php:167
+#, php-format
+msgid "Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization."
+msgstr ""
+"Si prega di andare su <a target=\"_blank\" href=\"%s\">newsman.app</a> in "
+"E-Commerce &gt; Feed e impostare l'autorizzazione dell'header."
+
+#: src/backend-settings.php:151
+#: src/backend-settings.php:178
+msgid "NewsMAN will be able to import product feeds securely."
+msgstr "NewsMAN sarà in grado di importare i feed di prodotti in modo sicuro."
+
+#: src/backend-settings.php:157
+msgid "Import Authorize Header Key"
+msgstr "Chiave dell'header di autorizzazione importazione"
+
+#: src/backend-settings.php:162
+msgid "HTTP Header Authorization Key. Please set only alphanumeric characters and minus character."
+msgstr ""
+"Chiave dell'autorizzazione HTTP Header. Si prega di utilizzare solo "
+"caratteri alfanumerici e il trattino."
+
+#: src/backend-settings.php:187
+msgid "Newsletter Opt-in type"
+msgstr "Tipo di opt-in alla newsletter"
+
+#: src/backend-settings.php:192
+msgid "Opt-in"
+msgstr "Opt-in"
+
+#: src/backend-settings.php:195
+msgid "Double Opt-in"
+msgstr "Doppio opt-in"
+
+#: src/backend-settings.php:198
+msgid "Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions."
+msgstr ""
+"Seleziona il tipo di opt-in alla newsletter. Il doppio opt-in è "
+"consigliato per le iscrizioni alla newsletter."
+
+#: src/backend-settings.php:203
+msgid "Confirmation email Form ID."
+msgstr "ID modulo dell'e-mail di conferma."
+
+#: src/backend-settings.php:209
+msgid "Form ID used for the confirmation email / form settings."
+msgstr "ID modulo utilizzato per le impostazioni dell'e-mail di conferma / modulo."
+
+#: src/backend-settings.php:213
+msgid "Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/manager\">newsman.app</a> &gt; Forms."
+msgstr ""
+"I moduli possono essere creati in <a target=\"_blank\" "
+"href=\"https://newsman.app/manager\">newsman.app</a> &gt; Moduli."
+
+#: src/backend-settings.php:229
+msgid "Checkout Subscribe to Newsletter and SMS"
+msgstr "Iscrizione alla newsletter e SMS al checkout"
+
+#: src/backend-settings.php:233
+msgid "Enable Newsletter Checkbox"
+msgstr "Attiva casella di controllo newsletter"
+
+#: src/backend-settings.php:238
+msgid "Enable checkbox to subscribe to newsletter in checkout."
+msgstr "Attiva la casella di controllo per iscriversi alla newsletter al checkout."
+
+#: src/backend-settings.php:243
+msgid "Newsletter Checkbox Label"
+msgstr "Etichetta casella di controllo newsletter"
+
+#: src/backend-settings.php:253
+msgid "Is newsletter checkbox checked by default ?"
+msgstr ""
+"La casella di controllo della newsletter è selezionata per impostazione "
+"predefinita?"
+
+#: src/backend-settings.php:262
+msgid "Enable SMS, sync phone numbers to your SMS list"
+msgstr "Attiva SMS, sincronizza i numeri di telefono con la tua lista SMS"
+
+#: src/backend-settings.php:267
+msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
+msgstr ""
+"Attiva l'iscrizione dopo il checkout alla lista SMS con il numero di "
+"telefono di fatturazione."
+
+#: src/backend-settings.php:272
+msgid "Enable Order Status Checkbox"
+msgstr "Attiva casella di controllo stato ordine"
+
+#: src/backend-settings.php:277
+msgid "Enable checkbox to send SMS about order status in checkout."
+msgstr ""
+"Attiva la casella di controllo per inviare SMS sullo stato dell'ordine al "
+"checkout."
+
+#: src/backend-settings.php:282
+msgid "Order Status Checkbox Label"
+msgstr "Etichetta casella di controllo stato ordine"
+
+#: src/backend-settings.php:292
+msgid "Is order status checkbox checked by default ?"
+msgstr ""
+"La casella di controllo dello stato dell'ordine è selezionata per "
+"impostazione predefinita?"
+
+#: src/backend-settings.php:300
+msgid "My Account Subscribe to Newsletter"
+msgstr "Il mio account - Iscriviti alla newsletter"
+
+#: src/backend-settings.php:309
+msgid "Enable page and checkbox to subscribe to newsletter in customers account."
+msgstr ""
+"Attiva la pagina e la casella di controllo per iscriversi alla newsletter "
+"nell'account del cliente."
+
+#: src/backend-settings.php:314
+msgid "Page Menu Label"
+msgstr "Etichetta menu pagina"
+
+#: src/backend-settings.php:320
+msgid "The label on the link on the left side menu in customer account."
+msgstr "L'etichetta del link nel menu laterale sinistro dell'account del cliente."
+
+#: src/backend-settings.php:325
+msgid "Page Title"
+msgstr "Titolo della pagina"
+
+#: src/backend-settings.php:331
+msgid "The title of subscribe to newsletter page in customer account."
+msgstr ""
+"Il titolo della pagina di iscrizione alla newsletter nell'account del "
+"cliente."
+
+#: src/backend-settings.php:336
+msgid "Checkbox Label"
+msgstr "Etichetta casella di controllo"
+
+#: src/backend-settings.php:342
+msgid "The label on subscribe to newsletter checkbox in customer account."
+msgstr ""
+"L'etichetta della casella di controllo per l'iscrizione alla newsletter "
+"nell'account del cliente."
+
+#: src/backend-settings.php:351
+msgid "Logging level"
+msgstr "Livello di registrazione"
+
+#: src/backend-settings.php:360
+msgid "No Logging"
+msgstr "Nessuna registrazione"
+
+#: src/backend-settings.php:407
+msgid "API Timeout"
+msgstr "Timeout API"
+
+#: src/backend-settings.php:419
+msgid "Enable Test User IP"
+msgstr "Attiva IP utente di test"
+
+#: src/backend-settings.php:424
+msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
+msgstr ""
+"Attenzione! Si prega di non utilizzare questo indirizzo IP in produzione "
+"perché è utilizzato dall'endpoint API subscriber.saveSubscribe."
+
+#: src/backend-settings.php:429
+msgid "Test User IP address"
+msgstr "Indirizzo IP utente di test"
+
+#: src/backend-settings.php:440
+msgid "Plugin Loaded Priority"
+msgstr "Priorità di caricamento del plugin"
+
+#: src/backend-settings.php:446
+msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
+msgstr ""
+"Gli hook WooCommerce del plugin NewsMAN vengono caricati con add_action "
+"plugins_loaded e la priorità impostata in questa configurazione. Il valore "
+"predefinito è 20."
+
+#: src/backend-settings.php:452
+msgid "Use Action Scheduler"
+msgstr "Usa Action Scheduler"
+
+#: src/backend-settings.php:457
+msgid "Use action scheduler plugin for some of NewsMAN API actions."
+msgstr "Usa il plugin Action Scheduler per alcune azioni dell'API NewsMAN."
+
+#: src/backend-settings.php:462
+msgid "Use Action Scheduler for Subscribe"
+msgstr "Usa Action Scheduler per l'iscrizione"
+
+#: src/backend-settings.php:467
+msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
+msgstr ""
+"Nella vetrina, usa Action Scheduler per le azioni di iscrizione alle liste "
+"e-mail e SMS."
+
+#: src/backend-settings.php:472
+msgid "Use Action Scheduler for Unsubscribe"
+msgstr "Usa Action Scheduler per la disiscrizione"
+
+#: src/backend-settings.php:477
+msgid "On storefront use action scheduler for unsubscribe from email lists action."
+msgstr ""
+"Nella vetrina, usa Action Scheduler per l'azione di disiscrizione dalle "
+"liste e-mail."
+
+#: src/backend-sms.php:103
+msgid "Please configure the credentials in Settings tab."
+msgstr "Si prega di configurare le credenziali nella scheda Impostazioni."
+
+#: src/backend-sms.php:109
+msgid "Use SMS"
+msgstr "Usa SMS"
+
+#: src/backend-sms.php:117
+msgid "Select SMS List"
+msgstr "Seleziona lista SMS"
+
+#: src/backend-sms.php:131
+msgid "Please save a SMS list to start sending SMS."
+msgstr "Si prega di salvare una lista SMS per iniziare a inviare SMS."
+
+#: src/backend-sms.php:134
+msgid "The SMS lists dropdown is displayed when Use SMS is enabled."
+msgstr ""
+"Il menu a discesa delle liste SMS viene visualizzato quando Usa SMS è "
+"attivato."
+
+#: src/backend-sms.php:140
+msgid "SMS Message"
+msgstr "Messaggio SMS"
+
+#: src/backend-sms.php:143
+msgid "Order Status"
+msgstr "Stato dell'ordine"
+
+#: src/backend-sms.php:146
+msgid "Message / Variables"
+msgstr "Messaggio / Variabili"
+
+#: src/backend-sms.php:152
+msgid "Pending"
+msgstr "In attesa"
+
+#: src/backend-sms.php:152
+#: src/backend-sms.php:168
+#: src/backend-sms.php:184
+#: src/backend-sms.php:200
+#: src/backend-sms.php:216
+#: src/backend-sms.php:232
+#: src/backend-sms.php:248
+msgid "Active"
+msgstr "Attivo"
+
+#: src/backend-sms.php:156
+#: src/backend-sms.php:172
+#: src/backend-sms.php:188
+#: src/backend-sms.php:204
+#: src/backend-sms.php:220
+#: src/backend-sms.php:236
+#: src/backend-sms.php:252
+#: src/backend-sms.php:276
+#: src/backend-sms.php:303
+#: src/backend-sms.php:330
+msgid "Message"
+msgstr "Messaggio"
+
+#: src/backend-sms.php:158
+#: src/backend-sms.php:174
+#: src/backend-sms.php:190
+#: src/backend-sms.php:206
+#: src/backend-sms.php:222
+#: src/backend-sms.php:238
+#: src/backend-sms.php:254
+#: src/backend-sms.php:280
+#: src/backend-sms.php:307
+#: src/backend-sms.php:334
+msgid "Variables"
+msgstr "Variabili"
+
+#: src/backend-sms.php:168
+msgid "Failed"
+msgstr "Fallito"
+
+#: src/backend-sms.php:184
+msgid "On Hold"
+msgstr "In sospeso"
+
+#: src/backend-sms.php:200
+msgid "Processing"
+msgstr "In elaborazione"
+
+#: src/backend-sms.php:216
+msgid "Completed"
+msgstr "Completato"
+
+#: src/backend-sms.php:232
+msgid "Refunded"
+msgstr "Rimborsato"
+
+#: src/backend-sms.php:248
+msgid "Canceled"
+msgstr "Cancellato"
+
+#: src/backend-sms.php:263
+msgid "(from official Cargus plugin)"
+msgstr "(dal plugin ufficiale Cargus)"
+
+#: src/backend-sms.php:271
+msgid "Send SMS with Cargus AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a Cargus AWB."
+msgstr ""
+"Invia SMS con il numero AWB Cargus. Aggiunge un'azione nella vista ordini "
+"dell'amministratore per inviare il messaggio SMS. Il link verrà "
+"visualizzato dopo che l'ordine contiene un AWB Cargus."
+
+#: src/backend-sms.php:290
+msgid "(from official SamedayCourier plugin)"
+msgstr "(dal plugin ufficiale SamedayCourier)"
+
+#: src/backend-sms.php:298
+msgid "Send SMS with SamedayCourier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a SamedayCourier AWB."
+msgstr ""
+"Invia SMS con il numero AWB SamedayCourier. Aggiunge un'azione nella vista "
+"ordini dell'amministratore per inviare il messaggio SMS. Il link verrà "
+"visualizzato dopo che l'ordine contiene un AWB SamedayCourier."
+
+#: src/backend-sms.php:317
+msgid "(from official FAN Courier plugin)"
+msgstr "(dal plugin ufficiale FAN Courier)"
+
+#: src/backend-sms.php:325
+msgid "Send SMS with FAN Courier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a FAN Courier AWB."
+msgstr ""
+"Invia SMS con il numero AWB FAN Courier. Aggiunge un'azione nella vista "
+"ordini dell'amministratore per inviare il messaggio SMS. Il link verrà "
+"visualizzato dopo che l'ordine contiene un AWB FAN Courier."
+
+#: src/backend-sms.php:343
+msgid "SMS production debug"
+msgstr "Debug SMS in produzione"
+
+#: src/backend-sms.php:347
+msgid "Activate test mode"
+msgstr "Attiva modalità di test"
+
+#: src/backend-sms.php:351
+msgid "The message will be sent to your specified phone and not to customer phone. SMS are sent on order status changes."
+msgstr ""
+"Il messaggio verrà inviato al tuo telefono specificato e non al telefono "
+"del cliente. Gli SMS vengono inviati al cambio di stato dell'ordine."
+
+#: src/backend-sms.php:356
+msgid "Phone for tests"
+msgstr "Telefono per test"
+
+#: src/backend-sms.php:359
+#: src/backend-sms.php:370
+msgid "Ex:"
+msgstr "Es.:"
+
+#: src/backend-sms.php:363
+msgid "SMS send test"
+msgstr "Test di invio SMS"
+
+#: src/backend-sms.php:367
+msgid "Phone"
+msgstr "Telefono"
+
+#: src/backend-sms.php:375
+msgid "Test message"
+msgstr "Messaggio di test"
+
+#: src/backend-sms.php:383
+#: src/backend-sms.php:386
+msgid "Send now"
+msgstr "Invia ora"
+
+#: src/backend-sync.php:59
+msgid "Select a list"
+msgstr "Seleziona una lista"
+
+#: src/backend-sync.php:74
+msgid "Select a list of subscribers."
+msgstr "Seleziona una lista di abbonati."
+
+#: src/backend-sync.php:79
+msgid "Select a segment"
+msgstr "Seleziona un segmento"
+
+#: src/backend-sync.php:83
+msgid "-- select segment (optional) --"
+msgstr "-- seleziona segmento (opzionale) --"
+
+#: src/backend-sync.php:94
+msgid "Select a segment of subscribers."
+msgstr "Seleziona un segmento di abbonati."
+
+#: src/backend-sync.php:94
+msgid "The dropdown has the updated segments as options after the new list was saved."
+msgstr ""
+"Il menu a discesa ha i segmenti aggiornati come opzioni dopo che la nuova "
+"lista è stata salvata."
+
+#: src/backend-sync.php:100
+msgid "Select an SMS list"
+msgstr "Seleziona una lista SMS"
+
+#: src/backend-sync.php:115
+msgid "Select a list of SMS to be synced with phone numbers"
+msgstr "Seleziona una lista SMS da sincronizzare con i numeri di telefono"
+
+#: src/backend.php:37
+msgid "NewsMAN Info"
+msgstr "Info NewsMAN"
+
+#: src/backend.php:51
+msgid "Newsman Plugin Version"
+msgstr "Versione del plugin Newsman"
+
+#: src/backend.php:70
+msgid "Menus"
+msgstr "Menu"
+
+#: src/backend.php:78
+msgid "You will be able to sync your shop customers and newsletter subscribers with NewsMAN list / segments"
+msgstr ""
+"Potrai sincronizzare i clienti del tuo negozio e gli abbonati alla "
+"newsletter con le liste / segmenti di NewsMAN"
+
+#: src/backend.php:86
+msgid "Provide a valuable experience to your customer by automating communication with them. Create automatic email flows based on their actions on the site, such as product viewed, added to cart, completed order etc."
+msgstr ""
+"Offri un'esperienza preziosa ai tuoi clienti automatizzando la "
+"comunicazione con loro. Crea flussi di e-mail automatici basati sulle loro "
+"azioni sul sito, come prodotto visualizzato, aggiunto al carrello, ordine "
+"completato, ecc."
+
+#: src/backend.php:95
+msgid "SMS (short messages) is one of the most effective ways to get users’ attention. Create and manage campaigns or send transactional SMS directly from NewsMAN platform."
+msgstr ""
+"Gli SMS (messaggi brevi) sono uno dei modi più efficaci per attirare "
+"l'attenzione degli utenti. Crea e gestisci campagne o invia SMS "
+"transazionali direttamente dalla piattaforma NewsMAN."
+
+#: src/backend.php:104
+msgid "In the settings page enter your API Key and User id provided by NewsMAN."
+msgstr ""
+"Nella pagina delle impostazioni, inserisci la tua chiave API e l'ID utente "
+"forniti da NewsMAN."
+
+#: src/backend.php:105
+msgid "After entering and saving valid credentials you will be able to select a list to which subscribers will be added"
+msgstr ""
+"Dopo aver inserito e salvato credenziali valide, potrai selezionare una "
+"lista a cui verranno aggiunti gli abbonati"
+
+#: src/backend.php:110
+msgid "Widget"
+msgstr "Widget"
+
+#: src/backend.php:113
+msgid "Transform your website visitors into subscribers and customers. Generate easy to integrate pop-ups, embedded signup forms and web layers to convert more."
+msgstr ""
+"Trasforma i visitatori del tuo sito web in abbonati e clienti. Genera "
+"pop-up, moduli di iscrizione integrati e layer web facili da integrare per "
+"convertire di più."
+
+#: src/backend.php:114
+msgid "Log in to your NewsMAN account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget"
+msgstr ""
+"Accedi al tuo account NewsMAN: Seleziona Lista -> Impostazioni -> Moduli "
+"di iscrizione -> Crea/Modifica modulo -> Finestra modale -> Attiva "
+"finestra modale per l'iscrizione alla newsletter -> Seleziona modulo "
+"integrato. Copia e incolla lo shortcode newsman_subscribe_widget"
+
