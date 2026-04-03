@@ -155,6 +155,20 @@ class Config {
 	}
 
 	/**
+	 * Get order statuses selected for order save on status change
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return array
+	 */
+	public function get_order_save_statuses( $blog_id = null ) {
+		$return = $this->config->get_blog_option( $blog_id, 'newsman_remarketingordersave', array() );
+		if ( empty( $return ) || ! is_array( $return ) ) {
+			return array();
+		}
+		return $return;
+	}
+
+	/**
 	 * Is export WordPress users with role subscriber recurring
 	 *
 	 * @param null|int $blog_id WP blog ID.

@@ -42,10 +42,15 @@ class SendStatus extends AbstractStatus {
 			return;
 		}
 
-		foreach ( $this->config->get_order_status_to_name() as $status => $name ) {
-			if ( method_exists( $this, $name ) ) {
-				add_action( 'woocommerce_order_status_' . $status, array( $this, $name ) );
-			}
+		$statuses = $this->remarketing_config->get_order_save_statuses();
+		foreach ( $statuses as $wc_status ) {
+			$status = preg_replace( '/^wc-/', '', $wc_status );
+			add_action(
+				'woocommerce_order_status_' . $status,
+				function ( $order_id ) use ( $status ) {
+					$this->notify( $order_id, $status );
+				}
+			);
 		}
 
 		if ( ! $this->action_scheduler->is_allowed_single() ) {
