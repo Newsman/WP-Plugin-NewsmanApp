@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.5 =
+* Use admin-configured order statuses for order save and status sync hooks
+
 = 3.7.4 =
 * Block legacy query-string access for API v1 endpoints
 
