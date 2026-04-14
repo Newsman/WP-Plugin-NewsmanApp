@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.7 =
+* Add API v1 endpoint platform.has_products
+
 = 3.7.6 =
 * Send platform_has_products=0 in SaveListIntegrationSetup payload when WooCommerce is not installed
 

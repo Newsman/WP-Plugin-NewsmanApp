@@ -49,6 +49,11 @@ class Pool {
 			'class'            => '\Newsman\Export\Retriever\PlatformLanguageVersion',
 			'only_woocommerce' => false,
 		),
+		'platform-has-products'        => array(
+			'code'             => 'platform-has-products',
+			'class'            => '\Newsman\Export\Retriever\PlatformHasProducts',
+			'only_woocommerce' => false,
+		),
 		'integration-name'             => array(
 			'code'             => 'integration-name',
 			'class'            => '\Newsman\Export\Retriever\IntegrationName',

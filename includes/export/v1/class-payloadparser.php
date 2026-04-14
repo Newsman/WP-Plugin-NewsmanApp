@@ -45,6 +45,7 @@ class PayloadParser {
 		'platform.version'          => 'platform-version',
 		'platform.language'         => 'platform-language',
 		'platform.language_version' => 'platform-language-version',
+		'platform.has_products'     => 'platform-has-products',
 		'integration.name'          => 'integration-name',
 		'integration.version'       => 'integration-version',
 		'server.ip'                 => 'server-ip',
