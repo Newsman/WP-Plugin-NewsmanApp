@@ -360,6 +360,10 @@ class Settings {
 				'platform_server_ip'        => ( new \Newsman\Util\ServerIpResolver() )->resolve(),
 			);
 
+			if ( ! $this->is_woo_commerce_exists() ) {
+				$payload['platform_has_products'] = 0;
+			}
+
 			$context = new \Newsman\Service\Context\Configuration\SaveListIntegrationSetup();
 			$context->set_list_id( $list_id )
 				// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- API parameter value, not display text.
