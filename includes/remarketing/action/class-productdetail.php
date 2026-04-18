@@ -42,14 +42,13 @@ class ProductDetail extends AbstractAction {
 			return '';
 		}
 
-		$run = $this->remarketing_config->get_js_track_run_func();
-		$js  = $run . "( 'ec:addProduct', {
+		$js  = "_nzm.run( 'ec:addProduct', {
 			'id': '" . esc_js( $product->get_id() ? $product->get_id() : ( $product->get_sku() ) ) . "',
 			'name': '" . esc_js( $product->get_title() ) . "',
 			'category': " . $this->get_product_category_line( $product ) . "
 			'price': '" . esc_js( $product->get_price() ) . "',
 		} ); ";
-		$js .= $run . "( 'ec:setAction', 'detail' );";
+		$js .= "_nzm.run( 'ec:setAction', 'detail' );";
 
 		return apply_filters(
 			'newsman_remarketing_action_product_detail_js',

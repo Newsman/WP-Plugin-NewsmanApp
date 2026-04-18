@@ -397,6 +397,8 @@ class Config {
 	 *
 	 * @param null|int $blog_id WP blog ID.
 	 * @return string
+	 * @deprecated The run function name is now hard-coded to "_nzm.run" at
+	 *             every call site. Kept for backward compatibility only.
 	 */
 	public function get_js_track_run_func( $blog_id = null ) {
 		$return = (string) $this->config_options->get( 'newsman_jstrackrunfunc', $blog_id );

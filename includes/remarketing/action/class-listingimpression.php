@@ -68,9 +68,7 @@ class ListingImpression extends AbstractAction {
 			$list = 'Product List';
 		}
 
-		$run = $this->remarketing_config->get_js_track_run_func();
-
-		$js = $run . "( 'ec:addImpression', {
+		$js = "_nzm.run( 'ec:addImpression', {
 			'id': '" . esc_js( $product->get_id() ) . "',
 			'name': '" . esc_js( $product->get_title() ) . "',
 			'category': " . $this->get_product_category_line( $product ) . "

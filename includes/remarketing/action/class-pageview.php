@@ -45,7 +45,7 @@ class PageView extends AbstractAction {
 
 		$js = '';
 		if ( false === self::get_page_view_sent() ) {
-			$js = $this->remarketing_config->get_js_track_run_func() . "( 'send', 'pageview' ); ";
+			$js = "_nzm.run( 'send', 'pageview' ); ";
 			if ( ! empty( $this->data[ self::MARK_PAGE_VIEW_SENT_FLAG ] ) ) {
 				self::set_page_view_sent();
 			}

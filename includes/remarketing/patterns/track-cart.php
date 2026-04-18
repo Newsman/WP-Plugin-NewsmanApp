@@ -15,7 +15,6 @@ if ( ! $this->is_woo_commerce_exist() ) {
 	return '';
 }
 $site_url   = get_site_url();
-$run        = $this->remarketing_config->get_js_track_run_func();
 $cart_param = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
 ?>
 <script<?php esc_js( esc_html( $this->get_script_tag_additional_attributes() ) ); ?>>
@@ -183,13 +182,13 @@ function NewsmanAutoEvents() {
 	}
 }
 function nzmClearCart() {
-	<?php echo esc_js( esc_html( $run ) ); ?>('ec:setAction', 'clear_cart');
-	<?php echo esc_js( esc_html( $run ) ); ?>('send', 'event', 'detail view', 'click', 'clearCart');
+	_nzm.run('ec:setAction', 'clear_cart');
+	_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');
 	sessionStorage.setItem('lastCart', JSON.stringify([]));
 	unlockClearCart = false;
 }
 function nzmAddToCart(response) {
-	<?php echo esc_js( esc_html( $run ) ); ?>('ec:setAction', 'clear_cart');
+	_nzm.run('ec:setAction', 'clear_cart');
 	NewsmanDebugLog('newsman remarketing: clear cart sent, add to cart function');
 	detailviewEvent(response);
 }
@@ -197,25 +196,25 @@ function nzmAddToCart(response) {
 function detailviewEvent(response) {
 	NewsmanDebugLog('newsman remarketing: detailviewEvent execute');
 
-	<?php echo esc_js( esc_html( $run ) ); ?>('send', 'event', 'detail view', 'click', 'clearCart', null, function() {
+	_nzm.run('send', 'event', 'detail view', 'click', 'clearCart', null, function() {
 		var products = [],
 			item;
-		
+
 		NewsmanDebugLog('newsman remarketing: executing add to cart callback');
-		
+
 		for (item in response) {
 			if (response[item].hasOwnProperty('id')) {
 				NewsmanDebugLog('ec:addProduct');
-				<?php echo esc_js( esc_html( $run ) ); ?>('ec:addProduct', response[item]);
+				_nzm.run('ec:addProduct', response[item]);
 				products.push(response[item]);
 				NewsmanDebugLog(response[item]);
 			}
 		}
-		<?php echo esc_js( esc_html( $run ) ); ?>('ec:setAction', 'add');
-		<?php echo esc_js( esc_html( $run ) ); ?>('send', 'event', 'UX', 'click', 'add to cart');
+		_nzm.run('ec:setAction', 'add');
+		_nzm.run('send', 'event', 'UX', 'click', 'add to cart');
 		sessionStorage.setItem('lastCart', JSON.stringify(products));
 		unlockClearCart = true;
-		
+
 		NewsmanDebugLog('newsman remarketing: cart sent');
 	});
 }
@@ -279,7 +278,7 @@ function NewsmanDebugLog($message) {
 
 <?php
 if ( $this->remarketing_config->is_woo_commerce_page() ) {
-	echo esc_js( esc_html( $run ) ) . "( 'require', 'ec' );";
+	echo "_nzm.run( 'require', 'ec' );";
 }
 ?>
 </script>

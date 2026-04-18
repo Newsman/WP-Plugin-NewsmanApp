@@ -61,7 +61,6 @@ class Purchase extends AbstractAction {
 			$order_data_store = \WC_Data_Store::load( 'order' );
 		}
 
-		$run           = $this->remarketing_config->get_js_track_run_func();
 		$currency_code = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() :
 			$order->get_currency();
 
@@ -72,7 +71,7 @@ class Purchase extends AbstractAction {
 		$js .= 'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
 			'last_name: "' . esc_attr( esc_html( $order->get_billing_last_name() ) ) . '" });';
 
-		$js .= ' ' . $run . "( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";
+		$js .= " _nzm.run( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";
 
 		// Add order items.
 		if ( $order->get_items() ) {
@@ -92,7 +91,7 @@ class Purchase extends AbstractAction {
 		var orderN = '" . esc_js( $order->get_order_number() ) . "';
 		localStorage.setItem(orderN, 'true');
 		if (typeof orderV === 'undefined' || (typeof orderV !== 'undefined' && (orderV === null || orderV === ''))) {
-			" . $run . "( 'ec:setAction', 'purchase', {
+			_nzm.run( 'ec:setAction', 'purchase', {
 				'id': '" . esc_js( $order->get_order_number() ) . "',
 				'affiliation': '" . esc_js( get_bloginfo( 'name' ) ) . "',
 				'revenue': '" . esc_js( $order->get_total() ) . "',
@@ -124,13 +123,11 @@ class Purchase extends AbstractAction {
 	 * @return string
 	 */
 	public function get_item_js( $order, $item ) {
-		$run = $this->remarketing_config->get_js_track_run_func();
-
 		$product = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_product_from_item( $item ) :
 			$item->get_product();
 		$variant = $this->get_product_variant_line( $order, $item, $product );
 
-		$js  = '' . $run . "( 'ec:addProduct', {";
+		$js  = "_nzm.run( 'ec:addProduct', {";
 		$js .= "'id': '" . esc_js( $product->get_id() ? $product->get_id() : $product->get_sku() ) . "',";
 		$js .= "'name': '" . esc_js( $item['name'] ) . "',";
 		$js .= "'category': " . $this->get_product_category_line( $product );
