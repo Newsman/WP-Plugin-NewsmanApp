@@ -22,7 +22,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Add checkbox subscribe to newsletter in checkout
+ * Processes WooCommerce checkout submissions: subscribes the buyer's email to the
+ * Newsman list when the newsletter checkbox is ticked, and enrolls their phone
+ * number in the SMS list when order-status SMS is enabled.
  *
  * @class \Newsman\Form\Checkout\Processor
  */
@@ -105,46 +107,44 @@ class Processor {
 	 * Class constructor
 	 */
 	public function init() {
-		if ( $this->is_hook_enabled() ) {
-			add_action( 'woocommerce_checkout_order_processed', array( $this, 'process' ), 10, 2 );
+		if ( ! $this->is_hook_enabled() ) {
+			return;
 		}
+
+		// Classic / shortcode checkout.
+		add_action( 'woocommerce_checkout_order_processed', array( $this, 'process' ), 10, 2 );
+
+		// Blocks / Store API checkout does NOT fire the classic hook; it fires
+		// its own action with a WC_Order argument.
+		add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'process_blocks' ), 10, 1 );
+	}
+
+	/**
+	 * Bridge for the Blocks Store API action, whose payload is a WC_Order.
+	 *
+	 * @param \WC_Order $order Order instance.
+	 * @return void
+	 * @throws \Exception Exceptions.
+	 */
+	public function process_blocks( $order ) {
+		if ( ! $order instanceof \WC_Order ) {
+			return;
+		}
+		$this->process( $order->get_id() );
 	}
 
 	/**
 	 * Is hook enabled
 	 *
+	 * Config-level gate only. Per-order opt-in is decided in process() by
+	 * reading the order meta populated by Checkbox (Classic) and BlockField
+	 * (Blocks), so this method no longer depends on $_POST and therefore works
+	 * for both shortcode and Blocks checkouts.
+	 *
 	 * @return bool
 	 */
 	public function is_hook_enabled() {
 		if ( ! $this->config->is_enabled_with_api() ) {
-			return false;
-		}
-
-		$is_checkout_newsletter = (
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			! empty( $_POST['newsmanCheckoutNewsletter'] ) &&
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) )
-		);
-
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-		$is_checkout_send_order_status = (
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			! empty( $_POST['nzm_send_order_status'] ) &&
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['nzm_send_order_status'] ) ) )
-		);
-
-		// Is checkout pave order AJAX request.
-		$is_checkout_save = (
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			! empty( $_REQUEST['wc-ajax'] ) &&
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			( 'checkout' === sanitize_text_field( wp_unslash( $_REQUEST['wc-ajax'] ) ) )
-		);
-
-		$is_checkout_save = apply_filters( 'newsman_form_checkout_processor_is_checkout', $is_checkout_save );
-		if ( ! $is_checkout_newsletter && ! $is_checkout_send_order_status && ! $is_checkout_save ) {
 			return false;
 		}
 
@@ -170,12 +170,7 @@ class Processor {
 		$order                   = wc_get_order( $order_id );
 		$order_data              = $order->get_data();
 		$is_subscribe_sms_list   = ( '1' === (string) ( (int) $order->get_meta( '_nzm_send_order_status' ) ) );
-		$is_subscribe_newsletter = (
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			! empty( $_POST['newsmanCheckoutNewsletter'] ) &&
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-			( 1 === (int) sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) ) )
-		);
+		$is_subscribe_newsletter = ( '1' === (string) ( (int) $order->get_meta( '_newsman_checkout_newsletter' ) ) );
 
 		$properties = array();
 

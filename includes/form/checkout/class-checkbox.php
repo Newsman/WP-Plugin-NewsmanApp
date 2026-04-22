@@ -19,9 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Add checkbox subscribe to newsletter in checkout
+ * Renders the newsletter and order-status SMS checkboxes on the WooCommerce
+ * checkout form, and persists the order-status SMS flag on the order (stored as
+ * meta, exposed via REST, editable on the admin order screen).
  *
- * @class \Newsman\Form\Checkout
+ * @class \Newsman\Form\Checkout\Checkbox
  */
 class Checkbox {
 	/**
@@ -57,6 +59,12 @@ class Checkbox {
 		}
 
 		add_action( 'woocommerce_review_order_before_submit', array( $this, 'add_fields' ) );
+
+		// Persist newsletter checkbox state as order meta on Classic checkouts so
+		// Processor can read it without touching $_POST.
+		if ( $this->config->is_checkout_newsletter() ) {
+			add_action( 'woocommerce_checkout_create_order', array( $this, 'save_newsletter_field' ), 10, 1 );
+		}
 
 		// Do not handle nzm_send_order_status used to send SMS if flags are not set.
 		if ( ! ( $this->sms_config->is_enabled_with_api() && $this->config->is_checkout_order_status() ) ) {
@@ -98,6 +106,23 @@ class Checkbox {
 			10,
 			1
 		);
+	}
+
+	/**
+	 * Save newsletter-subscribe flag as order meta on Classic checkouts.
+	 *
+	 * @param \WC_Order $order Order instance.
+	 * @return void
+	 */
+	public function save_newsletter_field( $order ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['newsmanCheckoutNewsletter'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$is_subscribe = sanitize_text_field( wp_unslash( $_POST['newsmanCheckoutNewsletter'] ) );
+			$order->update_meta_data( '_newsman_checkout_newsletter', (string) ( (int) $is_subscribe ) );
+		} else {
+			$order->update_meta_data( '_newsman_checkout_newsletter', '0' );
+		}
 	}
 
 	/**

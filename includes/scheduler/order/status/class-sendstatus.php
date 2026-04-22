@@ -116,7 +116,7 @@ class SendStatus extends AbstractStatus {
 				// Try again if action is scheduled. Otherwise, throw the exception further.
 				if ( false !== $is_scheduled ) {
 					$this->logger->log_exception( $e );
-					$this->logger->notice( 'Wait ' . self::WAIT_RETRY_TIMEOUT . ' seconds before retry' );
+					$this->logger->notice( 'Wait ' . number_format( self::WAIT_RETRY_TIMEOUT / 1000000, 2 ) . ' seconds before retry' );
 					usleep( self::WAIT_RETRY_TIMEOUT );
 
 					$purchase = new \Newsman\Service\Remarketing\SetPurchaseStatus();

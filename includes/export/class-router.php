@@ -148,6 +148,7 @@ class Router {
 	 * @param string   $raw_body Raw HTTP request body.
 	 * @param null|int $blog_id  WordPress blog ID.
 	 * @return void
+	 * @throws \Newsman\Export\V1\ApiV1Exception When the payload is invalid or the plugin is not configured for the target blog.
 	 */
 	protected function execute_v1( $raw_body, $blog_id ) {
 		$page = new \Newsman\Page\Renderer();

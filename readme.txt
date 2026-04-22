@@ -111,6 +111,10 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.9 =
+* Add newsletter and order-status SMS checkboxes to the WooCommerce Blocks checkout (classic shortcode already supported)
+* Convert retry-wait log messages from microseconds to seconds
+
 = 3.7.8 =
 * Detect fetch() based add-to-cart (WooCommerce Blocks / Store API) in remarketing cart tracking
 
