@@ -111,6 +111,10 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.10 =
+* Add Theme Cart Compatibility setting; when off, listen to the WooCommerce Store API for cart mutations instead of polling
+* Bootstrap the Newsman remarketing cart once per browser session from the current WooCommerce cart when Theme Cart Compatibility is off
+
 = 3.7.9 =
 * Add newsletter and order-status SMS checkboxes to the WooCommerce Blocks checkout (classic shortcode already supported)
 * Convert retry-wait log messages from microseconds to seconds
