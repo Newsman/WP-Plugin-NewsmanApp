@@ -151,6 +151,8 @@ Accesati **NewsMAN > Remarketing** pentru a configura urmarirea vizitatorilor. R
 
 - **Send Telephone** - Include numerele de telefon ale clientilor in datele de remarketing. Se aplica doar clientilor autentificati care au furnizat un numar de telefon.
 
+- **Theme Cart Compatibility** - Activati pentru cea mai sigura detectare a schimbarilor din cos pe orice tema (polling in fundal plus interceptare AJAX/fetch catre endpoint-ul de cos Newsman). Dezactivati pentru un mecanism mai usor care citeste datele cosului direct din raspunsurile WooCommerce Store API (`/wc/store/v1/cart/add-item` si `/wc/store/v1/batch`), fara polling. Daca dezactivati aceasta optiune, folositi instrumentul **Check installation** din Remarketing in newsman.app pentru a verifica daca evenimentele de cos sunt detectate pe tema dvs.
+
 - **Product Attributes** - Selectati ce atribute ale produselor (de ex., Culoare, Marime, Brand) sunt trimise impreuna cu evenimentele de vizualizare a produselor. Aceasta va permite sa construiti campanii mai bine directionate in Newsman.
 
 - **Customer Attributes** - Selectati ce detalii ale clientilor sunt trimise cu datele de remarketing. Optiunile disponibile includ companie facturare/livrare, oras, judet si tara.

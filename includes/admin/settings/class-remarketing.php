@@ -47,6 +47,7 @@ class Remarketing extends Settings {
 		'newsman_remarketingid',
 		'newsman_remarketinganonymizeip',
 		'newsman_remarketingsendtelephone',
+		'newsman_remarketingthemecartcompatibility',
 		'newsman_remarketingproductattributes',
 		'newsman_remarketingcustomerattributes',
 		'newsman_remarketingordersave',

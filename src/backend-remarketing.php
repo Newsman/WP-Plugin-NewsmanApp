@@ -96,6 +96,16 @@ $form_values = $this->get_form_values();
 							<p class="description"><?php echo esc_html__( 'Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders.', 'newsman' ); ?></p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<label class="nzm-label" for="newsman_remarketingthemecartcompatibility"><?php echo esc_html__( 'Theme Cart Compatibility', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<input name="newsman_remarketingthemecartcompatibility" type="checkbox"
+								id="newsman_remarketingthemecartcompatibility" <?php echo ( ! empty( $form_values['newsman_remarketingthemecartcompatibility'] ) && 'on' === $form_values['newsman_remarketingthemecartcompatibility'] ) ? 'checked' : ''; ?>/>
+							<p class="description"><?php echo esc_html__( 'Enable for the most reliable detection of cart changes on any theme (background polling plus AJAX/fetch interception against the Newsman cart endpoint). Disable for a lighter mechanism that reads cart data directly from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/batch) responses (no polling). If you disable this option, use the newsman.app Remarketing Check installation tool to verify cart events are detected on your theme.', 'newsman' ); ?></p>
+						</td>
+					</tr>
 					<?php if ( $this->is_action_scheduler_exists() ) : ?>
 						<tr>
 							<th scope="row">

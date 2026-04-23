@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '8.0.0';
+	protected static $setup_version = '9.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -499,6 +499,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_eight_zero_zero();
 			update_option( 'newsman_setup_version', '8.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '9.0.0', '<' ) ) {
+			self::upgrade_options_nine_zero_zero();
+			update_option( 'newsman_setup_version', '9.0.0', true );
+		}
 	}
 
 	/**
@@ -658,6 +663,15 @@ jt/modal_{{api_key}}.js'
 			$logger = Logger::init();
 			$logger->log_exception( $e );
 		}
+	}
+
+	/**
+	 * Version 9.0.0 — seed Theme Cart Compatibility option (default on).
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_nine_zero_zero() {
+		add_option( 'newsman_remarketingthemecartcompatibility', 'on', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**

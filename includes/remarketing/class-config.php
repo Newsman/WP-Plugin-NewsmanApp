@@ -127,6 +127,18 @@ class Config {
 	}
 
 	/**
+	 * Is Theme Cart Compatibility enabled.
+	 * When enabled the classic polling + XHR/fetch interception tracker is used.
+	 * When disabled the WooCommerce Store API response listener is used instead.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_theme_cart_compatibility( $blog_id = null ) {
+		return 'on' === $this->config->get_blog_option( $blog_id, 'newsman_remarketingthemecartcompatibility', '' );
+	}
+
+	/**
 	 * Get additional product attributes
 	 *
 	 * @param null|int $blog_id WP blog ID.

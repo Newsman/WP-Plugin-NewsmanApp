@@ -140,6 +140,8 @@ Go to **NewsMAN > Remarketing** to set up visitor tracking. Remarketing lets New
 
 - **Send Telephone** - Include customer phone numbers in remarketing data. Only applies to logged-in customers who have provided a phone number.
 
+- **Theme Cart Compatibility** - Enable for the most reliable detection of cart changes on any theme (background polling plus AJAX/fetch interception against the Newsman cart endpoint). Disable for a lighter mechanism that reads cart data directly from the WooCommerce Store API (`/wc/store/v1/cart/add-item` and `/wc/store/v1/batch`) responses (no polling). If you disable this option, use the newsman.app Remarketing **Check installation** tool to verify cart events are detected on your theme.
+
 - **Product Attributes** - Select which product attributes (e.g., Color, Size, Brand) are sent along with product view events. This lets you build more targeted campaigns in Newsman.
 
 - **Customer Attributes** - Select which customer details are sent with remarketing data. Available options include billing/shipping company, city, state, and country.

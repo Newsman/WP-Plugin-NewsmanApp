@@ -104,15 +104,23 @@ class Track {
 	}
 
 	/**
-	 * Include track cart script and return contents
+	 * Include track cart script and return contents.
+	 * Theme Cart Compatibility ON  → classic polling + XHR/fetch interception tracker.
+	 * Theme Cart Compatibility OFF → WooCommerce Store API response listener.
+	 * The two modes never coexist.
 	 *
 	 * @return string
 	 */
 	public function include_script_cart() {
 		ob_start();
 
-		$path = plugin_dir_path( __FILE__ ) . '../patterns/track-cart.php';
-		$path = apply_filters( 'newsman_remarketing_script_track_cart_filepath', $path );
+		if ( $this->remarketing_config->is_theme_cart_compatibility() ) {
+			$path = plugin_dir_path( __FILE__ ) . '../patterns/track-cart.php';
+			$path = apply_filters( 'newsman_remarketing_script_track_cart_filepath', $path );
+		} else {
+			$path = plugin_dir_path( __FILE__ ) . '../patterns/track-cart-storeapi.php';
+			$path = apply_filters( 'newsman_remarketing_script_track_cart_storeapi_filepath', $path );
+		}
 
 		include_once $path;
 
