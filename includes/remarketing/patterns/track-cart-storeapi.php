@@ -19,11 +19,15 @@
 if ( ! $this->is_woo_commerce_exist() ) {
 	return '';
 }
+$site_url   = get_site_url();
+$cart_param = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
 ?>
 <script<?php esc_js( esc_html( $this->get_script_tag_additional_attributes() ) ); ?>>
 var isProd = true;
 var NZM_STORE_BATCH_PATH = '/wc/store/v1/batch';
 var NZM_STORE_ADD_ITEM_PATH = '/wc/store/v1/cart/add-item';
+var NZM_CART_AJAX_URL = '<?php echo esc_url( rtrim( $site_url, '/' ) . '/' ); ?>' + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
+var NZM_SESSION_SYNC_COOKIE = 'nzm_cart_sync';
 
 function NewsmanDebugLog(message) {
 	if ((typeof isProd !== 'undefined') && isProd === true) {
@@ -108,9 +112,90 @@ function nzmStoreApiDispatch(products) {
 		}
 		_nzm.run('ec:setAction', 'add');
 		_nzm.run('send', 'event', 'UX', 'click', 'add to cart');
-		sessionStorage.setItem('lastCart', JSON.stringify(products));
+		try { sessionStorage.setItem('lastCart', JSON.stringify(products)); } catch (e) {}
 		NewsmanDebugLog('newsman remarketing: cart sent (store-api)');
 	});
+}
+
+function nzmStoreApiClear() {
+	_nzm.run('ec:setAction', 'clear_cart');
+	_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');
+	try { sessionStorage.setItem('lastCart', JSON.stringify([])); } catch (e) {}
+	NewsmanDebugLog('newsman remarketing: clear cart sent (store-api bootstrap)');
+}
+
+function nzmGetCookie(name) {
+	var needle = name + '=';
+	var parts = document.cookie ? document.cookie.split(';') : [];
+	for (var i = 0; i < parts.length; i++) {
+		var p = parts[i].replace(/^\s+/, '');
+		if (p.indexOf(needle) === 0) {
+			return p.substring(needle.length);
+		}
+	}
+	return null;
+}
+
+function nzmSetSessionCookie(name, value) {
+	// No Max-Age / Expires => browser-session lifetime. SameSite=Lax keeps
+	// it on ordinary same-site navigations. Cleared when the browser closes.
+	document.cookie = name + '=' + value + '; path=/; SameSite=Lax';
+}
+
+// Once per browser session, clear the Newsman remarketing cart and replay
+// the current WooCommerce cart into it. Runs when no nzm_cart_sync cookie
+// is present; ON mode has no equivalent because track-cart.php's
+// firstLoad=true branch in NewsmanAutoEvents already polls getCart.json on
+// every page. The cookie is set unconditionally after the XHR resolves —
+// including on failure — so a broken endpoint cannot cause a re-request on
+// every navigation.
+function nzmSessionBootstrap() {
+	if (nzmGetCookie(NZM_SESSION_SYNC_COOKIE)) {
+		NewsmanDebugLog('newsman remarketing: session sync cookie present, bootstrap skipped');
+		return;
+	}
+
+	var url = NZM_CART_AJAX_URL;
+	var sep = url.indexOf('?') >= 0 ? '&t=' : '?t=';
+	url = url + sep + Date.now();
+
+	var xhr = new XMLHttpRequest();
+	var markDone = function () {
+		nzmSetSessionCookie(NZM_SESSION_SYNC_COOKIE, '1');
+	};
+
+	try {
+		xhr.open('GET', url, true);
+	} catch (e) {
+		markDone();
+		return;
+	}
+
+	xhr.onload = function () {
+		try {
+			if (xhr.status !== 200 && xhr.status !== 201) {
+				return;
+			}
+			var parsed;
+			try { parsed = JSON.parse(xhr.responseText); } catch (e) { parsed = null; }
+			if (Array.isArray(parsed) && parsed.length > 0) {
+				nzmStoreApiDispatch(parsed);
+			} else {
+				nzmStoreApiClear();
+			}
+		} finally {
+			markDone();
+		}
+	};
+
+	xhr.onerror = markDone;
+	xhr.ontimeout = markDone;
+
+	try {
+		xhr.send(null);
+	} catch (e) {
+		markDone();
+	}
 }
 
 function nzmHandleStoreApiResponse(url, requestBody, responseText) {
@@ -208,6 +293,7 @@ var sameOrigin = (documentUrl.indexOf(documentComparer) !== -1);
 if (sameOrigin) {
 	nzmHookFetch();
 	nzmHookXHR();
+	nzmSessionBootstrap();
 }
 
 <?php
