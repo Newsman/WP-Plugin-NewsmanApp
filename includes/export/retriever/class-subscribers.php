@@ -11,6 +11,8 @@
 
 namespace Newsman\Export\Retriever;
 
+use Newsman\Export\V1\ApiV1Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -27,7 +29,8 @@ class Subscribers extends AbstractRetriever implements RetrieverInterface {
 	 * @param array    $data Data to filter entities, to save entities, other.
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
-	 * @throws \Exception On errors.
+	 * @throws ApiV1Exception When neither subscriber source is enabled in API v1 context.
+	 * @throws \Exception When neither subscriber source is enabled in legacy context.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
 		if ( $this->remarketing_config->is_export_woocommerce_subscribers( $blog_id ) ) {
@@ -38,6 +41,11 @@ class Subscribers extends AbstractRetriever implements RetrieverInterface {
 		if ( $this->remarketing_config->is_export_wordpress_subscribers( $blog_id ) ) {
 			$retriever = new SubscribersWordpressFeed();
 			return $retriever->process( $data, $blog_id );
+		}
+
+		if ( isset( $data['_v1_filter_fields'] ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new ApiV1Exception( 3002, 'Subscriber export not enabled', 500 );
 		}
 
 		throw new \Exception( 'No subscriber export enabled.' );

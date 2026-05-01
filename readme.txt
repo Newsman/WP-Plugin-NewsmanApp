@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.11 =
+* Add API v1 error 3002 - throw a specific error when no subscriber export source is enabled
+
 = 3.7.10 =
 * Add Theme Cart Compatibility setting; when off, listen to the WooCommerce Store API for cart mutations instead of polling
 * Bootstrap the Newsman remarketing cart once per browser session from the current WooCommerce cart when Theme Cart Compatibility is off
