@@ -56,14 +56,112 @@ class SubscribeHelper {
 	 * @throws \Exception When SubscribeEmail or UpdateProps fail.
 	 */
 	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '' ) {
-		$subscriber_id = self::lookup_subscriber_id( $blog_id, $list_id, $email );
+		/**
+		 * Filter the Newsman list ID before lookup/subscribe.
+		 *
+		 * Allows routing the subscription to a different list based on context
+		 * (blog, email, properties, IP).
+		 *
+		 * @param string $list_id    Newsman list ID resolved from settings.
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 */
+		$list_id = apply_filters( 'newsman_elementor_subscribe_list_id', $list_id, $blog_id, $email, $properties, $ip );
 
-		if ( null !== $subscriber_id ) {
-			self::update_props( $blog_id, $list_id, $email, $subscriber_id, $properties );
+		/**
+		 * Filter the subscriber properties before send.
+		 *
+		 * @param array  $properties Subscriber properties.
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param string $ip         Client IP.
+		 */
+		$properties = apply_filters( 'newsman_elementor_subscribe_properties', $properties, $blog_id, $list_id, $email, $ip );
+
+		/**
+		 * Filter whether to perform the subscribe at all.
+		 *
+		 * Return false to short-circuit and skip every API call.
+		 *
+		 * @param bool   $should     Default true.
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 */
+		if ( ! apply_filters( 'newsman_elementor_should_subscribe', true, $blog_id, $list_id, $email, $properties, $ip ) ) {
 			return;
 		}
 
-		self::save_subscribe( $blog_id, $list_id, $email, $properties, $ip );
+		/**
+		 * Fires before any Newsman API call is made for this subscribe.
+		 *
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 */
+		do_action( 'newsman_elementor_before_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+
+		$subscriber_id = self::lookup_subscriber_id( $blog_id, $list_id, $email );
+
+		if ( null !== $subscriber_id ) {
+			try {
+				self::update_props( $blog_id, $list_id, $email, $subscriber_id, $properties );
+			} catch ( \Exception $e ) {
+				/**
+				 * Fires when a Newsman subscribe attempt fails.
+				 *
+				 * Stage values: 'lookup' (swallowed), 'update_props' (rethrown),
+				 * 'save_subscribe' (rethrown).
+				 *
+				 * @param \Exception $e          Caught exception.
+				 * @param string     $stage      Pipeline stage that failed.
+				 * @param int        $blog_id    Current WP blog ID.
+				 * @param string     $list_id    Newsman list ID.
+				 * @param string     $email      Subscriber email.
+				 * @param array      $properties Subscriber properties.
+				 * @param string     $ip         Client IP.
+				 */
+				do_action( 'newsman_elementor_subscribe_failed', $e, 'update_props', $blog_id, $list_id, $email, $properties, $ip );
+				throw $e;
+			}
+
+			/**
+			 * Fires after props were refreshed on an existing subscriber.
+			 *
+			 * @param int|string $subscriber_id Subscriber id from GetByEmail.
+			 * @param int        $blog_id       Current WP blog ID.
+			 * @param string     $list_id       Newsman list ID.
+			 * @param string     $email         Subscriber email.
+			 * @param array      $properties    Properties pushed to the subscriber.
+			 */
+			do_action( 'newsman_elementor_props_updated', $subscriber_id, $blog_id, $list_id, $email, $properties );
+			return;
+		}
+
+		try {
+			self::save_subscribe( $blog_id, $list_id, $email, $properties, $ip );
+		} catch ( \Exception $e ) {
+			do_action( 'newsman_elementor_subscribe_failed', $e, 'save_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+			throw $e;
+		}
+
+		/**
+		 * Fires after a new subscriber was created via saveSubscribe.
+		 *
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Properties attached on creation.
+		 * @param string $ip         Client IP.
+		 */
+		do_action( 'newsman_elementor_subscribed', $blog_id, $list_id, $email, $properties, $ip );
 	}
 
 	/**
@@ -106,6 +204,7 @@ class SubscribeHelper {
 					$e->getMessage()
 				)
 			);
+			do_action( 'newsman_elementor_subscribe_failed', $e, 'lookup', $blog_id, $list_id, $email, array(), '' );
 		}
 
 		return null;

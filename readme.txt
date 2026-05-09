@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.13 =
+* Add filter and action hooks throughout the Elementor integration so third parties can short-circuit submissions, mutate the email/properties/list_id, customize user-facing error messages, observe lifecycle events, swap list dropdown options, and disable either integration without code changes
+
 = 3.7.12 =
 * Add Elementor Pro integration for the legacy Form widget (per-form list selection, per-field properties, email field detection); tested with Elementor and Elementor Pro 3.35.x and 4.x, including forms placed inside Elementor popups
 * Add Elementor Pro integration for Atomic Forms (Elementor 4.x); same on/off toggle, list dropdown, and per-field settings as the legacy Form widget

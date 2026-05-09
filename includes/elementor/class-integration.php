@@ -62,26 +62,37 @@ class Integration {
 	 * @return void
 	 */
 	public function init_hooks() {
-		add_action(
-			'elementor/element/form/section_form_fields/after_section_end',
-			array( $this->form_controls, 'add_newsman_section' ),
-			10,
-			2
-		);
+		/**
+		 * Filter whether the legacy Elementor Form integration should register its hooks.
+		 *
+		 * Return false to disable Newsman's Form widget integration entirely (editor controls
+		 * + submission processing). The Atomic Forms sub-integration is gated separately via
+		 * `newsman_atomic_form_integration_enabled`.
+		 *
+		 * @param bool $enabled Default true.
+		 */
+		if ( apply_filters( 'newsman_elementor_integration_enabled', true ) ) {
+			add_action(
+				'elementor/element/form/section_form_fields/after_section_end',
+				array( $this->form_controls, 'add_newsman_section' ),
+				10,
+				2
+			);
 
-		add_action(
-			'elementor/element/form/section_form_fields/before_section_end',
-			array( $this->form_controls, 'inject_field_controls' ),
-			100,
-			2
-		);
+			add_action(
+				'elementor/element/form/section_form_fields/before_section_end',
+				array( $this->form_controls, 'inject_field_controls' ),
+				100,
+				2
+			);
 
-		add_action(
-			'elementor_pro/forms/process',
-			array( $this->form_processor, 'process' ),
-			10,
-			2
-		);
+			add_action(
+				'elementor_pro/forms/process',
+				array( $this->form_processor, 'process' ),
+				10,
+				2
+			);
+		}
 
 		$this->atomic_form_integration->init_hooks();
 	}
