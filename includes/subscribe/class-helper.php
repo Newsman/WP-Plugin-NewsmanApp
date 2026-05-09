@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
- * Title: Newsman remarketing class.
+ * Title: Newsman shared subscribe helper.
  * Author: Newsman
  * Author URI: https://newsman.com
  * License: GPLv2 or later
@@ -9,7 +9,7 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Elementor;
+namespace Newsman\Subscribe;
 
 use Newsman\Logger;
 use Newsman\Service\Context\GetByEmail as GetByEmailContext;
@@ -24,28 +24,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Shared subscribe helper used by both the legacy Form widget processor and the
- * Atomic Forms processor.
+ * Shared subscribe helper used by every form-source integration (Elementor legacy/atomic
+ * Form widgets, Contact Form 7, future ones).
  *
- * Why this exists: calling `subscriber.saveSubscribe` for an email that already
- * exists on the list does NOT persist the `props` payload — the existing
- * subscriber's properties remain unchanged. To fix this, the flow becomes:
+ * Why this exists: calling `subscriber.saveSubscribe` for an email that already exists on
+ * the list does NOT persist the `props` payload — the existing subscriber's properties
+ * remain unchanged. To fix this, the flow becomes:
  *
  *   1. Look up the email via `subscriber.getByEmail`.
  *   2. If a subscriber is returned -> call `subscriber.updateProps` with their id.
- *   3. If not found (or the lookup fails) -> call `subscriber.saveSubscribe`
- *      with props inline (which DOES persist props on first creation).
+ *   3. If not found (or the lookup fails) -> call `subscriber.saveSubscribe` with props
+ *      inline (which DOES persist props on first creation).
  *
- * @class \Newsman\Elementor\SubscribeHelper
+ * @class \Newsman\Subscribe\Helper
  */
-class SubscribeHelper {
+class Helper {
 	/**
 	 * Subscribe an email to a Newsman list with subscriber properties.
 	 *
-	 * Existing subscribers get their props refreshed via `UpdateProps`. New
-	 * subscribers are created via `SubscribeEmail` (saveSubscribe). The caller
-	 * receives any exception thrown by the chosen branch — `GetByEmail` failures
-	 * are swallowed and treated as "not found, create instead".
+	 * Existing subscribers get their props refreshed via `UpdateProps`. New subscribers
+	 * are created via `SubscribeEmail` (saveSubscribe). The caller receives any exception
+	 * thrown by the chosen branch — `GetByEmail` failures are swallowed and treated as
+	 * "not found, create instead".
 	 *
 	 * @param int    $blog_id    Current WP blog ID.
 	 * @param string $list_id    Newsman list ID.
@@ -68,7 +68,7 @@ class SubscribeHelper {
 		 * @param array  $properties Subscriber properties.
 		 * @param string $ip         Client IP.
 		 */
-		$list_id = apply_filters( 'newsman_elementor_subscribe_list_id', $list_id, $blog_id, $email, $properties, $ip );
+		$list_id = apply_filters( 'newsman_subscribe_list_id', $list_id, $blog_id, $email, $properties, $ip );
 
 		/**
 		 * Filter the subscriber properties before send.
@@ -79,7 +79,7 @@ class SubscribeHelper {
 		 * @param string $email      Subscriber email.
 		 * @param string $ip         Client IP.
 		 */
-		$properties = apply_filters( 'newsman_elementor_subscribe_properties', $properties, $blog_id, $list_id, $email, $ip );
+		$properties = apply_filters( 'newsman_subscribe_properties', $properties, $blog_id, $list_id, $email, $ip );
 
 		/**
 		 * Filter whether to perform the subscribe at all.
@@ -93,7 +93,7 @@ class SubscribeHelper {
 		 * @param array  $properties Subscriber properties.
 		 * @param string $ip         Client IP.
 		 */
-		if ( ! apply_filters( 'newsman_elementor_should_subscribe', true, $blog_id, $list_id, $email, $properties, $ip ) ) {
+		if ( ! apply_filters( 'newsman_should_subscribe', true, $blog_id, $list_id, $email, $properties, $ip ) ) {
 			return;
 		}
 
@@ -106,7 +106,7 @@ class SubscribeHelper {
 		 * @param array  $properties Subscriber properties.
 		 * @param string $ip         Client IP.
 		 */
-		do_action( 'newsman_elementor_before_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+		do_action( 'newsman_before_subscribe', $blog_id, $list_id, $email, $properties, $ip );
 
 		$subscriber_id = self::lookup_subscriber_id( $blog_id, $list_id, $email );
 
@@ -128,7 +128,7 @@ class SubscribeHelper {
 				 * @param array      $properties Subscriber properties.
 				 * @param string     $ip         Client IP.
 				 */
-				do_action( 'newsman_elementor_subscribe_failed', $e, 'update_props', $blog_id, $list_id, $email, $properties, $ip );
+				do_action( 'newsman_subscribe_failed', $e, 'update_props', $blog_id, $list_id, $email, $properties, $ip );
 				throw $e;
 			}
 
@@ -141,14 +141,14 @@ class SubscribeHelper {
 			 * @param string     $email         Subscriber email.
 			 * @param array      $properties    Properties pushed to the subscriber.
 			 */
-			do_action( 'newsman_elementor_props_updated', $subscriber_id, $blog_id, $list_id, $email, $properties );
+			do_action( 'newsman_props_updated', $subscriber_id, $blog_id, $list_id, $email, $properties );
 			return;
 		}
 
 		try {
 			self::save_subscribe( $blog_id, $list_id, $email, $properties, $ip );
 		} catch ( \Exception $e ) {
-			do_action( 'newsman_elementor_subscribe_failed', $e, 'save_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+			do_action( 'newsman_subscribe_failed', $e, 'save_subscribe', $blog_id, $list_id, $email, $properties, $ip );
 			throw $e;
 		}
 
@@ -161,7 +161,7 @@ class SubscribeHelper {
 		 * @param array  $properties Properties attached on creation.
 		 * @param string $ip         Client IP.
 		 */
-		do_action( 'newsman_elementor_subscribed', $blog_id, $list_id, $email, $properties, $ip );
+		do_action( 'newsman_subscribed', $blog_id, $list_id, $email, $properties, $ip );
 	}
 
 	/**
@@ -204,7 +204,7 @@ class SubscribeHelper {
 					$e->getMessage()
 				)
 			);
-			do_action( 'newsman_elementor_subscribe_failed', $e, 'lookup', $blog_id, $list_id, $email, array(), '' );
+			do_action( 'newsman_subscribe_failed', $e, 'lookup', $blog_id, $list_id, $email, array(), '' );
 		}
 
 		return null;

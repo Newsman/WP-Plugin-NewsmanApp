@@ -121,6 +121,8 @@ Aceste setari sunt destinate utilizatorilor avansati si dezvoltatorilor. In cele
 
 - **Use Elementor Integration** - Comutator principal pentru integrarea Newsman cu Elementor Pro. **Activat implicit.** Cand este activat, sectiunea Newsman apare in editorul Elementor atat pentru widget-ul Form clasic, cat si pentru Atomic Forms (Elementor 4.x), iar trimiterile sunt impinse catre lista Newsman. Dezactivati pentru a elimina toate controalele Newsman din editor si pentru a opri redirectionarea trimiterilor pentru ambele. Setarile Newsman per formular / per camp existente sunt pastrate cand este dezactivat si reactivate cand il porniti din nou. Dezactivarea nu are efect asupra fluxurilor de newsletter WordPress, WooCommerce sau non-Elementor.
 
+- **Use Contact Form 7 Integration** - Comutator principal pentru integrarea Newsman cu Contact Form 7. **Activat implicit.** Vizibil doar cand plugin-ul Contact Form 7 este instalat. Cand este activat, un tab Newsman apare in ecranul de editare al fiecarui formular de contact (selectie lista per formular, camp de email, proprietati), iar trimiterile sunt impinse catre lista Newsman. Dezactivati pentru a elimina tab-ul din editor si a opri redirectionarea trimiterilor. Setarile Newsman per formular existente sunt pastrate cand este dezactivat si reactivate cand il porniti din nou. Dezactivarea nu are efect asupra fluxurilor de newsletter WordPress, WooCommerce, Elementor sau alte integrari.
+
 - **Plugin Loaded Priority** - Controleaza cand se initializeaza plugin-ul in raport cu alte plugin-uri. Schimbati doar daca intampinati conflicte cu alt plugin. Valoarea implicita de 20 functioneaza pentru majoritatea configuratiilor.
 
 - **Use Action Scheduler** - Daca aveti plugin-ul Action Scheduler instalat, activarea acestuia va procesa abonarile si dezabonarile in fundal in loc de imediat. Aceasta poate imbunatati viteza checkout-ului pe magazinele cu trafic mare.
@@ -332,6 +334,46 @@ Asteptam ca Elementor sa extinda API-ul de extensie pentru Atomic Forms intr-o v
 - **Sectiunea Newsman nu apare**: confirmati ca ambele experimente atomic sunt active in **Elementor > Settings > Features**. Atat `Atomic Widgets` cat si `Atomic Form` trebuie sa fie pornite.
 - **Dropdown-ul Newsman List este gol**: la fel ca la integrarea Forms clasica - vedeti nota de depanare din sectiunea **Formulare Elementor** de mai sus.
 - **Emailul nu apare in Newsman**: asigurati-va ca exact un input/textarea are **Use as Newsman email** activat, si ca acelasi widget are un **ID** semnificativ.
+
+---
+
+## Contact Form 7
+
+Daca site-ul foloseste plugin-ul [Contact Form 7](https://wordpress.org/plugins/contact-form-7/), plugin-ul Newsman poate abona trimiterile catre o lista Newsman si poate trimite valorile campurilor pe care le alegeti ca proprietati de abonat.
+
+> Integrarea este controlata de comutatorul **Use Contact Form 7 Integration** din **NewsMAN > Settings > Developer Settings**. Comutatorul (si tab-ul Newsman pe care il controleaza) apare doar cand Contact Form 7 este instalat.
+
+### Setari per formular
+
+In WP admin, deschideti **Contact > Contact Forms** si dati click pe orice formular pentru a-l edita. Un nou tab **Newsman** apare langa tab-urile **Form**, **Mail**, **Messages** si **Additional Settings**, cu urmatoarele optiuni:
+
+- **Send to Newsman** - Dezactivat implicit. Activati-l pentru a porni Newsman pentru acest formular. Cand este dezactivat, nu se trimit date catre Newsman, indiferent de setarile per camp de mai jos.
+
+- **Newsman list** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarea Elementor). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
+
+- **Email field** - Alegeti care form-tag detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, email, number, ...), nu doar tag-urile `[email]` - util pentru formulare care colecteaza emailul printr-un camp text cu validare proprie. Selectia implicita este primul form-tag `[email]` din template; daca nu exista un tag email, este selectat primul camp disponibil. Dropdown-ul afiseaza si basetype-ul fiecarui tag langa nume pentru a usura selectia.
+
+- **Send as properties** - O lista de checkbox-uri cu toate form-tag-urile din template. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie numele form-tag-ului. Campul email selectat este afisat dar dezactivat (nu poate fi proprietate, deoarece este deja folosit ca email de abonat). Implicit: fiecare tag non-sistem cu exceptia campului email este bifat.
+
+> Tag-urile interne (butonul Submit, file uploads, acceptance, reCAPTCHA, captcha-c, captcha-r, quiz) sunt excluse atat din dropdown-ul de email cat si din checkbox-urile de proprietati - nu poarta valori introduse de utilizator care sa aiba sens ca date de abonat.
+
+### Ce se intampla la trimitere
+
+Cand un vizitator trimite formularul cu succes:
+
+1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
+2. Daca este activat, plugin-ul citeste emailul din campul email configurat, construieste o harta de proprietati din campurile bifate (campurile cu valori multiple precum checkbox-urile sunt codate ca JSON) si aboneaza (sau reimprospateaza) emailul in lista Newsman aleasa cu acele proprietati.
+3. Fluxul normal al formularului (trimitere mail, mesaj de confirmare, redirect) nu este afectat. O eroare de la API-ul Newsman este inregistrata in log dar **nu** blocheaza mail-ul formularului si nu schimba ce vede vizitatorul - formularul afiseaza in continuare starea de succes.
+
+### Limitare: erorile nu sunt afisate in pagina (v1)
+
+Contact Form 7 nu ofera infrastructura nativa pentru integrari terte care sa afiseze mesaje de eroare in raspunsul formularului. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Instalarile WordPress simple nu au destinatie de log - verificati credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
+
+### Depanare
+
+- **Tab-ul Newsman nu apare**: confirmati ca Contact Form 7 este activ si ca **Use Contact Form 7 Integration** este pornit in **NewsMAN > Settings > Developer Settings**.
+- **Dropdown-ul Newsman list este gol**: la fel ca la integrarea Elementor - confirmati credentialele in **NewsMAN > Settings** si asteptati pana la 10 minute pentru reimprospatarea cache-ului.
+- **Emailul nu apare in Newsman**: confirmati ca dropdown-ul **Email field** indica un tag pe care vizitatorul il completeaza efectiv. Daca campul este gol la momentul trimiterii, randul este omis si se scrie o intrare de log de tip debug.
 
 ---
 

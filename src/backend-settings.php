@@ -425,6 +425,18 @@ $form_values = $this->get_form_values();
 							</td>
 						</tr>
 						<?php endif; ?>
+						<?php if ( $this->is_contact_form_7_exists() ) : ?>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_developer_use_contact_form_7"><?php echo esc_html__( 'Use Contact Form 7 Integration', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_developer_use_contact_form_7" type="checkbox"
+									id="newsman_developer_use_contact_form_7" <?php echo ( ! empty( $form_values['newsman_developer_use_contact_form_7'] ) && 'on' === $form_values['newsman_developer_use_contact_form_7'] ) ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When enabled, the Newsman tab appears on Contact Form 7 forms in the editor (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman editor controls and submission handling for Contact Form 7.', 'newsman' ); ?></p>
+							</td>
+						</tr>
+						<?php endif; ?>
 						<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<tr>
 							<th scope="row">

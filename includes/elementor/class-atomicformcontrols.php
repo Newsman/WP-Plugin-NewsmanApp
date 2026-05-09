@@ -11,6 +11,8 @@
 
 namespace Newsman\Elementor;
 
+use Newsman\Subscribe\Lists;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -225,7 +227,7 @@ class AtomicFormControls {
 			),
 		);
 
-		$lists = ( new FormControls() )->get_lists_for_select();
+		$lists = Lists::get_for_select( get_current_blog_id() );
 		if ( is_array( $lists ) ) {
 			foreach ( $lists as $id => $name ) {
 				$options[] = array(

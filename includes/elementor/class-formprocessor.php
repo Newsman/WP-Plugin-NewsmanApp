@@ -12,6 +12,7 @@
 namespace Newsman\Elementor;
 
 use Newsman\Logger;
+use Newsman\Subscribe\Helper as SubscribeHelper;
 use Newsman\User\IpAddress;
 
 if ( ! defined( 'ABSPATH' ) ) {
