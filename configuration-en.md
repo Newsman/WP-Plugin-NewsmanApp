@@ -108,6 +108,8 @@ These settings are intended for advanced users and developers. In most cases, yo
 
 - **Enable Test User IP / Test User IP address** - For development and testing only. Lets you simulate a specific visitor IP address. Leave these off in production.
 
+- **Use Elementor Integration** - Master switch for the Newsman integration with Elementor Pro. **On by default.** When on, the Newsman section appears in the Elementor editor for both the legacy Form widget and Atomic Forms (Elementor 4.x), and submissions are pushed to your Newsman list. Turn off to remove all Newsman-added editor controls and stop submission forwarding for both. Existing Newsman per-form / per-field settings are preserved when off and reactivated when you turn it back on. Disabling has no effect on WordPress, WooCommerce, or non-Elementor newsletter flows.
+
 - **Plugin Loaded Priority** - Controls when the plugin initializes relative to other plugins. Only change this if you experience conflicts with another plugin. The default value of 20 works for most setups.
 
 - **Use Action Scheduler** - If you have the Action Scheduler plugin installed, turning this on will process subscriptions and unsubscriptions in the background instead of immediately. This can improve checkout speed on high-traffic stores.
@@ -220,6 +222,105 @@ AWB SMS messages are **not sent automatically**. This is by design, because cour
 ### Testing SMS
 
 At the bottom of the SMS page, you'll find a test form. Enter a phone number and a message, then click **Send Test SMS** to verify that everything works before going live.
+
+---
+
+## Elementor Forms (Elementor Pro)
+
+If your site uses Elementor Pro's Form widget, the plugin can subscribe submissions to a Newsman list and send any other field values as subscriber properties. This applies to every place the Form widget is used, including forms placed inside Elementor popups.
+
+> The Form widget is part of Elementor Pro, not the free Elementor plugin. If only the free Elementor is installed, the Newsman section described below will not appear.
+
+> **Tested with:** Elementor and Elementor Pro **3.35.x** and **4.x**, including forms placed inside Elementor popups. The legacy Form widget integration applies to both versions; the Atomic Forms integration (described further below) only applies to **4.x**, since Atomic Forms does not exist in 3.35.x.
+
+### Per-form Settings
+
+Open any page in the Elementor editor and select a Form widget. In the **Content** tab, after the **Form Fields** section, you will see a new **Newsman** section with two settings:
+
+- **Send to Newsman** - Off by default. Turn this on to enable Newsman for this form. When off, no data from the form is sent to Newsman regardless of the per-field options below.
+
+- **Newsman List** - Visible only when **Send to Newsman** is on. Pick the Newsman list that should receive submissions from this form. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes. If the dropdown is empty, see the troubleshooting note at the end of this section.
+
+### Per-field Settings
+
+Each individual field in the form has two extra options under its **Advanced** tab:
+
+- **Send to Newsman** - On by default for new fields. When on, this field's value is included in the submission to Newsman as a subscriber property. The field's **ID** (set in **Advanced > Custom ID**) becomes the property key in Newsman, so use stable, snake_case IDs like `phone`, `company`, or `birthdate`.
+
+- **Use as Newsman email** - Off by default. Mark exactly one field with this option to indicate which field holds the subscriber's email address. Only **Email** and **Text** field types can be marked. If no field is marked, or the marked field is empty at submission time, the form will fail with an inline error.
+
+> Tip: the **Custom ID** of an Elementor field is what you set in the field's **Advanced > Custom ID** input. The default IDs are auto-generated (for example `field_a1b2c3d`) and not very readable in Newsman. We recommend you set a meaningful Custom ID on every field you mark as **Send to Newsman**.
+
+### What happens on submission
+
+When a visitor submits the form:
+
+1. If **Send to Newsman** is off, nothing happens.
+2. If on, the plugin reads the email field and the per-field property values, then subscribes (or refreshes) the email to the selected list. The subscriber's properties in Newsman are updated with the field values.
+3. If the Newsman API rejects the request (missing email, invalid list, expired credentials), the form does not show its success state - the visitor sees an inline error message and Elementor's built-in actions (such as redirect or confirmation email) do not run. The technical error is also written to the WooCommerce log if logging is enabled.
+
+### Limitations
+
+- This integration targets the **legacy Form widget**. Elementor 4.x's new **Atomic Forms** widget uses a different architecture and is covered separately in the **Atomic Forms** section below.
+- Forms inside Elementor popups work the same way - the integration is on the Form widget itself, not the page or popup that contains it.
+- Multi-step forms work; the Newsman section applies to the form as a whole, not per step.
+
+### Troubleshooting: empty Newsman List dropdown
+
+If the **Newsman List** dropdown is empty in the Elementor editor:
+
+1. Confirm that **NewsMAN > Settings** shows a valid API connection (green indicator next to the credentials).
+2. The list dropdown is cached for 10 minutes per site. If you just changed your credentials, wait up to 10 minutes or clear your site's transients for the cache to refresh.
+3. Newsman accounts always have at least one list, so an empty dropdown almost always indicates a credentials issue rather than an empty account.
+
+---
+
+## Atomic Forms (Elementor 4.x, experimental)
+
+Elementor 4.x introduced **Atomic Forms**, a separate form architecture where the form, its labels, inputs, textareas, checkboxes, and submit button are each independent atomic widgets you arrange directly on the canvas. The Newsman plugin supports Atomic Forms with the same on/off toggle, list dropdown, and per-field settings as the legacy Form widget, with one significant limitation noted below.
+
+> Atomic Forms is gated behind two Elementor experiments (`Atomic Widgets` in core and `Atomic Form` in Pro). Both default to active in Elementor 4.x, but you can disable them under **Elementor > Settings > Features**. The Newsman section will not appear if either experiment is off.
+
+> Atomic Forms is currently in development status (`RELEASE_STATUS_DEV`). Elementor may change the underlying API in any minor release. If a future Elementor update breaks the Newsman section in Atomic Forms, the legacy Form widget integration is unaffected and will keep working.
+
+### Per-form settings
+
+Open a page with an Atomic Form on the canvas. Click the form container (the parent element holding the inputs) to select it. Below the existing **Content** and **Settings** sections in the editor panel, a new **Newsman** section appears with two settings:
+
+- **Send to Newsman** - Off by default. Turn this on to enable Newsman for this form. When off, no data is sent to Newsman regardless of per-input settings.
+
+- **Newsman List** - Pick the Newsman list that should receive submissions. The dropdown is shared with the legacy Forms integration: lists come from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, cached for 10 minutes.
+
+### Per-input settings
+
+Click any **Input**, **Textarea**, or **Checkbox** widget inside the form. The editor panel for that widget gets a **Newsman** section with:
+
+- **Send to Newsman** - On by default. When on, this widget's submitted value is included as a subscriber property. The property key is the widget's **ID** (set in the **Settings** section, control labelled **ID**); we recommend setting a stable, snake_case ID like `phone`, `company`, or `birthdate`.
+
+- **Use as Newsman email** - Off by default. Mark exactly one input or textarea with this option to indicate which one holds the subscriber's email address. The Checkbox widget does not expose this option (a checkbox cannot be the email field).
+
+> The widget **ID** in Atomic Forms is the same field used for the HTML `name` attribute when the form is submitted. The two must match for the integration to find the value, which is why we use the ID directly.
+
+### What happens on submission
+
+When a visitor submits the form:
+
+1. If **Send to Newsman** is off on the form, nothing happens.
+2. If on, the plugin reads the form's saved settings, identifies the email input by the **Use as Newsman email** marker, builds a properties map from the inputs marked **Send to Newsman**, and subscribes the email to the chosen Newsman list with those properties.
+
+### Limitation: errors are not surfaced inline (v1)
+
+Unlike the legacy Form widget integration, **Atomic Forms does not let third-party integrations write error messages to the form's response**. The submission ajax flow runs Elementor's own action runner (Email, Webhook, Collect submissions), and Elementor's hardcoded action whitelist blocks Newsman from registering as a real form action. We therefore listen alongside the official flow rather than inside it.
+
+The practical consequence: if Newsman fails (invalid email, no list configured, expired credentials, network error), the form will **still show its success state** to the visitor. The failure is logged to the WooCommerce logs (when WooCommerce is installed) under the Newsman source. Plain WordPress installs have no log destination - check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+
+We expect Elementor to expand the Atomic Forms extension API in a future release; we will surface inline errors at that point.
+
+### Troubleshooting
+
+- **Newsman section does not appear**: confirm both atomic experiments are active in **Elementor > Settings > Features**. Both `Atomic Widgets` and `Atomic Form` must be on.
+- **Newsman List dropdown is empty**: same as the legacy Forms integration - see the troubleshooting note in the **Elementor Forms** section above.
+- **Submitter email not appearing in Newsman**: make sure exactly one input/textarea has **Use as Newsman email** turned on, and that the same widget has a meaningful **ID**.
 
 ---
 

@@ -119,6 +119,8 @@ Aceste setari sunt destinate utilizatorilor avansati si dezvoltatorilor. In cele
 
 - **Enable Test User IP / Test User IP address** - Doar pentru dezvoltare si testare. Va permite sa simulati o adresa IP specifica de vizitator. Lasati-le dezactivate in productie.
 
+- **Use Elementor Integration** - Comutator principal pentru integrarea Newsman cu Elementor Pro. **Activat implicit.** Cand este activat, sectiunea Newsman apare in editorul Elementor atat pentru widget-ul Form clasic, cat si pentru Atomic Forms (Elementor 4.x), iar trimiterile sunt impinse catre lista Newsman. Dezactivati pentru a elimina toate controalele Newsman din editor si pentru a opri redirectionarea trimiterilor pentru ambele. Setarile Newsman per formular / per camp existente sunt pastrate cand este dezactivat si reactivate cand il porniti din nou. Dezactivarea nu are efect asupra fluxurilor de newsletter WordPress, WooCommerce sau non-Elementor.
+
 - **Plugin Loaded Priority** - Controleaza cand se initializeaza plugin-ul in raport cu alte plugin-uri. Schimbati doar daca intampinati conflicte cu alt plugin. Valoarea implicita de 20 functioneaza pentru majoritatea configuratiilor.
 
 - **Use Action Scheduler** - Daca aveti plugin-ul Action Scheduler instalat, activarea acestuia va procesa abonarile si dezabonarile in fundal in loc de imediat. Aceasta poate imbunatati viteza checkout-ului pe magazinele cu trafic mare.
@@ -231,6 +233,105 @@ Mesajele SMS cu AWB **nu se trimit automat**. Aceasta este prin design, deoarece
 ### Testare SMS
 
 In partea de jos a paginii SMS, veti gasi un formular de test. Introduceti un numar de telefon si un mesaj, apoi faceti click pe **Send Test SMS** pentru a verifica ca totul functioneaza inainte de a activa.
+
+---
+
+## Formulare Elementor (Elementor Pro)
+
+Daca site-ul foloseste widget-ul Form din Elementor Pro, plugin-ul poate abona trimiterile catre o lista Newsman si poate trimite valorile celorlalte campuri ca proprietati de abonat. Functionalitatea se aplica oriunde este folosit widget-ul Form, inclusiv in formularele plasate in popup-uri Elementor.
+
+> Widget-ul Form face parte din Elementor Pro, nu din plugin-ul Elementor gratuit. Daca este instalat doar Elementor gratuit, sectiunea Newsman descrisa mai jos nu va aparea.
+
+> **Testat cu:** Elementor si Elementor Pro **3.35.x** si **4.x**, inclusiv formulare plasate in popup-uri Elementor. Integrarea cu widget-ul Form clasic se aplica pentru ambele versiuni; integrarea Atomic Forms (descrisa mai jos) se aplica doar pentru **4.x**, deoarece Atomic Forms nu exista in 3.35.x.
+
+### Setari per Formular
+
+Deschideti orice pagina in editorul Elementor si selectati un widget Form. In tab-ul **Content**, dupa sectiunea **Form Fields**, veti vedea o noua sectiune **Newsman** cu doua optiuni:
+
+- **Send to Newsman** - Dezactivat implicit. Activati pentru a porni Newsman pe acest formular. Cand este dezactivat, nicio data din formular nu este trimisa catre Newsman, indiferent de optiunile per camp de mai jos.
+
+- **Newsman List** - Vizibil doar cand **Send to Newsman** este activat. Alegeti lista Newsman care va primi trimiterile din acest formular. Dropdown-ul este populat automat din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, si este pus in cache 10 minute. Daca dropdown-ul este gol, vedeti nota de depanare de la finalul acestei sectiuni.
+
+### Setari per Camp
+
+Fiecare camp din formular are doua optiuni suplimentare in tab-ul **Advanced**:
+
+- **Send to Newsman** - Activat implicit pentru campurile noi. Cand este activat, valoarea acelui camp este trimisa catre Newsman ca proprietate de abonat. **ID**-ul campului (setat in **Advanced > Custom ID**) devine cheia proprietatii in Newsman, asa ca folositi ID-uri stabile in snake_case precum `phone`, `company` sau `birthdate`.
+
+- **Use as Newsman email** - Dezactivat implicit. Bifati exact un camp cu aceasta optiune pentru a indica ce camp contine adresa de email a abonatului. Doar tipurile **Email** si **Text** pot fi marcate. Daca niciun camp nu este marcat, sau campul marcat este gol la trimitere, formularul va esua cu un mesaj de eroare afisat in pagina.
+
+> Sugestie: **Custom ID**-ul unui camp Elementor este valoarea setata in **Advanced > Custom ID**. ID-urile implicite sunt auto-generate (de exemplu `field_a1b2c3d`) si nu sunt usor de citit in Newsman. Recomandam sa setati un Custom ID semnificativ pentru fiecare camp marcat cu **Send to Newsman**.
+
+### Ce se intampla la trimitere
+
+Cand un vizitator trimite formularul:
+
+1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
+2. Daca este activat, plugin-ul citeste campul de email si valorile proprietatilor per camp, apoi aboneaza (sau reactualizeaza) emailul in lista selectata. Proprietatile abonatului in Newsman sunt actualizate cu valorile campurilor.
+3. Daca API-ul Newsman respinge cererea (email lipsa, lista invalida, credentiale expirate), formularul nu afiseaza starea de succes - vizitatorul vede un mesaj de eroare in pagina, iar actiunile native Elementor (de exemplu redirect sau email de confirmare) nu se executa. Eroarea tehnica este de asemenea scrisa in logurile WooCommerce daca logarea este activata.
+
+### Limitari
+
+- Aceasta integrare vizeaza widget-ul **Form clasic**. Noul widget **Atomic Forms** din Elementor 4.x foloseste o arhitectura diferita si este tratat separat in sectiunea **Atomic Forms** de mai jos.
+- Formularele din popup-urile Elementor functioneaza la fel - integrarea este pe widget-ul Form in sine, nu pe pagina sau popup-ul care il contine.
+- Formularele multi-step functioneaza; sectiunea Newsman se aplica formularului in ansamblu, nu per pas.
+
+### Depanare: dropdown Newsman List gol
+
+Daca dropdown-ul **Newsman List** este gol in editorul Elementor:
+
+1. Confirmati ca **NewsMAN > Settings** arata o conexiune API valida (indicator verde langa credentiale).
+2. Dropdown-ul cu liste este pus in cache 10 minute per site. Daca ati schimbat recent credentialele, asteptati pana la 10 minute sau stergeti tranzientele site-ului pentru ca acel cache sa se reincarce.
+3. Conturile Newsman au intotdeauna cel putin o lista, deci un dropdown gol indica aproape intotdeauna o problema de credentiale, nu un cont gol.
+
+---
+
+## Atomic Forms (Elementor 4.x, experimental)
+
+Elementor 4.x a introdus **Atomic Forms**, o arhitectura separata in care formularul, etichetele, input-urile, textareas, checkbox-urile si butonul de submit sunt fiecare widget-uri atomice independente, aranjate direct pe canvas. Plugin-ul Newsman suporta Atomic Forms cu acelasi switcher, dropdown de lista si setari per camp ca widget-ul Form clasic, cu o limitare semnificativa mentionata mai jos.
+
+> Atomic Forms este controlat de doua experimente Elementor (`Atomic Widgets` in core si `Atomic Form` in Pro). Ambele sunt active implicit in Elementor 4.x, dar pot fi dezactivate din **Elementor > Settings > Features**. Sectiunea Newsman nu va aparea daca oricare dintre experimente este dezactivat.
+
+> Atomic Forms este in stadiu de dezvoltare (`RELEASE_STATUS_DEV`). Elementor poate schimba API-ul subiacent in orice versiune minora. Daca o actualizare viitoare Elementor strica sectiunea Newsman din Atomic Forms, integrarea cu widget-ul Form clasic nu este afectata si va functiona in continuare.
+
+### Setari per Formular
+
+Deschideti o pagina care contine un Atomic Form. Faceti click pe containerul formularului (elementul parinte care contine input-urile) pentru a-l selecta. Sub sectiunile **Content** si **Settings** existente in panoul editorului, apare o noua sectiune **Newsman** cu doua optiuni:
+
+- **Send to Newsman** - Dezactivat implicit. Activati pentru a porni Newsman pe acest formular. Cand este dezactivat, nu se trimite nicio data catre Newsman, indiferent de setarile per input.
+
+- **Newsman List** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este partajat cu integrarea Forms clasica: listele provin din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, cu cache de 10 minute.
+
+### Setari per Input
+
+Faceti click pe orice widget **Input**, **Textarea** sau **Checkbox** din interiorul formularului. Panoul editorului pentru acel widget primeste o sectiune **Newsman** cu:
+
+- **Send to Newsman** - Activat implicit. Cand este activat, valoarea trimisa de acest widget este inclusa ca proprietate de abonat. Cheia proprietatii este **ID**-ul widget-ului (setat in sectiunea **Settings**, controlul etichetat **ID**); recomandam sa setati un ID stabil, in snake_case, precum `phone`, `company` sau `birthdate`.
+
+- **Use as Newsman email** - Dezactivat implicit. Bifati exact un input sau textarea cu aceasta optiune pentru a indica ce widget contine adresa de email a abonatului. Widget-ul Checkbox nu expune aceasta optiune (un checkbox nu poate fi campul de email).
+
+> **ID**-ul widget-ului in Atomic Forms este acelasi camp folosit ca atribut HTML `name` la trimiterea formularului. Cele doua trebuie sa coincida pentru ca integrarea sa gaseasca valoarea, motiv pentru care folosim ID-ul direct.
+
+### Ce se intampla la trimitere
+
+Cand un vizitator trimite formularul:
+
+1. Daca **Send to Newsman** este dezactivat la nivel de formular, nu se intampla nimic.
+2. Daca este activat, plugin-ul citeste setarile salvate ale formularului, identifica input-ul de email dupa marcajul **Use as Newsman email**, construieste o harta de proprietati din input-urile marcate **Send to Newsman** si aboneaza emailul in lista aleasa cu acele proprietati.
+
+### Limitare: erorile nu sunt afisate in pagina (v1)
+
+Spre deosebire de integrarea cu widget-ul Form clasic, **Atomic Forms nu permite integrarilor terte sa scrie mesaje de eroare in raspunsul formularului**. Fluxul AJAX de trimitere ruleaza propriul action runner Elementor (Email, Webhook, Collect submissions), iar lista hardcodata de actiuni Elementor blocheaza Newsman de la a se inregistra ca actiune reala. Drept urmare, ascultam in paralel cu fluxul oficial in loc sa rulam in interiorul lui.
+
+Consecinta practica: daca Newsman esueaza (email invalid, lista neconfigurata, credentiale expirate, eroare de retea), formularul **va afisa in continuare starea de succes** vizitatorului. Eroarea este inregistrata in logurile WooCommerce (cand WooCommerce este instalat) sub sursa Newsman. Instalarile WordPress simple nu au destinatie de log - verificati credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
+
+Asteptam ca Elementor sa extinda API-ul de extensie pentru Atomic Forms intr-o versiune viitoare; vom afisa erorile in pagina la acel moment.
+
+### Depanare
+
+- **Sectiunea Newsman nu apare**: confirmati ca ambele experimente atomic sunt active in **Elementor > Settings > Features**. Atat `Atomic Widgets` cat si `Atomic Form` trebuie sa fie pornite.
+- **Dropdown-ul Newsman List este gol**: la fel ca la integrarea Forms clasica - vedeti nota de depanare din sectiunea **Formulare Elementor** de mai sus.
+- **Emailul nu apare in Newsman**: asigurati-va ca exact un input/textarea are **Use as Newsman email** activat, si ca acelasi widget are un **ID** semnificativ.
 
 ---
 

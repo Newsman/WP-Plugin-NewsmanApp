@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '9.0.0';
+	protected static $setup_version = '10.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -504,6 +504,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_nine_zero_zero();
 			update_option( 'newsman_setup_version', '9.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '10.0.0', '<' ) ) {
+			self::upgrade_options_ten_zero_zero();
+			update_option( 'newsman_setup_version', '10.0.0', true );
+		}
 	}
 
 	/**
@@ -672,6 +677,18 @@ jt/modal_{{api_key}}.js'
 	 */
 	protected static function upgrade_options_nine_zero_zero() {
 		add_option( 'newsman_remarketingthemecartcompatibility', 'on', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
+	 * Version 10.0.0 — seed Elementor integration toggle (default on).
+	 *
+	 * Controls whether the Newsman editor controls and submission handling for both
+	 * the legacy Elementor Pro Form widget and the Atomic Forms widgets are wired up.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_ten_zero_zero() {
+		add_option( 'newsman_developer_use_elementor', 'on', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**

@@ -14,6 +14,7 @@ namespace Newsman\Admin;
 use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Util\WooCommerceExist;
+use Newsman\Util\ElementorExist;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,6 +54,13 @@ class Settings {
 	 * @var NewsmanActionScheduler
 	 */
 	protected $action_scheduler;
+
+	/**
+	 *  Elementor Exists
+	 *
+	 * @var ElementorExist
+	 */
+	protected $elementor_exists;
 
 	/**
 	 * Page nonce action
@@ -111,6 +119,7 @@ class Settings {
 		$this->logger              = Logger::init();
 		$this->woo_commerce_exists = new WooCommerceExist();
 		$this->action_scheduler    = new NewsmanActionScheduler();
+		$this->elementor_exists    = new ElementorExist();
 	}
 
 	/**
@@ -775,6 +784,19 @@ class Settings {
 	 */
 	public function is_action_scheduler_exists() {
 		return $this->action_scheduler->exist();
+	}
+
+	/**
+	 * Elementor exists.
+	 *
+	 * Returns true when core Elementor (free or Pro) is loaded — the Newsman
+	 * developer toggle is rendered whenever any Elementor is present, even though
+	 * the actual integration only activates with Elementor Pro.
+	 *
+	 * @return bool
+	 */
+	public function is_elementor_exists() {
+		return $this->elementor_exists->core_exist();
 	}
 
 	/**
