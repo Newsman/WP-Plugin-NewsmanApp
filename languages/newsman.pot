@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the NewsmanApp for WordPress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp for WordPress 3.7.11\n"
+"Project-Id-Version: NewsmanApp for WordPress 3.7.14\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-08T19:40:15+00:00\n"
+"POT-Creation-Date: 2026-05-09T17:46:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -31,9 +31,11 @@ msgstr ""
 
 #. Author of the plugin
 #: newsmanapp.php
-#: includes/elementor/class-atomicformcontrols.php:144
-#: includes/elementor/class-atomicformcontrols.php:179
-#: includes/elementor/class-formcontrols.php:56
+#: includes/contactform7/class-formpanel.php:85
+#: includes/contactform7/class-formpanel.php:114
+#: includes/elementor/class-atomicformcontrols.php:175
+#: includes/elementor/class-atomicformcontrols.php:210
+#: includes/elementor/class-formcontrols.php:43
 msgid "Newsman"
 msgstr ""
 
@@ -92,14 +94,14 @@ msgid "Could not save integration setup. Please try again."
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:91
+#: includes/admin/settings/class-settings.php:92
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:151
+#: includes/admin/settings/class-settings.php:152
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr ""
@@ -109,8 +111,8 @@ msgstr ""
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:155
-#: includes/admin/settings/class-settings.php:169
+#: includes/admin/settings/class-settings.php:156
+#: includes/admin/settings/class-settings.php:170
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr ""
@@ -308,93 +310,152 @@ msgstr ""
 msgid "webhook import received, blog %d"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:136
-#: includes/elementor/class-atomicformcontrols.php:168
-#: includes/elementor/class-formcontrols.php:64
-#: includes/elementor/class-formcontrols.php:121
+#: includes/contactform7/class-formpanel.php:117
+msgid "Subscribe form submissions to a Newsman list. The selected email field is used as the subscriber email; the chosen properties are pushed as Newsman subscriber properties."
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:123
+#: includes/elementor/class-atomicformcontrols.php:167
+#: includes/elementor/class-atomicformcontrols.php:199
+#: includes/elementor/class-formcontrols.php:51
+#: includes/elementor/class-formcontrols.php:108
 msgid "Send to Newsman"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:140
-#: includes/elementor/class-formcontrols.php:77
+#: includes/contactform7/class-formpanel.php:134
+msgid "When enabled, every successful submission of this form is subscribed to the selected Newsman list."
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:140
+msgid "Newsman list"
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:145
+msgid "No Newsman lists are available. Configure your Newsman API key on the Newsman settings page first."
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:149
+msgid "— select a list —"
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:161
+msgid "Email field"
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:166
+msgid "Add a field to the form template to enable Newsman."
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:177
+msgid "The selected field provides the subscriber email. Any field type may be used (text, tel, url, email, …)."
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:184
+msgid "Send as properties"
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:189
+msgid "Add a field to the form template first."
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:194
+msgid "Send these fields to Newsman as subscriber properties"
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:215
+msgid "used as email"
+msgstr ""
+
+#: includes/contactform7/class-formpanel.php:222
+msgid "Each checked field is sent to Newsman as a subscriber property keyed by its form-tag name."
+msgstr ""
+
+#: includes/contactform7/class-formprocessor.php:77
+msgid "Newsman: CF7 form is enabled but no list is selected."
+msgstr ""
+
+#: includes/contactform7/class-formprocessor.php:83
+msgid "Newsman: CF7 form has no email field configured."
+msgstr ""
+
+#: includes/contactform7/class-formprocessor.php:100
+msgid "Newsman: CF7 email field is empty."
+msgstr ""
+
+#: includes/elementor/class-atomicformcontrols.php:171
+#: includes/elementor/class-formcontrols.php:64
 msgid "Newsman List"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:175
-#: includes/elementor/class-formcontrols.php:137
+#: includes/elementor/class-atomicformcontrols.php:206
+#: includes/elementor/class-formcontrols.php:124
 msgid "Use as Newsman email"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:194
+#: includes/elementor/class-atomicformcontrols.php:225
 msgid "-- select a list --"
 msgstr ""
 
-#: includes/elementor/class-atomicformprocessor.php:67
+#: includes/elementor/class-atomicformprocessor.php:81
 msgid "Newsman: Atomic Form is enabled but no list is selected."
 msgstr ""
 
-#: includes/elementor/class-atomicformprocessor.php:85
+#: includes/elementor/class-atomicformprocessor.php:99
 msgid "Newsman: no field is marked as the email field on this Atomic Form."
 msgstr ""
 
-#: includes/elementor/class-atomicformprocessor.php:93
+#: includes/elementor/class-atomicformprocessor.php:117
 msgid "Newsman: Atomic Form email field is empty."
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:66
-#: includes/elementor/class-formcontrols.php:123
+#: includes/elementor/class-formcontrols.php:53
+#: includes/elementor/class-formcontrols.php:110
 msgid "On"
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:67
-#: includes/elementor/class-formcontrols.php:124
+#: includes/elementor/class-formcontrols.php:54
+#: includes/elementor/class-formcontrols.php:111
 msgid "Off"
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:70
+#: includes/elementor/class-formcontrols.php:57
 msgid "When enabled, form submissions will subscribe the email field to the selected Newsman list with the marked fields as subscriber properties."
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:85
+#: includes/elementor/class-formcontrols.php:72
 msgid "Required when Newsman is enabled. Lists are fetched from your Newsman account and cached for 10 minutes."
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:127
+#: includes/elementor/class-formcontrols.php:114
 msgid "Push this field's value as a subscriber property to Newsman (using the field's ID as the property key)."
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:139
+#: includes/elementor/class-formcontrols.php:126
 msgid "Yes"
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:140
+#: includes/elementor/class-formcontrols.php:127
 msgid "No"
 msgstr ""
 
-#: includes/elementor/class-formcontrols.php:143
+#: includes/elementor/class-formcontrols.php:130
 msgid "Mark this field as the email used to subscribe the user to the Newsman list."
 msgstr ""
 
-#: includes/elementor/class-formprocessor.php:59
+#: includes/elementor/class-formprocessor.php:74
 msgid "Newsman list is not configured for this form."
 msgstr ""
 
-#: includes/elementor/class-formprocessor.php:89
+#: includes/elementor/class-formprocessor.php:104
 msgid "Newsman: no field is marked as the email field."
 msgstr ""
 
-#: includes/elementor/class-formprocessor.php:102
+#: includes/elementor/class-formprocessor.php:129
 msgid "Newsman: email field is empty."
 msgstr ""
 
-#: includes/elementor/class-formprocessor.php:132
+#: includes/elementor/class-formprocessor.php:183
 msgid "Newsman subscription failed."
-msgstr ""
-
-#. translators: 1: Email, 2: error message.
-#: includes/elementor/class-subscribehelper.php:104
-#, php-format
-msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 
 #: includes/export/retriever/class-authenticator.php:55
@@ -865,6 +926,12 @@ msgstr ""
 msgid "Updated subscriber properties for %s"
 msgstr ""
 
+#. translators: 1: Email, 2: error message.
+#: includes/subscribe/class-helper.php:202
+#, php-format
+msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
+msgstr ""
+
 #: src/backend-oauth.php:35
 #: src/backend-settings.php:92
 #: src/backend.php:64
@@ -1004,7 +1071,7 @@ msgid "Select which customer attributes (from orders) to include in your remarke
 msgstr ""
 
 #: src/backend-remarketing.php:206
-#: src/backend-settings.php:496
+#: src/backend-settings.php:508
 #: src/backend-sms.php:391
 #: src/backend-sync.php:120
 msgid "Save Changes"
@@ -1219,46 +1286,54 @@ msgid "When enabled, the Newsman section appears on Elementor Pro Form widgets a
 msgstr ""
 
 #: src/backend-settings.php:431
-msgid "Enable Test User IP"
+msgid "Use Contact Form 7 Integration"
 msgstr ""
 
 #: src/backend-settings.php:436
+msgid "When enabled, the Newsman tab appears on Contact Form 7 forms in the editor (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman editor controls and submission handling for Contact Form 7."
+msgstr ""
+
+#: src/backend-settings.php:443
+msgid "Enable Test User IP"
+msgstr ""
+
+#: src/backend-settings.php:448
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr ""
 
-#: src/backend-settings.php:441
+#: src/backend-settings.php:453
 msgid "Test User IP address"
 msgstr ""
 
-#: src/backend-settings.php:452
+#: src/backend-settings.php:464
 msgid "Plugin Loaded Priority"
 msgstr ""
 
-#: src/backend-settings.php:458
+#: src/backend-settings.php:470
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr ""
 
-#: src/backend-settings.php:464
+#: src/backend-settings.php:476
 msgid "Use Action Scheduler"
 msgstr ""
 
-#: src/backend-settings.php:469
+#: src/backend-settings.php:481
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 
-#: src/backend-settings.php:474
+#: src/backend-settings.php:486
 msgid "Use Action Scheduler for Subscribe"
 msgstr ""
 
-#: src/backend-settings.php:479
+#: src/backend-settings.php:491
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr ""
 
-#: src/backend-settings.php:484
+#: src/backend-settings.php:496
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr ""
 
-#: src/backend-settings.php:489
+#: src/backend-settings.php:501
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
 

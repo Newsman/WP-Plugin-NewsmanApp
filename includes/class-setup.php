@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '10.0.0';
+	protected static $setup_version = '11.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -509,6 +509,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_ten_zero_zero();
 			update_option( 'newsman_setup_version', '10.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '11.0.0', '<' ) ) {
+			self::upgrade_options_eleven_zero_zero();
+			update_option( 'newsman_setup_version', '11.0.0', true );
+		}
 	}
 
 	/**
@@ -689,6 +694,18 @@ jt/modal_{{api_key}}.js'
 	 */
 	protected static function upgrade_options_ten_zero_zero() {
 		add_option( 'newsman_developer_use_elementor', 'on', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
+	 * Version 11.0.0 — seed Contact Form 7 integration toggle (default on).
+	 *
+	 * Controls whether the Newsman editor panel and submission handling for Contact Form 7
+	 * forms are wired up.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_eleven_zero_zero() {
+		add_option( 'newsman_developer_use_contact_form_7', 'on', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**

@@ -110,6 +110,8 @@ These settings are intended for advanced users and developers. In most cases, yo
 
 - **Use Elementor Integration** - Master switch for the Newsman integration with Elementor Pro. **On by default.** When on, the Newsman section appears in the Elementor editor for both the legacy Form widget and Atomic Forms (Elementor 4.x), and submissions are pushed to your Newsman list. Turn off to remove all Newsman-added editor controls and stop submission forwarding for both. Existing Newsman per-form / per-field settings are preserved when off and reactivated when you turn it back on. Disabling has no effect on WordPress, WooCommerce, or non-Elementor newsletter flows.
 
+- **Use Contact Form 7 Integration** - Master switch for the Newsman integration with Contact Form 7. **On by default.** Visible only when the Contact Form 7 plugin is installed. When on, a Newsman tab appears on every contact form's editor screen (per-form list selection, email field, and properties), and submissions are pushed to your Newsman list. Turn off to remove the editor tab and stop submission forwarding. Existing per-form Newsman settings are preserved when off and reactivated when you turn it back on. Disabling has no effect on WordPress, WooCommerce, Elementor, or other newsletter flows.
+
 - **Plugin Loaded Priority** - Controls when the plugin initializes relative to other plugins. Only change this if you experience conflicts with another plugin. The default value of 20 works for most setups.
 
 - **Use Action Scheduler** - If you have the Action Scheduler plugin installed, turning this on will process subscriptions and unsubscriptions in the background instead of immediately. This can improve checkout speed on high-traffic stores.
@@ -321,6 +323,46 @@ We expect Elementor to expand the Atomic Forms extension API in a future release
 - **Newsman section does not appear**: confirm both atomic experiments are active in **Elementor > Settings > Features**. Both `Atomic Widgets` and `Atomic Form` must be on.
 - **Newsman List dropdown is empty**: same as the legacy Forms integration - see the troubleshooting note in the **Elementor Forms** section above.
 - **Submitter email not appearing in Newsman**: make sure exactly one input/textarea has **Use as Newsman email** turned on, and that the same widget has a meaningful **ID**.
+
+---
+
+## Contact Form 7
+
+If your site uses the [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) plugin, the plugin can subscribe submissions to a Newsman list and send the values of any fields you choose as subscriber properties.
+
+> The integration is gated by the **Use Contact Form 7 Integration** toggle in **NewsMAN > Settings > Developer Settings**. The toggle (and the Newsman tab it controls) only appears when Contact Form 7 is installed.
+
+### Per-form settings
+
+In the WP admin, open **Contact > Contact Forms** and click any form to edit it. A new **Newsman** tab appears next to **Form**, **Mail**, **Messages**, and **Additional Settings**, with these options:
+
+- **Send to Newsman** - Off by default. Turn this on to enable Newsman for this form. When off, no data is sent to Newsman regardless of the per-field settings below.
+
+- **Newsman list** - Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor integration). If the dropdown is empty or shows "No Newsman lists are available", check your credentials.
+
+- **Email field** - Pick which form-tag holds the subscriber's email address. **Any** field type can be used here (text, tel, url, email, number, ...), not just `[email]` tags - this is useful for forms that collect the email through a custom-validated text field. The default selection is the first `[email]` form-tag in the form template; if there is no email tag, the first available field is selected. The dropdown also lists each tag's basetype next to its name to make picking easier.
+
+- **Send as properties** - A checkbox list of every form-tag in the template. Each checked field is sent to Newsman as a subscriber property keyed by the form-tag name. The selected email field is shown but disabled (it cannot be a property because it is already used as the subscriber email). Defaults: every non-system tag except the email field is checked.
+
+> Internal helper tags (Submit button, file uploads, acceptance, reCAPTCHA, captcha-c, captcha-r, quiz) are excluded from both the email-field dropdown and the property checkboxes - they don't carry user-entered values that make sense as subscriber data.
+
+### What happens on submission
+
+When a visitor submits the form successfully:
+
+1. If **Send to Newsman** is off, nothing happens.
+2. If on, the plugin reads the email from the configured email field, builds a property map from the checked fields (multi-value fields like checkboxes are JSON-encoded), and subscribes (or refreshes) the email to the chosen Newsman list with those properties.
+3. The form's normal flow (mail send, confirmation message, redirect) is unaffected. A Newsman API failure is logged but does **not** block the form's mail or change what the visitor sees - the form still shows its success state.
+
+### Limitation: errors are not surfaced inline (v1)
+
+Contact Form 7 has no first-class plumbing for third-party integrations to surface error messages inline on the response. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Plain WordPress installs have no log destination - check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+
+### Troubleshooting
+
+- **Newsman tab does not appear**: confirm Contact Form 7 is active and that **Use Contact Form 7 Integration** is on in **NewsMAN > Settings > Developer Settings**.
+- **Newsman list dropdown is empty**: same as the Elementor integration - confirm credentials in **NewsMAN > Settings** and wait up to 10 minutes for the cache to refresh.
+- **Submitter email not appearing in Newsman**: confirm the **Email field** dropdown points to a tag that the visitor actually fills in. If the field is empty at submission time, the row is skipped and a debug log entry is written.
 
 ---
 

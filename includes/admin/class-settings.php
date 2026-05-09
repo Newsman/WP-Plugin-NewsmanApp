@@ -15,6 +15,7 @@ use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Util\WooCommerceExist;
 use Newsman\Util\ElementorExist;
+use Newsman\Util\ContactForm7Exist;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -61,6 +62,13 @@ class Settings {
 	 * @var ElementorExist
 	 */
 	protected $elementor_exists;
+
+	/**
+	 *  Contact Form 7 Exists
+	 *
+	 * @var ContactForm7Exist
+	 */
+	protected $contact_form_7_exists;
 
 	/**
 	 * Page nonce action
@@ -115,11 +123,12 @@ class Settings {
 	 * Class construct
 	 */
 	public function __construct() {
-		$this->config              = Config::init();
-		$this->logger              = Logger::init();
-		$this->woo_commerce_exists = new WooCommerceExist();
-		$this->action_scheduler    = new NewsmanActionScheduler();
-		$this->elementor_exists    = new ElementorExist();
+		$this->config                = Config::init();
+		$this->logger                = Logger::init();
+		$this->woo_commerce_exists   = new WooCommerceExist();
+		$this->action_scheduler      = new NewsmanActionScheduler();
+		$this->elementor_exists      = new ElementorExist();
+		$this->contact_form_7_exists = new ContactForm7Exist();
 	}
 
 	/**
@@ -797,6 +806,18 @@ class Settings {
 	 */
 	public function is_elementor_exists() {
 		return $this->elementor_exists->core_exist();
+	}
+
+	/**
+	 * Contact Form 7 exists.
+	 *
+	 * Used by the backend settings template to gate the "Use Contact Form 7 Integration"
+	 * toggle so the row only renders when the plugin is actually present.
+	 *
+	 * @return bool
+	 */
+	public function is_contact_form_7_exists() {
+		return $this->contact_form_7_exists->exist();
 	}
 
 	/**

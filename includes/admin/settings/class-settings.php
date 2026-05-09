@@ -70,6 +70,7 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_developer_use_as_subscribe',
 		'newsman_developer_use_as_unsubscribe',
 		'newsman_developer_use_elementor',
+		'newsman_developer_use_contact_form_7',
 	);
 
 	/**
