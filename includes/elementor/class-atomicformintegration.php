@@ -78,6 +78,18 @@ class AtomicFormIntegration {
 	 * @return void
 	 */
 	public function init_hooks() {
+		/**
+		 * Filter whether the Atomic Forms (Elementor 4.x) integration should register its hooks.
+		 *
+		 * Return false to disable Newsman's Atomic Forms integration without affecting the
+		 * legacy Form widget integration.
+		 *
+		 * @param bool $enabled Default true.
+		 */
+		if ( ! apply_filters( 'newsman_atomic_form_integration_enabled', true ) ) {
+			return;
+		}
+
 		add_filter(
 			'elementor/atomic-widgets/props-schema',
 			array( $this->controls, 'inject_props_schema' ),

@@ -52,13 +52,27 @@ class FormProcessor {
 			return;
 		}
 
+		/**
+		 * Filter whether to process this Newsman-enabled legacy Form submission.
+		 *
+		 * Return false to skip Newsman processing entirely (e.g. spam-flagged records,
+		 * conditional logic). The form's other actions (email, redirect, ...) still run.
+		 *
+		 * @param bool   $should   Default true.
+		 * @param object $record   Submitted form record.
+		 * @param array  $settings Form widget settings.
+		 */
+		if ( ! apply_filters( 'newsman_elementor_form_should_process', true, $record, $settings ) ) {
+			return;
+		}
+
 		$logger  = Logger::init();
 		$list_id = isset( $settings['newsman_list_id'] ) ? trim( (string) $settings['newsman_list_id'] ) : '';
 
 		if ( '' === $list_id ) {
 			$message = esc_html__( 'Newsman list is not configured for this form.', 'newsman' );
 			$logger->error( $message );
-			$this->add_error( $ajax_handler, $message );
+			$this->add_error( $ajax_handler, $this->filter_error_message( $message, 'no_list', $record ) );
 			return;
 		}
 
@@ -88,7 +102,7 @@ class FormProcessor {
 		if ( '' === $email_field_id ) {
 			$message = esc_html__( 'Newsman: no field is marked as the email field.', 'newsman' );
 			$logger->error( $message );
-			$this->add_error( $ajax_handler, $message );
+			$this->add_error( $ajax_handler, $this->filter_error_message( $message, 'no_email_field', $record ) );
 			return;
 		}
 
@@ -98,10 +112,22 @@ class FormProcessor {
 		}
 
 		$email = isset( $submitted[ $email_field_id ]['value'] ) ? trim( (string) $submitted[ $email_field_id ]['value'] ) : '';
+
+		/**
+		 * Filter the email extracted from the legacy Form submission.
+		 *
+		 * Allows normalization (e.g. lowercase, alias stripping) with full record context.
+		 *
+		 * @param string $email    Raw email pulled from the marked field.
+		 * @param object $record   Submitted form record.
+		 * @param array  $settings Form widget settings.
+		 */
+		$email = (string) apply_filters( 'newsman_elementor_form_email', $email, $record, $settings );
+
 		if ( '' === $email ) {
 			$message = esc_html__( 'Newsman: email field is empty.', 'newsman' );
 			$logger->error( $message );
-			$this->add_error( $ajax_handler, $message );
+			$this->add_error( $ajax_handler, $this->filter_error_message( $message, 'empty_email', $record ) );
 			return;
 		}
 
@@ -117,6 +143,19 @@ class FormProcessor {
 			$properties[ $field_id ] = is_scalar( $value ) ? (string) $value : wp_json_encode( $value );
 		}
 
+		/**
+		 * Filter the subscriber properties for the legacy Form submission.
+		 *
+		 * Has access to the full $record (unlike the helper-level filter) — useful when
+		 * properties need to depend on fields that aren't marked "Send to Newsman".
+		 *
+		 * @param array  $properties Properties built from the marked fields.
+		 * @param object $record     Submitted form record.
+		 * @param array  $settings   Form widget settings.
+		 * @param string $email      Resolved email.
+		 */
+		$properties = apply_filters( 'newsman_elementor_form_properties', $properties, $record, $settings, $email );
+
 		try {
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
@@ -125,15 +164,58 @@ class FormProcessor {
 				$properties,
 				IpAddress::init()->get_ip()
 			);
+
+			/**
+			 * Fires after a legacy Elementor Form submission was successfully processed.
+			 *
+			 * @param string $list_id    Newsman list ID.
+			 * @param string $email      Subscribed email.
+			 * @param array  $properties Properties pushed.
+			 * @param object $record     Submitted form record.
+			 * @param array  $settings   Form widget settings.
+			 */
+			do_action( 'newsman_elementor_form_processed', $list_id, $email, $properties, $record, $settings );
 		} catch ( \Exception $e ) {
 			$logger->log_exception( $e );
 			$message = $e->getMessage();
 			if ( '' === trim( (string) $message ) ) {
 				$message = esc_html__( 'Newsman subscription failed.', 'newsman' );
 			}
+			$message = $this->filter_error_message( $message, 'subscribe_failed', $record );
 			$this->add_error( $ajax_handler, $message );
 			$this->add_admin_error( $ajax_handler, $message );
+
+			/**
+			 * Fires when a legacy Elementor Form submission failed Newsman processing.
+			 *
+			 * @param \Exception $e          Caught exception.
+			 * @param string     $list_id    Newsman list ID.
+			 * @param string     $email      Resolved email.
+			 * @param array      $properties Properties that would have been pushed.
+			 * @param object     $record     Submitted form record.
+			 * @param array      $settings   Form widget settings.
+			 */
+			do_action( 'newsman_elementor_form_process_failed', $e, $list_id, $email, $properties, $record, $settings );
 		}
+	}
+
+	/**
+	 * Run the user-facing error message through `newsman_elementor_form_error_message`.
+	 *
+	 * @param string $message Default message.
+	 * @param string $context One of: 'no_list', 'no_email_field', 'empty_email', 'subscribe_failed'.
+	 * @param object $record  Submitted form record.
+	 * @return string
+	 */
+	protected function filter_error_message( $message, $context, $record ) {
+		/**
+		 * Filter the user-facing error surfaced on the form when Newsman processing fails.
+		 *
+		 * @param string $message Default message.
+		 * @param string $context Failure context: 'no_list', 'no_email_field', 'empty_email', 'subscribe_failed'.
+		 * @param object $record  Submitted form record.
+		 */
+		return (string) apply_filters( 'newsman_elementor_form_error_message', $message, $context, $record );
 	}
 
 	/**

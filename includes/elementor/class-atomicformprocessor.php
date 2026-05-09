@@ -62,6 +62,19 @@ class AtomicFormProcessor {
 				return;
 			}
 
+			/**
+			 * Filter whether to process this Newsman-enabled Atomic Form submission.
+			 *
+			 * Return false to skip Newsman processing entirely.
+			 *
+			 * @param bool  $should          Default true.
+			 * @param array $widget_settings Resolved Atomic Form widget settings.
+			 * @param array $post_data       Validated request payload (post_id, form_id, form_fields).
+			 */
+			if ( ! apply_filters( 'newsman_atomic_form_should_process', true, $widget_settings, $post_data ) ) {
+				return;
+			}
+
 			$list_id = (string) $this->resolve_atomic_value( $widget_settings['newsman_list_id'] ?? '' );
 			if ( '' === trim( $list_id ) ) {
 				$logger->error( esc_html__( 'Newsman: Atomic Form is enabled but no list is selected.', 'newsman' ) );
@@ -89,6 +102,16 @@ class AtomicFormProcessor {
 			$submitted = $this->extract_submitted_values( $post_data['form_fields'] );
 
 			$email = isset( $submitted[ $email_widget_id ] ) ? trim( (string) $submitted[ $email_widget_id ] ) : '';
+
+			/**
+			 * Filter the email extracted from the Atomic Form submission.
+			 *
+			 * @param string $email           Raw email pulled from the marked input.
+			 * @param array  $widget_settings Resolved Atomic Form widget settings.
+			 * @param array  $post_data       Validated request payload.
+			 */
+			$email = (string) apply_filters( 'newsman_atomic_form_email', $email, $widget_settings, $post_data );
+
 			if ( '' === $email ) {
 				$logger->error( esc_html__( 'Newsman: Atomic Form email field is empty.', 'newsman' ) );
 				return;
@@ -106,6 +129,16 @@ class AtomicFormProcessor {
 				$properties[ $prop_key ] = is_scalar( $value ) ? (string) $value : wp_json_encode( $value );
 			}
 
+			/**
+			 * Filter the subscriber properties for the Atomic Form submission.
+			 *
+			 * @param array  $properties      Properties built from inputs marked send=true.
+			 * @param array  $widget_settings Resolved Atomic Form widget settings.
+			 * @param array  $post_data       Validated request payload.
+			 * @param string $email           Resolved email.
+			 */
+			$properties = apply_filters( 'newsman_atomic_form_properties', $properties, $widget_settings, $post_data, $email );
+
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
 				$list_id,
@@ -113,8 +146,29 @@ class AtomicFormProcessor {
 				$properties,
 				IpAddress::init()->get_ip()
 			);
+
+			/**
+			 * Fires after an Atomic Form submission was successfully processed.
+			 *
+			 * @param string $list_id         Newsman list ID.
+			 * @param string $email           Subscribed email.
+			 * @param array  $properties      Properties pushed.
+			 * @param array  $widget_settings Resolved Atomic Form widget settings.
+			 * @param array  $post_data       Validated request payload.
+			 */
+			do_action( 'newsman_atomic_form_processed', $list_id, $email, $properties, $widget_settings, $post_data );
 		} catch ( \Exception $e ) {
 			$logger->log_exception( $e );
+
+			/**
+			 * Fires when an Atomic Form submission failed Newsman processing.
+			 *
+			 * Atomic Forms run their own response cycle so this is the only signal
+			 * available to integrators (errors are not surfaced to the end user).
+			 *
+			 * @param \Exception $e Caught exception.
+			 */
+			do_action( 'newsman_atomic_form_process_failed', $e );
 		}
 	}
 
@@ -218,7 +272,7 @@ class AtomicFormProcessor {
 		$el_type     = isset( $element['elType'] ) ? (string) $element['elType'] : '';
 		$type        = '' !== $widget_type ? $widget_type : $el_type;
 
-		if ( in_array( $type, AtomicFormControls::INPUT_TYPES, true ) ) {
+		if ( in_array( $type, AtomicFormControls::get_input_types(), true ) ) {
 			$settings  = isset( $element['settings'] ) ? $this->resolve_atomic_array( $element['settings'] ) : array();
 			$widget_id = isset( $element['id'] ) ? (string) $element['id'] : '';
 			if ( '' === $widget_id ) {

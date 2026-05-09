@@ -186,7 +186,16 @@ class FormControls {
 
 		$cached = get_transient( $transient_key );
 		if ( is_array( $cached ) ) {
-			return $cached;
+			/**
+			 * Filter the Newsman list options shown in the editor list dropdown.
+			 *
+			 * Fired both on cache hit and after a fresh fetch — integrators can append/remove
+			 * options or rebuild the list without affecting the cached payload.
+			 *
+			 * @param array $options Map of `[ list_id => list_name ]`.
+			 * @param int   $blog_id Current WP blog ID.
+			 */
+			return apply_filters( 'newsman_elementor_lists_for_select', $cached, $blog_id );
 		}
 
 		$config  = Config::init();
@@ -194,7 +203,8 @@ class FormControls {
 		$api_key = $config->get_api_key( $blog_id );
 
 		if ( empty( $user_id ) || empty( $api_key ) ) {
-			return array();
+			/** This filter is documented in this file */
+			return apply_filters( 'newsman_elementor_lists_for_select', array(), $blog_id );
 		}
 
 		$options = array();
@@ -232,10 +242,23 @@ class FormControls {
 			}
 		} catch ( \Exception $e ) {
 			Logger::init()->log_exception( $e );
-			return array();
+			/** This filter is documented in this file */
+			return apply_filters( 'newsman_elementor_lists_for_select', array(), $blog_id );
 		}
 
-		set_transient( $transient_key, $options, self::LISTS_CACHE_TTL );
-		return $options;
+		/**
+		 * Filter the list dropdown cache TTL (in seconds).
+		 *
+		 * Default is 600s (10 minutes). Lower it to make editor reflect Newsman list changes
+		 * faster, or raise it to reduce API pressure for large multi-author teams.
+		 *
+		 * @param int $ttl     Cache TTL in seconds.
+		 * @param int $blog_id Current WP blog ID.
+		 */
+		$ttl = (int) apply_filters( 'newsman_elementor_lists_cache_ttl', self::LISTS_CACHE_TTL, $blog_id );
+		set_transient( $transient_key, $options, $ttl );
+
+		/** This filter is documented in this file */
+		return apply_filters( 'newsman_elementor_lists_for_select', $options, $blog_id );
 	}
 }

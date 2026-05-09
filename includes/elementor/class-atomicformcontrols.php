@@ -41,9 +41,30 @@ class AtomicFormControls {
 	/**
 	 * Atomic input widgets that may carry per-field Newsman flags.
 	 *
+	 * Default list — use `get_input_types()` (which applies `newsman_atomic_form_input_types`)
+	 * for every runtime decision so integrators can extend coverage to custom widgets.
+	 *
 	 * @var string[]
 	 */
 	public const INPUT_TYPES = array( 'e-form-input', 'e-form-textarea', 'e-form-checkbox' );
+
+	/**
+	 * Resolve the atomic input widget types that carry per-field Newsman flags.
+	 *
+	 * @return string[]
+	 */
+	public static function get_input_types() {
+		/**
+		 * Filter the list of atomic input widget types that may carry Newsman flags.
+		 *
+		 * Add custom widget types here to make Newsman emit per-field controls and pick
+		 * up `newsman_send_field` / `newsman_is_email` from their submitted values.
+		 *
+		 * @param string[] $types Default input widget types.
+		 */
+		$types = apply_filters( 'newsman_atomic_form_input_types', self::INPUT_TYPES );
+		return is_array( $types ) ? array_values( array_filter( array_map( 'strval', $types ) ) ) : self::INPUT_TYPES;
+	}
 
 	/**
 	 * Inject Newsman props into the global atomic-widgets schema.
@@ -80,7 +101,15 @@ class AtomicFormControls {
 			$schema['newsman_is_email'] = $boolean::make()->default( false );
 		}
 
-		return $schema;
+		/**
+		 * Filter the atomic-widgets props schema after Newsman's props have been injected.
+		 *
+		 * Use this to register additional Newsman-related atomic props (e.g. a per-field
+		 * property-key override) that your custom controls or processor extensions consume.
+		 *
+		 * @param array $schema Atomic widgets schema with Newsman props already merged in.
+		 */
+		return apply_filters( 'newsman_atomic_form_props_schema', $schema );
 	}
 
 	/**
@@ -107,7 +136,7 @@ class AtomicFormControls {
 
 		if ( self::FORM_TYPE === $type ) {
 			$section = $this->build_form_section();
-		} elseif ( in_array( $type, self::INPUT_TYPES, true ) ) {
+		} elseif ( in_array( $type, self::get_input_types(), true ) ) {
 			$section = $this->build_field_section( $type );
 		}
 
