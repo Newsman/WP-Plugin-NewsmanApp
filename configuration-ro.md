@@ -2,6 +2,20 @@
 
 Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea conecta magazinul WordPress sau WooCommerce la contul Newsman si a incepe sa colectati abonati, sa trimiteti newslettere si sa urmariti comportamentul clientilor.
 
+## Cuprins
+
+- [Unde Gasiti Setarile Plugin-ului](#unde-gasiti-setarile-plugin-ului)
+- [Primii Pasi - Conectarea la Newsman](#primii-pasi---conectarea-la-newsman)
+- [Reconfigurare cu Newsman OAuth](#reconfigurare-cu-newsman-oauth)
+- [Pagina Settings](#pagina-settings)
+- [Pagina Sync](#pagina-sync)
+- [Pagina Remarketing](#pagina-remarketing)
+- [Pagina SMS (doar WooCommerce)](#pagina-sms-doar-woocommerce)
+- [Formulare Elementor (Elementor Pro)](#formulare-elementor-elementor-pro)
+- [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
+- [Contact Form 7](#contact-form-7)
+- [Intrebari Frecvente](#intrebari-frecvente)
+
 ---
 
 ## Unde Gasiti Setarile Plugin-ului
