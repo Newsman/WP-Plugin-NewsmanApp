@@ -111,6 +111,10 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.12 =
+* Add Elementor Pro integration for the legacy Form widget (per-form list selection, per-field properties, email field detection); tested with Elementor and Elementor Pro 3.35.x and 4.x, including forms placed inside Elementor popups
+* Add Elementor Pro integration for Atomic Forms (Elementor 4.x); same on/off toggle, list dropdown, and per-field settings as the legacy Form widget
+
 = 3.7.11 =
 * Add API v1 error 3002 - throw a specific error when no subscriber export source is enabled
 
