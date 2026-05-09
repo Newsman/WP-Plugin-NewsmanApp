@@ -231,6 +231,8 @@ If your site uses Elementor Pro's Form widget, the plugin can subscribe submissi
 
 > The Form widget is part of Elementor Pro, not the free Elementor plugin. If only the free Elementor is installed, the Newsman section described below will not appear.
 
+> **Tested with:** Elementor and Elementor Pro **3.35.x** and **4.x**. The legacy Form widget integration applies to both versions; the Atomic Forms integration (described further below) only applies to **4.x**, since Atomic Forms does not exist in 3.35.x.
+
 ### Per-form Settings
 
 Open any page in the Elementor editor and select a Form widget. In the **Content** tab, after the **Form Fields** section, you will see a new **Newsman** section with two settings:
@@ -259,7 +261,7 @@ When a visitor submits the form:
 
 ### Limitations
 
-- This integration targets the **legacy Form widget**. Elementor 4.0's new **Atomic Forms** widget uses a different architecture and is not supported yet.
+- This integration targets the **legacy Form widget**. Elementor 4.x's new **Atomic Forms** widget uses a different architecture and is covered separately in the **Atomic Forms** section below.
 - Forms inside Elementor popups work the same way - the integration is on the Form widget itself, not the page or popup that contains it.
 - Multi-step forms work; the Newsman section applies to the form as a whole, not per step.
 
@@ -275,7 +277,7 @@ If the **Newsman List** dropdown is empty in the Elementor editor:
 
 ## Atomic Forms (Elementor 4.x, experimental)
 
-Elementor 4.0 introduced **Atomic Forms**, a separate form architecture where the form, its labels, inputs, textareas, checkboxes, and submit button are each independent atomic widgets you arrange directly on the canvas. The Newsman plugin supports Atomic Forms with the same on/off toggle, list dropdown, and per-field settings as the legacy Form widget, with one significant limitation noted below.
+Elementor 4.x introduced **Atomic Forms**, a separate form architecture where the form, its labels, inputs, textareas, checkboxes, and submit button are each independent atomic widgets you arrange directly on the canvas. The Newsman plugin supports Atomic Forms with the same on/off toggle, list dropdown, and per-field settings as the legacy Form widget, with one significant limitation noted below.
 
 > Atomic Forms is gated behind two Elementor experiments (`Atomic Widgets` in core and `Atomic Form` in Pro). Both default to active in Elementor 4.x, but you can disable them under **Elementor > Settings > Features**. The Newsman section will not appear if either experiment is off.
 

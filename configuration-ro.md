@@ -242,6 +242,8 @@ Daca site-ul foloseste widget-ul Form din Elementor Pro, plugin-ul poate abona t
 
 > Widget-ul Form face parte din Elementor Pro, nu din plugin-ul Elementor gratuit. Daca este instalat doar Elementor gratuit, sectiunea Newsman descrisa mai jos nu va aparea.
 
+> **Testat cu:** Elementor si Elementor Pro **3.35.x** si **4.x**. Integrarea cu widget-ul Form clasic se aplica pentru ambele versiuni; integrarea Atomic Forms (descrisa mai jos) se aplica doar pentru **4.x**, deoarece Atomic Forms nu exista in 3.35.x.
+
 ### Setari per Formular
 
 Deschideti orice pagina in editorul Elementor si selectati un widget Form. In tab-ul **Content**, dupa sectiunea **Form Fields**, veti vedea o noua sectiune **Newsman** cu doua optiuni:
@@ -270,7 +272,7 @@ Cand un vizitator trimite formularul:
 
 ### Limitari
 
-- Aceasta integrare vizeaza widget-ul **Form clasic**. Noul widget **Atomic Forms** din Elementor 4.0 foloseste o arhitectura diferita si nu este suportat inca.
+- Aceasta integrare vizeaza widget-ul **Form clasic**. Noul widget **Atomic Forms** din Elementor 4.x foloseste o arhitectura diferita si este tratat separat in sectiunea **Atomic Forms** de mai jos.
 - Formularele din popup-urile Elementor functioneaza la fel - integrarea este pe widget-ul Form in sine, nu pe pagina sau popup-ul care il contine.
 - Formularele multi-step functioneaza; sectiunea Newsman se aplica formularului in ansamblu, nu per pas.
 
@@ -286,7 +288,7 @@ Daca dropdown-ul **Newsman List** este gol in editorul Elementor:
 
 ## Atomic Forms (Elementor 4.x, experimental)
 
-Elementor 4.0 a introdus **Atomic Forms**, o arhitectura separata in care formularul, etichetele, input-urile, textareas, checkbox-urile si butonul de submit sunt fiecare widget-uri atomice independente, aranjate direct pe canvas. Plugin-ul Newsman suporta Atomic Forms cu acelasi switcher, dropdown de lista si setari per camp ca widget-ul Form clasic, cu o limitare semnificativa mentionata mai jos.
+Elementor 4.x a introdus **Atomic Forms**, o arhitectura separata in care formularul, etichetele, input-urile, textareas, checkbox-urile si butonul de submit sunt fiecare widget-uri atomice independente, aranjate direct pe canvas. Plugin-ul Newsman suporta Atomic Forms cu acelasi switcher, dropdown de lista si setari per camp ca widget-ul Form clasic, cu o limitare semnificativa mentionata mai jos.
 
 > Atomic Forms este controlat de doua experimente Elementor (`Atomic Widgets` in core si `Atomic Form` in Pro). Ambele sunt active implicit in Elementor 4.x, dar pot fi dezactivate din **Elementor > Settings > Features**. Sectiunea Newsman nu va aparea daca oricare dintre experimente este dezactivat.
 

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Editor controls and props-schema injector for Newsman on Atomic Forms.
  *
- * Atomic Forms (Elementor 4.0+) does not allow registering custom form actions due to a
+ * Atomic Forms (Elementor 4.x) does not allow registering custom form actions due to a
  * hardcoded whitelist in `Action_Type::is_valid()`. To integrate with the same UX as
  * legacy Forms, this class instead:
  *
