@@ -242,7 +242,7 @@ Daca site-ul foloseste widget-ul Form din Elementor Pro, plugin-ul poate abona t
 
 > Widget-ul Form face parte din Elementor Pro, nu din plugin-ul Elementor gratuit. Daca este instalat doar Elementor gratuit, sectiunea Newsman descrisa mai jos nu va aparea.
 
-> **Testat cu:** Elementor si Elementor Pro **3.35.x** si **4.x**. Integrarea cu widget-ul Form clasic se aplica pentru ambele versiuni; integrarea Atomic Forms (descrisa mai jos) se aplica doar pentru **4.x**, deoarece Atomic Forms nu exista in 3.35.x.
+> **Testat cu:** Elementor si Elementor Pro **3.35.x** si **4.x**, inclusiv formulare plasate in popup-uri Elementor. Integrarea cu widget-ul Form clasic se aplica pentru ambele versiuni; integrarea Atomic Forms (descrisa mai jos) se aplica doar pentru **4.x**, deoarece Atomic Forms nu exista in 3.35.x.
 
 ### Setari per Formular
 

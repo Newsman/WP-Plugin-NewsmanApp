@@ -231,7 +231,7 @@ If your site uses Elementor Pro's Form widget, the plugin can subscribe submissi
 
 > The Form widget is part of Elementor Pro, not the free Elementor plugin. If only the free Elementor is installed, the Newsman section described below will not appear.
 
-> **Tested with:** Elementor and Elementor Pro **3.35.x** and **4.x**. The legacy Form widget integration applies to both versions; the Atomic Forms integration (described further below) only applies to **4.x**, since Atomic Forms does not exist in 3.35.x.
+> **Tested with:** Elementor and Elementor Pro **3.35.x** and **4.x**, including forms placed inside Elementor popups. The legacy Form widget integration applies to both versions; the Atomic Forms integration (described further below) only applies to **4.x**, since Atomic Forms does not exist in 3.35.x.
 
 ### Per-form Settings
 
