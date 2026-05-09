@@ -69,6 +69,7 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_developer_use_action_scheduler',
 		'newsman_developer_use_as_subscribe',
 		'newsman_developer_use_as_unsubscribe',
+		'newsman_developer_use_elementor',
 	);
 
 	/**

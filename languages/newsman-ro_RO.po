@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-03-14T08:20:52+00:00\n"
+"POT-Creation-Date: 2026-05-08T19:40:15+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -35,7 +35,9 @@ msgstr ""
 "creare și trimitere newslettere din postările de pe blog)"
 
 #. Author of the plugin
-#: newsmanapp.php
+#: newsmanapp.php includes/elementor/class-atomicformcontrols.php:144
+#: includes/elementor/class-atomicformcontrols.php:179
+#: includes/elementor/class-formcontrols.php:56
 msgid "Newsman"
 msgstr "Newsman"
 
@@ -96,26 +98,26 @@ msgid "Could not save integration setup. Please try again."
 msgstr ""
 "Nu s-a putut salva configurarea integrării. Vă rugăm să încercați din nou."
 
-#: includes/admin/settings/class-remarketing.php:89
-#: includes/admin/settings/class-settings.php:90
+#: includes/admin/settings/class-remarketing.php:90
+#: includes/admin/settings/class-settings.php:91
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Utilizator neautorizat"
 
-#: includes/admin/settings/class-remarketing.php:109
-#: includes/admin/settings/class-settings.php:150
+#: includes/admin/settings/class-remarketing.php:110
+#: includes/admin/settings/class-settings.php:151
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Opțiuni salvate."
 
-#: includes/admin/settings/class-remarketing.php:113
-#: includes/admin/settings/class-remarketing.php:126
+#: includes/admin/settings/class-remarketing.php:114
+#: includes/admin/settings/class-remarketing.php:127
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Credențiale invalide. Vă rugăm să le configurați în fila Setări."
 
-#: includes/admin/settings/class-settings.php:154
-#: includes/admin/settings/class-settings.php:168
+#: includes/admin/settings/class-settings.php:155
+#: includes/admin/settings/class-settings.php:169
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Credențiale invalide"
@@ -179,7 +181,8 @@ msgstr "Nu s-a putut actualiza lista de fluxuri de produse"
 msgid ""
 "Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d)."
 msgstr ""
-"Newsman: Scriptul de remarketing a fost actualizat cu succes pentru site-ul %1$s (ID: %2$d)."
+"Newsman: Scriptul de remarketing a fost actualizat cu succes pentru site-ul "
+"%1$s (ID: %2$d)."
 
 #: includes/class-admin.php:145
 msgid "Newsman: Remarketing script updated successfully."
@@ -191,7 +194,8 @@ msgstr "Newsman: Scriptul de remarketing a fost actualizat cu succes."
 msgid ""
 "Newsman: Failed to fetch the remarketing script for site %1$s (ID: %2$d)."
 msgstr ""
-"Newsman: Nu s-a putut obține scriptul de remarketing pentru site-ul %1$s (ID: %2$d)."
+"Newsman: Nu s-a putut obține scriptul de remarketing pentru site-ul %1$s "
+"(ID: %2$d)."
 
 #: includes/class-admin.php:166 includes/class-admin.php:174
 msgid "Reconfigure with Newsman login"
@@ -297,6 +301,102 @@ msgstr "webhook dezabonare: %1$s, blog %2$d"
 #, php-format
 msgid "webhook import received, blog %d"
 msgstr "webhook import primit, blog %d"
+
+#: includes/elementor/class-atomicformcontrols.php:136
+#: includes/elementor/class-atomicformcontrols.php:168
+#: includes/elementor/class-formcontrols.php:64
+#: includes/elementor/class-formcontrols.php:121
+msgid "Send to Newsman"
+msgstr "Trimite la Newsman"
+
+#: includes/elementor/class-atomicformcontrols.php:140
+#: includes/elementor/class-formcontrols.php:77
+msgid "Newsman List"
+msgstr "Lista Newsman"
+
+#: includes/elementor/class-atomicformcontrols.php:175
+#: includes/elementor/class-formcontrols.php:137
+msgid "Use as Newsman email"
+msgstr "Foloseste ca email Newsman"
+
+#: includes/elementor/class-atomicformcontrols.php:194
+msgid "-- select a list --"
+msgstr "-- selectati o lista --"
+
+#: includes/elementor/class-atomicformprocessor.php:67
+msgid "Newsman: Atomic Form is enabled but no list is selected."
+msgstr "Newsman: Atomic Form este activat, dar nu este selectata nicio lista."
+
+#: includes/elementor/class-atomicformprocessor.php:85
+msgid "Newsman: no field is marked as the email field on this Atomic Form."
+msgstr "Newsman: niciun camp nu este marcat ca fiind campul de email pe acest Atomic Form."
+
+#: includes/elementor/class-atomicformprocessor.php:93
+msgid "Newsman: Atomic Form email field is empty."
+msgstr "Newsman: campul de email al formularului Atomic Form este gol."
+
+#: includes/elementor/class-formcontrols.php:66
+#: includes/elementor/class-formcontrols.php:123
+msgid "On"
+msgstr "Pornit"
+
+#: includes/elementor/class-formcontrols.php:67
+#: includes/elementor/class-formcontrols.php:124
+msgid "Off"
+msgstr "Oprit"
+
+#: includes/elementor/class-formcontrols.php:70
+msgid ""
+"When enabled, form submissions will subscribe the email field to the "
+"selected Newsman list with the marked fields as subscriber properties."
+msgstr "Cand este activat, trimiterile formularului vor abona campul de email la lista Newsman selectata, cu campurile marcate ca proprietati de abonat."
+
+#: includes/elementor/class-formcontrols.php:85
+msgid ""
+"Required when Newsman is enabled. Lists are fetched from your Newsman "
+"account and cached for 10 minutes."
+msgstr "Obligatoriu cand Newsman este activat. Listele sunt preluate din contul dvs. Newsman si pastrate in cache 10 minute."
+
+#: includes/elementor/class-formcontrols.php:127
+msgid ""
+"Push this field's value as a subscriber property to Newsman (using the "
+"field's ID as the property key)."
+msgstr "Trimite valoarea acestui camp catre Newsman ca proprietate de abonat (ID-ul campului devine cheia proprietatii)."
+
+#: includes/elementor/class-formcontrols.php:139
+msgid "Yes"
+msgstr "Da"
+
+#: includes/elementor/class-formcontrols.php:140
+msgid "No"
+msgstr "Nu"
+
+#: includes/elementor/class-formcontrols.php:143
+msgid ""
+"Mark this field as the email used to subscribe the user to the Newsman list."
+msgstr "Marcati acest camp drept emailul folosit pentru abonarea utilizatorului la lista Newsman."
+
+#: includes/elementor/class-formprocessor.php:59
+msgid "Newsman list is not configured for this form."
+msgstr "Lista Newsman nu este configurata pentru acest formular."
+
+#: includes/elementor/class-formprocessor.php:89
+msgid "Newsman: no field is marked as the email field."
+msgstr "Newsman: niciun camp nu este marcat ca fiind campul de email."
+
+#: includes/elementor/class-formprocessor.php:102
+msgid "Newsman: email field is empty."
+msgstr "Newsman: campul de email este gol."
+
+#: includes/elementor/class-formprocessor.php:132
+msgid "Newsman subscription failed."
+msgstr "Abonarea la Newsman a esuat."
+
+#. translators: 1: Email, 2: error message.
+#: includes/elementor/class-subscribehelper.php:104
+#, php-format
+msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
+msgstr "Newsman: GetByEmail nu a returnat %1$s, se va folosi saveSubscribe (%2$s)."
 
 #: includes/export/retriever/class-authenticator.php:55
 msgid "Empty API key provided."
@@ -413,7 +513,7 @@ msgid "Exported products %1$d, %2$d, blog ID %3$s"
 msgstr "Produse trimise %1$d, %2$d, ID blog %3$s"
 
 #. translators: 1: Blog ID
-#: includes/export/retriever/class-refreshremarketing.php:92
+#: includes/export/retriever/class-refreshremarketing.php:94
 #, php-format
 msgid "refresh.remarketing: updated newsman_scriptjs, blog %1$d"
 msgstr "refresh.remarketing: newsman_scriptjs actualizat, blog %1$d"
@@ -543,7 +643,7 @@ msgid "There was an error subscribing to the newsletter. Please try again."
 msgstr ""
 "A apărut o eroare la abonarea la newsletter. Vă rugăm să încercați din nou."
 
-#: includes/form/checkout/class-checkbox.php:148
+#: includes/form/checkout/class-checkbox.php:173
 msgid "Send Order Status SMS"
 msgstr "Trimite SMS cu starea comenzii"
 
@@ -756,6 +856,30 @@ msgstr "Încercare dezabonare la nr. de telefon %s"
 msgid "Unsubscribed telephone %s"
 msgstr "Nr. de telefon %s a fost dezabonat"
 
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-update.php:55
+#, php-format
+msgid "Try to update subscriber %s"
+msgstr "Se incearca actualizarea abonatului %s"
+
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-update.php:84
+#, php-format
+msgid "Updated subscriber %s"
+msgstr "Abonatul %s a fost actualizat"
+
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-updateprops.php:55
+#, php-format
+msgid "Try to update subscriber properties for %s"
+msgstr "Se incearca actualizarea proprietatilor abonatului pentru %s"
+
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-updateprops.php:81
+#, php-format
+msgid "Updated subscriber properties for %s"
+msgstr "Proprietatile abonatului au fost actualizate pentru %s"
+
 #: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Site "
@@ -842,11 +966,26 @@ msgstr ""
 "Trimiteți (in listele de e-mail) numerele de telefon ale abonaților și "
 "numerele de telefon ale clienților care au plasat comenzi."
 
-#: src/backend-remarketing.php:102
+#: src/backend-remarketing.php:101
+msgid "Theme Cart Compatibility"
+msgstr "Compatibilitate Cos Tema"
+
+#: src/backend-remarketing.php:106
+msgid ""
+"Enable for the most reliable detection of cart changes on any theme "
+"(background polling plus AJAX/fetch interception against the Newsman cart "
+"endpoint). Disable for a lighter mechanism that reads cart data directly "
+"from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/"
+"batch) responses (no polling). If you disable this option, use the newsman."
+"app Remarketing Check installation tool to verify cart events are detected "
+"on your theme."
+msgstr "Activati pentru cea mai sigura detectare a schimbarilor din cos pe orice tema (polling in fundal plus interceptare AJAX/fetch catre endpoint-ul de cos Newsman). Dezactivati pentru un mecanism mai usor care citeste datele cosului direct din raspunsurile WooCommerce Store API (/wc/store/v1/cart/add-item si /wc/store/v1/batch), fara polling. Daca dezactivati aceasta optiune, folositi instrumentul „Check installation\" din Remarketing in newsman.app pentru a verifica daca evenimentele de cos sunt detectate pe tema dvs."
+
+#: src/backend-remarketing.php:112
 msgid "Export WordPress Subscribers"
 msgstr "Trimite abonați WordPress"
 
-#: src/backend-remarketing.php:107
+#: src/backend-remarketing.php:117
 msgid ""
 "Optional. Include WordPress users with the subscriber role when syncing "
 "subscribers."
@@ -854,22 +993,22 @@ msgstr ""
 "Opțional. Include utilizatorii WordPress cu rolul de abonat la sincronizarea "
 "abonaților."
 
-#: src/backend-remarketing.php:112
+#: src/backend-remarketing.php:122
 msgid "Export WooCommerce Buyers as Subscribers"
 msgstr "Trimite cumpărătorii WooCommerce ca abonați"
 
-#: src/backend-remarketing.php:117
+#: src/backend-remarketing.php:127
 msgid ""
 "Optional. Include buyers from completed orders when syncing subscribers."
 msgstr ""
 "Opțional. Include cumpărătorii din comenzile finalizate la sincronizarea "
 "abonaților."
 
-#: src/backend-remarketing.php:123
+#: src/backend-remarketing.php:133
 msgid "Export Orders on Status Change"
 msgstr "Comenzi trimise la schimbarea stării"
 
-#: src/backend-remarketing.php:142
+#: src/backend-remarketing.php:152
 msgid ""
 "Select order statuses. On each selected order status change, the order "
 "details will be sent to NewsMAN."
@@ -877,21 +1016,21 @@ msgstr ""
 "Selectați stările comenzii. La fiecare modificare a stării, detaliile "
 "comenzii vor fi trimise către NewsMAN."
 
-#: src/backend-remarketing.php:148
+#: src/backend-remarketing.php:158
 msgid "Export Additional Product Attributes"
 msgstr "Trimiteți atribute suplimentare ale produsului"
 
-#: src/backend-remarketing.php:168
+#: src/backend-remarketing.php:178
 msgid "Select multiple product attributes to include in your product feed."
 msgstr ""
 "Selectați mai multe atribute de produs pentru a le include în feedul de "
 "produse."
 
-#: src/backend-remarketing.php:174
+#: src/backend-remarketing.php:184
 msgid "Customer Attributes"
 msgstr "Atributele clientului"
 
-#: src/backend-remarketing.php:190
+#: src/backend-remarketing.php:200
 msgid ""
 "Select which customer attributes (from orders) to include in your "
 "remarketing data."
@@ -899,7 +1038,7 @@ msgstr ""
 "Selectați atributele clienților (din comenzi) pe care să le includeți în "
 "datele de remarketing."
 
-#: src/backend-remarketing.php:196 src/backend-settings.php:484
+#: src/backend-remarketing.php:206 src/backend-settings.php:496
 #: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Salvați modificările"
@@ -1138,10 +1277,22 @@ msgid "API Timeout"
 msgstr "Expirare API"
 
 #: src/backend-settings.php:419
+msgid "Use Elementor Integration"
+msgstr "Foloseste Integrarea Elementor"
+
+#: src/backend-settings.php:424
+msgid ""
+"When enabled, the Newsman section appears on Elementor Pro Form widgets and "
+"Atomic Forms in the editor, and submissions push the email plus marked field "
+"values to the selected Newsman list. Disable to remove all Newsman editor "
+"controls and submission handling for Elementor."
+msgstr "Cand este activat, sectiunea Newsman apare pe widget-urile Form din Elementor Pro si pe Atomic Forms in editor, iar trimiterile transmit emailul si valorile campurilor marcate catre lista Newsman selectata. Dezactivati pentru a elimina toate controalele Newsman din editor si gestionarea trimiterilor pentru Elementor."
+
+#: src/backend-settings.php:431
 msgid "Enable Test User IP"
 msgstr "Activează adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:424
+#: src/backend-settings.php:436
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -1149,15 +1300,15 @@ msgstr ""
 "Atenție! Vă rugăm să nu utilizați această adresă IP în producție, deoarece "
 "este utilizată de endpoint-ul API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:429
+#: src/backend-settings.php:441
 msgid "Test User IP address"
 msgstr "Adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:440
+#: src/backend-settings.php:452
 msgid "Plugin Loaded Priority"
 msgstr "Prioritate încărcare plugin"
 
-#: src/backend-settings.php:446
+#: src/backend-settings.php:458
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -1166,21 +1317,21 @@ msgstr ""
 "plugins_loaded și prioritatea este setată în această configurație. Implicit "
 "este 20."
 
-#: src/backend-settings.php:452
+#: src/backend-settings.php:464
 msgid "Use Action Scheduler"
 msgstr "Utilizează Planificatorul de acțiuni"
 
-#: src/backend-settings.php:457
+#: src/backend-settings.php:469
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 "Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile "
 "API-ului NewsMAN."
 
-#: src/backend-settings.php:462
+#: src/backend-settings.php:474
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Folosește Planificatorul de acțiuni pentru Abonare"
 
-#: src/backend-settings.php:467
+#: src/backend-settings.php:479
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -1188,11 +1339,11 @@ msgstr ""
 "În magazinul virtual, folosiți planificatorul de acțiuni pentru abonarea la "
 "listele de e-mail și SMS."
 
-#: src/backend-settings.php:472
+#: src/backend-settings.php:484
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
 
-#: src/backend-settings.php:477
+#: src/backend-settings.php:489
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
@@ -1483,6 +1634,18 @@ msgstr ""
 "fereastră modală pentru abonare la newsletter -> Selectați formular "
 "încorporat. Copiați și lipiți codul scurt (shortcode) "
 "newsman_subscribe_widget"
+
+#: src/backend.php:119
+msgid "Documentation"
+msgstr "Documentatie"
+
+#: src/backend.php:123
+msgid "Configuration guide (English)"
+msgstr "Ghid de configurare (engleza)"
+
+#: src/backend.php:126
+msgid "Ghid de configurare (Romana)"
+msgstr "Ghid de configurare (romana)"
 
 #~ msgid ""
 #~ "Export all WordPress users with role subscriber on regular basis (using "

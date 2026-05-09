@@ -239,6 +239,20 @@ class Config {
 	}
 
 	/**
+	 * Whether the Elementor integration (legacy Form widget + Atomic Forms) is enabled.
+	 *
+	 * Default is on. The option is seeded by Setup v10.0.0; if it is missing entirely
+	 * (e.g. mid-upgrade) we fall back to enabled. Only an explicit 'off' disables.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function use_elementor( $blog_id = null ) {
+		$value = $this->get_blog_option( $blog_id, 'newsman_developer_use_elementor', 'on' );
+		return 'on' === $value;
+	}
+
+	/**
 	 * Get authenticate token.
 	 *
 	 * @param null|int $blog_id WP blog ID.

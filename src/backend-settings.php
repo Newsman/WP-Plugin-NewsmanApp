@@ -413,6 +413,18 @@ $form_values = $this->get_form_values();
 									placeholder="<?php echo esc_attr( $this->config->get_api_timeout() ); ?>"/>
 							</td>
 						</tr>
+						<?php if ( $this->is_elementor_exists() ) : ?>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_developer_use_elementor"><?php echo esc_html__( 'Use Elementor Integration', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_developer_use_elementor" type="checkbox"
+									id="newsman_developer_use_elementor" <?php echo ( ! empty( $form_values['newsman_developer_use_elementor'] ) && 'on' === $form_values['newsman_developer_use_elementor'] ) ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When enabled, the Newsman section appears on Elementor Pro Form widgets and Atomic Forms in the editor, and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman editor controls and submission handling for Elementor.', 'newsman' ); ?></p>
+							</td>
+						</tr>
+						<?php endif; ?>
 						<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<tr>
 							<th scope="row">

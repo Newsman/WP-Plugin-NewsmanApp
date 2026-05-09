@@ -172,6 +172,11 @@ class WP_Newsman {
 			$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
 			add_action( 'wp_footer', array( $page_view, 'display_script_js' ) );
 		}
+
+		$elementor_exist = new \Newsman\Util\ElementorExist();
+		if ( $elementor_exist->exist() && $this->config->use_elementor() ) {
+			( new \Newsman\Elementor\Integration() )->init_hooks();
+		}
 	}
 
 	/**

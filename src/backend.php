@@ -114,6 +114,19 @@ $is_valid_credentials = $this->is_valid_credentials();
 							<p><?php echo esc_html__( 'Log in to your NewsMAN account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget', 'newsman' ); ?></p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<strong><?php echo esc_html__( 'Documentation', 'newsman' ); ?></strong>
+						</th>
+						<td>
+							<p>
+								<a class="nzm-link" href="https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/master/configuration-en.md" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Configuration guide (English)', 'newsman' ); ?></a>
+							</p>
+							<p>
+								<a class="nzm-link" href="https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/master/configuration-ro.md" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Ghid de configurare (Romana)', 'newsman' ); ?></a>
+							</p>
+						</td>
+					</tr>
 				</table>
 			</div>
 		</section>

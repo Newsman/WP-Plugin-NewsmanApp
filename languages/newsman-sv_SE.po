@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-03-14T08:20:52+00:00\n"
+"POT-Creation-Date: 2026-05-08T19:40:15+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -28,13 +28,17 @@ msgstr "https://github.com/Newsman/WP-Plugin-NewsmanApp"
 
 #. Description of the plugin
 #: newsmanapp.php
-msgid "NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)"
+msgid ""
+"NewsmanApp for WordPress (sign up widget, subscribers sync, create and send "
+"newsletters from blog posts)"
 msgstr ""
 "NewsmanApp för WordPress (registreringswidget, prenumerantsynkronisering, "
 "skapa och skicka nyhetsbrev från blogginlägg)"
 
 #. Author of the plugin
-#: newsmanapp.php
+#: newsmanapp.php includes/elementor/class-atomicformcontrols.php:144
+#: includes/elementor/class-atomicformcontrols.php:179
+#: includes/elementor/class-formcontrols.php:56
 msgid "Newsman"
 msgstr "Newsman"
 
@@ -92,26 +96,26 @@ msgstr "Det finns inga listor i ditt NewsMAN-konto"
 msgid "Could not save integration setup. Please try again."
 msgstr "Kunde inte spara integrationsinställningen. Försök igen."
 
-#: includes/admin/settings/class-remarketing.php:89
-#: includes/admin/settings/class-settings.php:90
+#: includes/admin/settings/class-remarketing.php:90
+#: includes/admin/settings/class-settings.php:91
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Obehörig användare"
 
-#: includes/admin/settings/class-remarketing.php:109
-#: includes/admin/settings/class-settings.php:150
+#: includes/admin/settings/class-remarketing.php:110
+#: includes/admin/settings/class-settings.php:151
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Alternativ sparade."
 
-#: includes/admin/settings/class-remarketing.php:113
-#: includes/admin/settings/class-remarketing.php:126
+#: includes/admin/settings/class-remarketing.php:114
+#: includes/admin/settings/class-remarketing.php:127
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Ogiltiga inloggningsuppgifter. Konfigurera dem i fliken Inställningar."
 
-#: includes/admin/settings/class-settings.php:154
-#: includes/admin/settings/class-settings.php:168
+#: includes/admin/settings/class-settings.php:155
+#: includes/admin/settings/class-settings.php:169
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Ogiltiga inloggningsuppgifter"
@@ -146,7 +150,8 @@ msgid "The SMS was not sent. Please select or keep the configured SMS list."
 msgstr "SMS:et skickades inte. Välj eller behåll den konfigurerade SMS-listan."
 
 #: includes/admin/settings/class-sms.php:260
-msgid "The SMS was not sent. Please fill the test phone number and the test message."
+msgid ""
+"The SMS was not sent. Please fill the test phone number and the test message."
 msgstr "SMS:et skickades inte. Fyll i testtelefonsnumret och testmeddelandet."
 
 #: includes/admin/settings/class-sync.php:117
@@ -166,7 +171,8 @@ msgstr "Kunde inte uppdatera feedlistan"
 #. translators: 1: blog name, 2: blog ID
 #: includes/class-admin.php:137
 #, php-format
-msgid "Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d)."
+msgid ""
+"Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d)."
 msgstr ""
 "Newsman: Remarketingskriptet uppdaterades framgångsrikt för webbplats %1$s "
 "(ID: %2$d)."
@@ -178,13 +184,12 @@ msgstr "Newsman: Remarketingskriptet uppdaterades framgångsrikt."
 #. translators: 1: blog name, 2: blog ID
 #: includes/class-admin.php:161
 #, php-format
-msgid "Newsman: Failed to fetch the remarketing script for site %1$s (ID: %2$d)."
+msgid ""
+"Newsman: Failed to fetch the remarketing script for site %1$s (ID: %2$d)."
 msgstr ""
-"Newsman: Kunde inte hämta remarketingskriptet för webbplats %1$s (ID: "
-"%2$d)."
+"Newsman: Kunde inte hämta remarketingskriptet för webbplats %1$s (ID: %2$d)."
 
-#: includes/class-admin.php:166
-#: includes/class-admin.php:174
+#: includes/class-admin.php:166 includes/class-admin.php:174
 msgid "Reconfigure with Newsman login"
 msgstr "Omkonfigurera med Newsman-inloggning"
 
@@ -192,66 +197,42 @@ msgstr "Omkonfigurera med Newsman-inloggning"
 msgid "Newsman: Failed to fetch the remarketing script."
 msgstr "Newsman: Kunde inte hämta remarketingskriptet."
 
-#: includes/class-admin.php:193
-#: src/backend-oauth.php:23
-#: src/backend-remarketing.php:26
-#: src/backend-remarketing.php:31
-#: src/backend-settings.php:26
-#: src/backend-settings.php:31
-#: src/backend-sms.php:60
-#: src/backend-sms.php:65
-#: src/backend-sync.php:26
-#: src/backend-sync.php:31
-#: src/backend.php:18
-#: src/backend.php:23
+#: includes/class-admin.php:193 src/backend-oauth.php:23
+#: src/backend-remarketing.php:26 src/backend-remarketing.php:31
+#: src/backend-settings.php:26 src/backend-settings.php:31
+#: src/backend-sms.php:60 src/backend-sms.php:65 src/backend-sync.php:26
+#: src/backend-sync.php:31 src/backend.php:18 src/backend.php:23
 msgid "NewsMAN"
 msgstr "NewsMAN"
 
-#: includes/class-admin.php:202
-#: includes/class-admin.php:203
-#: src/backend-remarketing.php:33
-#: src/backend-settings.php:33
-#: src/backend-sms.php:67
-#: src/backend-sync.php:33
-#: src/backend.php:25
+#: includes/class-admin.php:202 includes/class-admin.php:203
+#: src/backend-remarketing.php:33 src/backend-settings.php:33
+#: src/backend-sms.php:67 src/backend-sync.php:33 src/backend.php:25
 #: src/backend.php:75
 msgid "Sync"
 msgstr "Synkronisering"
 
-#: includes/class-admin.php:211
-#: includes/class-admin.php:212
-#: src/backend-remarketing.php:35
-#: src/backend-settings.php:35
-#: src/backend-sms.php:69
-#: src/backend-sync.php:35
-#: src/backend.php:27
+#: includes/class-admin.php:211 includes/class-admin.php:212
+#: src/backend-remarketing.php:35 src/backend-settings.php:35
+#: src/backend-sms.php:69 src/backend-sync.php:35 src/backend.php:27
 #: src/backend.php:83
 msgid "Remarketing"
 msgstr "Remarketing"
 
-#: includes/class-admin.php:221
-#: includes/class-admin.php:222
-#: src/backend-remarketing.php:38
-#: src/backend-settings.php:38
-#: src/backend-sms.php:72
-#: src/backend-sync.php:38
-#: src/backend.php:30
+#: includes/class-admin.php:221 includes/class-admin.php:222
+#: src/backend-remarketing.php:38 src/backend-settings.php:38
+#: src/backend-sms.php:72 src/backend-sync.php:38 src/backend.php:30
 msgid "SMS"
 msgstr "SMS"
 
-#: includes/class-admin.php:231
-#: includes/class-admin.php:232
-#: src/backend-remarketing.php:41
-#: src/backend-settings.php:41
-#: src/backend-sms.php:75
-#: src/backend-sync.php:41
-#: src/backend.php:33
+#: includes/class-admin.php:231 includes/class-admin.php:232
+#: src/backend-remarketing.php:41 src/backend-settings.php:41
+#: src/backend-sms.php:75 src/backend-sync.php:41 src/backend.php:33
 #: src/backend.php:101
 msgid "Settings"
 msgstr "Inställningar"
 
-#: includes/class-admin.php:240
-#: includes/class-admin.php:241
+#: includes/class-admin.php:240 includes/class-admin.php:241
 msgid "Oauth"
 msgstr "Oauth"
 
@@ -312,6 +293,102 @@ msgstr "webhook unsubscribe: %1$s, blogg %2$d"
 #, php-format
 msgid "webhook import received, blog %d"
 msgstr "webhook import mottagen, blogg %d"
+
+#: includes/elementor/class-atomicformcontrols.php:136
+#: includes/elementor/class-atomicformcontrols.php:168
+#: includes/elementor/class-formcontrols.php:64
+#: includes/elementor/class-formcontrols.php:121
+msgid "Send to Newsman"
+msgstr "Skicka till Newsman"
+
+#: includes/elementor/class-atomicformcontrols.php:140
+#: includes/elementor/class-formcontrols.php:77
+msgid "Newsman List"
+msgstr "Newsman-lista"
+
+#: includes/elementor/class-atomicformcontrols.php:175
+#: includes/elementor/class-formcontrols.php:137
+msgid "Use as Newsman email"
+msgstr "Använd som Newsman-e-post"
+
+#: includes/elementor/class-atomicformcontrols.php:194
+msgid "-- select a list --"
+msgstr "-- välj en lista --"
+
+#: includes/elementor/class-atomicformprocessor.php:67
+msgid "Newsman: Atomic Form is enabled but no list is selected."
+msgstr "Newsman: Atomic Form är aktiverat men ingen lista är vald."
+
+#: includes/elementor/class-atomicformprocessor.php:85
+msgid "Newsman: no field is marked as the email field on this Atomic Form."
+msgstr "Newsman: inget fält är markerat som e-postfält i detta Atomic Form."
+
+#: includes/elementor/class-atomicformprocessor.php:93
+msgid "Newsman: Atomic Form email field is empty."
+msgstr "Newsman: e-postfältet i Atomic Form är tomt."
+
+#: includes/elementor/class-formcontrols.php:66
+#: includes/elementor/class-formcontrols.php:123
+msgid "On"
+msgstr "På"
+
+#: includes/elementor/class-formcontrols.php:67
+#: includes/elementor/class-formcontrols.php:124
+msgid "Off"
+msgstr "Av"
+
+#: includes/elementor/class-formcontrols.php:70
+msgid ""
+"When enabled, form submissions will subscribe the email field to the "
+"selected Newsman list with the marked fields as subscriber properties."
+msgstr "När detta är aktiverat prenumererar formulärinskickningar e-postfältet på den valda Newsman-listan med de markerade fälten som prenumerantegenskaper."
+
+#: includes/elementor/class-formcontrols.php:85
+msgid ""
+"Required when Newsman is enabled. Lists are fetched from your Newsman "
+"account and cached for 10 minutes."
+msgstr "Obligatoriskt när Newsman är aktiverat. Listor hämtas från ditt Newsman-konto och cachas i 10 minuter."
+
+#: includes/elementor/class-formcontrols.php:127
+msgid ""
+"Push this field's value as a subscriber property to Newsman (using the "
+"field's ID as the property key)."
+msgstr "Skickar fältets värde som prenumerantegenskap till Newsman (fältets ID används som egenskapens nyckel)."
+
+#: includes/elementor/class-formcontrols.php:139
+msgid "Yes"
+msgstr "Ja"
+
+#: includes/elementor/class-formcontrols.php:140
+msgid "No"
+msgstr "Nej"
+
+#: includes/elementor/class-formcontrols.php:143
+msgid ""
+"Mark this field as the email used to subscribe the user to the Newsman list."
+msgstr "Markera detta fält som e-postadressen som används för att prenumerera användaren på Newsman-listan."
+
+#: includes/elementor/class-formprocessor.php:59
+msgid "Newsman list is not configured for this form."
+msgstr "Newsman-lista är inte konfigurerad för detta formulär."
+
+#: includes/elementor/class-formprocessor.php:89
+msgid "Newsman: no field is marked as the email field."
+msgstr "Newsman: inget fält är markerat som e-postfält."
+
+#: includes/elementor/class-formprocessor.php:102
+msgid "Newsman: email field is empty."
+msgstr "Newsman: e-postfältet är tomt."
+
+#: includes/elementor/class-formprocessor.php:132
+msgid "Newsman subscription failed."
+msgstr "Newsman-prenumerationen misslyckades."
+
+#. translators: 1: Email, 2: error message.
+#: includes/elementor/class-subscribehelper.php:104
+#, php-format
+msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
+msgstr "Newsman: GetByEmail returnerade inte %1$s, saveSubscribe används (%2$s)."
 
 #: includes/export/retriever/class-authenticator.php:55
 msgid "Empty API key provided."
@@ -428,7 +505,7 @@ msgid "Exported products %1$d, %2$d, blog ID %3$s"
 msgstr "Produkter exporterade %1$d, %2$d, blogg-ID %3$s"
 
 #. translators: 1: Blog ID
-#: includes/export/retriever/class-refreshremarketing.php:92
+#: includes/export/retriever/class-refreshremarketing.php:94
 #, php-format
 msgid "refresh.remarketing: updated newsman_scriptjs, blog %1$d"
 msgstr "refresh.remarketing: newsman_scriptjs uppdaterat, blogg %1$d"
@@ -519,20 +596,25 @@ msgstr "Du har redan avprenumererat från vårt nyhetsbrev!"
 
 #: includes/form/account/class-processor.php:215
 msgid "A subscription confirmation email will be sent to you shortly."
-msgstr "Ett bekräftelsemeddelande för prenumerationen skickas till dig inom kort."
+msgstr ""
+"Ett bekräftelsemeddelande för prenumerationen skickas till dig inom kort."
 
 #: includes/form/account/class-processor.php:222
 msgid "You have successfully subscribed to our newsletter!"
 msgstr "Du har framgångsrikt prenumererat på vårt nyhetsbrev!"
 
 #: includes/form/account/class-processor.php:227
-msgid "The subscription process usually takes less than a minute. After that the status of your subscription will be shown here. Thank you!"
+msgid ""
+"The subscription process usually takes less than a minute. After that the "
+"status of your subscription will be shown here. Thank you!"
 msgstr ""
 "Prenumerationsprocessen tar vanligtvis mindre än en minut. Därefter visas "
 "statusen för din prenumeration här. Tack!"
 
 #: includes/form/account/class-processor.php:252
-msgid "You have unsubscribed from our newsletter! An unsubscription confirmation email will be sent to you shortly."
+msgid ""
+"You have unsubscribed from our newsletter! An unsubscription confirmation "
+"email will be sent to you shortly."
 msgstr ""
 "Du har avprenumererat från vårt nyhetsbrev! Ett bekräftelsemeddelande för "
 "avprenumerationen skickas till dig inom kort."
@@ -542,16 +624,18 @@ msgid "You have unsubscribed from our newsletter!"
 msgstr "Du har avprenumererat från vårt nyhetsbrev!"
 
 #: includes/form/account/class-processor.php:264
-msgid "The unsubscription process usually takes less than a minute. After that the status of your subscription will be shown here. Thank you!"
+msgid ""
+"The unsubscription process usually takes less than a minute. After that the "
+"status of your subscription will be shown here. Thank you!"
 msgstr ""
-"Avprenumerationsprocessen tar vanligtvis mindre än en minut. Därefter "
-"visas statusen för din prenumeration här. Tack!"
+"Avprenumerationsprocessen tar vanligtvis mindre än en minut. Därefter visas "
+"statusen för din prenumeration här. Tack!"
 
 #: includes/form/account/class-processor.php:278
 msgid "There was an error subscribing to the newsletter. Please try again."
 msgstr "Ett fel uppstod vid prenumeration på nyhetsbrevet. Försök igen."
 
-#: includes/form/checkout/class-checkbox.php:148
+#: includes/form/checkout/class-checkbox.php:173
 msgid "Send Order Status SMS"
 msgstr "Skicka SMS om beställningsstatus"
 
@@ -763,9 +847,31 @@ msgstr "Försöker avprenumerera telefonnummer %s"
 msgid "Unsubscribed telephone %s"
 msgstr "Telefonnummer %s avprenumererat"
 
-#: src/backend-oauth.php:35
-#: src/backend-settings.php:92
-#: src/backend.php:64
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-update.php:55
+#, php-format
+msgid "Try to update subscriber %s"
+msgstr "Försöker uppdatera prenumerant %s"
+
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-update.php:84
+#, php-format
+msgid "Updated subscriber %s"
+msgstr "Prenumeranten %s uppdaterad"
+
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-updateprops.php:55
+#, php-format
+msgid "Try to update subscriber properties for %s"
+msgstr "Försöker uppdatera prenumerantegenskaper för %s"
+
+#. translators: 1: Email or subscriber ID
+#: includes/service/subscriber/class-updateprops.php:81
+#, php-format
+msgid "Updated subscriber properties for %s"
+msgstr "Prenumerantegenskaper uppdaterade för %s"
+
+#: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Webbplats "
 
@@ -801,8 +907,7 @@ msgstr "Anslut dina formulär till automatisering"
 msgid "Login with NewsMAN"
 msgstr "Logga in med NewsMAN"
 
-#: src/backend-oauth.php:80
-#: src/backend-oauth.php:111
+#: src/backend-oauth.php:80 src/backend-oauth.php:111
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -810,9 +915,7 @@ msgstr "Avbryt"
 msgid "Select list:"
 msgstr "Välj lista:"
 
-#: src/backend-oauth.php:94
-#: src/backend-sms.php:122
-#: src/backend-sync.php:63
+#: src/backend-oauth.php:94 src/backend-sms.php:122 src/backend-sync.php:63
 #: src/backend-sync.php:104
 msgid "-- select list --"
 msgstr "-- välj lista --"
@@ -821,11 +924,8 @@ msgstr "-- välj lista --"
 msgid "Save"
 msgstr "Spara"
 
-#: src/backend-remarketing.php:62
-#: src/backend-settings.php:304
-#: src/backend-sms.php:267
-#: src/backend-sms.php:294
-#: src/backend-sms.php:321
+#: src/backend-remarketing.php:62 src/backend-settings.php:304
+#: src/backend-sms.php:267 src/backend-sms.php:294 src/backend-sms.php:321
 msgid "Enable"
 msgstr "Aktivera"
 
@@ -850,63 +950,85 @@ msgid "Send telephone numbers"
 msgstr "Skicka telefonnummer"
 
 #: src/backend-remarketing.php:96
-msgid "Send subscribers (e-mail lists) telephone numbers and telephone numbers of customers that made orders."
+msgid ""
+"Send subscribers (e-mail lists) telephone numbers and telephone numbers of "
+"customers that made orders."
 msgstr ""
-"Skicka telefonnummer för prenumeranter (e-postlistor) och telefonnummer "
-"för kunder som gjort beställningar."
+"Skicka telefonnummer för prenumeranter (e-postlistor) och telefonnummer för "
+"kunder som gjort beställningar."
 
-#: src/backend-remarketing.php:102
+#: src/backend-remarketing.php:101
+msgid "Theme Cart Compatibility"
+msgstr "Temats varukorgs-kompatibilitet"
+
+#: src/backend-remarketing.php:106
+msgid ""
+"Enable for the most reliable detection of cart changes on any theme "
+"(background polling plus AJAX/fetch interception against the Newsman cart "
+"endpoint). Disable for a lighter mechanism that reads cart data directly "
+"from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/"
+"batch) responses (no polling). If you disable this option, use the newsman."
+"app Remarketing Check installation tool to verify cart events are detected "
+"on your theme."
+msgstr "Aktivera för den mest tillförlitliga detektionen av kundvagnsändringar i alla teman (bakgrundspolling plus AJAX/fetch-avlyssning mot Newsmans kundvagns-slutpunkt). Inaktivera för en lättare mekanism som läser kundvagnsdata direkt från svaren från WooCommerce Store API (/wc/store/v1/cart/add-item och /wc/store/v1/batch) (ingen polling). Om du inaktiverar detta alternativ, använd verktyget \"Check installation\" i newsman.app Remarketing för att verifiera att kundvagnshändelser upptäcks i ditt tema."
+
+#: src/backend-remarketing.php:112
 msgid "Export WordPress Subscribers"
 msgstr "Exportera WordPress-prenumeranter"
 
-#: src/backend-remarketing.php:107
-msgid "Optional. Include WordPress users with the subscriber role when syncing subscribers."
+#: src/backend-remarketing.php:117
+msgid ""
+"Optional. Include WordPress users with the subscriber role when syncing "
+"subscribers."
 msgstr ""
 "Valfritt. Inkludera WordPress-användare med prenumerantrollen vid "
 "synkronisering av prenumeranter."
 
-#: src/backend-remarketing.php:112
+#: src/backend-remarketing.php:122
 msgid "Export WooCommerce Buyers as Subscribers"
 msgstr "Exportera WooCommerce-köpare som prenumeranter"
 
-#: src/backend-remarketing.php:117
-msgid "Optional. Include buyers from completed orders when syncing subscribers."
+#: src/backend-remarketing.php:127
+msgid ""
+"Optional. Include buyers from completed orders when syncing subscribers."
 msgstr ""
 "Valfritt. Inkludera köpare från slutförda beställningar vid synkronisering "
 "av prenumeranter."
 
-#: src/backend-remarketing.php:123
+#: src/backend-remarketing.php:133
 msgid "Export Orders on Status Change"
 msgstr "Exportera beställningar vid statusändring"
 
-#: src/backend-remarketing.php:142
-msgid "Select order statuses. On each selected order status change, the order details will be sent to NewsMAN."
+#: src/backend-remarketing.php:152
+msgid ""
+"Select order statuses. On each selected order status change, the order "
+"details will be sent to NewsMAN."
 msgstr ""
-"Välj beställningsstatusar. Vid varje vald beställningsstatusändring "
-"skickas beställningsuppgifterna till NewsMAN."
+"Välj beställningsstatusar. Vid varje vald beställningsstatusändring skickas "
+"beställningsuppgifterna till NewsMAN."
 
-#: src/backend-remarketing.php:148
+#: src/backend-remarketing.php:158
 msgid "Export Additional Product Attributes"
 msgstr "Exportera ytterligare produktattribut"
 
-#: src/backend-remarketing.php:168
+#: src/backend-remarketing.php:178
 msgid "Select multiple product attributes to include in your product feed."
 msgstr "Välj flera produktattribut att inkludera i ditt produktflöde."
 
-#: src/backend-remarketing.php:174
+#: src/backend-remarketing.php:184
 msgid "Customer Attributes"
 msgstr "Kundattribut"
 
-#: src/backend-remarketing.php:190
-msgid "Select which customer attributes (from orders) to include in your remarketing data."
+#: src/backend-remarketing.php:200
+msgid ""
+"Select which customer attributes (from orders) to include in your "
+"remarketing data."
 msgstr ""
 "Välj vilka kundattribut (från beställningar) som ska inkluderas i dina "
 "remarketingdata."
 
-#: src/backend-remarketing.php:196
-#: src/backend-settings.php:484
-#: src/backend-sms.php:391
-#: src/backend-sync.php:120
+#: src/backend-remarketing.php:206 src/backend-settings.php:496
+#: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Spara ändringar"
 
@@ -922,31 +1044,23 @@ msgstr "API-NYCKEL"
 msgid "User ID"
 msgstr "Användar-ID"
 
-#: src/backend-settings.php:75
-#: src/backend-sms.php:96
-#: src/backend.php:41
+#: src/backend-settings.php:75 src/backend-sms.php:96 src/backend.php:41
 msgid "Credentials Status"
 msgstr "Status för inloggningsuppgifter"
 
-#: src/backend-settings.php:79
-#: src/backend-sms.php:100
-#: src/backend.php:45
+#: src/backend-settings.php:79 src/backend-sms.php:100 src/backend.php:45
 msgid "Valid"
 msgstr "Giltig"
 
-#: src/backend-settings.php:79
-#: src/backend-sms.php:100
-#: src/backend.php:45
+#: src/backend-settings.php:79 src/backend-sms.php:100 src/backend.php:45
 msgid "Invalid"
 msgstr "Ogiltig"
 
-#: src/backend-settings.php:88
-#: src/backend.php:60
+#: src/backend-settings.php:88 src/backend.php:60
 msgid "Reconfigure with Newsman Oauth ?"
 msgstr "Omkonfigurera med Newsman Oauth?"
 
-#: src/backend-settings.php:89
-#: src/backend.php:61
+#: src/backend-settings.php:89 src/backend.php:61
 msgid "Reconfigure with Newsman Oauth"
 msgstr "Omkonfigurera med Newsman Oauth"
 
@@ -963,7 +1077,9 @@ msgid "Server IP Address"
 msgstr "Serverns IP-adress"
 
 #: src/backend-settings.php:125
-msgid "Please set the public IP address of the server if the user IP address is not sent. NewsMAN subscribe to newsletter requires an IP address."
+msgid ""
+"Please set the public IP address of the server if the user IP address is not "
+"sent. NewsMAN subscribe to newsletter requires an IP address."
 msgstr ""
 "Ställ in serverns publika IP-adress om användarens IP-adress inte skickas. "
 "NewsMAN-prenumeration på nyhetsbrev kräver en IP-adress."
@@ -973,22 +1089,24 @@ msgid "Import Authorize Header Name"
 msgstr "Namn på importauktoriseringsheader"
 
 #: src/backend-settings.php:135
-msgid "HTTP Header Authorization Name. Please set only alphanumeric characters and minus character."
+msgid ""
+"HTTP Header Authorization Name. Please set only alphanumeric characters and "
+"minus character."
 msgstr ""
 "HTTP Header-auktoriseringsnamn. Använd endast alfanumeriska tecken och "
 "bindestreck."
 
 #. translators: 1: Link to NewsMAN
-#: src/backend-settings.php:140
-#: src/backend-settings.php:167
+#: src/backend-settings.php:140 src/backend-settings.php:167
 #, php-format
-msgid "Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce &gt; Feeds and set Header Authorization."
+msgid ""
+"Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce "
+"&gt; Feeds and set Header Authorization."
 msgstr ""
 "Gå till <a target=\"_blank\" href=\"%s\">newsman.app</a> under E-Commerce "
 "&gt; Feeds och ställ in headerauktorisering."
 
-#: src/backend-settings.php:151
-#: src/backend-settings.php:178
+#: src/backend-settings.php:151 src/backend-settings.php:178
 msgid "NewsMAN will be able to import product feeds securely."
 msgstr "NewsMAN kommer att kunna importera produktflöden säkert."
 
@@ -997,7 +1115,9 @@ msgid "Import Authorize Header Key"
 msgstr "Nyckel för importauktoriseringsheader"
 
 #: src/backend-settings.php:162
-msgid "HTTP Header Authorization Key. Please set only alphanumeric characters and minus character."
+msgid ""
+"HTTP Header Authorization Key. Please set only alphanumeric characters and "
+"minus character."
 msgstr ""
 "HTTP Header-auktoriseringsnyckel. Använd endast alfanumeriska tecken och "
 "bindestreck."
@@ -1015,7 +1135,9 @@ msgid "Double Opt-in"
 msgstr "Dubbel opt-in"
 
 #: src/backend-settings.php:198
-msgid "Select the type of newsletter opt-in. Double Opt-in is recommended for newsletter subscriptions."
+msgid ""
+"Select the type of newsletter opt-in. Double Opt-in is recommended for "
+"newsletter subscriptions."
 msgstr ""
 "Välj typ av nyhetsbrevs-opt-in. Dubbel opt-in rekommenderas för "
 "nyhetsbrevsprenumerationer."
@@ -1029,10 +1151,12 @@ msgid "Form ID used for the confirmation email / form settings."
 msgstr "Formulär-ID som används för bekräftelsemail / formulärinställningar."
 
 #: src/backend-settings.php:213
-msgid "Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/manager\">newsman.app</a> &gt; Forms."
+msgid ""
+"Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/"
+"manager\">newsman.app</a> &gt; Forms."
 msgstr ""
-"Formulär kan skapas i <a target=\"_blank\" "
-"href=\"https://newsman.app/manager\">newsman.app</a> &gt; Formulär."
+"Formulär kan skapas i <a target=\"_blank\" href=\"https://newsman.app/"
+"manager\">newsman.app</a> &gt; Formulär."
 
 #: src/backend-settings.php:229
 msgid "Checkout Subscribe to Newsletter and SMS"
@@ -1059,7 +1183,9 @@ msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr "Aktivera SMS, synkronisera telefonnummer med din SMS-lista"
 
 #: src/backend-settings.php:267
-msgid "Enable subscribe after checkout to SMS list with order billing telephone number."
+msgid ""
+"Enable subscribe after checkout to SMS list with order billing telephone "
+"number."
 msgstr ""
 "Aktivera prenumeration efter betalning till SMS-lista med beställningens "
 "faktureringstelefonnummer."
@@ -1085,10 +1211,10 @@ msgid "My Account Subscribe to Newsletter"
 msgstr "Mitt konto - Prenumerera på nyhetsbrev"
 
 #: src/backend-settings.php:309
-msgid "Enable page and checkbox to subscribe to newsletter in customers account."
+msgid ""
+"Enable page and checkbox to subscribe to newsletter in customers account."
 msgstr ""
-"Aktivera sida och kryssruta för att prenumerera på nyhetsbrevet i "
-"kundkontot."
+"Aktivera sida och kryssruta för att prenumerera på nyhetsbrevet i kundkontot."
 
 #: src/backend-settings.php:314
 msgid "Page Menu Label"
@@ -1112,7 +1238,8 @@ msgstr "Kryssruteetikett"
 
 #: src/backend-settings.php:342
 msgid "The label on subscribe to newsletter checkbox in customer account."
-msgstr "Etiketten på kryssrutan för prenumeration på nyhetsbrevet i kundkontot."
+msgstr ""
+"Etiketten på kryssrutan för prenumeration på nyhetsbrevet i kundkontot."
 
 #: src/backend-settings.php:351
 msgid "Logging level"
@@ -1127,56 +1254,75 @@ msgid "API Timeout"
 msgstr "API-timeout"
 
 #: src/backend-settings.php:419
+msgid "Use Elementor Integration"
+msgstr "Använd Elementor-integration"
+
+#: src/backend-settings.php:424
+msgid ""
+"When enabled, the Newsman section appears on Elementor Pro Form widgets and "
+"Atomic Forms in the editor, and submissions push the email plus marked field "
+"values to the selected Newsman list. Disable to remove all Newsman editor "
+"controls and submission handling for Elementor."
+msgstr "När detta är aktiverat visas Newsman-sektionen på Elementor Pros Form-widgets och Atomic Forms i redigeraren, och inskickningar skickar e-postadressen plus markerade fältvärden till den valda Newsman-listan. Inaktivera för att ta bort alla Newsman-redigerarkontroller och inskickningshantering för Elementor."
+
+#: src/backend-settings.php:431
 msgid "Enable Test User IP"
 msgstr "Aktivera testanvändar-IP"
 
-#: src/backend-settings.php:424
-msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
+#: src/backend-settings.php:436
+msgid ""
+"Warning! Please do not use this IP address in production because it is used "
+"by API endpoint subscriber.saveSubscribe."
 msgstr ""
 "Varning! Använd inte denna IP-adress i produktion eftersom den används av "
 "API-ändpunkten subscriber.saveSubscribe."
 
-#: src/backend-settings.php:429
+#: src/backend-settings.php:441
 msgid "Test User IP address"
 msgstr "Testanvändarens IP-adress"
 
-#: src/backend-settings.php:440
+#: src/backend-settings.php:452
 msgid "Plugin Loaded Priority"
 msgstr "Tilläggsladdningsprioritet"
 
-#: src/backend-settings.php:446
-msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
+#: src/backend-settings.php:458
+msgid ""
+"NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
+"and priority set in this configuration. Default is 20."
 msgstr ""
 "NewsMAN-pluginens WooCommerce-krokar laddas med add_action plugins_loaded "
 "och prioriteten inställd i denna konfiguration. Standard är 20."
 
-#: src/backend-settings.php:452
+#: src/backend-settings.php:464
 msgid "Use Action Scheduler"
 msgstr "Använd Action Scheduler"
 
-#: src/backend-settings.php:457
+#: src/backend-settings.php:469
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Använd Action Scheduler-tillägget för vissa NewsMAN API-åtgärder."
 
-#: src/backend-settings.php:462
+#: src/backend-settings.php:474
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Använd Action Scheduler för prenumeration"
 
-#: src/backend-settings.php:467
-msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
+#: src/backend-settings.php:479
+msgid ""
+"On storefront use action scheduler for subscribe to email and SMS lists "
+"actions."
 msgstr ""
-"I butiken, använd Action Scheduler för prenumerationsåtgärder på e-post- "
-"och SMS-listor."
+"I butiken, använd Action Scheduler för prenumerationsåtgärder på e-post- och "
+"SMS-listor."
 
-#: src/backend-settings.php:472
+#: src/backend-settings.php:484
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Använd Action Scheduler för avprenumeration"
 
-#: src/backend-settings.php:477
-msgid "On storefront use action scheduler for unsubscribe from email lists action."
+#: src/backend-settings.php:489
+msgid ""
+"On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
-"I butiken, använd Action Scheduler för avprenumerationsåtgärden från "
-"e-postlistor."
+"I butiken, använd Action Scheduler för avprenumerationsåtgärden från e-"
+"postlistor."
 
 #: src/backend-sms.php:103
 msgid "Please configure the credentials in Settings tab."
@@ -1214,38 +1360,22 @@ msgstr "Meddelande / Variabler"
 msgid "Pending"
 msgstr "Väntande"
 
-#: src/backend-sms.php:152
-#: src/backend-sms.php:168
-#: src/backend-sms.php:184
-#: src/backend-sms.php:200
-#: src/backend-sms.php:216
-#: src/backend-sms.php:232
+#: src/backend-sms.php:152 src/backend-sms.php:168 src/backend-sms.php:184
+#: src/backend-sms.php:200 src/backend-sms.php:216 src/backend-sms.php:232
 #: src/backend-sms.php:248
 msgid "Active"
 msgstr "Aktiv"
 
-#: src/backend-sms.php:156
-#: src/backend-sms.php:172
-#: src/backend-sms.php:188
-#: src/backend-sms.php:204
-#: src/backend-sms.php:220
-#: src/backend-sms.php:236
-#: src/backend-sms.php:252
-#: src/backend-sms.php:276
-#: src/backend-sms.php:303
+#: src/backend-sms.php:156 src/backend-sms.php:172 src/backend-sms.php:188
+#: src/backend-sms.php:204 src/backend-sms.php:220 src/backend-sms.php:236
+#: src/backend-sms.php:252 src/backend-sms.php:276 src/backend-sms.php:303
 #: src/backend-sms.php:330
 msgid "Message"
 msgstr "Meddelande"
 
-#: src/backend-sms.php:158
-#: src/backend-sms.php:174
-#: src/backend-sms.php:190
-#: src/backend-sms.php:206
-#: src/backend-sms.php:222
-#: src/backend-sms.php:238
-#: src/backend-sms.php:254
-#: src/backend-sms.php:280
-#: src/backend-sms.php:307
+#: src/backend-sms.php:158 src/backend-sms.php:174 src/backend-sms.php:190
+#: src/backend-sms.php:206 src/backend-sms.php:222 src/backend-sms.php:238
+#: src/backend-sms.php:254 src/backend-sms.php:280 src/backend-sms.php:307
 #: src/backend-sms.php:334
 msgid "Variables"
 msgstr "Variabler"
@@ -1279,33 +1409,42 @@ msgid "(from official Cargus plugin)"
 msgstr "(från det officiella Cargus-tillägget)"
 
 #: src/backend-sms.php:271
-msgid "Send SMS with Cargus AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a Cargus AWB."
+msgid ""
+"Send SMS with Cargus AWB number. Adds an action in admin order view Order "
+"Actions to send the SMS message. The link will be displayed after the order "
+"has in it a Cargus AWB."
 msgstr ""
 "Skicka SMS med Cargus AWB-nummer. Lägger till en åtgärd i "
-"adminbeställningsvyn för att skicka SMS-meddelandet. Länken visas efter "
-"att beställningen innehåller en Cargus AWB."
+"adminbeställningsvyn för att skicka SMS-meddelandet. Länken visas efter att "
+"beställningen innehåller en Cargus AWB."
 
 #: src/backend-sms.php:290
 msgid "(from official SamedayCourier plugin)"
 msgstr "(från det officiella SamedayCourier-tillägget)"
 
 #: src/backend-sms.php:298
-msgid "Send SMS with SamedayCourier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a SamedayCourier AWB."
+msgid ""
+"Send SMS with SamedayCourier AWB number. Adds an action in admin order view "
+"Order Actions to send the SMS message. The link will be displayed after the "
+"order has in it a SamedayCourier AWB."
 msgstr ""
 "Skicka SMS med SamedayCourier AWB-nummer. Lägger till en åtgärd i "
-"adminbeställningsvyn för att skicka SMS-meddelandet. Länken visas efter "
-"att beställningen innehåller en SamedayCourier AWB."
+"adminbeställningsvyn för att skicka SMS-meddelandet. Länken visas efter att "
+"beställningen innehåller en SamedayCourier AWB."
 
 #: src/backend-sms.php:317
 msgid "(from official FAN Courier plugin)"
 msgstr "(från det officiella FAN Courier-tillägget)"
 
 #: src/backend-sms.php:325
-msgid "Send SMS with FAN Courier AWB number. Adds an action in admin order view Order Actions to send the SMS message. The link will be displayed after the order has in it a FAN Courier AWB."
+msgid ""
+"Send SMS with FAN Courier AWB number. Adds an action in admin order view "
+"Order Actions to send the SMS message. The link will be displayed after the "
+"order has in it a FAN Courier AWB."
 msgstr ""
 "Skicka SMS med FAN Courier AWB-nummer. Lägger till en åtgärd i "
-"adminbeställningsvyn för att skicka SMS-meddelandet. Länken visas efter "
-"att beställningen innehåller en FAN Courier AWB."
+"adminbeställningsvyn för att skicka SMS-meddelandet. Länken visas efter att "
+"beställningen innehåller en FAN Courier AWB."
 
 #: src/backend-sms.php:343
 msgid "SMS production debug"
@@ -1316,7 +1455,9 @@ msgid "Activate test mode"
 msgstr "Aktivera testläge"
 
 #: src/backend-sms.php:351
-msgid "The message will be sent to your specified phone and not to customer phone. SMS are sent on order status changes."
+msgid ""
+"The message will be sent to your specified phone and not to customer phone. "
+"SMS are sent on order status changes."
 msgstr ""
 "Meddelandet skickas till ditt angivna telefonnummer och inte till kundens "
 "telefon. SMS skickas vid beställningsstatusändringar."
@@ -1325,8 +1466,7 @@ msgstr ""
 msgid "Phone for tests"
 msgstr "Telefon för tester"
 
-#: src/backend-sms.php:359
-#: src/backend-sms.php:370
+#: src/backend-sms.php:359 src/backend-sms.php:370
 msgid "Ex:"
 msgstr "Ex.:"
 
@@ -1342,8 +1482,7 @@ msgstr "Telefon"
 msgid "Test message"
 msgstr "Testmeddelande"
 
-#: src/backend-sms.php:383
-#: src/backend-sms.php:386
+#: src/backend-sms.php:383 src/backend-sms.php:386
 msgid "Send now"
 msgstr "Skicka nu"
 
@@ -1368,7 +1507,9 @@ msgid "Select a segment of subscribers."
 msgstr "Välj ett segment av prenumeranter."
 
 #: src/backend-sync.php:94
-msgid "The dropdown has the updated segments as options after the new list was saved."
+msgid ""
+"The dropdown has the updated segments as options after the new list was "
+"saved."
 msgstr ""
 "Rullgardinsmenyn har de uppdaterade segmenten som alternativ efter att den "
 "nya listan sparades."
@@ -1394,13 +1535,18 @@ msgid "Menus"
 msgstr "Menyer"
 
 #: src/backend.php:78
-msgid "You will be able to sync your shop customers and newsletter subscribers with NewsMAN list / segments"
+msgid ""
+"You will be able to sync your shop customers and newsletter subscribers with "
+"NewsMAN list / segments"
 msgstr ""
 "Du kommer att kunna synkronisera dina butikskunder och "
 "nyhetsbrevsprenumeranter med NewsMAN-listor / segment"
 
 #: src/backend.php:86
-msgid "Provide a valuable experience to your customer by automating communication with them. Create automatic email flows based on their actions on the site, such as product viewed, added to cart, completed order etc."
+msgid ""
+"Provide a valuable experience to your customer by automating communication "
+"with them. Create automatic email flows based on their actions on the site, "
+"such as product viewed, added to cart, completed order etc."
 msgstr ""
 "Ge dina kunder en värdefull upplevelse genom att automatisera "
 "kommunikationen med dem. Skapa automatiska e-postflöden baserade på deras "
@@ -1408,40 +1554,64 @@ msgstr ""
 "beställning osv."
 
 #: src/backend.php:95
-msgid "SMS (short messages) is one of the most effective ways to get users’ attention. Create and manage campaigns or send transactional SMS directly from NewsMAN platform."
+msgid ""
+"SMS (short messages) is one of the most effective ways to get users’ "
+"attention. Create and manage campaigns or send transactional SMS directly "
+"from NewsMAN platform."
 msgstr ""
 "SMS (kortmeddelanden) är ett av de mest effektiva sätten att fånga "
 "användarnas uppmärksamhet. Skapa och hantera kampanjer eller skicka "
 "transaktionella SMS direkt från NewsMAN-plattformen."
 
 #: src/backend.php:104
-msgid "In the settings page enter your API Key and User id provided by NewsMAN."
+msgid ""
+"In the settings page enter your API Key and User id provided by NewsMAN."
 msgstr ""
 "På inställningssidan anger du din API-nyckel och användar-ID som "
 "tillhandahålls av NewsMAN."
 
 #: src/backend.php:105
-msgid "After entering and saving valid credentials you will be able to select a list to which subscribers will be added"
+msgid ""
+"After entering and saving valid credentials you will be able to select a "
+"list to which subscribers will be added"
 msgstr ""
-"Efter att ha angett och sparat giltiga inloggningsuppgifter kan du välja "
-"en lista till vilken prenumeranter läggs till"
+"Efter att ha angett och sparat giltiga inloggningsuppgifter kan du välja en "
+"lista till vilken prenumeranter läggs till"
 
 #: src/backend.php:110
 msgid "Widget"
 msgstr "Widget"
 
 #: src/backend.php:113
-msgid "Transform your website visitors into subscribers and customers. Generate easy to integrate pop-ups, embedded signup forms and web layers to convert more."
+msgid ""
+"Transform your website visitors into subscribers and customers. Generate "
+"easy to integrate pop-ups, embedded signup forms and web layers to convert "
+"more."
 msgstr ""
 "Omvandla dina webbplatsbesökare till prenumeranter och kunder. Skapa "
-"lättintegrerade popup-fönster, inbäddade registreringsformulär och "
-"webblager för att konvertera mer."
+"lättintegrerade popup-fönster, inbäddade registreringsformulär och webblager "
+"för att konvertera mer."
 
 #: src/backend.php:114
-msgid "Log in to your NewsMAN account: Select List -> Settings -> Subscription forms -> Create/Edit form -> Modal window -> Activate modal window for newsletter subscription -> Select embedded form. Copy paste Shortcode newsman_subscribe_widget"
+msgid ""
+"Log in to your NewsMAN account: Select List -> Settings -> Subscription "
+"forms -> Create/Edit form -> Modal window -> Activate modal window for "
+"newsletter subscription -> Select embedded form. Copy paste Shortcode "
+"newsman_subscribe_widget"
 msgstr ""
 "Logga in på ditt NewsMAN-konto: Välj Lista -> Inställningar -> "
 "Prenumerationsformulär -> Skapa/Redigera formulär -> Modalt fönster -> "
 "Aktivera modalt fönster för nyhetsbrevsprenumeration -> Välj inbäddat "
 "formulär. Kopiera och klistra in shortcode newsman_subscribe_widget"
 
+#: src/backend.php:119
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: src/backend.php:123
+msgid "Configuration guide (English)"
+msgstr "Konfigurationsguide (engelska)"
+
+#: src/backend.php:126
+msgid "Ghid de configurare (Romana)"
+msgstr "Konfigurationsguide (rumänska)"
