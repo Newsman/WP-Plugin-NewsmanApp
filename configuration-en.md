@@ -2,6 +2,20 @@
 
 This guide walks you through every setting in the Newsman plugin so you can connect your WordPress or WooCommerce store to your Newsman account and start collecting subscribers, sending newsletters, and tracking customer behavior.
 
+## Contents
+
+- [Where to Find the Plugin Settings](#where-to-find-the-plugin-settings)
+- [Getting Started - Connecting to Newsman](#getting-started---connecting-to-newsman)
+- [Reconfigure with Newsman OAuth](#reconfigure-with-newsman-oauth)
+- [Settings Page](#settings-page)
+- [Sync Page](#sync-page)
+- [Remarketing Page](#remarketing-page)
+- [SMS Page (WooCommerce only)](#sms-page-woocommerce-only)
+- [Elementor Forms (Elementor Pro)](#elementor-forms-elementor-pro)
+- [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
+- [Contact Form 7](#contact-form-7)
+- [Frequently Asked Questions](#frequently-asked-questions)
+
 ---
 
 ## Where to Find the Plugin Settings
