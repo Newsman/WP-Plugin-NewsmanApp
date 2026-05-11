@@ -104,6 +104,7 @@ class AtomicFormControls {
 			array(
 				'newsman_enable'     => $boolean::make()->default( false ),
 				'newsman_list_id'    => $string::make()->default( '' ),
+				'newsman_optin_mode' => $string::make()->default( 'single' ),
 				'newsman_send_field' => $boolean::make()->default( true ),
 				'newsman_is_email'   => $boolean::make()->default( false ),
 			),
@@ -248,6 +249,28 @@ class AtomicFormControls {
 		 */
 		$list_control = apply_filters( 'newsman_atomic_form_list_control', $list_control, $list_options );
 
+		$optin_options = array(
+			array(
+				'label' => esc_html__( 'Single opt-in', 'newsman' ),
+				'value' => 'single',
+			),
+			array(
+				'label' => esc_html__( 'Double opt-in', 'newsman' ),
+				'value' => 'double',
+			),
+		);
+		$optin_control = $select_class::bind_to( 'newsman_optin_mode' )
+			->set_label( esc_html__( 'Opt-in mode', 'newsman' ) )
+			->set_options( $optin_options );
+
+		/**
+		 * Filter the form-level Newsman opt-in mode Select_Control.
+		 *
+		 * @param object $optin_control Select_Control bound to `newsman_optin_mode`.
+		 * @param array  $optin_options Options array passed to `set_options()`.
+		 */
+		$optin_control = apply_filters( 'newsman_atomic_form_optin_mode_control', $optin_control, $optin_options );
+
 		/**
 		 * Filter the array of items composing the form-level Newsman section.
 		 *
@@ -260,10 +283,11 @@ class AtomicFormControls {
 			array(
 				$enable_control,
 				$list_control,
+				$optin_control,
 			)
 		);
 		if ( ! is_array( $items ) ) {
-			$items = array( $enable_control, $list_control );
+			$items = array( $enable_control, $list_control, $optin_control );
 		}
 
 		$section = $section_class::make()

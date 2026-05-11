@@ -117,6 +117,34 @@ class FormControls {
 		}
 
 		/**
+		 * Filter the args passed to `add_control()` for the form-level `newsman_optin_mode` SELECT.
+		 *
+		 * @param array  $args    Control args.
+		 * @param object $element Elementor element.
+		 */
+		$optin_args = apply_filters(
+			'newsman_form_optin_mode_control_args',
+			array(
+				'label'       => esc_html__( 'Opt-in mode', 'newsman' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'options'     => array(
+					'single' => esc_html__( 'Single opt-in', 'newsman' ),
+					'double' => esc_html__( 'Double opt-in', 'newsman' ),
+				),
+				'default'     => 'single',
+				'label_block' => true,
+				'condition'   => array(
+					'newsman_enable' => 'yes',
+				),
+				'description' => esc_html__( 'Single opt-in subscribes the user immediately. Double opt-in sends a confirmation email; the subscription is only completed once the user clicks the link.', 'newsman' ),
+			),
+			$element
+		);
+		if ( is_array( $optin_args ) ) {
+			$element->add_control( 'newsman_optin_mode', $optin_args );
+		}
+
+		/**
 		 * Fires inside the Newsman section between the built-in controls and `end_controls_section()`.
 		 *
 		 * Use this to append additional form-level Newsman controls (e.g. a property-mapping

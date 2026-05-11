@@ -242,6 +242,24 @@ class FormPanel {
 					</tr>
 					<tr>
 						<th scope="row">
+							<label for="wpcf7-newsman-optin-mode"><?php esc_html_e( 'Opt-in mode', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<select name="wpcf7-newsman[optin_mode]" id="wpcf7-newsman-optin-mode">
+								<option value="single" <?php selected( (string) $prop['optin_mode'], 'single' ); ?>>
+									<?php esc_html_e( 'Single opt-in', 'newsman' ); ?>
+								</option>
+								<option value="double" <?php selected( (string) $prop['optin_mode'], 'double' ); ?>>
+									<?php esc_html_e( 'Double opt-in', 'newsman' ); ?>
+								</option>
+							</select>
+							<p class="description">
+								<?php esc_html_e( 'Single opt-in subscribes the user immediately. Double opt-in sends a confirmation email; the subscription is only completed once the user clicks the link.', 'newsman' ); ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<label for="wpcf7-newsman-email-field"><?php esc_html_e( 'Email field', 'newsman' ); ?></label>
 						</th>
 						<td>
@@ -363,9 +381,15 @@ class FormPanel {
 			? $posted['send_fields']
 			: array();
 
+		$optin_mode = isset( $posted['optin_mode'] ) ? sanitize_text_field( (string) $posted['optin_mode'] ) : 'single';
+		if ( 'double' !== $optin_mode ) {
+			$optin_mode = 'single';
+		}
+
 		$prop = array(
 			'enable'      => ! empty( $posted['enable'] ),
 			'list_id'     => isset( $posted['list_id'] ) ? sanitize_text_field( (string) $posted['list_id'] ) : '',
+			'optin_mode'  => $optin_mode,
 			'email_field' => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
 			'send_fields' => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
 		);
@@ -420,6 +444,7 @@ class FormPanel {
 		return array(
 			'enable'      => false,
 			'list_id'     => '',
+			'optin_mode'  => 'single',
 			'email_field' => '',
 			'send_fields' => array(),
 		);

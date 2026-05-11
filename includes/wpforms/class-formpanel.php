@@ -233,6 +233,22 @@ class FormPanel {
 			);
 		}
 
+		wpforms_panel_field(
+			'select',
+			'settings',
+			'newsman_optin_mode',
+			$form_data,
+			esc_html__( 'Opt-in mode', 'newsman' ),
+			array(
+				'options' => array(
+					'single' => esc_html__( 'Single opt-in', 'newsman' ),
+					'double' => esc_html__( 'Double opt-in', 'newsman' ),
+				),
+				'default' => 'single',
+				'tooltip' => esc_html__( 'Single opt-in subscribes the user immediately. Double opt-in sends a confirmation email; the subscription is only completed once the user clicks the link.', 'newsman' ),
+			)
+		);
+
 		if ( empty( $choices ) ) {
 			echo '<p class="newsman-empty-fields"><em>';
 			echo esc_html__( 'Add a field to the form to enable Newsman.', 'newsman' );
@@ -325,13 +341,19 @@ class FormPanel {
 	 * @return array
 	 */
 	public static function resolve_settings( $form_data ) {
-		$settings = isset( $form_data['settings'] ) && is_array( $form_data['settings'] )
+		$settings   = isset( $form_data['settings'] ) && is_array( $form_data['settings'] )
 			? $form_data['settings']
 			: array();
+		$optin_mode = isset( $settings['newsman_optin_mode'] ) ? (string) $settings['newsman_optin_mode'] : 'single';
+		if ( 'double' !== $optin_mode ) {
+			$optin_mode = 'single';
+		}
+
 		return wp_parse_args(
 			array(
 				'newsman_enable'      => isset( $settings['newsman_enable'] ) ? $settings['newsman_enable'] : '',
 				'newsman_list_id'     => isset( $settings['newsman_list_id'] ) ? $settings['newsman_list_id'] : '',
+				'newsman_optin_mode'  => $optin_mode,
 				'newsman_email_field' => isset( $settings['newsman_email_field'] ) ? $settings['newsman_email_field'] : '',
 				'newsman_send_fields' => isset( $settings['newsman_send_fields'] ) && is_array( $settings['newsman_send_fields'] )
 					? $settings['newsman_send_fields']
@@ -340,6 +362,7 @@ class FormPanel {
 			array(
 				'newsman_enable'      => '',
 				'newsman_list_id'     => '',
+				'newsman_optin_mode'  => 'single',
 				'newsman_email_field' => '',
 				'newsman_send_fields' => array(),
 			)

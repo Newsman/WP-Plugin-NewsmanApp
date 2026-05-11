@@ -13,9 +13,11 @@ namespace Newsman\Subscribe;
 
 use Newsman\Logger;
 use Newsman\Service\Context\GetByEmail as GetByEmailContext;
+use Newsman\Service\Context\InitSubscribeEmail as InitSubscribeEmailContext;
 use Newsman\Service\Context\SubscribeEmail as SubscribeEmailContext;
 use Newsman\Service\Context\Subscriber\UpdateProps as UpdatePropsContext;
 use Newsman\Service\GetByEmail;
+use Newsman\Service\InitSubscribeEmail;
 use Newsman\Service\SubscribeEmail;
 use Newsman\Service\Subscriber\UpdateProps;
 
@@ -42,20 +44,36 @@ class Helper {
 	/**
 	 * Subscribe an email to a Newsman list with subscriber properties.
 	 *
-	 * Existing subscribers get their props refreshed via `UpdateProps`. New subscribers
-	 * are created via `SubscribeEmail` (saveSubscribe). The caller receives any exception
-	 * thrown by the chosen branch — `GetByEmail` failures are swallowed and treated as
-	 * "not found, create instead".
+	 * Existing subscribers get their props refreshed via `UpdateProps` (mode-agnostic).
+	 * New subscribers are created via `SubscribeEmail` (single opt-in / saveSubscribe)
+	 * or `InitSubscribeEmail` (double opt-in / initSubscribe). The caller receives any
+	 * exception thrown by the chosen branch — `GetByEmail` failures are swallowed and
+	 * treated as "not found, create instead".
 	 *
 	 * @param int    $blog_id    Current WP blog ID.
 	 * @param string $list_id    Newsman list ID.
 	 * @param string $email      Subscriber email address.
 	 * @param array  $properties Custom properties to set/refresh on the subscriber.
-	 * @param string $ip         Client IP for audit (passed to saveSubscribe only).
+	 * @param string $ip         Client IP for audit (passed to saveSubscribe/initSubscribe).
+	 * @param string $optin_mode `'single'` (default) → saveSubscribe; `'double'` → initSubscribe.
 	 * @return void
-	 * @throws \Exception When SubscribeEmail or UpdateProps fail.
+	 * @throws \Exception When SubscribeEmail, InitSubscribeEmail, or UpdateProps fail.
 	 */
-	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '' ) {
+	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '', $optin_mode = 'single' ) {
+		$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
+
+		/**
+		 * Filter the resolved opt-in mode before the subscribe runs.
+		 *
+		 * @param string $optin_mode `'single'` or `'double'`.
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 */
+		$optin_mode = apply_filters( 'newsman_subscribe_optin_mode', $optin_mode, $blog_id, $list_id, $email, $properties, $ip );
+		$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
 		/**
 		 * Filter the Newsman list ID before lookup/subscribe.
 		 *
@@ -142,6 +160,27 @@ class Helper {
 			 * @param array      $properties    Properties pushed to the subscriber.
 			 */
 			do_action( 'newsman_props_updated', $subscriber_id, $blog_id, $list_id, $email, $properties );
+			return;
+		}
+
+		if ( 'double' === $optin_mode ) {
+			try {
+				self::save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip );
+			} catch ( \Exception $e ) {
+				do_action( 'newsman_subscribe_failed', $e, 'init_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+				throw $e;
+			}
+
+			/**
+			 * Fires after initSubscribe was called for a new (or pending) subscriber.
+			 *
+			 * @param int    $blog_id    Current WP blog ID.
+			 * @param string $list_id    Newsman list ID.
+			 * @param string $email      Subscriber email.
+			 * @param array  $properties Properties attached on creation.
+			 * @param string $ip         Client IP.
+			 */
+			do_action( 'newsman_init_subscribed', $blog_id, $list_id, $email, $properties, $ip );
 			return;
 		}
 
@@ -256,5 +295,44 @@ class Helper {
 		$service = new SubscribeEmail();
 		$service->set_blog_id( $blog_id );
 		$service->execute( $context );
+	}
+
+	/**
+	 * Trigger a double-optin confirmation email via subscriber.initSubscribe with props inline.
+	 *
+	 * @param int    $blog_id    WP blog ID.
+	 * @param string $list_id    Newsman list ID.
+	 * @param string $email      Subscriber email.
+	 * @param array  $properties Properties to attach on creation.
+	 * @param string $ip         Client IP for audit.
+	 * @return void
+	 * @throws \Exception On API error (e.g. 128 too-many-requests).
+	 */
+	protected static function save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip ) {
+		$context = new InitSubscribeEmailContext();
+		$context->set_blog_id( $blog_id )
+			->set_list_id( $list_id )
+			->set_email( $email )
+			->set_ip( $ip )
+			->set_properties( $properties );
+
+		$service = new InitSubscribeEmail();
+		$service->set_blog_id( $blog_id );
+		$service->execute( $context );
+	}
+
+	/**
+	 * Translation-register stub for API error messages we pass through to the user.
+	 *
+	 * The form processors render `esc_html__( $e->getMessage(), 'newsman' )` so the
+	 * translation is only applied when the API's literal English message matches a
+	 * known `msgid`. Listing the strings here gives `wp i18n make-pot` a static call
+	 * to extract; the method itself is never invoked.
+	 *
+	 * @return void
+	 */
+	protected static function register_api_translatable_strings() {
+		/* translators: surfaced to the user when subscriber.initSubscribe returns API error 128. */
+		__( 'Too many requests for this subscriber. Can only send once per 10 minutes', 'newsman' );
 	}
 }

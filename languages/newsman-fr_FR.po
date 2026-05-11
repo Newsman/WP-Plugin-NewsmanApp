@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-09T19:48:58+00:00\n"
+"POT-Creation-Date: 2026-05-11T13:33:53+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -36,13 +36,14 @@ msgstr ""
 "abonnés, création et envoi de newsletters à partir des articles de blog)"
 
 #. Author of the plugin
-#: newsmanapp.php includes/contactform7/class-formpanel.php:85
-#: includes/contactform7/class-formpanel.php:114
-#: includes/elementor/class-atomicformcontrols.php:175
-#: includes/elementor/class-atomicformcontrols.php:210
-#: includes/elementor/class-formcontrols.php:43
-#: includes/wpforms/class-formpanel.php:91
-#: includes/wpforms/class-formpanel.php:124
+#: newsmanapp.php includes/contactform7/class-formpanel.php:98
+#: includes/contactform7/class-formpanel.php:198
+#: includes/elementor/class-atomicformcontrols.php:294
+#: includes/elementor/class-atomicformcontrols.php:360
+#: includes/elementor/class-formcontrols.php:57
+#: includes/elementor/class-formcontrols.php:64
+#: includes/wpforms/class-formpanel.php:110
+#: includes/wpforms/class-formpanel.php:205
 msgid "Newsman"
 msgstr "Newsman"
 
@@ -311,7 +312,7 @@ msgstr "webhook unsubscribe : %1$s, blog %2$d"
 msgid "webhook import received, blog %d"
 msgstr "webhook import reçu, blog %d"
 
-#: includes/contactform7/class-formpanel.php:117
+#: includes/contactform7/class-formpanel.php:201
 msgid ""
 "Subscribe form submissions to a Newsman list. The selected email field is "
 "used as the subscriber email; the chosen properties are pushed as Newsman "
@@ -321,17 +322,17 @@ msgstr ""
 "sélectionné est utilisé comme e-mail de l'abonné ; les propriétés choisies "
 "sont envoyées comme propriétés d'abonné Newsman."
 
-#: includes/contactform7/class-formpanel.php:123
-#: includes/elementor/class-atomicformcontrols.php:167
-#: includes/elementor/class-atomicformcontrols.php:199
-#: includes/elementor/class-formcontrols.php:51
-#: includes/elementor/class-formcontrols.php:108
-#: includes/wpforms/class-formpanel.php:132
+#: includes/contactform7/class-formpanel.php:207
+#: includes/elementor/class-atomicformcontrols.php:230
+#: includes/elementor/class-atomicformcontrols.php:321
+#: includes/elementor/class-formcontrols.php:80
+#: includes/elementor/class-formcontrols.php:204
+#: includes/wpforms/class-formpanel.php:213
 msgid "Send to Newsman"
 msgstr "Envoyer à Newsman"
 
-#: includes/contactform7/class-formpanel.php:134
-#: includes/wpforms/class-formpanel.php:134
+#: includes/contactform7/class-formpanel.php:218
+#: includes/wpforms/class-formpanel.php:215
 msgid ""
 "When enabled, every successful submission of this form is subscribed to the "
 "selected Newsman list."
@@ -339,13 +340,13 @@ msgstr ""
 "Lorsqu'activé, chaque soumission réussie de ce formulaire est abonnée à la "
 "liste Newsman sélectionnée."
 
-#: includes/contactform7/class-formpanel.php:140
-#: includes/wpforms/class-formpanel.php:148
+#: includes/contactform7/class-formpanel.php:224
+#: includes/wpforms/class-formpanel.php:229
 msgid "Newsman list"
 msgstr "Liste Newsman"
 
-#: includes/contactform7/class-formpanel.php:145
-#: includes/wpforms/class-formpanel.php:140
+#: includes/contactform7/class-formpanel.php:229
+#: includes/wpforms/class-formpanel.php:221
 msgid ""
 "No Newsman lists are available. Configure your Newsman API key on the "
 "Newsman settings page first."
@@ -353,22 +354,53 @@ msgstr ""
 "Aucune liste Newsman disponible. Configurez d'abord votre clé API Newsman "
 "sur la page des réglages Newsman."
 
-#: includes/contactform7/class-formpanel.php:149
-#: includes/wpforms/class-formpanel.php:115
+#: includes/contactform7/class-formpanel.php:233
+#: includes/wpforms/class-formpanel.php:139
+#: includes/wpforms/class-formpanel.php:171
 msgid "— select a list —"
 msgstr "— sélectionner une liste —"
 
-#: includes/contactform7/class-formpanel.php:161
-#: includes/wpforms/class-formpanel.php:173
+#: includes/contactform7/class-formpanel.php:245
+#: includes/elementor/class-atomicformcontrols.php:263
+#: includes/elementor/class-formcontrols.php:128
+#: includes/wpforms/class-formpanel.php:241
+msgid "Opt-in mode"
+msgstr "Mode d'opt-in"
+
+#: includes/contactform7/class-formpanel.php:250
+#: includes/elementor/class-atomicformcontrols.php:254
+#: includes/elementor/class-formcontrols.php:131
+#: includes/wpforms/class-formpanel.php:244
+msgid "Single opt-in"
+msgstr "Opt-in simple"
+
+#: includes/contactform7/class-formpanel.php:253
+#: includes/elementor/class-atomicformcontrols.php:258
+#: includes/elementor/class-formcontrols.php:132
+#: includes/wpforms/class-formpanel.php:245
+msgid "Double opt-in"
+msgstr "Double opt-in"
+
+#: includes/contactform7/class-formpanel.php:257
+#: includes/elementor/class-formcontrols.php:139
+#: includes/wpforms/class-formpanel.php:248
+msgid ""
+"Single opt-in subscribes the user immediately. Double opt-in sends a "
+"confirmation email; the subscription is only completed once the user clicks "
+"the link."
+msgstr "L'opt-in simple inscrit immédiatement l'utilisateur. Le double opt-in envoie un e-mail de confirmation ; l'inscription n'est validée qu'après que l'utilisateur a cliqué sur le lien."
+
+#: includes/contactform7/class-formpanel.php:263
+#: includes/wpforms/class-formpanel.php:284
 msgid "Email field"
 msgstr "Champ e-mail"
 
-#: includes/contactform7/class-formpanel.php:166
+#: includes/contactform7/class-formpanel.php:268
 msgid "Add a field to the form template to enable Newsman."
 msgstr "Ajoutez un champ au modèle du formulaire pour activer Newsman."
 
-#: includes/contactform7/class-formpanel.php:177
-#: includes/wpforms/class-formpanel.php:176
+#: includes/contactform7/class-formpanel.php:279
+#: includes/wpforms/class-formpanel.php:287
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used "
 "(text, tel, url, email, …)."
@@ -376,25 +408,25 @@ msgstr ""
 "Le champ sélectionné fournit l'e-mail de l'abonné. Tout type de champ peut "
 "être utilisé (text, tel, url, email, …)."
 
-#: includes/contactform7/class-formpanel.php:184
-#: includes/wpforms/class-formpanel.php:190
+#: includes/contactform7/class-formpanel.php:286
+#: includes/wpforms/class-formpanel.php:301
 msgid "Send as properties"
 msgstr "Envoyer comme propriétés"
 
-#: includes/contactform7/class-formpanel.php:189
+#: includes/contactform7/class-formpanel.php:291
 msgid "Add a field to the form template first."
 msgstr "Ajoutez d'abord un champ au modèle du formulaire."
 
-#: includes/contactform7/class-formpanel.php:194
+#: includes/contactform7/class-formpanel.php:296
 msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Envoyer ces champs à Newsman comme propriétés d'abonné"
 
-#: includes/contactform7/class-formpanel.php:215
-#: includes/wpforms/class-formpanel.php:211
+#: includes/contactform7/class-formpanel.php:317
+#: includes/wpforms/class-formpanel.php:322
 msgid "used as email"
 msgstr "utilisé comme e-mail"
 
-#: includes/contactform7/class-formpanel.php:222
+#: includes/contactform7/class-formpanel.php:324
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
@@ -415,17 +447,17 @@ msgstr "Newsman : le formulaire CF7 n'a pas de champ e-mail configuré."
 msgid "Newsman: CF7 email field is empty."
 msgstr "Newsman : le champ e-mail du formulaire CF7 est vide."
 
-#: includes/elementor/class-atomicformcontrols.php:171
-#: includes/elementor/class-formcontrols.php:64
+#: includes/elementor/class-atomicformcontrols.php:241
+#: includes/elementor/class-formcontrols.php:103
 msgid "Newsman List"
 msgstr "Liste Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:206
-#: includes/elementor/class-formcontrols.php:124
+#: includes/elementor/class-atomicformcontrols.php:336
+#: includes/elementor/class-formcontrols.php:230
 msgid "Use as Newsman email"
 msgstr "Utiliser comme e-mail Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:225
+#: includes/elementor/class-atomicformcontrols.php:384
 msgid "-- select a list --"
 msgstr "-- sélectionner une liste --"
 
@@ -445,17 +477,17 @@ msgstr ""
 msgid "Newsman: Atomic Form email field is empty."
 msgstr "Newsman : le champ e-mail du formulaire atomique est vide."
 
-#: includes/elementor/class-formcontrols.php:53
-#: includes/elementor/class-formcontrols.php:110
+#: includes/elementor/class-formcontrols.php:82
+#: includes/elementor/class-formcontrols.php:206
 msgid "On"
 msgstr "Activé"
 
-#: includes/elementor/class-formcontrols.php:54
-#: includes/elementor/class-formcontrols.php:111
+#: includes/elementor/class-formcontrols.php:83
+#: includes/elementor/class-formcontrols.php:207
 msgid "Off"
 msgstr "Désactivé"
 
-#: includes/elementor/class-formcontrols.php:57
+#: includes/elementor/class-formcontrols.php:86
 msgid ""
 "When enabled, form submissions will subscribe the email field to the "
 "selected Newsman list with the marked fields as subscriber properties."
@@ -464,7 +496,7 @@ msgstr ""
 "champ e-mail à la liste Newsman sélectionnée avec les champs marqués comme "
 "propriétés de l'abonné."
 
-#: includes/elementor/class-formcontrols.php:72
+#: includes/elementor/class-formcontrols.php:111
 msgid ""
 "Required when Newsman is enabled. Lists are fetched from your Newsman "
 "account and cached for 10 minutes."
@@ -472,7 +504,7 @@ msgstr ""
 "Obligatoire lorsque Newsman est activé. Les listes sont récupérées depuis "
 "votre compte Newsman et mises en cache pendant 10 minutes."
 
-#: includes/elementor/class-formcontrols.php:114
+#: includes/elementor/class-formcontrols.php:210
 msgid ""
 "Push this field's value as a subscriber property to Newsman (using the "
 "field's ID as the property key)."
@@ -480,15 +512,15 @@ msgstr ""
 "Envoie la valeur de ce champ comme propriété d'abonné à Newsman (l'ID du "
 "champ sert de clé de la propriété)."
 
-#: includes/elementor/class-formcontrols.php:126
+#: includes/elementor/class-formcontrols.php:232
 msgid "Yes"
 msgstr "Oui"
 
-#: includes/elementor/class-formcontrols.php:127
+#: includes/elementor/class-formcontrols.php:233
 msgid "No"
 msgstr "Non"
 
-#: includes/elementor/class-formcontrols.php:130
+#: includes/elementor/class-formcontrols.php:236
 msgid ""
 "Mark this field as the email used to subscribe the user to the Newsman list."
 msgstr ""
@@ -507,7 +539,7 @@ msgstr "Newsman : aucun champ n'est marqué comme champ e-mail."
 msgid "Newsman: email field is empty."
 msgstr "Newsman : le champ e-mail est vide."
 
-#: includes/elementor/class-formprocessor.php:183
+#: includes/elementor/class-formprocessor.php:186
 msgid "Newsman subscription failed."
 msgstr "Échec de l'abonnement Newsman."
 
@@ -997,32 +1029,42 @@ msgid "Updated subscriber properties for %s"
 msgstr "Propriétés de l'abonné mises à jour pour %s"
 
 #. translators: 1: Email, 2: error message.
-#: includes/subscribe/class-helper.php:202
+#: includes/subscribe/class-helper.php:241
 #, php-format
 msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 "Newsman : GetByEmail n'a pas retourné %1$s, utilisation de saveSubscribe "
 "(%2$s)."
 
-#: includes/wpforms/class-formpanel.php:157
+#. translators: surfaced to the user when subscriber.initSubscribe returns API error 128.
+#: includes/subscribe/class-helper.php:336
+msgid ""
+"Too many requests for this subscriber. Can only send once per 10 minutes"
+msgstr "Trop de demandes pour cet abonné. Ne peut être envoyé qu'une fois toutes les 10 minutes"
+
+#: includes/wpforms/class-formpanel.php:254
 msgid "Add a field to the form to enable Newsman."
 msgstr "Ajoutez un champ au formulaire pour activer Newsman."
 
-#: includes/wpforms/class-formpanel.php:217
+#: includes/wpforms/class-formpanel.php:328
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
-msgstr "Chaque champ coché est envoyé à Newsman comme propriété d'abonné avec pour clé l'étiquette du champ (ou l'ID si aucune étiquette n'est définie)."
+msgstr ""
+"Chaque champ coché est envoyé à Newsman comme propriété d'abonné avec pour "
+"clé l'étiquette du champ (ou l'ID si aucune étiquette n'est définie)."
 
 #. translators: %s: WPForms field id.
-#: includes/wpforms/class-formpanel.php:318
+#: includes/wpforms/class-formpanel.php:439
 #, php-format
 msgid "Field #%s"
 msgstr "Champ #%s"
 
 #: includes/wpforms/class-formprocessor.php:74
 msgid "Newsman: WPForms form is enabled but no list is selected."
-msgstr "Newsman : le formulaire WPForms est activé mais aucune liste n'est sélectionnée."
+msgstr ""
+"Newsman : le formulaire WPForms est activé mais aucune liste n'est "
+"sélectionnée."
 
 #: includes/wpforms/class-formprocessor.php:80
 msgid "Newsman: WPForms form has no email field configured."
@@ -1482,7 +1524,13 @@ msgid ""
 "submissions push the email plus marked field values to the selected Newsman "
 "list. Disable to remove all Newsman builder controls and submission handling "
 "for WPForms."
-msgstr "Lorsqu'activé, une section Newsman apparaît dans le panneau Réglages de chaque formulaire WPForms (sélection de liste par formulaire, champ e-mail et propriétés), et les soumissions envoient l'e-mail ainsi que les valeurs des champs cochés à la liste Newsman sélectionnée. Désactivez pour supprimer tous les contrôles du constructeur Newsman et le traitement des soumissions pour WPForms."
+msgstr ""
+"Lorsqu'activé, une section Newsman apparaît dans le panneau Réglages de "
+"chaque formulaire WPForms (sélection de liste par formulaire, champ e-mail "
+"et propriétés), et les soumissions envoient l'e-mail ainsi que les valeurs "
+"des champs cochés à la liste Newsman sélectionnée. Désactivez pour supprimer "
+"tous les contrôles du constructeur Newsman et le traitement des soumissions "
+"pour WPForms."
 
 #: src/backend-settings.php:455
 msgid "Enable Test User IP"

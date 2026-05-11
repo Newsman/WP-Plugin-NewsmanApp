@@ -128,13 +128,16 @@ class FormProcessor {
 		 */
 		$properties = apply_filters( 'newsman_cf7_properties', $properties, $contact_form, $submission, $email );
 
+		$optin_mode = isset( $prop['optin_mode'] ) && 'double' === $prop['optin_mode'] ? 'double' : 'single';
+
 		try {
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
 				$list_id,
 				$email,
 				$properties,
-				IpAddress::init()->get_ip()
+				IpAddress::init()->get_ip(),
+				$optin_mode
 			);
 
 			/**

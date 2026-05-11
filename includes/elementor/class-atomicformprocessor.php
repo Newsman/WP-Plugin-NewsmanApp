@@ -140,12 +140,16 @@ class AtomicFormProcessor {
 			 */
 			$properties = apply_filters( 'newsman_atomic_form_properties', $properties, $widget_settings, $post_data, $email );
 
+			$optin_mode = (string) $this->resolve_atomic_value( $widget_settings['newsman_optin_mode'] ?? 'single' );
+			$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
+
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
 				$list_id,
 				$email,
 				$properties,
-				IpAddress::init()->get_ip()
+				IpAddress::init()->get_ip(),
+				$optin_mode
 			);
 
 			/**
