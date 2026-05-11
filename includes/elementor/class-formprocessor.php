@@ -81,8 +81,10 @@ class FormProcessor {
 			? $settings['form_fields']
 			: array();
 
-		$email_field_id = '';
-		$prop_field_ids = array();
+		$email_field_id     = '';
+		$firstname_field_id = '';
+		$lastname_field_id  = '';
+		$prop_field_ids     = array();
 
 		foreach ( $form_fields_settings as $row ) {
 			if ( ! is_array( $row ) ) {
@@ -94,6 +96,12 @@ class FormProcessor {
 			}
 			if ( '' === $email_field_id && isset( $row['newsman_is_email'] ) && 'yes' === $row['newsman_is_email'] ) {
 				$email_field_id = $custom_id;
+			}
+			if ( '' === $firstname_field_id && isset( $row['newsman_is_firstname'] ) && 'yes' === $row['newsman_is_firstname'] ) {
+				$firstname_field_id = $custom_id;
+			}
+			if ( '' === $lastname_field_id && isset( $row['newsman_is_lastname'] ) && 'yes' === $row['newsman_is_lastname'] ) {
+				$lastname_field_id = $custom_id;
 			}
 			if ( isset( $row['newsman_send_field'] ) && 'yes' === $row['newsman_send_field'] ) {
 				$prop_field_ids[ $custom_id ] = $custom_id;
@@ -132,9 +140,25 @@ class FormProcessor {
 			return;
 		}
 
+		$firstname = '';
+		if ( '' !== $firstname_field_id && isset( $submitted[ $firstname_field_id ]['value'] ) ) {
+			$firstname = trim( (string) $submitted[ $firstname_field_id ]['value'] );
+		}
+		$lastname = '';
+		if ( '' !== $lastname_field_id && isset( $submitted[ $lastname_field_id ]['value'] ) ) {
+			$lastname = trim( (string) $submitted[ $lastname_field_id ]['value'] );
+		}
+
 		$properties = array();
 		foreach ( $prop_field_ids as $field_id ) {
 			if ( $field_id === $email_field_id ) {
+				continue;
+			}
+			// Firstname/lastname fields are sent via the context, not props.
+			if ( '' !== $firstname_field_id && $field_id === $firstname_field_id ) {
+				continue;
+			}
+			if ( '' !== $lastname_field_id && $field_id === $lastname_field_id ) {
 				continue;
 			}
 			if ( ! isset( $submitted[ $field_id ] ) ) {
@@ -166,7 +190,9 @@ class FormProcessor {
 				$email,
 				$properties,
 				IpAddress::init()->get_ip(),
-				$optin_mode
+				$optin_mode,
+				$firstname,
+				$lastname
 			);
 
 			/**

@@ -288,38 +288,77 @@ class FormPanel {
 			)
 		);
 
+		// Firstname/Lastname dropdowns: same option list as email plus a "— none —" entry.
+		$name_options = array( '' => esc_html__( '— none —', 'newsman' ) );
+		foreach ( $email_options as $field_id => $label ) {
+			$name_options[ (string) $field_id ] = $label;
+		}
+
+		wpforms_panel_field(
+			'select',
+			'settings',
+			'newsman_firstname_field',
+			$form_data,
+			esc_html__( 'Firstname field', 'newsman' ),
+			array(
+				'options' => $name_options,
+				'tooltip' => esc_html__( 'Optional. When set, the field value is sent as the subscriber\'s firstname instead of being included in the subscriber properties.', 'newsman' ),
+			)
+		);
+
+		wpforms_panel_field(
+			'select',
+			'settings',
+			'newsman_lastname_field',
+			$form_data,
+			esc_html__( 'Lastname field', 'newsman' ),
+			array(
+				'options' => $name_options,
+				'tooltip' => esc_html__( 'Optional. When set, the field value is sent as the subscriber\'s lastname instead of being included in the subscriber properties.', 'newsman' ),
+			)
+		);
+
 		// Custom HTML for the per-field "send as property" checkbox list. The
 		// inputs save under settings[newsman_send_fields][<id>] = "1" so the
 		// final form_data shape is `[ field_id => '1', ... ]`.
-		$send_fields    = isset( $prop['newsman_send_fields'] ) && is_array( $prop['newsman_send_fields'] )
+		$send_fields        = isset( $prop['newsman_send_fields'] ) && is_array( $prop['newsman_send_fields'] )
 			? $prop['newsman_send_fields']
 			: array();
-		$has_existing   = ! empty( $send_fields );
-		$selected_email = isset( $prop['newsman_email_field'] ) ? (string) $prop['newsman_email_field'] : '';
+		$has_existing       = ! empty( $send_fields );
+		$selected_email     = isset( $prop['newsman_email_field'] ) ? (string) $prop['newsman_email_field'] : '';
+		$selected_firstname = isset( $prop['newsman_firstname_field'] ) ? (string) $prop['newsman_firstname_field'] : '';
+		$selected_lastname  = isset( $prop['newsman_lastname_field'] ) ? (string) $prop['newsman_lastname_field'] : '';
 
 		echo '<div class="wpforms-panel-field wpforms-panel-field-checkbox">';
 		echo '<label>' . esc_html__( 'Send as properties', 'newsman' ) . '</label>';
 		echo '<ul style="margin:0;padding:0;list-style:none;">';
 		foreach ( $choices as $field_id => $choice ) {
-			$is_email_field = ( (string) $field_id === $selected_email );
-			$default_on     = $has_existing
+			$is_email_field     = ( (string) $field_id === $selected_email );
+			$is_firstname_field = ( '' !== $selected_firstname && (string) $field_id === $selected_firstname );
+			$is_lastname_field  = ( '' !== $selected_lastname && (string) $field_id === $selected_lastname );
+			$is_reserved        = ( $is_email_field || $is_firstname_field || $is_lastname_field );
+			$default_on         = $has_existing
 				? ! empty( $send_fields[ (string) $field_id ] )
-				: ! $is_email_field;
-			$name           = sprintf( 'settings[newsman_send_fields][%s]', esc_attr( (string) $field_id ) );
-			$id             = sprintf( 'wpforms-panel-field-newsman-send-%s', esc_attr( (string) $field_id ) );
+				: ! $is_reserved;
+			$name               = sprintf( 'settings[newsman_send_fields][%s]', esc_attr( (string) $field_id ) );
+			$id                 = sprintf( 'wpforms-panel-field-newsman-send-%s', esc_attr( (string) $field_id ) );
 			echo '<li>';
 			echo '<label for="' . esc_attr( $id ) . '">';
 			echo '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="1"';
 			if ( $default_on ) {
 				echo ' checked';
 			}
-			if ( $is_email_field ) {
+			if ( $is_reserved ) {
 				echo ' disabled';
 			}
 			echo ' /> ';
 			echo esc_html( self::format_choice_label( $choice ) );
 			if ( $is_email_field ) {
 				echo ' <em>(' . esc_html__( 'used as email', 'newsman' ) . ')</em>';
+			} elseif ( $is_firstname_field ) {
+				echo ' <em>(' . esc_html__( 'used as firstname', 'newsman' ) . ')</em>';
+			} elseif ( $is_lastname_field ) {
+				echo ' <em>(' . esc_html__( 'used as lastname', 'newsman' ) . ')</em>';
 			}
 			echo '</label>';
 			echo '</li>';
@@ -351,20 +390,24 @@ class FormPanel {
 
 		return wp_parse_args(
 			array(
-				'newsman_enable'      => isset( $settings['newsman_enable'] ) ? $settings['newsman_enable'] : '',
-				'newsman_list_id'     => isset( $settings['newsman_list_id'] ) ? $settings['newsman_list_id'] : '',
-				'newsman_optin_mode'  => $optin_mode,
-				'newsman_email_field' => isset( $settings['newsman_email_field'] ) ? $settings['newsman_email_field'] : '',
-				'newsman_send_fields' => isset( $settings['newsman_send_fields'] ) && is_array( $settings['newsman_send_fields'] )
+				'newsman_enable'          => isset( $settings['newsman_enable'] ) ? $settings['newsman_enable'] : '',
+				'newsman_list_id'         => isset( $settings['newsman_list_id'] ) ? $settings['newsman_list_id'] : '',
+				'newsman_optin_mode'      => $optin_mode,
+				'newsman_email_field'     => isset( $settings['newsman_email_field'] ) ? $settings['newsman_email_field'] : '',
+				'newsman_firstname_field' => isset( $settings['newsman_firstname_field'] ) ? $settings['newsman_firstname_field'] : '',
+				'newsman_lastname_field'  => isset( $settings['newsman_lastname_field'] ) ? $settings['newsman_lastname_field'] : '',
+				'newsman_send_fields'     => isset( $settings['newsman_send_fields'] ) && is_array( $settings['newsman_send_fields'] )
 					? $settings['newsman_send_fields']
 					: array(),
 			),
 			array(
-				'newsman_enable'      => '',
-				'newsman_list_id'     => '',
-				'newsman_optin_mode'  => 'single',
-				'newsman_email_field' => '',
-				'newsman_send_fields' => array(),
+				'newsman_enable'          => '',
+				'newsman_list_id'         => '',
+				'newsman_optin_mode'      => 'single',
+				'newsman_email_field'     => '',
+				'newsman_firstname_field' => '',
+				'newsman_lastname_field'  => '',
+				'newsman_send_fields'     => array(),
 			)
 		);
 	}

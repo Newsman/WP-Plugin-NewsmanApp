@@ -84,11 +84,19 @@ class AtomicFormProcessor {
 
 			$inputs_meta = $this->collect_inputs_meta( $post_data['post_id'], $post_data['form_id'] );
 
-			$email_widget_id = '';
-			$prop_widget_ids = array();
+			$email_widget_id     = '';
+			$firstname_widget_id = '';
+			$lastname_widget_id  = '';
+			$prop_widget_ids     = array();
 			foreach ( $inputs_meta as $widget_id => $flags ) {
 				if ( '' === $email_widget_id && ! empty( $flags['is_email'] ) ) {
 					$email_widget_id = $widget_id;
+				}
+				if ( '' === $firstname_widget_id && ! empty( $flags['is_firstname'] ) ) {
+					$firstname_widget_id = $widget_id;
+				}
+				if ( '' === $lastname_widget_id && ! empty( $flags['is_lastname'] ) ) {
+					$lastname_widget_id = $widget_id;
 				}
 				if ( ! empty( $flags['send'] ) ) {
 					$prop_widget_ids[ $widget_id ] = $flags['prop_key'];
@@ -118,9 +126,25 @@ class AtomicFormProcessor {
 				return;
 			}
 
+			$firstname = '';
+			if ( '' !== $firstname_widget_id && array_key_exists( $firstname_widget_id, $submitted ) ) {
+				$firstname = trim( (string) $submitted[ $firstname_widget_id ] );
+			}
+			$lastname = '';
+			if ( '' !== $lastname_widget_id && array_key_exists( $lastname_widget_id, $submitted ) ) {
+				$lastname = trim( (string) $submitted[ $lastname_widget_id ] );
+			}
+
 			$properties = array();
 			foreach ( $prop_widget_ids as $widget_id => $prop_key ) {
 				if ( $widget_id === $email_widget_id ) {
+					continue;
+				}
+				// Firstname/lastname inputs are sent via the context, not props.
+				if ( '' !== $firstname_widget_id && $widget_id === $firstname_widget_id ) {
+					continue;
+				}
+				if ( '' !== $lastname_widget_id && $widget_id === $lastname_widget_id ) {
 					continue;
 				}
 				if ( ! array_key_exists( $widget_id, $submitted ) ) {
@@ -149,7 +173,9 @@ class AtomicFormProcessor {
 				$email,
 				$properties,
 				IpAddress::init()->get_ip(),
-				$optin_mode
+				$optin_mode,
+				$firstname,
+				$lastname
 			);
 
 			/**
@@ -289,9 +315,11 @@ class AtomicFormProcessor {
 			}
 
 			$meta[ $widget_id ] = array(
-				'send'     => $this->is_truthy( $settings['newsman_send_field'] ?? true ),
-				'is_email' => $this->is_truthy( $settings['newsman_is_email'] ?? false ),
-				'prop_key' => $cssid,
+				'send'         => $this->is_truthy( $settings['newsman_send_field'] ?? true ),
+				'is_email'     => $this->is_truthy( $settings['newsman_is_email'] ?? false ),
+				'is_firstname' => $this->is_truthy( $settings['newsman_is_firstname'] ?? false ),
+				'is_lastname'  => $this->is_truthy( $settings['newsman_is_lastname'] ?? false ),
+				'prop_key'     => $cssid,
 			);
 		}
 

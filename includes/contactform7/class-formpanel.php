@@ -283,6 +283,58 @@ class FormPanel {
 					</tr>
 					<tr>
 						<th scope="row">
+							<label for="wpcf7-newsman-firstname-field"><?php esc_html_e( 'Firstname field', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<?php if ( empty( $choices ) ) : ?>
+								<em>
+									<?php esc_html_e( 'Add a field to the form template to enable Newsman.', 'newsman' ); ?>
+								</em>
+							<?php else : ?>
+								<select name="wpcf7-newsman[firstname_field]" id="wpcf7-newsman-firstname-field">
+									<option value="" <?php selected( $prop['firstname_field'], '' ); ?>>
+										<?php esc_html_e( '— none —', 'newsman' ); ?>
+									</option>
+									<?php foreach ( $choices as $choice ) : ?>
+										<option value="<?php echo esc_attr( $choice['name'] ); ?>" <?php selected( $prop['firstname_field'], $choice['name'] ); ?>>
+											<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description">
+									<?php esc_html_e( 'Optional. When set, the field value is sent as the subscriber\'s firstname instead of being included in the subscriber properties.', 'newsman' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="wpcf7-newsman-lastname-field"><?php esc_html_e( 'Lastname field', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<?php if ( empty( $choices ) ) : ?>
+								<em>
+									<?php esc_html_e( 'Add a field to the form template to enable Newsman.', 'newsman' ); ?>
+								</em>
+							<?php else : ?>
+								<select name="wpcf7-newsman[lastname_field]" id="wpcf7-newsman-lastname-field">
+									<option value="" <?php selected( $prop['lastname_field'], '' ); ?>>
+										<?php esc_html_e( '— none —', 'newsman' ); ?>
+									</option>
+									<?php foreach ( $choices as $choice ) : ?>
+										<option value="<?php echo esc_attr( $choice['name'] ); ?>" <?php selected( $prop['lastname_field'], $choice['name'] ); ?>>
+											<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description">
+									<?php esc_html_e( 'Optional. When set, the field value is sent as the subscriber\'s lastname instead of being included in the subscriber properties.', 'newsman' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<?php esc_html_e( 'Send as properties', 'newsman' ); ?>
 						</th>
 						<td>
@@ -298,9 +350,12 @@ class FormPanel {
 									<ul style="margin:0;padding:0;list-style:none;">
 										<?php foreach ( $choices as $choice ) : ?>
 											<?php
-											$is_email_field = ( $choice['name'] === $prop['email_field'] );
-											$default_on     = empty( $prop['send_fields'] )
-												? ! $is_email_field
+											$is_email_field     = ( $choice['name'] === $prop['email_field'] );
+											$is_firstname_field = ( '' !== $prop['firstname_field'] && $choice['name'] === $prop['firstname_field'] );
+											$is_lastname_field  = ( '' !== $prop['lastname_field'] && $choice['name'] === $prop['lastname_field'] );
+											$is_reserved        = ( $is_email_field || $is_firstname_field || $is_lastname_field );
+											$default_on         = empty( $prop['send_fields'] )
+												? ! $is_reserved
 												: isset( $send_fields_set[ $choice['name'] ] );
 											?>
 											<li>
@@ -310,11 +365,15 @@ class FormPanel {
 														name="wpcf7-newsman[send_fields][]"
 														value="<?php echo esc_attr( $choice['name'] ); ?>"
 														<?php checked( $default_on ); ?>
-														<?php disabled( $is_email_field ); ?>
+														<?php disabled( $is_reserved ); ?>
 													/>
 													<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
 													<?php if ( $is_email_field ) : ?>
 														<em>(<?php esc_html_e( 'used as email', 'newsman' ); ?>)</em>
+													<?php elseif ( $is_firstname_field ) : ?>
+														<em>(<?php esc_html_e( 'used as firstname', 'newsman' ); ?>)</em>
+													<?php elseif ( $is_lastname_field ) : ?>
+														<em>(<?php esc_html_e( 'used as lastname', 'newsman' ); ?>)</em>
 													<?php endif; ?>
 												</label>
 											</li>
@@ -387,11 +446,13 @@ class FormPanel {
 		}
 
 		$prop = array(
-			'enable'      => ! empty( $posted['enable'] ),
-			'list_id'     => isset( $posted['list_id'] ) ? sanitize_text_field( (string) $posted['list_id'] ) : '',
-			'optin_mode'  => $optin_mode,
-			'email_field' => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
-			'send_fields' => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
+			'enable'          => ! empty( $posted['enable'] ),
+			'list_id'         => isset( $posted['list_id'] ) ? sanitize_text_field( (string) $posted['list_id'] ) : '',
+			'optin_mode'      => $optin_mode,
+			'email_field'     => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
+			'firstname_field' => isset( $posted['firstname_field'] ) ? sanitize_text_field( (string) $posted['firstname_field'] ) : '',
+			'lastname_field'  => isset( $posted['lastname_field'] ) ? sanitize_text_field( (string) $posted['lastname_field'] ) : '',
+			'send_fields'     => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
 		);
 
 		/**
@@ -442,11 +503,13 @@ class FormPanel {
 	 */
 	public static function defaults() {
 		return array(
-			'enable'      => false,
-			'list_id'     => '',
-			'optin_mode'  => 'single',
-			'email_field' => '',
-			'send_fields' => array(),
+			'enable'          => false,
+			'list_id'         => '',
+			'optin_mode'      => 'single',
+			'email_field'     => '',
+			'firstname_field' => '',
+			'lastname_field'  => '',
+			'send_fields'     => array(),
 		);
 	}
 

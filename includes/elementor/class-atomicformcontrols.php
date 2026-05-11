@@ -102,11 +102,13 @@ class AtomicFormControls {
 		$newsman_props = apply_filters(
 			'newsman_atomic_form_props',
 			array(
-				'newsman_enable'     => $boolean::make()->default( false ),
-				'newsman_list_id'    => $string::make()->default( '' ),
-				'newsman_optin_mode' => $string::make()->default( 'single' ),
-				'newsman_send_field' => $boolean::make()->default( true ),
-				'newsman_is_email'   => $boolean::make()->default( false ),
+				'newsman_enable'       => $boolean::make()->default( false ),
+				'newsman_list_id'      => $string::make()->default( '' ),
+				'newsman_optin_mode'   => $string::make()->default( 'single' ),
+				'newsman_send_field'   => $boolean::make()->default( true ),
+				'newsman_is_email'     => $boolean::make()->default( false ),
+				'newsman_is_firstname' => $boolean::make()->default( false ),
+				'newsman_is_lastname'  => $boolean::make()->default( false ),
 			),
 			$schema
 		);
@@ -330,7 +332,7 @@ class AtomicFormControls {
 
 		$items = array( $send_control );
 
-		// Email-marker only makes sense for text-like inputs, not checkboxes.
+		// Email/firstname/lastname markers only make sense for text-like inputs, not checkboxes.
 		if ( 'e-form-checkbox' !== $widget_type ) {
 			$is_email_control = $switch_class::bind_to( 'newsman_is_email' )
 				->set_label( esc_html__( 'Use as Newsman email', 'newsman' ) );
@@ -343,6 +345,30 @@ class AtomicFormControls {
 			 */
 			$is_email_control = apply_filters( 'newsman_atomic_form_is_email_control', $is_email_control, $widget_type );
 			$items[]          = $is_email_control;
+
+			$is_firstname_control = $switch_class::bind_to( 'newsman_is_firstname' )
+				->set_label( esc_html__( 'Use as Newsman firstname', 'newsman' ) );
+
+			/**
+			 * Filter the per-field "Use as Newsman firstname" Switch_Control.
+			 *
+			 * @param object $is_firstname_control Switch_Control bound to `newsman_is_firstname`.
+			 * @param string $widget_type          Atomic input widget type.
+			 */
+			$is_firstname_control = apply_filters( 'newsman_atomic_form_is_firstname_control', $is_firstname_control, $widget_type );
+			$items[]              = $is_firstname_control;
+
+			$is_lastname_control = $switch_class::bind_to( 'newsman_is_lastname' )
+				->set_label( esc_html__( 'Use as Newsman lastname', 'newsman' ) );
+
+			/**
+			 * Filter the per-field "Use as Newsman lastname" Switch_Control.
+			 *
+			 * @param object $is_lastname_control Switch_Control bound to `newsman_is_lastname`.
+			 * @param string $widget_type         Atomic input widget type.
+			 */
+			$is_lastname_control = apply_filters( 'newsman_atomic_form_is_lastname_control', $is_lastname_control, $widget_type );
+			$items[]             = $is_lastname_control;
 		}
 
 		/**

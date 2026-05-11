@@ -254,6 +254,76 @@ class FormControls {
 		}
 
 		/**
+		 * Filter the args passed to the repeater's `add_control()` for `newsman_is_firstname`.
+		 *
+		 * @param array  $args    Control args.
+		 * @param object $element Form widget element.
+		 */
+		$is_firstname_args = apply_filters(
+			'newsman_form_field_is_firstname_control_args',
+			array(
+				'label'        => esc_html__( 'Use as Newsman firstname', 'newsman' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'newsman' ),
+				'label_off'    => esc_html__( 'No', 'newsman' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'description'  => esc_html__( 'Mark this field as the subscriber\'s firstname. The value is sent via context instead of being included in the subscriber properties.', 'newsman' ),
+				'tab'          => 'content',
+				'inner_tab'    => 'form_fields_advanced_tab',
+				'tabs_wrapper' => 'form_fields_tabs',
+				'conditions'   => array(
+					'terms' => array(
+						array(
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => array( 'text', 'email' ),
+						),
+					),
+				),
+			),
+			$element
+		);
+		if ( is_array( $is_firstname_args ) ) {
+			$repeater->add_control( 'newsman_is_firstname', $is_firstname_args );
+		}
+
+		/**
+		 * Filter the args passed to the repeater's `add_control()` for `newsman_is_lastname`.
+		 *
+		 * @param array  $args    Control args.
+		 * @param object $element Form widget element.
+		 */
+		$is_lastname_args = apply_filters(
+			'newsman_form_field_is_lastname_control_args',
+			array(
+				'label'        => esc_html__( 'Use as Newsman lastname', 'newsman' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'newsman' ),
+				'label_off'    => esc_html__( 'No', 'newsman' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'description'  => esc_html__( 'Mark this field as the subscriber\'s lastname. The value is sent via context instead of being included in the subscriber properties.', 'newsman' ),
+				'tab'          => 'content',
+				'inner_tab'    => 'form_fields_advanced_tab',
+				'tabs_wrapper' => 'form_fields_tabs',
+				'conditions'   => array(
+					'terms' => array(
+						array(
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => array( 'text', 'email' ),
+						),
+					),
+				),
+			),
+			$element
+		);
+		if ( is_array( $is_lastname_args ) ) {
+			$repeater->add_control( 'newsman_is_lastname', $is_lastname_args );
+		}
+
+		/**
 		 * Fires after Newsman's built-in repeater controls have been added.
 		 *
 		 * Use this to append further per-field Newsman controls (e.g. a custom property

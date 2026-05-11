@@ -105,10 +105,29 @@ class FormProcessor {
 			? $prop['send_fields']
 			: array();
 
+		$firstname_field = isset( $prop['firstname_field'] ) ? trim( (string) $prop['firstname_field'] ) : '';
+		$lastname_field  = isset( $prop['lastname_field'] ) ? trim( (string) $prop['lastname_field'] ) : '';
+
+		$firstname = '';
+		if ( '' !== $firstname_field ) {
+			$firstname = trim( (string) self::flatten_value( $submission->get_posted_data( $firstname_field ) ) );
+		}
+		$lastname = '';
+		if ( '' !== $lastname_field ) {
+			$lastname = trim( (string) self::flatten_value( $submission->get_posted_data( $lastname_field ) ) );
+		}
+
 		$properties = array();
 		foreach ( $send_fields as $field_name ) {
 			$field_name = (string) $field_name;
 			if ( '' === $field_name || $field_name === $email_field ) {
+				continue;
+			}
+			// Firstname/lastname fields are sent via the context, not props.
+			if ( '' !== $firstname_field && $field_name === $firstname_field ) {
+				continue;
+			}
+			if ( '' !== $lastname_field && $field_name === $lastname_field ) {
 				continue;
 			}
 			$value = $submission->get_posted_data( $field_name );
@@ -137,7 +156,9 @@ class FormProcessor {
 				$email,
 				$properties,
 				IpAddress::init()->get_ip(),
-				$optin_mode
+				$optin_mode,
+				$firstname,
+				$lastname
 			);
 
 			/**
