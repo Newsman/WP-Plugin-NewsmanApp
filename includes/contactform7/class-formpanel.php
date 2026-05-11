@@ -81,10 +81,40 @@ class FormPanel {
 	 * @return array
 	 */
 	public function add_panel( $panels ) {
-		$panels['newsman-panel'] = array(
-			'title'    => __( 'Newsman', 'newsman' ),
-			'callback' => array( $this, 'render' ),
+		/**
+		 * Filter the Newsman editor panel definition before it is appended to the
+		 * CF7 editor panels array.
+		 *
+		 * Return an empty array (or a value that fails `is_array()`) to suppress
+		 * the panel entirely; mutate the `title` / `callback` keys to swap labels
+		 * or replace the renderer with a fully custom one.
+		 *
+		 * @param array $panel  Panel definition (`title`, `callback`).
+		 * @param array $panels Existing panels keyed by slug.
+		 */
+		$panel = apply_filters(
+			'newsman_cf7_editor_panel',
+			array(
+				'title'    => __( 'Newsman', 'newsman' ),
+				'callback' => array( $this, 'render' ),
+			),
+			$panels
 		);
+
+		if ( ! is_array( $panel ) || empty( $panel ) ) {
+			return $panels;
+		}
+
+		/**
+		 * Filter the slug under which the Newsman editor panel is registered.
+		 *
+		 * @param string $slug   Default panel slug.
+		 * @param array  $panel  Panel definition.
+		 * @param array  $panels Existing panels.
+		 */
+		$slug = apply_filters( 'newsman_cf7_editor_panel_slug', 'newsman-panel', $panel, $panels );
+
+		$panels[ (string) $slug ] = $panel;
 		return $panels;
 	}
 
@@ -108,7 +138,61 @@ class FormPanel {
 		if ( ! is_array( $prop['send_fields'] ) ) {
 			$prop['send_fields'] = array();
 		}
-		$send_fields_set = array_flip( $prop['send_fields'] );
+
+		/**
+		 * Filter the resolved Newsman property array used to render the panel.
+		 *
+		 * @param array  $prop         Resolved property: `enable`, `list_id`, `email_field`, `send_fields`.
+		 * @param object $contact_form Current contact form.
+		 * @param array  $choices      Field choices scanned from the form template.
+		 * @param array  $lists        Newsman list dropdown options.
+		 */
+		$prop = apply_filters( 'newsman_cf7_panel_prop', $prop, $contact_form, $choices, $lists );
+		if ( ! is_array( $prop ) ) {
+			$prop = self::defaults();
+		}
+
+		/**
+		 * Filter the Newsman list dropdown options shown in the panel.
+		 *
+		 * @param array  $lists        Lists keyed by id.
+		 * @param object $contact_form Current contact form.
+		 * @param array  $prop         Resolved property.
+		 * @param array  $choices      Field choices.
+		 */
+		$lists = apply_filters( 'newsman_cf7_panel_lists', $lists, $contact_form, $prop, $choices );
+
+		$send_fields_set = array_flip( is_array( $prop['send_fields'] ) ? $prop['send_fields'] : array() );
+
+		/**
+		 * Fires before the Newsman CF7 editor panel renders.
+		 *
+		 * Third-party code may echo a fully custom panel here, then short-circuit the
+		 * default markup via the `newsman_cf7_panel_skip_default` filter (return true).
+		 * Do NOT collect HTML — echo directly inside the callback.
+		 *
+		 * @param object $contact_form Current contact form.
+		 * @param array  $prop         Resolved Newsman property.
+		 * @param array  $choices      Field choices.
+		 * @param array  $lists        Newsman list dropdown options.
+		 */
+		do_action( 'newsman_cf7_panel_render', $contact_form, $prop, $choices, $lists );
+
+		/**
+		 * Suppress the default panel HTML.
+		 *
+		 * Hook in alongside `newsman_cf7_panel_render` and return true to skip the built-in
+		 * markup once you've echoed your own.
+		 *
+		 * @param bool   $skip         Default false.
+		 * @param object $contact_form Current contact form.
+		 * @param array  $prop         Resolved Newsman property.
+		 * @param array  $choices      Field choices.
+		 * @param array  $lists        Newsman list dropdown options.
+		 */
+		if ( apply_filters( 'newsman_cf7_panel_skip_default', false, $contact_form, $prop, $choices, $lists ) ) {
+			return;
+		}
 
 		?>
 		<h2><?php esc_html_e( 'Newsman', 'newsman' ); ?></h2>
@@ -229,6 +313,19 @@ class FormPanel {
 			</table>
 		</fieldset>
 		<?php
+
+		/**
+		 * Fires after the Newsman CF7 editor panel has rendered its default HTML.
+		 *
+		 * Use this to append additional rows or notices below the standard panel
+		 * without replacing it. Echo directly inside the callback.
+		 *
+		 * @param object $contact_form Current contact form.
+		 * @param array  $prop         Resolved Newsman property.
+		 * @param array  $choices      Field choices.
+		 * @param array  $lists        Newsman list dropdown options.
+		 */
+		do_action( 'newsman_cf7_panel_after_render', $contact_form, $prop, $choices, $lists );
 	}
 
 	/**
@@ -249,6 +346,19 @@ class FormPanel {
 			$posted = array();
 		}
 
+		/**
+		 * Filter the raw posted Newsman panel payload before sanitization.
+		 *
+		 * @param array  $posted       Raw `wpcf7-newsman` POST array.
+		 * @param object $contact_form Contact form being saved.
+		 * @param array  $args         CF7 save args.
+		 * @param string $context      CF7 save context.
+		 */
+		$posted = apply_filters( 'newsman_cf7_panel_posted', $posted, $contact_form, $args, $context );
+		if ( ! is_array( $posted ) ) {
+			$posted = array();
+		}
+
 		$send_fields_raw = isset( $posted['send_fields'] ) && is_array( $posted['send_fields'] )
 			? $posted['send_fields']
 			: array();
@@ -260,7 +370,45 @@ class FormPanel {
 			'send_fields' => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
 		);
 
+		/**
+		 * Filter the sanitized Newsman property right before it is persisted on the contact form.
+		 *
+		 * @param array  $prop         Sanitized property: `enable`, `list_id`, `email_field`, `send_fields`.
+		 * @param object $contact_form Contact form being saved.
+		 * @param array  $posted       Raw posted payload.
+		 * @param array  $args         CF7 save args.
+		 * @param string $context      CF7 save context.
+		 */
+		$prop = apply_filters( 'newsman_cf7_panel_save_prop', $prop, $contact_form, $posted, $args, $context );
+		if ( ! is_array( $prop ) ) {
+			$prop = self::defaults();
+		}
+
+		/**
+		 * Allow short-circuiting the persistence step entirely. Return true to skip
+		 * `set_properties()` (e.g. when a 3rd party stores Newsman settings elsewhere).
+		 *
+		 * @param bool   $skip         Default false.
+		 * @param array  $prop         Sanitized property.
+		 * @param object $contact_form Contact form being saved.
+		 * @param array  $posted       Raw posted payload.
+		 */
+		if ( apply_filters( 'newsman_cf7_panel_skip_save', false, $prop, $contact_form, $posted ) ) {
+			return;
+		}
+
 		$contact_form->set_properties( array( self::PROPERTY => $prop ) );
+
+		/**
+		 * Fires after the Newsman property has been persisted on the contact form.
+		 *
+		 * @param object $contact_form Contact form that was saved.
+		 * @param array  $prop         Persisted property.
+		 * @param array  $posted       Raw posted payload.
+		 * @param array  $args         CF7 save args.
+		 * @param string $context      CF7 save context.
+		 */
+		do_action( 'newsman_cf7_panel_saved', $contact_form, $prop, $posted, $args, $context );
 	}
 
 	/**

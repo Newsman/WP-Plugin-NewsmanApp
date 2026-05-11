@@ -88,7 +88,31 @@ class FormPanel {
 		if ( ! is_array( $sections ) ) {
 			return $sections;
 		}
-		$sections[ self::SECTION ] = esc_html__( 'Newsman', 'newsman' );
+
+		/**
+		 * Filter the slug used to register the Newsman section in the WPForms Settings panel sidebar.
+		 *
+		 * @param string $slug      Default section slug.
+		 * @param array  $sections  Existing sections.
+		 * @param array  $form_data Current form data.
+		 */
+		$slug = apply_filters( 'newsman_wpforms_section_slug', self::SECTION, $sections, $form_data );
+
+		/**
+		 * Filter the human-readable label of the Newsman section in the WPForms Settings panel sidebar.
+		 *
+		 * @param string $label     Default section label.
+		 * @param array  $sections  Existing sections.
+		 * @param array  $form_data Current form data.
+		 */
+		$label = apply_filters(
+			'newsman_wpforms_section_label',
+			esc_html__( 'Newsman', 'newsman' ),
+			$sections,
+			$form_data
+		);
+
+		$sections[ (string) $slug ] = (string) $label;
 		return $sections;
 	}
 
@@ -117,6 +141,63 @@ class FormPanel {
 			foreach ( $lists as $list_id => $list_name ) {
 				$list_select[ (string) $list_id ] = (string) $list_name;
 			}
+		}
+
+		/**
+		 * Filter the resolved Newsman settings array used to render the WPForms panel.
+		 *
+		 * @param array  $prop      Resolved settings (`newsman_enable`, `newsman_list_id`, ...).
+		 * @param object $instance  `WPForms_Builder_Panel_Settings` instance.
+		 * @param array  $form_data Current form data.
+		 * @param array  $choices   Scanned field choices.
+		 * @param array  $lists     Newsman list dropdown options.
+		 */
+		$prop = apply_filters( 'newsman_wpforms_panel_prop', $prop, $instance, $form_data, $choices, $lists );
+		if ( ! is_array( $prop ) ) {
+			$prop = self::resolve_settings( array() );
+		}
+
+		/**
+		 * Filter the Newsman list dropdown options (`[ '' => '— select a list —', '<id>' => '<name>', ... ]`).
+		 *
+		 * @param array  $list_select Dropdown options keyed by list id.
+		 * @param array  $lists       Raw list map from `Lists::get_for_select()`.
+		 * @param object $instance    `WPForms_Builder_Panel_Settings` instance.
+		 * @param array  $form_data   Current form data.
+		 * @param array  $prop        Resolved settings.
+		 */
+		$list_select = apply_filters( 'newsman_wpforms_panel_list_select', $list_select, $lists, $instance, $form_data, $prop );
+		if ( ! is_array( $list_select ) ) {
+			$list_select = array( '' => esc_html__( '— select a list —', 'newsman' ) );
+		}
+
+		/**
+		 * Fires before the Newsman WPForms Settings section renders.
+		 *
+		 * Third-party code may echo a fully custom section here, then short-circuit the
+		 * default markup via the `newsman_wpforms_panel_skip_default` filter.
+		 * Do NOT collect HTML — echo directly inside the callback.
+		 *
+		 * @param object $instance    `WPForms_Builder_Panel_Settings` instance.
+		 * @param array  $form_data   Current form data.
+		 * @param array  $prop        Resolved settings.
+		 * @param array  $choices     Field choices.
+		 * @param array  $list_select Newsman list dropdown options.
+		 */
+		do_action( 'newsman_wpforms_panel_render', $instance, $form_data, $prop, $choices, $list_select );
+
+		/**
+		 * Suppress the default WPForms Newsman section HTML.
+		 *
+		 * @param bool   $skip        Default false.
+		 * @param object $instance    `WPForms_Builder_Panel_Settings` instance.
+		 * @param array  $form_data   Current form data.
+		 * @param array  $prop        Resolved settings.
+		 * @param array  $choices     Field choices.
+		 * @param array  $list_select Newsman list dropdown options.
+		 */
+		if ( apply_filters( 'newsman_wpforms_panel_skip_default', false, $instance, $form_data, $prop, $choices, $list_select ) ) {
+			return;
 		}
 
 		echo '<div class="wpforms-panel-content-section wpforms-panel-content-section-' . esc_attr( self::SECTION ) . '">';
@@ -157,6 +238,20 @@ class FormPanel {
 			echo esc_html__( 'Add a field to the form to enable Newsman.', 'newsman' );
 			echo '</em></p>';
 			echo '</div>';
+
+			/**
+			 * Fires after the WPForms Newsman section finishes rendering its default HTML.
+			 *
+			 * Use this to append additional rows or notices below the standard section
+			 * without replacing it. Echo directly inside the callback.
+			 *
+			 * @param object $instance    `WPForms_Builder_Panel_Settings` instance.
+			 * @param array  $form_data   Current form data.
+			 * @param array  $prop        Resolved settings.
+			 * @param array  $choices     Field choices.
+			 * @param array  $list_select Newsman list dropdown options.
+			 */
+			do_action( 'newsman_wpforms_panel_after_render', $instance, $form_data, $prop, $choices, $list_select );
 			return;
 		}
 
@@ -218,6 +313,9 @@ class FormPanel {
 		echo '</div>';
 
 		echo '</div>';
+
+		/** This action is documented in the early-return branch above. */
+		do_action( 'newsman_wpforms_panel_after_render', $instance, $form_data, $prop, $choices, $list_select );
 	}
 
 	/**

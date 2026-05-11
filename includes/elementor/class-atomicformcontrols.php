@@ -90,17 +90,35 @@ class AtomicFormControls {
 		$boolean = '\Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type';
 		$string  = '\Elementor\Modules\AtomicWidgets\PropTypes\Primitives\String_Prop_Type';
 
-		if ( ! isset( $schema['newsman_enable'] ) ) {
-			$schema['newsman_enable'] = $boolean::make()->default( false );
-		}
-		if ( ! isset( $schema['newsman_list_id'] ) ) {
-			$schema['newsman_list_id'] = $string::make()->default( '' );
-		}
-		if ( ! isset( $schema['newsman_send_field'] ) ) {
-			$schema['newsman_send_field'] = $boolean::make()->default( true );
-		}
-		if ( ! isset( $schema['newsman_is_email'] ) ) {
-			$schema['newsman_is_email'] = $boolean::make()->default( false );
+		/**
+		 * Filter the Newsman atomic prop definitions before they are merged into the schema.
+		 *
+		 * Keyed by prop name; each value is the Prop_Type instance Elementor expects.
+		 * Set a key to null/false to skip injecting that prop.
+		 *
+		 * @param array $props  Newsman prop definitions.
+		 * @param array $schema Existing atomic widgets schema (pre-merge).
+		 */
+		$newsman_props = apply_filters(
+			'newsman_atomic_form_props',
+			array(
+				'newsman_enable'     => $boolean::make()->default( false ),
+				'newsman_list_id'    => $string::make()->default( '' ),
+				'newsman_send_field' => $boolean::make()->default( true ),
+				'newsman_is_email'   => $boolean::make()->default( false ),
+			),
+			$schema
+		);
+
+		if ( is_array( $newsman_props ) ) {
+			foreach ( $newsman_props as $prop_name => $prop_type ) {
+				if ( ! is_string( $prop_name ) || '' === $prop_name || empty( $prop_type ) ) {
+					continue;
+				}
+				if ( ! isset( $schema[ $prop_name ] ) ) {
+					$schema[ $prop_name ] = $prop_type;
+				}
+			}
 		}
 
 		/**
@@ -111,7 +129,17 @@ class AtomicFormControls {
 		 *
 		 * @param array $schema Atomic widgets schema with Newsman props already merged in.
 		 */
-		return apply_filters( 'newsman_atomic_form_props_schema', $schema );
+		$schema = apply_filters( 'newsman_atomic_form_props_schema', $schema );
+
+		/**
+		 * Fires after the Newsman atomic props have been merged into the schema.
+		 *
+		 * @param array $schema        Atomic widgets schema (post-merge).
+		 * @param array $newsman_props Newsman prop definitions that were considered.
+		 */
+		do_action( 'newsman_atomic_form_props_schema_injected', $schema, $newsman_props );
+
+		return $schema;
 	}
 
 	/**
@@ -133,7 +161,20 @@ class AtomicFormControls {
 			return $controls;
 		}
 
-		$type    = (string) $widget::get_element_type();
+		$type = (string) $widget::get_element_type();
+
+		/**
+		 * Filter the resolved element type used to decide which Newsman section to build.
+		 *
+		 * Override the detected type to coerce a custom atomic widget into being treated
+		 * as a form or a form input.
+		 *
+		 * @param string $type     Resolved element type from `$widget::get_element_type()`.
+		 * @param object $widget   Atomic widget instance.
+		 * @param array  $controls Existing controls array.
+		 */
+		$type = (string) apply_filters( 'newsman_atomic_form_controls_widget_type', $type, $widget, $controls );
+
 		$section = null;
 
 		if ( self::FORM_TYPE === $type ) {
@@ -142,8 +183,29 @@ class AtomicFormControls {
 			$section = $this->build_field_section( $type );
 		}
 
+		/**
+		 * Filter the Newsman section object built for this widget. Return `null` to skip
+		 * appending any Newsman section to this widget's controls.
+		 *
+		 * @param object|null $section  Section instance, or null when no built-in section applies.
+		 * @param string      $type     Resolved widget type.
+		 * @param object      $widget   Atomic widget instance.
+		 * @param array       $controls Existing controls array.
+		 */
+		$section = apply_filters( 'newsman_atomic_form_controls_section', $section, $type, $widget, $controls );
+
 		if ( null !== $section ) {
 			$controls[] = $section;
+
+			/**
+			 * Fires after the Newsman section has been appended to an atomic widget's controls.
+			 *
+			 * @param object $section  Section instance that was appended.
+			 * @param string $type     Resolved widget type.
+			 * @param object $widget   Atomic widget instance.
+			 * @param array  $controls Controls array (already containing the appended section).
+			 */
+			do_action( 'newsman_atomic_form_controls_appended', $section, $type, $widget, $controls );
 		}
 
 		return $controls;
@@ -166,19 +228,55 @@ class AtomicFormControls {
 		$enable_control = $switch_class::bind_to( 'newsman_enable' )
 			->set_label( esc_html__( 'Send to Newsman', 'newsman' ) );
 
+		/**
+		 * Filter the form-level "Send to Newsman" Switch_Control.
+		 *
+		 * @param object $enable_control Switch_Control bound to `newsman_enable`.
+		 */
+		$enable_control = apply_filters( 'newsman_atomic_form_enable_control', $enable_control );
+
 		$list_options = $this->build_list_options();
 		$list_control = $select_class::bind_to( 'newsman_list_id' )
 			->set_label( esc_html__( 'Newsman List', 'newsman' ) )
 			->set_options( $list_options );
 
-		return $section_class::make()
+		/**
+		 * Filter the form-level Newsman list Select_Control.
+		 *
+		 * @param object $list_control Select_Control bound to `newsman_list_id`.
+		 * @param array  $list_options Options array passed to `set_options()`.
+		 */
+		$list_control = apply_filters( 'newsman_atomic_form_list_control', $list_control, $list_options );
+
+		/**
+		 * Filter the array of items composing the form-level Newsman section.
+		 *
+		 * Append or replace items here (e.g. inject a custom Newsman property-mapping control).
+		 *
+		 * @param array $items Controls to be passed to `Section::set_items()`.
+		 */
+		$items = apply_filters(
+			'newsman_atomic_form_section_items',
+			array(
+				$enable_control,
+				$list_control,
+			)
+		);
+		if ( ! is_array( $items ) ) {
+			$items = array( $enable_control, $list_control );
+		}
+
+		$section = $section_class::make()
 			->set_label( esc_html__( 'Newsman', 'newsman' ) )
-			->set_items(
-				array(
-					$enable_control,
-					$list_control,
-				)
-			);
+			->set_items( $items );
+
+		/**
+		 * Filter the built form-level Newsman section before it is returned to `inject_controls()`.
+		 *
+		 * @param object $section Section instance.
+		 * @param array  $items   Items the section was built with.
+		 */
+		return apply_filters( 'newsman_atomic_form_section', $section, $items );
 	}
 
 	/**
@@ -198,17 +296,54 @@ class AtomicFormControls {
 		$send_control = $switch_class::bind_to( 'newsman_send_field' )
 			->set_label( esc_html__( 'Send to Newsman', 'newsman' ) );
 
+		/**
+		 * Filter the per-field "Send to Newsman" Switch_Control.
+		 *
+		 * @param object $send_control Switch_Control bound to `newsman_send_field`.
+		 * @param string $widget_type  Atomic input widget type the section is being built for.
+		 */
+		$send_control = apply_filters( 'newsman_atomic_form_send_field_control', $send_control, $widget_type );
+
 		$items = array( $send_control );
 
 		// Email-marker only makes sense for text-like inputs, not checkboxes.
 		if ( 'e-form-checkbox' !== $widget_type ) {
-			$items[] = $switch_class::bind_to( 'newsman_is_email' )
+			$is_email_control = $switch_class::bind_to( 'newsman_is_email' )
 				->set_label( esc_html__( 'Use as Newsman email', 'newsman' ) );
+
+			/**
+			 * Filter the per-field "Use as Newsman email" Switch_Control.
+			 *
+			 * @param object $is_email_control Switch_Control bound to `newsman_is_email`.
+			 * @param string $widget_type      Atomic input widget type.
+			 */
+			$is_email_control = apply_filters( 'newsman_atomic_form_is_email_control', $is_email_control, $widget_type );
+			$items[]          = $is_email_control;
 		}
 
-		return $section_class::make()
+		/**
+		 * Filter the array of items composing the per-field Newsman section.
+		 *
+		 * @param array  $items       Controls to be passed to `Section::set_items()`.
+		 * @param string $widget_type Atomic input widget type.
+		 */
+		$items = apply_filters( 'newsman_atomic_form_field_section_items', $items, $widget_type );
+		if ( ! is_array( $items ) ) {
+			$items = array( $send_control );
+		}
+
+		$section = $section_class::make()
 			->set_label( esc_html__( 'Newsman', 'newsman' ) )
 			->set_items( $items );
+
+		/**
+		 * Filter the built per-field Newsman section before it is returned to `inject_controls()`.
+		 *
+		 * @param object $section     Section instance.
+		 * @param string $widget_type Atomic input widget type.
+		 * @param array  $items       Items the section was built with.
+		 */
+		return apply_filters( 'newsman_atomic_form_field_section', $section, $widget_type, $items );
 	}
 
 	/**
@@ -237,7 +372,18 @@ class AtomicFormControls {
 			}
 		}
 
-		return $options;
+		/**
+		 * Filter the Newsman List Select_Control options array.
+		 *
+		 * Atomic Select_Control expects `[ [ 'label' => ..., 'value' => ... ], ... ]`.
+		 * Reorder, prepend, or replace entries here.
+		 *
+		 * @param array $options Options array as built by this method.
+		 * @param array $lists   Raw `[ id => name ]` map fetched from `Lists::get_for_select()`.
+		 */
+		$options = apply_filters( 'newsman_atomic_form_list_options', $options, $lists );
+
+		return is_array( $options ) ? $options : array();
 	}
 
 	/**
