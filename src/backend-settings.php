@@ -437,6 +437,18 @@ $form_values = $this->get_form_values();
 							</td>
 						</tr>
 						<?php endif; ?>
+						<?php if ( $this->is_wpforms_exists() ) : ?>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_developer_use_wpforms"><?php echo esc_html__( 'Use WPForms Integration', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_developer_use_wpforms" type="checkbox"
+									id="newsman_developer_use_wpforms" <?php echo ( ! empty( $form_values['newsman_developer_use_wpforms'] ) && 'on' === $form_values['newsman_developer_use_wpforms'] ) ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When enabled, a Newsman section appears in the Settings panel of every WPForms form (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman builder controls and submission handling for WPForms.', 'newsman' ); ?></p>
+							</td>
+						</tr>
+						<?php endif; ?>
 						<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<tr>
 							<th scope="row">

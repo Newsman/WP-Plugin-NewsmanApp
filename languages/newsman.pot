@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-09T17:46:15+00:00\n"
+"POT-Creation-Date: 2026-05-09T19:48:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -36,6 +36,8 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:175
 #: includes/elementor/class-atomicformcontrols.php:210
 #: includes/elementor/class-formcontrols.php:43
+#: includes/wpforms/class-formpanel.php:91
+#: includes/wpforms/class-formpanel.php:124
 msgid "Newsman"
 msgstr ""
 
@@ -94,14 +96,14 @@ msgid "Could not save integration setup. Please try again."
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:92
+#: includes/admin/settings/class-settings.php:93
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:152
+#: includes/admin/settings/class-settings.php:153
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr ""
@@ -111,8 +113,8 @@ msgstr ""
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:156
-#: includes/admin/settings/class-settings.php:170
+#: includes/admin/settings/class-settings.php:157
+#: includes/admin/settings/class-settings.php:171
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr ""
@@ -319,26 +321,32 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:199
 #: includes/elementor/class-formcontrols.php:51
 #: includes/elementor/class-formcontrols.php:108
+#: includes/wpforms/class-formpanel.php:132
 msgid "Send to Newsman"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:134
+#: includes/wpforms/class-formpanel.php:134
 msgid "When enabled, every successful submission of this form is subscribed to the selected Newsman list."
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:140
+#: includes/wpforms/class-formpanel.php:148
 msgid "Newsman list"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:145
+#: includes/wpforms/class-formpanel.php:140
 msgid "No Newsman lists are available. Configure your Newsman API key on the Newsman settings page first."
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:149
+#: includes/wpforms/class-formpanel.php:115
 msgid "— select a list —"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:161
+#: includes/wpforms/class-formpanel.php:173
 msgid "Email field"
 msgstr ""
 
@@ -347,10 +355,12 @@ msgid "Add a field to the form template to enable Newsman."
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:177
+#: includes/wpforms/class-formpanel.php:176
 msgid "The selected field provides the subscriber email. Any field type may be used (text, tel, url, email, …)."
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:184
+#: includes/wpforms/class-formpanel.php:190
 msgid "Send as properties"
 msgstr ""
 
@@ -363,6 +373,7 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:215
+#: includes/wpforms/class-formpanel.php:211
 msgid "used as email"
 msgstr ""
 
@@ -932,6 +943,32 @@ msgstr ""
 msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 
+#: includes/wpforms/class-formpanel.php:157
+msgid "Add a field to the form to enable Newsman."
+msgstr ""
+
+#: includes/wpforms/class-formpanel.php:217
+msgid "Each checked field is sent to Newsman as a subscriber property keyed by the field label (or ID when no label is set)."
+msgstr ""
+
+#. translators: %s: WPForms field id.
+#: includes/wpforms/class-formpanel.php:318
+#, php-format
+msgid "Field #%s"
+msgstr ""
+
+#: includes/wpforms/class-formprocessor.php:74
+msgid "Newsman: WPForms form is enabled but no list is selected."
+msgstr ""
+
+#: includes/wpforms/class-formprocessor.php:80
+msgid "Newsman: WPForms form has no email field configured."
+msgstr ""
+
+#: includes/wpforms/class-formprocessor.php:98
+msgid "Newsman: WPForms email field is empty."
+msgstr ""
+
 #: src/backend-oauth.php:35
 #: src/backend-settings.php:92
 #: src/backend.php:64
@@ -1071,7 +1108,7 @@ msgid "Select which customer attributes (from orders) to include in your remarke
 msgstr ""
 
 #: src/backend-remarketing.php:206
-#: src/backend-settings.php:508
+#: src/backend-settings.php:520
 #: src/backend-sms.php:391
 #: src/backend-sync.php:120
 msgid "Save Changes"
@@ -1294,46 +1331,54 @@ msgid "When enabled, the Newsman tab appears on Contact Form 7 forms in the edit
 msgstr ""
 
 #: src/backend-settings.php:443
-msgid "Enable Test User IP"
+msgid "Use WPForms Integration"
 msgstr ""
 
 #: src/backend-settings.php:448
+msgid "When enabled, a Newsman section appears in the Settings panel of every WPForms form (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman builder controls and submission handling for WPForms."
+msgstr ""
+
+#: src/backend-settings.php:455
+msgid "Enable Test User IP"
+msgstr ""
+
+#: src/backend-settings.php:460
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr ""
 
-#: src/backend-settings.php:453
+#: src/backend-settings.php:465
 msgid "Test User IP address"
 msgstr ""
 
-#: src/backend-settings.php:464
+#: src/backend-settings.php:476
 msgid "Plugin Loaded Priority"
 msgstr ""
 
-#: src/backend-settings.php:470
+#: src/backend-settings.php:482
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr ""
 
-#: src/backend-settings.php:476
+#: src/backend-settings.php:488
 msgid "Use Action Scheduler"
 msgstr ""
 
-#: src/backend-settings.php:481
+#: src/backend-settings.php:493
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 
-#: src/backend-settings.php:486
+#: src/backend-settings.php:498
 msgid "Use Action Scheduler for Subscribe"
 msgstr ""
 
-#: src/backend-settings.php:491
+#: src/backend-settings.php:503
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr ""
 
-#: src/backend-settings.php:496
+#: src/backend-settings.php:508
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr ""
 
-#: src/backend-settings.php:501
+#: src/backend-settings.php:513
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
 

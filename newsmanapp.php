@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp for WordPress
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 3.7.14
+ * Version: 3.7.15
  * Author: Newsman
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSMAN_VERSION', '3.7.14' );
+define( 'NEWSMAN_VERSION', '3.7.15' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'NEWSMAN_JS_SCRIPT_VERSION', '20260309000000' );
@@ -181,6 +181,11 @@ class WP_Newsman {
 		$contact_form_7_exist = new \Newsman\Util\ContactForm7Exist();
 		if ( $contact_form_7_exist->exist() && $this->config->use_contact_form_7() ) {
 			( new \Newsman\ContactForm7\Integration() )->init_hooks();
+		}
+
+		$wpforms_exist = new \Newsman\Util\WPFormsExist();
+		if ( $wpforms_exist->exist() && $this->config->use_wpforms() ) {
+			( new \Newsman\WPForms\Integration() )->init_hooks();
 		}
 	}
 

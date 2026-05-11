@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.15 =
+* Add WPForms integration — new "Newsman" tab on the form-builder Settings panel with per-form enable, list selection, email-field dropdown, and a checkbox list of the form's fields to send as Newsman subscriber properties
+
 = 3.7.14 =
 * Add Contact Form 7 integration — new "Newsman" tab on the contact form editor with per-form enable, list selection, email-field dropdown (any tag type, not only [email]), and a checkbox list of the form's fields to send as Newsman subscriber properties
 * Relocate the shared subscribe helper to `\Newsman\Subscribe\Helper`; rename the helper-level hooks `newsman_elementor_subscribe_*` → `newsman_subscribe_*` so they fire consistently for every form-source integration

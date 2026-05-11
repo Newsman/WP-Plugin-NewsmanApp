@@ -16,6 +16,7 @@ use Newsman\Logger;
 use Newsman\Util\WooCommerceExist;
 use Newsman\Util\ElementorExist;
 use Newsman\Util\ContactForm7Exist;
+use Newsman\Util\WPFormsExist;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -69,6 +70,13 @@ class Settings {
 	 * @var ContactForm7Exist
 	 */
 	protected $contact_form_7_exists;
+
+	/**
+	 *  WPForms Exists
+	 *
+	 * @var WPFormsExist
+	 */
+	protected $wpforms_exists;
 
 	/**
 	 * Page nonce action
@@ -129,6 +137,7 @@ class Settings {
 		$this->action_scheduler      = new NewsmanActionScheduler();
 		$this->elementor_exists      = new ElementorExist();
 		$this->contact_form_7_exists = new ContactForm7Exist();
+		$this->wpforms_exists        = new WPFormsExist();
 	}
 
 	/**
@@ -818,6 +827,18 @@ class Settings {
 	 */
 	public function is_contact_form_7_exists() {
 		return $this->contact_form_7_exists->exist();
+	}
+
+	/**
+	 * WPForms exists.
+	 *
+	 * Used by the backend settings template to gate the "Use WPForms Integration"
+	 * toggle so the row only renders when the plugin is actually present.
+	 *
+	 * @return bool
+	 */
+	public function is_wpforms_exists() {
+		return $this->wpforms_exists->exist();
 	}
 
 	/**
