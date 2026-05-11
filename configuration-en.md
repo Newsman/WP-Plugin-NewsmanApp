@@ -254,11 +254,13 @@ If your site uses Elementor Pro's Form widget, the plugin can subscribe submissi
 
 ### Per-form Settings
 
-Open any page in the Elementor editor and select a Form widget. In the **Content** tab, after the **Form Fields** section, you will see a new **Newsman** section with two settings:
+Open any page in the Elementor editor and select a Form widget. In the **Content** tab, after the **Form Fields** section, you will see a new **Newsman** section with three settings:
 
 - **Send to Newsman** - Off by default. Turn this on to enable Newsman for this form. When off, no data from the form is sent to Newsman regardless of the per-field options below.
 
 - **Newsman List** - Visible only when **Send to Newsman** is on. Pick the Newsman list that should receive submissions from this form. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes. If the dropdown is empty, see the troubleshooting note at the end of this section.
+
+- **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
 ### Per-field Settings
 
@@ -304,11 +306,13 @@ Elementor 4.x introduced **Atomic Forms**, a separate form architecture where th
 
 ### Per-form settings
 
-Open a page with an Atomic Form on the canvas. Click the form container (the parent element holding the inputs) to select it. Below the existing **Content** and **Settings** sections in the editor panel, a new **Newsman** section appears with two settings:
+Open a page with an Atomic Form on the canvas. Click the form container (the parent element holding the inputs) to select it. Below the existing **Content** and **Settings** sections in the editor panel, a new **Newsman** section appears with three settings:
 
 - **Send to Newsman** - Off by default. Turn this on to enable Newsman for this form. When off, no data is sent to Newsman regardless of per-input settings.
 
 - **Newsman List** - Pick the Newsman list that should receive submissions. The dropdown is shared with the legacy Forms integration: lists come from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, cached for 10 minutes.
+
+- **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
 ### Per-input settings
 
@@ -357,6 +361,8 @@ In the WP admin, open **Contact > Contact Forms** and click any form to edit it.
 
 - **Newsman list** - Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor integration). If the dropdown is empty or shows "No Newsman lists are available", check your credentials.
 
+- **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
+
 - **Email field** - Pick which form-tag holds the subscriber's email address. **Any** field type can be used here (text, tel, url, email, number, ...), not just `[email]` tags - this is useful for forms that collect the email through a custom-validated text field. The default selection is the first `[email]` form-tag in the form template; if there is no email tag, the first available field is selected. The dropdown also lists each tag's basetype next to its name to make picking easier.
 
 - **Send as properties** - A checkbox list of every form-tag in the template. Each checked field is sent to Newsman as a subscriber property keyed by the form-tag name. The selected email field is shown but disabled (it cannot be a property because it is already used as the subscriber email). Defaults: every non-system tag except the email field is checked.
@@ -396,6 +402,8 @@ In the WP admin, open **WPForms > All Forms** and click **Edit** on any form. In
 - **Send to Newsman** - Off by default. Toggle this on to enable Newsman for this form. When off, no data is sent to Newsman regardless of the per-field settings below.
 
 - **Newsman list** - Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor and Contact Form 7 integrations). If the dropdown is empty or shows "No Newsman lists are available", check your credentials.
+
+- **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
 - **Email field** - Pick which form field holds the subscriber's email address. **Any** field type can be used here (text, tel, url, number, email, hidden, ...), not just the dedicated **Email** field type - useful when the form collects email through a custom-validated text field. The dropdown lists each field's label followed by its type to make picking easier.
 

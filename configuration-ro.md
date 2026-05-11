@@ -265,11 +265,13 @@ Daca site-ul foloseste widget-ul Form din Elementor Pro, plugin-ul poate abona t
 
 ### Setari per Formular
 
-Deschideti orice pagina in editorul Elementor si selectati un widget Form. In tab-ul **Content**, dupa sectiunea **Form Fields**, veti vedea o noua sectiune **Newsman** cu doua optiuni:
+Deschideti orice pagina in editorul Elementor si selectati un widget Form. In tab-ul **Content**, dupa sectiunea **Form Fields**, veti vedea o noua sectiune **Newsman** cu trei optiuni:
 
 - **Send to Newsman** - Dezactivat implicit. Activati pentru a porni Newsman pe acest formular. Cand este dezactivat, nicio data din formular nu este trimisa catre Newsman, indiferent de optiunile per camp de mai jos.
 
 - **Newsman List** - Vizibil doar cand **Send to Newsman** este activat. Alegeti lista Newsman care va primi trimiterile din acest formular. Dropdown-ul este populat automat din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, si este pus in cache 10 minute. Daca dropdown-ul este gol, vedeti nota de depanare de la finalul acestei sectiuni.
+
+- **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
 ### Setari per Camp
 
@@ -315,11 +317,13 @@ Elementor 4.x a introdus **Atomic Forms**, o arhitectura separata in care formul
 
 ### Setari per Formular
 
-Deschideti o pagina care contine un Atomic Form. Faceti click pe containerul formularului (elementul parinte care contine input-urile) pentru a-l selecta. Sub sectiunile **Content** si **Settings** existente in panoul editorului, apare o noua sectiune **Newsman** cu doua optiuni:
+Deschideti o pagina care contine un Atomic Form. Faceti click pe containerul formularului (elementul parinte care contine input-urile) pentru a-l selecta. Sub sectiunile **Content** si **Settings** existente in panoul editorului, apare o noua sectiune **Newsman** cu trei optiuni:
 
 - **Send to Newsman** - Dezactivat implicit. Activati pentru a porni Newsman pe acest formular. Cand este dezactivat, nu se trimite nicio data catre Newsman, indiferent de setarile per input.
 
 - **Newsman List** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este partajat cu integrarea Forms clasica: listele provin din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, cu cache de 10 minute.
+
+- **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
 ### Setari per Input
 
@@ -368,6 +372,8 @@ In WP admin, deschideti **Contact > Contact Forms** si dati click pe orice formu
 
 - **Newsman list** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarea Elementor). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
 
+- **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
+
 - **Email field** - Alegeti care form-tag detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, email, number, ...), nu doar tag-urile `[email]` - util pentru formulare care colecteaza emailul printr-un camp text cu validare proprie. Selectia implicita este primul form-tag `[email]` din template; daca nu exista un tag email, este selectat primul camp disponibil. Dropdown-ul afiseaza si basetype-ul fiecarui tag langa nume pentru a usura selectia.
 
 - **Send as properties** - O lista de checkbox-uri cu toate form-tag-urile din template. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie numele form-tag-ului. Campul email selectat este afisat dar dezactivat (nu poate fi proprietate, deoarece este deja folosit ca email de abonat). Implicit: fiecare tag non-sistem cu exceptia campului email este bifat.
@@ -407,6 +413,8 @@ In WP admin, deschideti **WPForms > All Forms** si dati click pe **Edit** pentru
 - **Send to Newsman** - Dezactivat implicit. Activati comutatorul pentru a porni Newsman pentru acest formular. Cand este dezactivat, nu se trimit date catre Newsman, indiferent de setarile per camp de mai jos.
 
 - **Newsman list** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarile Elementor si Contact Form 7). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
+
+- **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
 - **Email field** - Alegeti care camp din formular detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, number, email, hidden, ...), nu doar tipul dedicat **Email** - util cand formularul colecteaza emailul printr-un camp text cu validare proprie. Dropdown-ul afiseaza eticheta fiecarui camp urmata de tipul lui pentru a usura selectia.
 
