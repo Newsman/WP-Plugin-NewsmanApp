@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-09T17:46:15+00:00\n"
+"POT-Creation-Date: 2026-05-09T19:48:58+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -41,6 +41,8 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:175
 #: includes/elementor/class-atomicformcontrols.php:210
 #: includes/elementor/class-formcontrols.php:43
+#: includes/wpforms/class-formpanel.php:91
+#: includes/wpforms/class-formpanel.php:124
 msgid "Newsman"
 msgstr "Newsman"
 
@@ -99,14 +101,14 @@ msgid "Could not save integration setup. Please try again."
 msgstr "Kan de integratie-instellingen niet opslaan. Probeer het opnieuw."
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:92
+#: includes/admin/settings/class-settings.php:93
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Ongeautoriseerde gebruiker"
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:152
+#: includes/admin/settings/class-settings.php:153
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Opties opgeslagen."
@@ -116,8 +118,8 @@ msgstr "Opties opgeslagen."
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Ongeldige inloggegevens. Configureer deze in het tabblad Instellingen."
 
-#: includes/admin/settings/class-settings.php:156
-#: includes/admin/settings/class-settings.php:170
+#: includes/admin/settings/class-settings.php:157
+#: includes/admin/settings/class-settings.php:171
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Ongeldige inloggegevens"
@@ -303,51 +305,69 @@ msgid ""
 "Subscribe form submissions to a Newsman list. The selected email field is "
 "used as the subscriber email; the chosen properties are pushed as Newsman "
 "subscriber properties."
-msgstr "Abonneer formulierinzendingen op een Newsman-lijst. Het geselecteerde e-mailveld wordt gebruikt als e-mailadres van de abonnee; de gekozen eigenschappen worden als Newsman-abonnee-eigenschappen verzonden."
+msgstr ""
+"Abonneer formulierinzendingen op een Newsman-lijst. Het geselecteerde e-"
+"mailveld wordt gebruikt als e-mailadres van de abonnee; de gekozen "
+"eigenschappen worden als Newsman-abonnee-eigenschappen verzonden."
 
 #: includes/contactform7/class-formpanel.php:123
 #: includes/elementor/class-atomicformcontrols.php:167
 #: includes/elementor/class-atomicformcontrols.php:199
 #: includes/elementor/class-formcontrols.php:51
 #: includes/elementor/class-formcontrols.php:108
+#: includes/wpforms/class-formpanel.php:132
 msgid "Send to Newsman"
 msgstr "Verzenden naar Newsman"
 
 #: includes/contactform7/class-formpanel.php:134
+#: includes/wpforms/class-formpanel.php:134
 msgid ""
 "When enabled, every successful submission of this form is subscribed to the "
 "selected Newsman list."
-msgstr "Wanneer ingeschakeld, wordt elke geslaagde inzending van dit formulier geabonneerd op de geselecteerde Newsman-lijst."
+msgstr ""
+"Wanneer ingeschakeld, wordt elke geslaagde inzending van dit formulier "
+"geabonneerd op de geselecteerde Newsman-lijst."
 
 #: includes/contactform7/class-formpanel.php:140
+#: includes/wpforms/class-formpanel.php:148
 msgid "Newsman list"
 msgstr "Newsman-lijst"
 
 #: includes/contactform7/class-formpanel.php:145
+#: includes/wpforms/class-formpanel.php:140
 msgid ""
 "No Newsman lists are available. Configure your Newsman API key on the "
 "Newsman settings page first."
-msgstr "Geen Newsman-lijsten beschikbaar. Configureer eerst je Newsman-API-sleutel op de Newsman-instellingenpagina."
+msgstr ""
+"Geen Newsman-lijsten beschikbaar. Configureer eerst je Newsman-API-sleutel "
+"op de Newsman-instellingenpagina."
 
 #: includes/contactform7/class-formpanel.php:149
+#: includes/wpforms/class-formpanel.php:115
 msgid "— select a list —"
 msgstr "— selecteer een lijst —"
 
 #: includes/contactform7/class-formpanel.php:161
+#: includes/wpforms/class-formpanel.php:173
 msgid "Email field"
 msgstr "E-mailveld"
 
 #: includes/contactform7/class-formpanel.php:166
 msgid "Add a field to the form template to enable Newsman."
-msgstr "Voeg een veld toe aan het formuliersjabloon om Newsman in te schakelen."
+msgstr ""
+"Voeg een veld toe aan het formuliersjabloon om Newsman in te schakelen."
 
 #: includes/contactform7/class-formpanel.php:177
+#: includes/wpforms/class-formpanel.php:176
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used "
 "(text, tel, url, email, …)."
-msgstr "Het geselecteerde veld levert het e-mailadres van de abonnee. Elk veldtype kan worden gebruikt (text, tel, url, email, …)."
+msgstr ""
+"Het geselecteerde veld levert het e-mailadres van de abonnee. Elk veldtype "
+"kan worden gebruikt (text, tel, url, email, …)."
 
 #: includes/contactform7/class-formpanel.php:184
+#: includes/wpforms/class-formpanel.php:190
 msgid "Send as properties"
 msgstr "Verzenden als eigenschappen"
 
@@ -360,6 +380,7 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Verzend deze velden naar Newsman als abonnee-eigenschappen"
 
 #: includes/contactform7/class-formpanel.php:215
+#: includes/wpforms/class-formpanel.php:211
 msgid "used as email"
 msgstr "gebruikt als e-mail"
 
@@ -367,11 +388,14 @@ msgstr "gebruikt als e-mail"
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
-msgstr "Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap met de form-tag-naam als sleutel."
+msgstr ""
+"Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap met "
+"de form-tag-naam als sleutel."
 
 #: includes/contactform7/class-formprocessor.php:77
 msgid "Newsman: CF7 form is enabled but no list is selected."
-msgstr "Newsman: CF7-formulier is ingeschakeld maar er is geen lijst geselecteerd."
+msgstr ""
+"Newsman: CF7-formulier is ingeschakeld maar er is geen lijst geselecteerd."
 
 #: includes/contactform7/class-formprocessor.php:83
 msgid "Newsman: CF7 form has no email field configured."
@@ -966,6 +990,34 @@ msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 "Newsman: GetByEmail gaf %1$s niet terug, saveSubscribe wordt gebruikt (%2$s)."
 
+#: includes/wpforms/class-formpanel.php:157
+msgid "Add a field to the form to enable Newsman."
+msgstr "Voeg een veld toe aan het formulier om Newsman in te schakelen."
+
+#: includes/wpforms/class-formpanel.php:217
+msgid ""
+"Each checked field is sent to Newsman as a subscriber property keyed by the "
+"field label (or ID when no label is set)."
+msgstr "Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap met het veldlabel als sleutel (of de ID als er geen label is ingesteld)."
+
+#. translators: %s: WPForms field id.
+#: includes/wpforms/class-formpanel.php:318
+#, php-format
+msgid "Field #%s"
+msgstr "Veld #%s"
+
+#: includes/wpforms/class-formprocessor.php:74
+msgid "Newsman: WPForms form is enabled but no list is selected."
+msgstr "Newsman: WPForms-formulier is ingeschakeld maar er is geen lijst geselecteerd."
+
+#: includes/wpforms/class-formprocessor.php:80
+msgid "Newsman: WPForms form has no email field configured."
+msgstr "Newsman: WPForms-formulier heeft geen e-mailveld geconfigureerd."
+
+#: includes/wpforms/class-formprocessor.php:98
+msgid "Newsman: WPForms email field is empty."
+msgstr "Newsman: het e-mailveld van het WPForms-formulier is leeg."
+
 #: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Site "
@@ -1130,7 +1182,7 @@ msgstr ""
 "Selecteer welke klantattributen (van bestellingen) u wilt opnemen in uw "
 "remarketinggegevens."
 
-#: src/backend-remarketing.php:206 src/backend-settings.php:508
+#: src/backend-remarketing.php:206 src/backend-settings.php:520
 #: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
@@ -1394,13 +1446,32 @@ msgid ""
 "the email plus marked field values to the selected Newsman list. Disable to "
 "remove all Newsman editor controls and submission handling for Contact Form "
 "7."
-msgstr "Wanneer ingeschakeld, verschijnt het Newsman-tabblad op Contact Form 7-formulieren in de editor (lijstselectie per formulier, e-mailveld en eigenschappen), en versturen inzendingen het e-mailadres plus de gemarkeerde veldwaarden naar de geselecteerde Newsman-lijst. Uitschakelen om alle Newsman-editorbedieningen en inzendingsverwerking voor Contact Form 7 te verwijderen."
+msgstr ""
+"Wanneer ingeschakeld, verschijnt het Newsman-tabblad op Contact Form 7-"
+"formulieren in de editor (lijstselectie per formulier, e-mailveld en "
+"eigenschappen), en versturen inzendingen het e-mailadres plus de gemarkeerde "
+"veldwaarden naar de geselecteerde Newsman-lijst. Uitschakelen om alle "
+"Newsman-editorbedieningen en inzendingsverwerking voor Contact Form 7 te "
+"verwijderen."
 
 #: src/backend-settings.php:443
+msgid "Use WPForms Integration"
+msgstr "WPForms-integratie gebruiken"
+
+#: src/backend-settings.php:448
+msgid ""
+"When enabled, a Newsman section appears in the Settings panel of every "
+"WPForms form (per-form list selection, email field, and properties), and "
+"submissions push the email plus marked field values to the selected Newsman "
+"list. Disable to remove all Newsman builder controls and submission handling "
+"for WPForms."
+msgstr "Wanneer ingeschakeld, verschijnt een Newsman-sectie in het Instellingen-paneel van elk WPForms-formulier (lijstselectie per formulier, e-mailveld en eigenschappen), en versturen inzendingen het e-mailadres plus de gemarkeerde veldwaarden naar de geselecteerde Newsman-lijst. Uitschakelen om alle Newsman-bouwerbedieningen en inzendingsverwerking voor WPForms te verwijderen."
+
+#: src/backend-settings.php:455
 msgid "Enable Test User IP"
 msgstr "Test gebruikers-IP inschakelen"
 
-#: src/backend-settings.php:448
+#: src/backend-settings.php:460
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -1408,15 +1479,15 @@ msgstr ""
 "Waarschuwing! Gebruik dit IP-adres niet in productie omdat het wordt "
 "gebruikt door het API-eindpunt subscriber.saveSubscribe."
 
-#: src/backend-settings.php:453
+#: src/backend-settings.php:465
 msgid "Test User IP address"
 msgstr "Test gebruikers-IP-adres"
 
-#: src/backend-settings.php:464
+#: src/backend-settings.php:476
 msgid "Plugin Loaded Priority"
 msgstr "Plugin-laadprioriteit"
 
-#: src/backend-settings.php:470
+#: src/backend-settings.php:482
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -1425,19 +1496,19 @@ msgstr ""
 "plugins_loaded en de prioriteit ingesteld in deze configuratie. Standaard is "
 "20."
 
-#: src/backend-settings.php:476
+#: src/backend-settings.php:488
 msgid "Use Action Scheduler"
 msgstr "Action Scheduler gebruiken"
 
-#: src/backend-settings.php:481
+#: src/backend-settings.php:493
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Gebruik de Action Scheduler-plugin voor sommige NewsMAN API-acties."
 
-#: src/backend-settings.php:486
+#: src/backend-settings.php:498
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Action Scheduler gebruiken voor abonneren"
 
-#: src/backend-settings.php:491
+#: src/backend-settings.php:503
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -1445,11 +1516,11 @@ msgstr ""
 "In de winkel Action Scheduler gebruiken voor acties voor het abonneren op e-"
 "mail- en SMS-lijsten."
 
-#: src/backend-settings.php:496
+#: src/backend-settings.php:508
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Action Scheduler gebruiken voor afmelden"
 
-#: src/backend-settings.php:501
+#: src/backend-settings.php:513
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""

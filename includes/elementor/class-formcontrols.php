@@ -37,16 +37,45 @@ class FormControls {
 			return;
 		}
 
-		$element->start_controls_section(
-			'section_newsman',
+		/**
+		 * Filter the slug used to register the Newsman section on the Form widget.
+		 *
+		 * @param string $slug    Default section slug.
+		 * @param object $element Elementor element being rendered.
+		 */
+		$section_id = (string) apply_filters( 'newsman_form_section_id', 'section_newsman', $element );
+
+		/**
+		 * Filter the args passed to `start_controls_section()` for the Newsman section.
+		 *
+		 * @param array  $args    Section args (`label`, `tab`, ...).
+		 * @param object $element Elementor element.
+		 */
+		$section_args = apply_filters(
+			'newsman_form_section_args',
 			array(
 				'label' => esc_html__( 'Newsman', 'newsman' ),
 				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
-			)
+			),
+			$element
 		);
+		if ( ! is_array( $section_args ) ) {
+			$section_args = array(
+				'label' => esc_html__( 'Newsman', 'newsman' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			);
+		}
 
-		$element->add_control(
-			'newsman_enable',
+		$element->start_controls_section( $section_id, $section_args );
+
+		/**
+		 * Filter the args passed to `add_control()` for the form-level `newsman_enable` switcher.
+		 *
+		 * @param array  $args    Control args.
+		 * @param object $element Elementor element.
+		 */
+		$enable_args = apply_filters(
+			'newsman_form_enable_control_args',
 			array(
 				'label'        => esc_html__( 'Send to Newsman', 'newsman' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
@@ -55,11 +84,21 @@ class FormControls {
 				'return_value' => 'yes',
 				'default'      => '',
 				'description'  => esc_html__( 'When enabled, form submissions will subscribe the email field to the selected Newsman list with the marked fields as subscriber properties.', 'newsman' ),
-			)
+			),
+			$element
 		);
+		if ( is_array( $enable_args ) ) {
+			$element->add_control( 'newsman_enable', $enable_args );
+		}
 
-		$element->add_control(
-			'newsman_list_id',
+		/**
+		 * Filter the args passed to `add_control()` for the form-level `newsman_list_id` SELECT2.
+		 *
+		 * @param array  $args    Control args (note: `options` is already populated).
+		 * @param object $element Elementor element.
+		 */
+		$list_args = apply_filters(
+			'newsman_form_list_control_args',
 			array(
 				'label'       => esc_html__( 'Newsman List', 'newsman' ),
 				'type'        => \Elementor\Controls_Manager::SELECT2,
@@ -70,10 +109,33 @@ class FormControls {
 					'newsman_enable' => 'yes',
 				),
 				'description' => esc_html__( 'Required when Newsman is enabled. Lists are fetched from your Newsman account and cached for 10 minutes.', 'newsman' ),
-			)
+			),
+			$element
 		);
+		if ( is_array( $list_args ) ) {
+			$element->add_control( 'newsman_list_id', $list_args );
+		}
+
+		/**
+		 * Fires inside the Newsman section between the built-in controls and `end_controls_section()`.
+		 *
+		 * Use this to append additional form-level Newsman controls (e.g. a property-mapping
+		 * field). Call `$element->add_control(...)` inside the callback.
+		 *
+		 * @param object $element    Elementor element being rendered.
+		 * @param string $section_id Section slug used in `start_controls_section()`.
+		 */
+		do_action( 'newsman_form_section_controls', $element, $section_id );
 
 		$element->end_controls_section();
+
+		/**
+		 * Fires after the Newsman section has been closed.
+		 *
+		 * @param object $element    Elementor element.
+		 * @param string $section_id Section slug used in `start_controls_section()`.
+		 */
+		do_action( 'newsman_form_section_after', $element, $section_id );
 	}
 
 	/**
@@ -102,8 +164,14 @@ class FormControls {
 
 		$repeater = new \Elementor\Repeater();
 
-		$repeater->add_control(
-			'newsman_send_field',
+		/**
+		 * Filter the args passed to the repeater's `add_control()` for `newsman_send_field`.
+		 *
+		 * @param array  $args    Control args.
+		 * @param object $element Form widget element.
+		 */
+		$send_args = apply_filters(
+			'newsman_form_field_send_control_args',
 			array(
 				'label'        => esc_html__( 'Send to Newsman', 'newsman' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
@@ -115,11 +183,21 @@ class FormControls {
 				'tab'          => 'content',
 				'inner_tab'    => 'form_fields_advanced_tab',
 				'tabs_wrapper' => 'form_fields_tabs',
-			)
+			),
+			$element
 		);
+		if ( is_array( $send_args ) ) {
+			$repeater->add_control( 'newsman_send_field', $send_args );
+		}
 
-		$repeater->add_control(
-			'newsman_is_email',
+		/**
+		 * Filter the args passed to the repeater's `add_control()` for `newsman_is_email`.
+		 *
+		 * @param array  $args    Control args (note: `conditions.terms` restricts visibility to email/text fields).
+		 * @param object $element Form widget element.
+		 */
+		$is_email_args = apply_filters(
+			'newsman_form_field_is_email_control_args',
 			array(
 				'label'        => esc_html__( 'Use as Newsman email', 'newsman' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
@@ -140,24 +218,83 @@ class FormControls {
 						),
 					),
 				),
-			)
+			),
+			$element
 		);
+		if ( is_array( $is_email_args ) ) {
+			$repeater->add_control( 'newsman_is_email', $is_email_args );
+		}
+
+		/**
+		 * Fires after Newsman's built-in repeater controls have been added.
+		 *
+		 * Use this to append further per-field Newsman controls (e.g. a custom property
+		 * key override). Call `$repeater->add_control(...)` inside the callback.
+		 *
+		 * @param \Elementor\Repeater $repeater Form-fields repeater being built up.
+		 * @param object              $element  Form widget element.
+		 */
+		do_action( 'newsman_form_field_repeater_controls', $repeater, $element );
 
 		$new_controls = $repeater->get_controls();
 
-		// Splice the new controls into the existing repeater fields, after `custom_id`.
+		/**
+		 * Filter the per-field controls that will be spliced into the `form_fields` repeater.
+		 *
+		 * Keyed by control name. Remove or add entries here.
+		 *
+		 * @param array  $new_controls Per-field controls to splice in.
+		 * @param object $element      Form widget element.
+		 * @param array  $control_data Existing `form_fields` control data.
+		 */
+		$new_controls = apply_filters( 'newsman_form_field_new_controls', $new_controls, $element, $control_data );
+		if ( ! is_array( $new_controls ) ) {
+			$new_controls = array();
+		}
+
+		/**
+		 * Filter the name of the existing repeater field after which the Newsman controls
+		 * are spliced in. Defaults to `custom_id`.
+		 *
+		 * @param string $anchor  Field name to splice after.
+		 * @param object $element Form widget element.
+		 */
+		$anchor = (string) apply_filters( 'newsman_form_field_splice_anchor', 'custom_id', $element );
+
+		// Splice the new controls into the existing repeater fields, after the anchor.
 		$new_order = array();
 		foreach ( $control_data['fields'] as $key => $field ) {
 			$new_order[ $key ] = $field;
-			if ( isset( $field['name'] ) && 'custom_id' === $field['name'] ) {
+			if ( isset( $field['name'] ) && $anchor === $field['name'] ) {
 				foreach ( $new_controls as $control_name => $control_def ) {
 					$new_order[ $control_name ] = $control_def;
 				}
 			}
 		}
 
+		/**
+		 * Filter the final ordered `form_fields` array after Newsman's controls have been spliced in.
+		 *
+		 * @param array  $new_order    Final ordered repeater fields.
+		 * @param array  $new_controls Newsman controls that were spliced in.
+		 * @param object $element      Form widget element.
+		 */
+		$new_order = apply_filters( 'newsman_form_field_order', $new_order, $new_controls, $element );
+		if ( ! is_array( $new_order ) ) {
+			$new_order = $control_data['fields'];
+		}
+
 		$control_data['fields'] = $new_order;
 		$element->update_control( 'form_fields', $control_data );
+
+		/**
+		 * Fires after the Form widget's `form_fields` repeater has been updated with Newsman controls.
+		 *
+		 * @param object $element      Form widget element.
+		 * @param array  $control_data Updated control data (with `fields` already containing Newsman entries).
+		 * @param array  $new_controls Newsman controls that were spliced in.
+		 */
+		do_action( 'newsman_form_field_controls_injected', $element, $control_data, $new_controls );
 	}
 
 	/**

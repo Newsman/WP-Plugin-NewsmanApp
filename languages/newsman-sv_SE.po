@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-09T17:46:15+00:00\n"
+"POT-Creation-Date: 2026-05-09T19:48:58+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -41,6 +41,8 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:175
 #: includes/elementor/class-atomicformcontrols.php:210
 #: includes/elementor/class-formcontrols.php:43
+#: includes/wpforms/class-formpanel.php:91
+#: includes/wpforms/class-formpanel.php:124
 msgid "Newsman"
 msgstr "Newsman"
 
@@ -99,14 +101,14 @@ msgid "Could not save integration setup. Please try again."
 msgstr "Kunde inte spara integrationsinställningen. Försök igen."
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:92
+#: includes/admin/settings/class-settings.php:93
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Obehörig användare"
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:152
+#: includes/admin/settings/class-settings.php:153
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Alternativ sparade."
@@ -116,8 +118,8 @@ msgstr "Alternativ sparade."
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Ogiltiga inloggningsuppgifter. Konfigurera dem i fliken Inställningar."
 
-#: includes/admin/settings/class-settings.php:156
-#: includes/admin/settings/class-settings.php:170
+#: includes/admin/settings/class-settings.php:157
+#: includes/admin/settings/class-settings.php:171
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Ogiltiga inloggningsuppgifter"
@@ -301,37 +303,50 @@ msgid ""
 "Subscribe form submissions to a Newsman list. The selected email field is "
 "used as the subscriber email; the chosen properties are pushed as Newsman "
 "subscriber properties."
-msgstr "Prenumerera formulärinlämningar på en Newsman-lista. Det valda e-postfältet används som prenumerantens e-post; de valda egenskaperna skickas som Newsman-prenumerantegenskaper."
+msgstr ""
+"Prenumerera formulärinlämningar på en Newsman-lista. Det valda e-postfältet "
+"används som prenumerantens e-post; de valda egenskaperna skickas som Newsman-"
+"prenumerantegenskaper."
 
 #: includes/contactform7/class-formpanel.php:123
 #: includes/elementor/class-atomicformcontrols.php:167
 #: includes/elementor/class-atomicformcontrols.php:199
 #: includes/elementor/class-formcontrols.php:51
 #: includes/elementor/class-formcontrols.php:108
+#: includes/wpforms/class-formpanel.php:132
 msgid "Send to Newsman"
 msgstr "Skicka till Newsman"
 
 #: includes/contactform7/class-formpanel.php:134
+#: includes/wpforms/class-formpanel.php:134
 msgid ""
 "When enabled, every successful submission of this form is subscribed to the "
 "selected Newsman list."
-msgstr "När aktiverad prenumereras varje lyckad inlämning av detta formulär på den valda Newsman-listan."
+msgstr ""
+"När aktiverad prenumereras varje lyckad inlämning av detta formulär på den "
+"valda Newsman-listan."
 
 #: includes/contactform7/class-formpanel.php:140
+#: includes/wpforms/class-formpanel.php:148
 msgid "Newsman list"
 msgstr "Newsman-lista"
 
 #: includes/contactform7/class-formpanel.php:145
+#: includes/wpforms/class-formpanel.php:140
 msgid ""
 "No Newsman lists are available. Configure your Newsman API key on the "
 "Newsman settings page first."
-msgstr "Inga Newsman-listor tillgängliga. Konfigurera först din Newsman-API-nyckel på Newsman-inställningssidan."
+msgstr ""
+"Inga Newsman-listor tillgängliga. Konfigurera först din Newsman-API-nyckel "
+"på Newsman-inställningssidan."
 
 #: includes/contactform7/class-formpanel.php:149
+#: includes/wpforms/class-formpanel.php:115
 msgid "— select a list —"
 msgstr "— välj en lista —"
 
 #: includes/contactform7/class-formpanel.php:161
+#: includes/wpforms/class-formpanel.php:173
 msgid "Email field"
 msgstr "E-postfält"
 
@@ -340,12 +355,16 @@ msgid "Add a field to the form template to enable Newsman."
 msgstr "Lägg till ett fält i formulärmallen för att aktivera Newsman."
 
 #: includes/contactform7/class-formpanel.php:177
+#: includes/wpforms/class-formpanel.php:176
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used "
 "(text, tel, url, email, …)."
-msgstr "Det valda fältet anger prenumerantens e-post. Vilken fälttyp som helst kan användas (text, tel, url, email, …)."
+msgstr ""
+"Det valda fältet anger prenumerantens e-post. Vilken fälttyp som helst kan "
+"användas (text, tel, url, email, …)."
 
 #: includes/contactform7/class-formpanel.php:184
+#: includes/wpforms/class-formpanel.php:190
 msgid "Send as properties"
 msgstr "Skicka som egenskaper"
 
@@ -358,6 +377,7 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Skicka dessa fält till Newsman som prenumerantegenskaper"
 
 #: includes/contactform7/class-formpanel.php:215
+#: includes/wpforms/class-formpanel.php:211
 msgid "used as email"
 msgstr "används som e-post"
 
@@ -365,7 +385,9 @@ msgstr "används som e-post"
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
-msgstr "Varje kryssat fält skickas till Newsman som en prenumerantegenskap med form-tag-namnet som nyckel."
+msgstr ""
+"Varje kryssat fält skickas till Newsman som en prenumerantegenskap med form-"
+"tag-namnet som nyckel."
 
 #: includes/contactform7/class-formprocessor.php:77
 msgid "Newsman: CF7 form is enabled but no list is selected."
@@ -958,6 +980,34 @@ msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 "Newsman: GetByEmail returnerade inte %1$s, saveSubscribe används (%2$s)."
 
+#: includes/wpforms/class-formpanel.php:157
+msgid "Add a field to the form to enable Newsman."
+msgstr "Lägg till ett fält i formuläret för att aktivera Newsman."
+
+#: includes/wpforms/class-formpanel.php:217
+msgid ""
+"Each checked field is sent to Newsman as a subscriber property keyed by the "
+"field label (or ID when no label is set)."
+msgstr "Varje kryssat fält skickas till Newsman som en prenumerantegenskap med fältetiketten som nyckel (eller ID:t om ingen etikett är angiven)."
+
+#. translators: %s: WPForms field id.
+#: includes/wpforms/class-formpanel.php:318
+#, php-format
+msgid "Field #%s"
+msgstr "Fält #%s"
+
+#: includes/wpforms/class-formprocessor.php:74
+msgid "Newsman: WPForms form is enabled but no list is selected."
+msgstr "Newsman: WPForms-formuläret är aktiverat men ingen lista är vald."
+
+#: includes/wpforms/class-formprocessor.php:80
+msgid "Newsman: WPForms form has no email field configured."
+msgstr "Newsman: WPForms-formuläret har inget konfigurerat e-postfält."
+
+#: includes/wpforms/class-formprocessor.php:98
+msgid "Newsman: WPForms email field is empty."
+msgstr "Newsman: WPForms-formulärets e-postfält är tomt."
+
 #: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Webbplats "
@@ -1121,7 +1171,7 @@ msgstr ""
 "Välj vilka kundattribut (från beställningar) som ska inkluderas i dina "
 "remarketingdata."
 
-#: src/backend-remarketing.php:206 src/backend-settings.php:508
+#: src/backend-remarketing.php:206 src/backend-settings.php:520
 #: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Spara ändringar"
@@ -1375,13 +1425,31 @@ msgid ""
 "the email plus marked field values to the selected Newsman list. Disable to "
 "remove all Newsman editor controls and submission handling for Contact Form "
 "7."
-msgstr "När aktiverad visas Newsman-fliken på Contact Form 7-formulär i redigeraren (listval per formulär, e-postfält och egenskaper), och inlämningar skickar e-posten plus de markerade fältvärdena till den valda Newsman-listan. Inaktivera för att ta bort alla Newsman-redigerarkontroller och inlämningshantering för Contact Form 7."
+msgstr ""
+"När aktiverad visas Newsman-fliken på Contact Form 7-formulär i redigeraren "
+"(listval per formulär, e-postfält och egenskaper), och inlämningar skickar e-"
+"posten plus de markerade fältvärdena till den valda Newsman-listan. "
+"Inaktivera för att ta bort alla Newsman-redigerarkontroller och "
+"inlämningshantering för Contact Form 7."
 
 #: src/backend-settings.php:443
+msgid "Use WPForms Integration"
+msgstr "Använd WPForms-integration"
+
+#: src/backend-settings.php:448
+msgid ""
+"When enabled, a Newsman section appears in the Settings panel of every "
+"WPForms form (per-form list selection, email field, and properties), and "
+"submissions push the email plus marked field values to the selected Newsman "
+"list. Disable to remove all Newsman builder controls and submission handling "
+"for WPForms."
+msgstr "När aktiverad visas en Newsman-sektion i Inställningar-panelen i varje WPForms-formulär (listval per formulär, e-postfält och egenskaper), och inlämningar skickar e-posten plus de markerade fältvärdena till den valda Newsman-listan. Inaktivera för att ta bort alla Newsman-byggarkontroller och inlämningshantering för WPForms."
+
+#: src/backend-settings.php:455
 msgid "Enable Test User IP"
 msgstr "Aktivera testanvändar-IP"
 
-#: src/backend-settings.php:448
+#: src/backend-settings.php:460
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -1389,15 +1457,15 @@ msgstr ""
 "Varning! Använd inte denna IP-adress i produktion eftersom den används av "
 "API-ändpunkten subscriber.saveSubscribe."
 
-#: src/backend-settings.php:453
+#: src/backend-settings.php:465
 msgid "Test User IP address"
 msgstr "Testanvändarens IP-adress"
 
-#: src/backend-settings.php:464
+#: src/backend-settings.php:476
 msgid "Plugin Loaded Priority"
 msgstr "Tilläggsladdningsprioritet"
 
-#: src/backend-settings.php:470
+#: src/backend-settings.php:482
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -1405,19 +1473,19 @@ msgstr ""
 "NewsMAN-pluginens WooCommerce-krokar laddas med add_action plugins_loaded "
 "och prioriteten inställd i denna konfiguration. Standard är 20."
 
-#: src/backend-settings.php:476
+#: src/backend-settings.php:488
 msgid "Use Action Scheduler"
 msgstr "Använd Action Scheduler"
 
-#: src/backend-settings.php:481
+#: src/backend-settings.php:493
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Använd Action Scheduler-tillägget för vissa NewsMAN API-åtgärder."
 
-#: src/backend-settings.php:486
+#: src/backend-settings.php:498
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Använd Action Scheduler för prenumeration"
 
-#: src/backend-settings.php:491
+#: src/backend-settings.php:503
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -1425,11 +1493,11 @@ msgstr ""
 "I butiken, använd Action Scheduler för prenumerationsåtgärder på e-post- och "
 "SMS-listor."
 
-#: src/backend-settings.php:496
+#: src/backend-settings.php:508
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Använd Action Scheduler för avprenumeration"
 
-#: src/backend-settings.php:501
+#: src/backend-settings.php:513
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""

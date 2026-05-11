@@ -14,6 +14,7 @@ This guide walks you through every setting in the Newsman plugin so you can conn
 - [Elementor Forms (Elementor Pro)](#elementor-forms-elementor-pro)
 - [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
 - [Contact Form 7](#contact-form-7)
+- [WPForms](#wpforms)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
 ---
@@ -125,6 +126,8 @@ These settings are intended for advanced users and developers. In most cases, yo
 - **Use Elementor Integration** - Master switch for the Newsman integration with Elementor Pro. **On by default.** When on, the Newsman section appears in the Elementor editor for both the legacy Form widget and Atomic Forms (Elementor 4.x), and submissions are pushed to your Newsman list. Turn off to remove all Newsman-added editor controls and stop submission forwarding for both. Existing Newsman per-form / per-field settings are preserved when off and reactivated when you turn it back on. Disabling has no effect on WordPress, WooCommerce, or non-Elementor newsletter flows.
 
 - **Use Contact Form 7 Integration** - Master switch for the Newsman integration with Contact Form 7. **On by default.** Visible only when the Contact Form 7 plugin is installed. When on, a Newsman tab appears on every contact form's editor screen (per-form list selection, email field, and properties), and submissions are pushed to your Newsman list. Turn off to remove the editor tab and stop submission forwarding. Existing per-form Newsman settings are preserved when off and reactivated when you turn it back on. Disabling has no effect on WordPress, WooCommerce, Elementor, or other newsletter flows.
+
+- **Use WPForms Integration** - Master switch for the Newsman integration with WPForms (Lite or Pro). **On by default.** Visible only when WPForms is installed. When on, a Newsman section appears in the Settings panel of every form in the WPForms builder (per-form list selection, email field, and properties), and submissions are pushed to your Newsman list. Turn off to remove the builder section and stop submission forwarding. Existing per-form Newsman settings are preserved when off and reactivated when you turn it back on. Disabling has no effect on WordPress, WooCommerce, Elementor, Contact Form 7, or other newsletter flows.
 
 - **Plugin Loaded Priority** - Controls when the plugin initializes relative to other plugins. Only change this if you experience conflicts with another plugin. The default value of 20 works for most setups.
 
@@ -377,6 +380,46 @@ Contact Form 7 has no first-class plumbing for third-party integrations to surfa
 - **Newsman tab does not appear**: confirm Contact Form 7 is active and that **Use Contact Form 7 Integration** is on in **NewsMAN > Settings > Developer Settings**.
 - **Newsman list dropdown is empty**: same as the Elementor integration - confirm credentials in **NewsMAN > Settings** and wait up to 10 minutes for the cache to refresh.
 - **Submitter email not appearing in Newsman**: confirm the **Email field** dropdown points to a tag that the visitor actually fills in. If the field is empty at submission time, the row is skipped and a debug log entry is written.
+
+---
+
+## WPForms
+
+If your site uses [WPForms](https://wordpress.org/plugins/wpforms-lite/) (Lite or Pro), the plugin can subscribe submissions to a Newsman list and send the values of any fields you choose as subscriber properties.
+
+> The integration is gated by the **Use WPForms Integration** toggle in **NewsMAN > Settings > Developer Settings**. The toggle (and the Newsman section it controls) only appears when WPForms is installed.
+
+### Per-form settings
+
+In the WP admin, open **WPForms > All Forms** and click **Edit** on any form. In the form builder, click the **Settings** panel on the left, then the new **Newsman** section in the inner sidebar. The section has these options:
+
+- **Send to Newsman** - Off by default. Toggle this on to enable Newsman for this form. When off, no data is sent to Newsman regardless of the per-field settings below.
+
+- **Newsman list** - Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor and Contact Form 7 integrations). If the dropdown is empty or shows "No Newsman lists are available", check your credentials.
+
+- **Email field** - Pick which form field holds the subscriber's email address. **Any** field type can be used here (text, tel, url, number, email, hidden, ...), not just the dedicated **Email** field type - useful when the form collects email through a custom-validated text field. The dropdown lists each field's label followed by its type to make picking easier.
+
+- **Send as properties** - A checkbox list of every form field. Each checked field is sent to Newsman as a subscriber property keyed by the field label sanitized to a stable lowercase snake_case key (or by the field id when no label is set). The selected email field is shown but disabled (it cannot be a property because it is already used as the subscriber email). Defaults: every non-system field except the email field is checked.
+
+> Internal helper fields (Page Break, HTML, Section Divider, Content, Internal Information, Entry Preview, captcha widgets) are excluded from both the email-field dropdown and the property checkboxes - they don't carry user-entered values that make sense as subscriber data.
+
+### What happens on submission
+
+When a visitor submits the form successfully:
+
+1. If **Send to Newsman** is off, nothing happens.
+2. If on, the plugin reads the email from the configured email field, builds a property map from the checked fields (multi-value fields like checkbox groups are JSON-encoded), and subscribes (or refreshes) the email to the chosen Newsman list with those properties.
+3. The form's normal flow (entry storage, notification emails, confirmation page) is unaffected. A Newsman API failure is logged but does **not** block WPForms' processing - the visitor still sees the success state.
+
+### Limitation: errors are not surfaced inline (v1)
+
+WPForms' submission flow runs its own success/error response cycle. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Plain WordPress installs have no log destination - check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+
+### Troubleshooting
+
+- **Newsman section does not appear**: confirm WPForms is active and that **Use WPForms Integration** is on in **NewsMAN > Settings > Developer Settings**.
+- **Newsman list dropdown is empty**: same as the other integrations - confirm credentials in **NewsMAN > Settings** and wait up to 10 minutes for the cache to refresh.
+- **Submitter email not appearing in Newsman**: confirm the **Email field** dropdown points to a field that the visitor actually fills in. If the field is empty at submission time, the row is skipped and a debug log entry is written.
 
 ---
 

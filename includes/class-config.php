@@ -267,6 +267,20 @@ class Config {
 	}
 
 	/**
+	 * Whether the WPForms integration is enabled.
+	 *
+	 * Default is on. The option is seeded by Setup v12.0.0; if it is missing entirely
+	 * (e.g. mid-upgrade) we fall back to enabled. Only an explicit 'off' disables.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function use_wpforms( $blog_id = null ) {
+		$value = $this->get_blog_option( $blog_id, 'newsman_developer_use_wpforms', 'on' );
+		return 'on' === $value;
+	}
+
+	/**
 	 * Get authenticate token.
 	 *
 	 * @param null|int $blog_id WP blog ID.
