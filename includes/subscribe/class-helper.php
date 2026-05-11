@@ -19,6 +19,7 @@ use Newsman\Service\Context\Subscriber\Update as UpdateContext;
 use Newsman\Service\Context\Subscriber\UpdateProps as UpdatePropsContext;
 use Newsman\Service\GetByEmail;
 use Newsman\Service\InitSubscribeEmail;
+use Newsman\Service\Response\Subscriber\Status as SubscriberStatus;
 use Newsman\Service\SubscribeEmail;
 use Newsman\Service\Subscriber\Update as UpdateService;
 use Newsman\Service\Subscriber\UpdateProps;
@@ -168,7 +169,7 @@ class Helper {
 			// when (a) we actually have a firstname or lastname to set, and (b) the row
 			// is fully confirmed — touching a pending double-optin row could flip it.
 			$has_names = ( '' !== $firstname || '' !== $lastname );
-			if ( $has_names && 'subscribed' === $status ) {
+			if ( $has_names && SubscriberStatus::SUBSCRIBED === $status ) {
 				try {
 					self::update_subscriber( $blog_id, $list_id, $email, $subscriber_id, $firstname, $lastname, $ip, $properties );
 				} catch ( \Exception $e ) {
@@ -400,8 +401,9 @@ class Helper {
 
 	/**
 	 * Refresh firstname/lastname (and email/ip) on an existing fully-subscribed row via
-	 * subscriber.update. The caller must gate this on status === 'subscribed' — running
-	 * it on a pending double-optin row is unsafe (it could flip the row to subscribed).
+	 * subscriber.update. The caller must gate this on status === Status::SUBSCRIBED —
+	 * running it on a pending double-optin row is unsafe (it could flip the row to
+	 * subscribed).
 	 *
 	 * @param int        $blog_id       WP blog ID.
 	 * @param string     $list_id       Newsman list ID.
