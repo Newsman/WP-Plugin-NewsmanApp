@@ -149,6 +149,32 @@ Go to **NewsMAN > Sync** to choose where your subscribers are sent in Newsman.
 
 - **Select an SMS list** - Pick the Newsman SMS list for phone number synchronization.
 
+### Refresh lists & segments cache
+
+Next to the **Save Changes** button on this page is a secondary button: **Refresh lists & segments cache**.
+
+The form integrations (Elementor, Contact Form 7, WPForms, Gravity Forms) and the Sync page itself cache the dropdown data from your Newsman account so that opening an admin page does not call the Newsman API every time. The cache lives in WordPress transients and is filled automatically the first time an admin visits a Newsman page that needs it. Three separate transients are used:
+
+- **Lists** — per-blog, keyed by Newsman User ID. **1-hour TTL.**
+- **Segments** — per-blog, keyed by Newsman List ID. **6-hour TTL** (longer because the underlying `segment.all` Newsman API is rate-limited to 10 calls/minute and segments rarely change).
+- **SMS lists** — per-blog, keyed by Newsman User ID. **1-hour TTL.**
+
+Each transient also writes a persistent stale-fallback row (a regular `wp_option` with no TTL). On a cache miss where the live API call also fails (rate limit, network blip, expired credentials), callers serve the last-known-good value from the fallback instead of an empty dropdown. The fallback is silently overwritten on every successful refresh, so it always mirrors the last successful response.
+
+Segment lookups in the form-builder panels (Elementor, CF7, WPForms, Gravity Forms) are **lazy** — opening a form editor only fetches segments for the form's currently saved list. Switching the list dropdown triggers an admin-AJAX call (`wp_ajax_newsman_load_segments`) to fetch the new list's segments. This means a single editor open does at most one `segment.all` API call regardless of how many lists you have, which keeps you well under the Newsman rate limit during normal navigation.
+
+Clicking **Refresh lists & segments cache**:
+
+- On a single WordPress install, force-refreshes the lists, segments and SMS lists for the current site's Newsman User ID.
+- On a WP Multisite (network) install, iterates every site in the network that has Newsman credentials (User ID + API key) configured, and refreshes all three caches for each one.
+- Uses the same per-blog Newsman API key as the rest of the plugin — no shared / network-wide credentials.
+
+When to click it: only when you have made changes inside your Newsman account (added/removed lists or segments) and you want them to appear in the form-builder dropdowns immediately, instead of waiting up to 1 hour (lists) or 6 hours (segments) for the natural cache expiry.
+
+If a Newsman API call fails during the refresh (rate limit, network error, expired credentials), the existing cached value for that list/blog is **kept** — the refresh is a "best-effort" pass. The page returns with a notice listing which calls failed, and the next admin page-load still has the previously cached values to work with until the failed entries can be re-fetched. The persistent stale-fallback tier described above means that the read path also never returns an empty dropdown because of a transient API blip — it serves the last-known-good value with a quiet log entry.
+
+The OAuth flow (**NewsMAN > Settings - Reconfigure with Newsman OAuth**) bypasses the cache entirely so that mid-flight credentials cannot poison it.
+
 ---
 
 ## Remarketing Page

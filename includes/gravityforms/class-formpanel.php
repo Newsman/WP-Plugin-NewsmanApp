@@ -176,14 +176,15 @@ class FormPanel {
 			}
 		}
 
-		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
-		$segment_select   = array( '' => esc_html__( '— none —', 'newsman' ) );
-		$segment_to_list  = array( '' => '' );
-		foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
-			$list_label = isset( $list_select[ (string) $seg_list_id ] ) ? (string) $list_select[ (string) $seg_list_id ] : (string) $seg_list_id;
+		// Lazy-load: render the segments select with only the currently saved
+		// list's segments. Switching the list triggers `wp_ajax_newsman_load_segments`
+		// to repopulate. Mitigates Newsman's `segment.all` 10/min rate limit.
+		$gf_current_list_id = isset( $prop['newsman_list_id'] ) ? (string) $prop['newsman_list_id'] : '';
+		$segment_select     = array( '' => esc_html__( '— none —', 'newsman' ) );
+		if ( '' !== $gf_current_list_id ) {
+			$segments_for_list = Segments::get_for_list( get_current_blog_id(), $gf_current_list_id );
 			foreach ( $segments_for_list as $segment_id => $segment_name ) {
-				$segment_select[ (string) $segment_id ] = sprintf( '%1$s — %2$s', $list_label, (string) $segment_name );
-				$segment_to_list[ (string) $segment_id ] = (string) $seg_list_id;
+				$segment_select[ (string) $segment_id ] = (string) $segment_name;
 			}
 		}
 
@@ -376,21 +377,77 @@ class FormPanel {
 		</form>
 		<script>
 		(function () {
+			var ajaxUrl   = <?php echo wp_json_encode( esc_url_raw( admin_url( 'admin-ajax.php' ) ) ); ?>;
+			var ajaxNonce = <?php echo wp_json_encode( \Newsman\Admin\Ajax\Segments_Endpoint::create_nonce() ); ?>;
+			var noneLabel = <?php echo wp_json_encode( esc_html__( '— none —', 'newsman' ) ); ?>;
+
 			// Hide Newsman List + Newsman Segment when "Newsletter form" is ON.
 			// When on, submissions go to the global Sync list/segment, so the
 			// per-form rows are stored but ignored. Mirrors the same behavior in
 			// the Elementor / CF7 / WPForms panels.
 			var newsletter = document.getElementById('newsman_newsletter_form');
-			if (!newsletter) return;
 			function applyVisibility() {
+				if (!newsletter) return;
 				var hide = newsletter.checked;
 				var list = document.querySelector('tr.newsman-gf-list-row');
 				var seg  = document.querySelector('tr.newsman-gf-segment-row');
 				if (list) list.style.display = hide ? 'none' : '';
 				if (seg)  seg.style.display  = hide ? 'none' : '';
 			}
-			newsletter.addEventListener('change', applyVisibility);
-			applyVisibility();
+			if (newsletter) {
+				newsletter.addEventListener('change', applyVisibility);
+				applyVisibility();
+			}
+
+			// Lazy-load segments on list change. See `wp_segment_all_rate_limit`
+			// notes — Newsman caps `segment.all` at 10 calls/minute so eager
+			// loading would trip on accounts with many lists.
+			var listEl = document.getElementById('newsman_list_id');
+			var segEl  = document.getElementById('newsman_segment_id');
+			var savedSegment = segEl ? String(segEl.value || '') : '';
+			function reloadSegments() {
+				if (!listEl || !segEl) return;
+				var currentListId = String(listEl.value || '');
+				if ('' === currentListId) {
+					segEl.innerHTML = '';
+					var optNone = document.createElement('option');
+					optNone.value = '';
+					optNone.textContent = noneLabel;
+					segEl.appendChild(optNone);
+					segEl.value = '';
+					return;
+				}
+				segEl.disabled = true;
+				var body = new URLSearchParams();
+				body.append('action', 'newsman_load_segments');
+				body.append('list_id', currentListId);
+				body.append('_ajax_nonce', ajaxNonce);
+				fetch(ajaxUrl, {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: body.toString()
+				}).then(function (r) { return r.json(); })
+				.then(function (resp) {
+					segEl.disabled = false;
+					if (!resp || !resp.success) return;
+					var segments = (resp.data && resp.data.segments) || {};
+					var prev = String(segEl.value || '') || savedSegment;
+					segEl.innerHTML = '';
+					var optNone = document.createElement('option');
+					optNone.value = '';
+					optNone.textContent = noneLabel;
+					segEl.appendChild(optNone);
+					Object.keys(segments).forEach(function (id) {
+						var o = document.createElement('option');
+						o.value = id;
+						o.textContent = segments[id];
+						segEl.appendChild(o);
+					});
+					segEl.value = segments.hasOwnProperty(prev) ? prev : '';
+				})['catch'](function () { segEl.disabled = false; });
+			}
+			if (listEl) listEl.addEventListener('change', reloadSegments);
 		})();
 		</script>
 		<?php

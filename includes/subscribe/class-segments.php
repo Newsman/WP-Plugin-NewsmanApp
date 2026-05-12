@@ -33,112 +33,171 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Segments {
 	/**
-	 * Transient TTL for the segment dropdown cache (10 minutes).
-	 */
-	public const CACHE_TTL = 600;
-
-	/**
-	 * Transient key prefix for the cached segment dropdown options.
-	 */
-	public const CACHE_KEY_PREFIX = 'newsman_segments_';
-
-	/**
 	 * Build the per-list segment dropdown options.
+	 *
+	 * Cache-read-only — does NOT iterate the API. Returns whatever is already
+	 * cached for every list (fresh transient hits + persistent stale-fallback
+	 * tier). Used by editor panels that want a starting snapshot at render
+	 * time; live updates flow through the AJAX endpoint
+	 * `wp_ajax_newsman_load_segments` which calls `Segments::get_for_list()`.
+	 *
+	 * Historical note: this method used to eagerly call `segment.all` once per
+	 * list, which trips Newsman's 10/min rate limit on accounts with more than
+	 * 10 lists. The current cache-read-only behavior is the lazy-load mitigation
+	 * (see wp_segment_all_rate_limit memory note).
 	 *
 	 * @param int $blog_id WP blog ID.
 	 * @return array<string,array<string,string>> Map of `[ list_id => [ segment_id => segment_name ] ]`.
 	 */
 	public static function get_by_list( $blog_id ) {
-		$transient_key = self::CACHE_KEY_PREFIX . $blog_id;
+		$config  = Config::init();
+		$user_id = (int) $config->get_user_id( $blog_id );
 
-		$cached = get_transient( $transient_key );
-		if ( is_array( $cached ) ) {
+		if ( $user_id <= 0 ) {
 			/**
 			 * Filter the Newsman segment options shown in the editor segment dropdown.
 			 *
 			 * @param array $options Map of `[ list_id => [ segment_id => segment_name ] ]`.
 			 * @param int   $blog_id Current WP blog ID.
 			 */
-			return apply_filters( 'newsman_segments_by_list', $cached, $blog_id );
-		}
-
-		$config  = Config::init();
-		$user_id = $config->get_user_id( $blog_id );
-		$api_key = $config->get_api_key( $blog_id );
-
-		if ( empty( $user_id ) || empty( $api_key ) ) {
-			/** This filter is documented in this file */
 			return apply_filters( 'newsman_segments_by_list', array(), $blog_id );
 		}
 
-		$lists = Lists::get_for_select( $blog_id );
-		if ( empty( $lists ) ) {
-			/** This filter is documented in this file */
-			return apply_filters( 'newsman_segments_by_list', array(), $blog_id );
+		// Fresh tier — whatever the read-through reads have populated so far.
+		$fresh = Segments_Transient::get_all( $blog_id );
+		// Persistent fallback tier — last-known-good for every list. We merge so
+		// that fresh hits win over stale, but lists not yet visited still have
+		// something to show.
+		$stale_key = 'newsman_segments_fallback_' . (int) $blog_id;
+		$stale     = get_option( $stale_key, array() );
+		$merged    = is_array( $stale ) ? $stale : array();
+		if ( is_array( $fresh ) ) {
+			foreach ( $fresh as $list_id => $segments ) {
+				$merged[ (string) $list_id ] = $segments;
+			}
 		}
 
+		// Drop empty entries so the JS filter does not render a meaningless option group.
 		$options = array();
-		foreach ( array_keys( $lists ) as $list_id ) {
-			$list_id = (string) $list_id;
-			if ( '' === $list_id ) {
-				continue;
-			}
-			try {
-				$context = new EmailList();
-				$context->set_user_id( $user_id )
-					->set_api_key( $api_key )
-					->set_list_id( $list_id );
-
-				$service = new GetSegmentAll();
-				$service->set_blog_id( $blog_id );
-				$result = $service->execute( $context );
-
-				if ( ! is_array( $result ) ) {
-					continue;
-				}
-
-				$segments_for_list = array();
-				foreach ( $result as $row ) {
-					if ( ! is_array( $row ) ) {
-						continue;
-					}
-					$id = '';
-					if ( isset( $row['segment_id'] ) ) {
-						$id = (string) $row['segment_id'];
-					} elseif ( isset( $row['id'] ) ) {
-						$id = (string) $row['id'];
-					}
-					$name = $id;
-					if ( isset( $row['segment_name'] ) ) {
-						$name = (string) $row['segment_name'];
-					} elseif ( isset( $row['name'] ) ) {
-						$name = (string) $row['name'];
-					}
-					if ( '' !== $id ) {
-						$segments_for_list[ $id ] = $name;
-					}
-				}
-
-				if ( ! empty( $segments_for_list ) ) {
-					$options[ $list_id ] = $segments_for_list;
-				}
-			} catch ( \Exception $e ) {
-				Logger::init()->log_exception( $e );
-				continue;
+		foreach ( $merged as $list_id => $segments ) {
+			if ( is_array( $segments ) && ! empty( $segments ) ) {
+				$options[ (string) $list_id ] = $segments;
 			}
 		}
-
-		/**
-		 * Filter the segment dropdown cache TTL (in seconds).
-		 *
-		 * @param int $ttl     Cache TTL in seconds.
-		 * @param int $blog_id Current WP blog ID.
-		 */
-		$ttl = (int) apply_filters( 'newsman_segments_cache_ttl', self::CACHE_TTL, $blog_id );
-		set_transient( $transient_key, $options, $ttl );
 
 		/** This filter is documented in this file */
 		return apply_filters( 'newsman_segments_by_list', $options, $blog_id );
+	}
+
+	/**
+	 * Lazy-load segments for a single Newsman list (the lazy-AJAX read-through path).
+	 *
+	 * Used by `wp_ajax_newsman_load_segments` to fetch segments on-demand when
+	 * an admin switches the list dropdown in a form-builder panel. Avoids the
+	 * eager all-lists pattern in `get_by_list()` that hit the `segment.all`
+	 * 10/min rate limit on accounts with many lists.
+	 *
+	 * Read-through with stale-on-error: cache hit returns immediately; cache
+	 * miss tries the API; API failure falls back to the persistent stale value
+	 * if any.
+	 *
+	 * @param int    $blog_id WP blog ID.
+	 * @param string $list_id Newsman List ID.
+	 * @return array `[ segment_id => segment_name ]`. Empty when no list_id,
+	 *               no credentials, never cached, and API call fails.
+	 */
+	public static function get_for_list( $blog_id, $list_id ) {
+		$list_id = (string) $list_id;
+		if ( '' === $list_id ) {
+			return array();
+		}
+
+		$config  = Config::init();
+		$user_id = (int) $config->get_user_id( $blog_id );
+		$api_key = (string) $config->get_api_key( $blog_id );
+
+		if ( $user_id <= 0 || '' === $api_key ) {
+			return array();
+		}
+
+		$cached = Segments_Transient::get( $blog_id, $list_id );
+		if ( is_array( $cached ) ) {
+			/**
+			 * Filter the single-list segments returned by the lazy-load read-through.
+			 *
+			 * @param array  $segments `[ segment_id => name ]`.
+			 * @param int    $blog_id  WP blog ID.
+			 * @param string $list_id  Newsman list id.
+			 */
+			return apply_filters( 'newsman_segments_for_list', $cached, $blog_id, $list_id );
+		}
+
+		try {
+			$segments = self::fetch_from_api( $blog_id, $user_id, $api_key, $list_id );
+		} catch ( \Exception $e ) {
+			Logger::init()->log_exception( $e );
+			$stale = Segments_Transient::get_stale( $blog_id, $list_id );
+			if ( is_array( $stale ) ) {
+				/** This filter is documented in this method */
+				return apply_filters( 'newsman_segments_for_list', $stale, $blog_id, $list_id );
+			}
+			/** This filter is documented in this method */
+			return apply_filters( 'newsman_segments_for_list', array(), $blog_id, $list_id );
+		}
+
+		Segments_Transient::save( $blog_id, $list_id, $segments );
+		/** This filter is documented in this method */
+		return apply_filters( 'newsman_segments_for_list', $segments, $blog_id, $list_id );
+	}
+
+	/**
+	 * Force-fetch the segments for one list from the Newsman API, bypassing the cache.
+	 *
+	 * Used by `Segments::get_by_list()` on a miss and by the Sync page Refresh
+	 * button. Throws on API failure so the caller can decide whether to surface
+	 * the error or fall back to the existing (stale) transient row.
+	 *
+	 * @param int    $blog_id WP blog ID.
+	 * @param int    $user_id Newsman User ID.
+	 * @param string $api_key Newsman API key.
+	 * @param string $list_id Newsman List ID.
+	 * @return array `[ segment_id => segment_name ]`.
+	 * @throws \Exception When the underlying GetSegmentAll service raises.
+	 */
+	public static function fetch_from_api( $blog_id, $user_id, $api_key, $list_id ) {
+		$context = new EmailList();
+		$context->set_user_id( $user_id )
+			->set_api_key( $api_key )
+			->set_list_id( (string) $list_id );
+
+		$service = new GetSegmentAll();
+		$service->set_blog_id( $blog_id );
+		$result = $service->execute( $context );
+
+		$segments = array();
+		if ( is_array( $result ) ) {
+			foreach ( $result as $row ) {
+				if ( ! is_array( $row ) ) {
+					continue;
+				}
+				$id = '';
+				if ( isset( $row['segment_id'] ) ) {
+					$id = (string) $row['segment_id'];
+				} elseif ( isset( $row['id'] ) ) {
+					$id = (string) $row['id'];
+				}
+				$name = $id;
+				if ( isset( $row['segment_name'] ) ) {
+					$name = (string) $row['segment_name'];
+				} elseif ( isset( $row['name'] ) ) {
+					$name = (string) $row['name'];
+				}
+				if ( '' !== $id ) {
+					$segments[ $id ] = $name;
+				}
+			}
+		}
+		return $segments;
 	}
 
 	/**

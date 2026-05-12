@@ -23,22 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Shared Newsman list-dropdown fetcher used by every form-source integration's editor UI.
  *
- * Caches the resolved options in a per-blog transient so editor saves do not hammer the
- * Newsman API.
+ * Read-through cache wrapper around the Newsman GetListAll service. The cache
+ * lives in `Lists_Transient` (15-minute TTL, per-blog, keyed by current Newsman
+ * User ID); see that class for the storage shape + OAuth bypass semantics.
+ *
+ * The static `fetch_from_api()` helper is also used by the Sync page Refresh
+ * button to force a cache refresh without going through the read-through path.
  *
  * @class \Newsman\Subscribe\Lists
  */
 class Lists {
-	/**
-	 * Transient TTL for the list dropdown cache (10 minutes).
-	 */
-	public const CACHE_TTL = 600;
-
-	/**
-	 * Transient key prefix for the cached list dropdown options.
-	 */
-	public const CACHE_KEY_PREFIX = 'newsman_lists_';
-
 	/**
 	 * Build the Newsman list dropdown options as `[ id => name ]`.
 	 *
@@ -46,10 +40,11 @@ class Lists {
 	 * @return array
 	 */
 	public static function get_for_select( $blog_id ) {
-		$transient_key = self::CACHE_KEY_PREFIX . $blog_id;
+		$config  = Config::init();
+		$user_id = (int) $config->get_user_id( $blog_id );
+		$api_key = (string) $config->get_api_key( $blog_id );
 
-		$cached = get_transient( $transient_key );
-		if ( is_array( $cached ) ) {
+		if ( $user_id <= 0 || '' === $api_key ) {
 			/**
 			 * Filter the Newsman list options shown in the editor list dropdown.
 			 *
@@ -59,70 +54,87 @@ class Lists {
 			 * @param array $options Map of `[ list_id => list_name ]`.
 			 * @param int   $blog_id Current WP blog ID.
 			 */
+			return apply_filters( 'newsman_lists_for_select', array(), $blog_id );
+		}
+
+		// Read-through cache. The cache is bypassed during OAuth (see
+		// `Lists_Transient::set_skip()` in the OAuth handler) so partial /
+		// not-yet-persisted credentials never poison the row.
+		$cached = Lists_Transient::get( $blog_id, $user_id );
+		if ( is_array( $cached ) ) {
+			/** This filter is documented in this file */
 			return apply_filters( 'newsman_lists_for_select', $cached, $blog_id );
 		}
 
-		$config  = Config::init();
-		$user_id = $config->get_user_id( $blog_id );
-		$api_key = $config->get_api_key( $blog_id );
-
-		if ( empty( $user_id ) || empty( $api_key ) ) {
-			/** This filter is documented in this file */
-			return apply_filters( 'newsman_lists_for_select', array(), $blog_id );
-		}
-
-		$options = array();
 		try {
-			$context = new ConfigurationUser();
-			$context->set_blog_id( $blog_id )
-				->set_user_id( $user_id )
-				->set_api_key( $api_key );
-
-			$service = new GetListAll();
-			$service->set_blog_id( $blog_id );
-			$result = $service->execute( $context );
-
-			if ( is_array( $result ) ) {
-				foreach ( $result as $row ) {
-					if ( ! is_array( $row ) ) {
-						continue;
-					}
-					$id = '';
-					if ( isset( $row['list_id'] ) ) {
-						$id = (string) $row['list_id'];
-					} elseif ( isset( $row['id'] ) ) {
-						$id = (string) $row['id'];
-					}
-					$name = $id;
-					if ( isset( $row['list_name'] ) ) {
-						$name = (string) $row['list_name'];
-					} elseif ( isset( $row['name'] ) ) {
-						$name = (string) $row['name'];
-					}
-					if ( '' !== $id ) {
-						$options[ $id ] = $name;
-					}
-				}
-			}
+			$options = self::fetch_from_api( $blog_id, $user_id, $api_key );
 		} catch ( \Exception $e ) {
 			Logger::init()->log_exception( $e );
+			// Stale-on-error: the fresh transient was empty AND the API call
+			// failed (rate limit, network blip, expired creds, ...). Fall back
+			// to the persistent last-known-good value if one exists, so the
+			// admin sees stale data with a warning instead of an empty dropdown.
+			$stale = Lists_Transient::get_stale( $blog_id, $user_id );
+			if ( is_array( $stale ) ) {
+				/** This filter is documented in this file */
+				return apply_filters( 'newsman_lists_for_select', $stale, $blog_id );
+			}
 			/** This filter is documented in this file */
 			return apply_filters( 'newsman_lists_for_select', array(), $blog_id );
 		}
 
-		/**
-		 * Filter the list dropdown cache TTL (in seconds).
-		 *
-		 * Default is 600s (10 minutes). Lower it to make editors reflect Newsman list changes
-		 * faster, or raise it to reduce API pressure for large multi-author teams.
-		 *
-		 * @param int $ttl     Cache TTL in seconds.
-		 * @param int $blog_id Current WP blog ID.
-		 */
-		$ttl = (int) apply_filters( 'newsman_lists_cache_ttl', self::CACHE_TTL, $blog_id );
-		set_transient( $transient_key, $options, $ttl );
+		Lists_Transient::save( $blog_id, $user_id, $options );
 
 		/** This filter is documented in this file */
 		return apply_filters( 'newsman_lists_for_select', $options, $blog_id );
+	}
+
+	/**
+	 * Force-fetch the list catalogue from the Newsman API, bypassing the cache.
+	 *
+	 * Used by `Lists::get_for_select()` on a miss and by the Sync page Refresh
+	 * button. Throws on API failure so the caller can decide whether to surface
+	 * the error or fall back to the existing (stale) transient row.
+	 *
+	 * @param int    $blog_id WP blog ID.
+	 * @param int    $user_id Newsman User ID.
+	 * @param string $api_key Newsman API key.
+	 * @return array `[ list_id => list_name ]`.
+	 * @throws \Exception When the underlying GetListAll service raises.
+	 */
+	public static function fetch_from_api( $blog_id, $user_id, $api_key ) {
+		$context = new ConfigurationUser();
+		$context->set_blog_id( $blog_id )
+			->set_user_id( $user_id )
+			->set_api_key( $api_key );
+
+		$service = new GetListAll();
+		$service->set_blog_id( $blog_id );
+		$result = $service->execute( $context );
+
+		$options = array();
+		if ( is_array( $result ) ) {
+			foreach ( $result as $row ) {
+				if ( ! is_array( $row ) ) {
+					continue;
+				}
+				$id = '';
+				if ( isset( $row['list_id'] ) ) {
+					$id = (string) $row['list_id'];
+				} elseif ( isset( $row['id'] ) ) {
+					$id = (string) $row['id'];
+				}
+				$name = $id;
+				if ( isset( $row['list_name'] ) ) {
+					$name = (string) $row['list_name'];
+				} elseif ( isset( $row['name'] ) ) {
+					$name = (string) $row['name'];
+				}
+				if ( '' !== $id ) {
+					$options[ $id ] = $name;
+				}
+			}
+		}
+		return $options;
 	}
 }

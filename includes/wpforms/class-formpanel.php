@@ -249,14 +249,18 @@ class FormPanel {
 				)
 			);
 
-			// Segments — flat list across all lists; option labels prefix the list name.
-			// JS below hides options whose list doesn't match the currently selected list.
-			$segment_select   = array( '' => esc_html__( '— none —', 'newsman' ) );
-			$segments_by_list = Segments::get_by_list( get_current_blog_id() );
-			foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
-				$list_label = isset( $list_select[ (string) $seg_list_id ] ) ? (string) $list_select[ (string) $seg_list_id ] : (string) $seg_list_id;
+			// Segments — lazy-load only the currently-saved list's segments at
+			// render time, then swap them via AJAX when the admin changes the
+			// list dropdown. This avoids the eager all-lists fetch that tripped
+			// Newsman's 10-calls-per-minute `segment.all` rate limit on accounts
+			// with many lists.
+			$current_list_id    = isset( $prop['newsman_list_id'] ) ? (string) $prop['newsman_list_id'] : '';
+			$current_segment_id = isset( $prop['newsman_segment_id'] ) ? (string) $prop['newsman_segment_id'] : '';
+			$segment_select     = array( '' => esc_html__( '— none —', 'newsman' ) );
+			if ( '' !== $current_list_id ) {
+				$segments_for_list = Segments::get_for_list( get_current_blog_id(), $current_list_id );
 				foreach ( $segments_for_list as $segment_id => $segment_name ) {
-					$segment_select[ (string) $segment_id ] = sprintf( '%1$s — %2$s', $list_label, (string) $segment_name );
+					$segment_select[ (string) $segment_id ] = (string) $segment_name;
 				}
 			}
 
@@ -268,35 +272,42 @@ class FormPanel {
 				esc_html__( 'Newsman segment', 'newsman' ),
 				array(
 					'options' => $segment_select,
-					'tooltip' => esc_html__( 'Optional. Segments are list-scoped — only segments that belong to the selected list are kept. If they don\'t match, the segment is dropped at submit time.', 'newsman' ),
+					'tooltip' => esc_html__( 'Optional. Segments are list-scoped — only segments belonging to the selected list are shown. Switching the list refreshes this dropdown.', 'newsman' ),
 				)
 			);
 
-			// Build a JS-readable segment - list_id map for filtering on list change.
-			$segment_to_list = array( '' => '' );
-			foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
-				foreach ( $segments_for_list as $segment_id => $unused_name ) {
-					$segment_to_list[ (string) $segment_id ] = (string) $seg_list_id;
-				}
-			}
+			$ajax_url   = esc_url_raw( admin_url( 'admin-ajax.php' ) );
+			$ajax_nonce = \Newsman\Admin\Ajax\Segments_Endpoint::create_nonce();
+			$none_label = esc_html__( '— none —', 'newsman' );
 
 			echo '<script>(function($){' .
-				'var segmentToList = ' . wp_json_encode( $segment_to_list ) . ';' .
-				'function filterSegments(){' .
+				'var ajaxUrl = ' . wp_json_encode( $ajax_url ) . ';' .
+				'var ajaxNonce = ' . wp_json_encode( $ajax_nonce ) . ';' .
+				'var noneLabel = ' . wp_json_encode( $none_label ) . ';' .
+				'var currentSaved = ' . wp_json_encode( $current_segment_id ) . ';' .
+				'function reloadSegments(){' .
 				'  var $list = $("#wpforms-panel-field-settings-newsman_list_id");' .
 				'  var $seg  = $("#wpforms-panel-field-settings-newsman_segment_id");' .
 				'  if ( ! $list.length || ! $seg.length ) return;' .
 				'  var currentList = String($list.val() || "");' .
-				'  var stillVisible = false;' .
-				'  $seg.find("option").each(function(){' .
-				'    var v = String($(this).val());' .
-				'    var listForSeg = segmentToList[v];' .
-				'    if ( typeof listForSeg === "undefined" ) listForSeg = "";' .
-				'    var visible = ( "" === listForSeg ) || ( listForSeg === currentList );' .
-				'    $(this).prop("hidden", ! visible).prop("disabled", ! visible);' .
-				'    if ( visible && v === String($seg.val()) ) { stillVisible = true; }' .
-				'  });' .
-				'  if ( ! stillVisible ) { $seg.val("").trigger("change"); }' .
+				'  if ( "" === currentList ) {' .
+				'    $seg.empty().append($("<option/>").val("").text(noneLabel)).val("").trigger("change");' .
+				'    return;' .
+				'  }' .
+				'  $seg.prop("disabled", true);' .
+				'  $.post(ajaxUrl, { action: "newsman_load_segments", list_id: currentList, _ajax_nonce: ajaxNonce })' .
+				'    .always(function(){ $seg.prop("disabled", false); })' .
+				'    .done(function(resp){' .
+				'      if ( ! resp || ! resp.success ) return;' .
+				'      var segments = resp.data && resp.data.segments ? resp.data.segments : {};' .
+				'      var selectedVal = String($seg.val() || "");' .
+				'      $seg.empty().append($("<option/>").val("").text(noneLabel));' .
+				'      Object.keys(segments).forEach(function(id){' .
+				'        $seg.append($("<option/>").val(id).text(segments[id]));' .
+				'      });' .
+				'      var keep = (segments.hasOwnProperty(selectedVal)) ? selectedVal : ((segments.hasOwnProperty(currentSaved)) ? currentSaved : "");' .
+				'      $seg.val(keep).trigger("change");' .
+				'    });' .
 				'}' .
 				'function toggleNewsletterMode(){' .
 				'  var $news = $("#wpforms-panel-field-settings-newsman_newsletter_form");' .
@@ -305,9 +316,8 @@ class FormPanel {
 				'  $wrap.toggle( ! $news.is(":checked") );' .
 				'}' .
 				'$(function(){' .
-				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_list_id", filterSegments);' .
+				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_list_id", reloadSegments);' .
 				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_newsletter_form", toggleNewsletterMode);' .
-				'  filterSegments();' .
 				'  toggleNewsletterMode();' .
 				'});' .
 				'})(jQuery);</script>';

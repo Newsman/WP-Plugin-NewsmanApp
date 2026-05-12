@@ -117,6 +117,10 @@ class WP_Newsman {
 		add_action( 'init', array( $this, 'load_text_domain' ) );
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded_lazy' ), $this->config->get_plugin_lazy_priority() );
 		add_action( 'init', array( new \Newsman\Export\Router(), 'execute' ) );
+
+		// Admin-AJAX endpoint for lazy-loading segments in the form-builder
+		// panels. See class docblock + the wp_segment_all_rate_limit notes.
+		\Newsman\Admin\Ajax\Segments_Endpoint::register();
 		// Widget auto init.
 		add_action( 'init', array( $this, 'init_widgets' ) );
 

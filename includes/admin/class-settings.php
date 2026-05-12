@@ -290,11 +290,31 @@ class Settings {
 				$api_key = $this->config->get_api_key();
 			}
 
+			$blog_id      = get_current_blog_id();
+			$user_id_int  = (int) $user_id;
+			$cached_lists = $user_id_int > 0 ? \Newsman\Subscribe\SmsLists_Transient::get( $blog_id, $user_id_int ) : null;
+			if ( null !== $cached_lists ) {
+				/** This filter is documented in this method */
+				return apply_filters(
+					'newsman_admin_settings_retrieve_api_sms_all_lists',
+					$cached_lists,
+					array(
+						'user_id' => $user_id,
+						'api_key' => $api_key,
+					)
+				);
+			}
+
 			$context = new \Newsman\Service\Context\Configuration\User();
 			$context->set_user_id( $user_id )
 				->set_api_key( $api_key );
 			$get_sms_list_all = new \Newsman\Service\Configuration\Sms\GetListAll();
 			$lists_data       = $get_sms_list_all->execute( $context );
+
+			if ( $user_id_int > 0 && is_array( $lists_data ) ) {
+				\Newsman\Subscribe\SmsLists_Transient::save( $blog_id, $user_id_int, $lists_data );
+			}
+
 			return apply_filters(
 				'newsman_admin_settings_retrieve_api_sms_all_lists',
 				$lists_data,
@@ -305,6 +325,22 @@ class Settings {
 			);
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
+			// Stale-on-error: serve the persistent last-known-good payload if
+			// any exists, instead of returning false (which surfaces as a "Could
+			// not get the lists or the segments" admin notice on the Sync page).
+			if ( ! empty( $user_id_int ) && $user_id_int > 0 ) {
+				$stale = \Newsman\Subscribe\SmsLists_Transient::get_stale( $blog_id, $user_id_int );
+				if ( is_array( $stale ) ) {
+					return apply_filters(
+						'newsman_admin_settings_retrieve_api_sms_all_lists',
+						$stale,
+						array(
+							'user_id' => $user_id,
+							'api_key' => $api_key,
+						)
+					);
+				}
+			}
 			return false;
 		}
 	}

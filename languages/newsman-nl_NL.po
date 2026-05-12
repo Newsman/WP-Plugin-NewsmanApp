@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-12T18:28:32+00:00\n"
+"POT-Creation-Date: 2026-05-12T20:33:22+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -44,7 +44,7 @@ msgstr ""
 #: includes/elementor/class-formcontrols.php:65
 #: includes/gravityforms/class-formpanel.php:92
 #: includes/gravityforms/class-formpanel.php:136
-#: includes/gravityforms/class-formpanel.php:214
+#: includes/gravityforms/class-formpanel.php:215
 #: includes/wpforms/class-formpanel.php:111
 #: includes/wpforms/class-formpanel.php:206
 msgid "Newsman"
@@ -92,28 +92,28 @@ msgstr "SMS versturen met FAN Courier AWB"
 msgid "Send SMS with SamedayCourier AWB"
 msgstr "SMS versturen met SamedayCourier AWB"
 
-#: includes/admin/settings/class-oauth.php:110
+#: includes/admin/settings/class-oauth.php:119
 msgid "Access is denied"
 msgstr "Toegang geweigerd"
 
-#: includes/admin/settings/class-oauth.php:113
+#: includes/admin/settings/class-oauth.php:122
 msgid "There are no lists in your NewsMAN account"
 msgstr "Er zijn geen lijsten in uw NewsMAN-account"
 
-#: includes/admin/settings/class-oauth.php:217
+#: includes/admin/settings/class-oauth.php:226
 msgid "Could not save integration setup. Please try again."
 msgstr "Kan de integratie-instellingen niet opslaan. Probeer het opnieuw."
 
 #: includes/admin/settings/class-remarketing.php:90
 #: includes/admin/settings/class-settings.php:102
 #: includes/admin/settings/class-sms.php:153
-#: includes/admin/settings/class-sync.php:90
+#: includes/admin/settings/class-sync.php:95
 msgid "Unauthorized user"
 msgstr "Ongeautoriseerde gebruiker"
 
 #: includes/admin/settings/class-remarketing.php:110
 #: includes/admin/settings/class-settings.php:167
-#: includes/admin/settings/class-sync.php:163
+#: includes/admin/settings/class-sync.php:186
 msgid "Options saved."
 msgstr "Opties opgeslagen."
 
@@ -124,7 +124,7 @@ msgstr "Ongeldige inloggegevens. Configureer deze in het tabblad Instellingen."
 
 #: includes/admin/settings/class-settings.php:171
 #: includes/admin/settings/class-settings.php:185
-#: includes/admin/settings/class-sync.php:167
+#: includes/admin/settings/class-sync.php:190
 msgid "Invalid Credentials"
 msgstr "Ongeldige inloggegevens"
 
@@ -215,18 +215,59 @@ msgid ""
 msgstr ""
 "De SMS is niet verzonden. Vul het testtelefoonnummer en het testbericht in."
 
-#: includes/admin/settings/class-sync.php:117
+#: includes/admin/settings/class-sync.php:140
 msgid "Could not save integration setup. The list was not changed."
 msgstr ""
 "Kan de integratie-instellingen niet opslaan. De lijst is niet gewijzigd."
 
-#: includes/admin/settings/class-sync.php:155
-#: includes/admin/settings/class-sync.php:189
-#: includes/admin/settings/class-sync.php:199
+#: includes/admin/settings/class-sync.php:178
+#: includes/admin/settings/class-sync.php:212
+#: includes/admin/settings/class-sync.php:222
 msgid "Could not get the lists or the segments."
 msgstr "Kan de lijsten of segmenten niet ophalen."
 
-#: includes/admin/settings/class-sync.php:236
+#. translators: 1: blog id; 2: error message.
+#: includes/admin/settings/class-sync.php:290
+#, php-format
+msgid "Blog #%1$d lists: %2$s"
+msgstr "Blog #%1$d lijsten: %2$s"
+
+#. translators: 1: blog id; 2: list id; 3: error message.
+#: includes/admin/settings/class-sync.php:315
+#, php-format
+msgid "Blog #%1$d list %2$s segments: %3$s"
+msgstr "Blog #%1$d lijst %2$s segmenten: %3$s"
+
+#. translators: 1: blog id; 2: error message.
+#: includes/admin/settings/class-sync.php:339
+#, php-format
+msgid "Blog #%1$d SMS lists: %2$s"
+msgstr "Blog #%1$d SMS-lijsten: %2$s"
+
+#. translators: 1: blog count; 2: lists count; 3: segments count; 4: SMS lists count.
+#: includes/admin/settings/class-sync.php:356
+#, php-format
+msgid ""
+"Newsman cache refreshed: %1$d blog(s), %2$d list(s), %3$d segment(s), %4$d "
+"SMS list(s)."
+msgstr ""
+"Newsman-cache vernieuwd: %1$d blog(s), %2$d lijst(en), %3$d segment(en), "
+"%4$d SMS-lijst(en)."
+
+#. translators: 1: blog count; 2: lists count; 3: segments count; 4: SMS lists count; 5: semicolon-separated error list.
+#: includes/admin/settings/class-sync.php:368
+#, php-format
+msgid ""
+"Cache refresh completed with errors. Refreshed %1$d blog(s), %2$d list(s), "
+"%3$d segment(s), %4$d SMS list(s). Existing cached values for the failing "
+"API calls are kept until they expire. Errors: %5$s"
+msgstr ""
+"Cache-vernieuwing voltooid met fouten. Vernieuwd: %1$d blog(s), %2$d "
+"lijst(en), %3$d segment(en), %4$d SMS-lijst(en). Bestaande gecachte "
+"waardenvoor mislukte API-aanroepen blijven behouden tot ze verlopen. Fouten: "
+"%5$s"
+
+#: includes/admin/settings/class-sync.php:411
 msgid "Could not update feed list"
 msgstr "Kan de feedlijst niet bijwerken"
 
@@ -369,15 +410,15 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:273
 #: includes/elementor/class-atomicformcontrols.php:392
 #: includes/elementor/class-formcontrols.php:81
-#: includes/elementor/class-formcontrols.php:284
-#: includes/gravityforms/class-formpanel.php:196
-#: includes/gravityforms/class-formpanel.php:220
+#: includes/elementor/class-formcontrols.php:280
+#: includes/gravityforms/class-formpanel.php:197
+#: includes/gravityforms/class-formpanel.php:221
 #: includes/wpforms/class-formpanel.php:214
 msgid "Send to Newsman"
 msgstr "Verzenden naar Newsman"
 
 #: includes/contactform7/class-formpanel.php:219
-#: includes/gravityforms/class-formpanel.php:196
+#: includes/gravityforms/class-formpanel.php:197
 #: includes/wpforms/class-formpanel.php:216
 msgid ""
 "When enabled, every successful submission of this form is subscribed to the "
@@ -389,8 +430,8 @@ msgstr ""
 #: includes/contactform7/class-formpanel.php:225
 #: includes/elementor/class-atomicformcontrols.php:283
 #: includes/elementor/class-formcontrols.php:104
-#: includes/gravityforms/class-formpanel.php:197
-#: includes/gravityforms/class-formpanel.php:226
+#: includes/gravityforms/class-formpanel.php:198
+#: includes/gravityforms/class-formpanel.php:227
 #: includes/wpforms/class-formpanel.php:225
 msgid "Newsletter form"
 msgstr "Nieuwsbriefformulier"
@@ -407,8 +448,8 @@ msgstr ""
 "van toepassing zijn)."
 
 #: includes/contactform7/class-formpanel.php:242
-#: includes/gravityforms/class-formpanel.php:198
-#: includes/gravityforms/class-formpanel.php:232
+#: includes/gravityforms/class-formpanel.php:199
+#: includes/gravityforms/class-formpanel.php:233
 #: includes/wpforms/class-formpanel.php:245
 msgid "Newsman list"
 msgstr "Newsman-lijst"
@@ -442,76 +483,79 @@ msgstr ""
 #: includes/contactform7/class-formpanel.php:260
 #: includes/elementor/class-atomicformcontrols.php:296
 #: includes/elementor/class-formcontrols.php:147
-#: includes/gravityforms/class-formpanel.php:198
+#: includes/gravityforms/class-formpanel.php:199
 #: includes/wpforms/class-formpanel.php:248
 msgid ""
 "Do not pick the same list as the one configured in Newsman - Sync unless you "
 "intend submissions to land in your global newsletter list. To send to that "
 "list, turn on \"Newsletter form\" instead."
 msgstr ""
-"Kies niet dezelfde lijst als die geconfigureerd is in Newsman - Sync tenzij"
-"u wilt dat inzendingen in uw globale nieuwsbrieflijst terechtkomen. Schakel"
-"in plaats daarvan \"Newsletter form\" in om naar die lijst te verzenden."
+"Kies niet dezelfde lijst als die geconfigureerd is in Newsman - Sync tenziju "
+"wilt dat inzendingen in uw globale nieuwsbrieflijst terechtkomen. Schakelin "
+"plaats daarvan \"Newsletter form\" in om naar die lijst te verzenden."
 
-#: includes/contactform7/class-formpanel.php:268
-#: includes/gravityforms/class-formpanel.php:199
-#: includes/gravityforms/class-formpanel.php:242
-#: includes/wpforms/class-formpanel.php:268
+#: includes/contactform7/class-formpanel.php:276
+#: includes/gravityforms/class-formpanel.php:200
+#: includes/gravityforms/class-formpanel.php:243
+#: includes/wpforms/class-formpanel.php:272
 msgid "Newsman segment"
 msgstr "Newsman-segment"
 
-#: includes/contactform7/class-formpanel.php:272
-#: includes/contactform7/class-formpanel.php:349
-#: includes/contactform7/class-formpanel.php:375
-#: includes/contactform7/class-formpanel.php:401
+#: includes/contactform7/class-formpanel.php:280
+#: includes/contactform7/class-formpanel.php:353
+#: includes/contactform7/class-formpanel.php:379
+#: includes/contactform7/class-formpanel.php:405
+#: includes/contactform7/class-formpanel.php:610
 #: includes/elementor/class-atomicformcontrols.php:534
-#: includes/elementor/class-formcontrols.php:160
-#: includes/elementor/class-formcontrols.php:531
-#: includes/gravityforms/class-formpanel.php:180
-#: includes/gravityforms/class-formpanel.php:280
-#: includes/wpforms/class-formpanel.php:254
-#: includes/wpforms/class-formpanel.php:374
+#: includes/elementor/class-formcontrols.php:161
+#: includes/elementor/class-formcontrols.php:527
+#: includes/gravityforms/class-formpanel.php:183
+#: includes/gravityforms/class-formpanel.php:281
+#: includes/gravityforms/class-formpanel.php:382
+#: includes/wpforms/class-formpanel.php:259
+#: includes/wpforms/class-formpanel.php:281
+#: includes/wpforms/class-formpanel.php:384
 msgid "— none —"
 msgstr "— geen —"
 
-#: includes/contactform7/class-formpanel.php:284
+#: includes/contactform7/class-formpanel.php:288
 msgid ""
 "Optional. Segments are list-scoped — only segments belonging to the selected "
-"list above are kept. Changing the list resets the segment."
+"list above are shown. Changing the list refreshes this dropdown."
 msgstr ""
 "Optioneel. Segmenten zijn lijst-specifiek — alleen segmenten die bij de "
-"hierboven geselecteerde lijst horen, worden bewaard. Het wijzigen van de "
-"lijst reset het segment."
+"bovenstaande geselecteerde lijst horen worden getoond. Het wisselen van "
+"lijst ververst deze dropdown."
 
-#: includes/contactform7/class-formpanel.php:298
+#: includes/contactform7/class-formpanel.php:302
 #: includes/elementor/class-atomicformcontrols.php:332
-#: includes/elementor/class-formcontrols.php:208
-#: includes/gravityforms/class-formpanel.php:200
-#: includes/gravityforms/class-formpanel.php:252
-#: includes/wpforms/class-formpanel.php:323
+#: includes/elementor/class-formcontrols.php:204
+#: includes/gravityforms/class-formpanel.php:201
+#: includes/gravityforms/class-formpanel.php:253
+#: includes/wpforms/class-formpanel.php:333
 msgid "Opt-in mode"
 msgstr "Opt-in-modus"
 
-#: includes/contactform7/class-formpanel.php:303
+#: includes/contactform7/class-formpanel.php:307
 #: includes/elementor/class-atomicformcontrols.php:323
-#: includes/elementor/class-formcontrols.php:211
-#: includes/gravityforms/class-formpanel.php:255
-#: includes/wpforms/class-formpanel.php:326
+#: includes/elementor/class-formcontrols.php:207
+#: includes/gravityforms/class-formpanel.php:256
+#: includes/wpforms/class-formpanel.php:336
 msgid "Single opt-in"
 msgstr "Enkele opt-in"
 
-#: includes/contactform7/class-formpanel.php:306
+#: includes/contactform7/class-formpanel.php:310
 #: includes/elementor/class-atomicformcontrols.php:327
-#: includes/elementor/class-formcontrols.php:212
-#: includes/gravityforms/class-formpanel.php:256
-#: includes/wpforms/class-formpanel.php:327
+#: includes/elementor/class-formcontrols.php:208
+#: includes/gravityforms/class-formpanel.php:257
+#: includes/wpforms/class-formpanel.php:337
 msgid "Double opt-in"
 msgstr "Dubbele opt-in"
 
-#: includes/contactform7/class-formpanel.php:310
-#: includes/elementor/class-formcontrols.php:219
-#: includes/gravityforms/class-formpanel.php:200
-#: includes/wpforms/class-formpanel.php:330
+#: includes/contactform7/class-formpanel.php:314
+#: includes/elementor/class-formcontrols.php:215
+#: includes/gravityforms/class-formpanel.php:201
+#: includes/wpforms/class-formpanel.php:340
 msgid ""
 "Single opt-in subscribes the user immediately. Double opt-in sends a "
 "confirmation email; the subscription is only completed once the user clicks "
@@ -521,23 +565,23 @@ msgstr ""
 "stuurt een bevestigingsmail; de inschrijving is pas voltooid als de "
 "gebruiker op de link klikt."
 
-#: includes/contactform7/class-formpanel.php:316
-#: includes/gravityforms/class-formpanel.php:201
-#: includes/gravityforms/class-formpanel.php:302
-#: includes/wpforms/class-formpanel.php:366
+#: includes/contactform7/class-formpanel.php:320
+#: includes/gravityforms/class-formpanel.php:202
+#: includes/gravityforms/class-formpanel.php:303
+#: includes/wpforms/class-formpanel.php:376
 msgid "Email field"
 msgstr "E-mailveld"
 
-#: includes/contactform7/class-formpanel.php:321
-#: includes/contactform7/class-formpanel.php:344
-#: includes/contactform7/class-formpanel.php:370
-#: includes/contactform7/class-formpanel.php:396
+#: includes/contactform7/class-formpanel.php:325
+#: includes/contactform7/class-formpanel.php:348
+#: includes/contactform7/class-formpanel.php:374
+#: includes/contactform7/class-formpanel.php:400
 msgid "Add a field to the form template to enable Newsman."
 msgstr ""
 "Voeg een veld toe aan het formuliersjabloon om Newsman in te schakelen."
 
-#: includes/contactform7/class-formpanel.php:332
-#: includes/wpforms/class-formpanel.php:369
+#: includes/contactform7/class-formpanel.php:336
+#: includes/wpforms/class-formpanel.php:379
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used "
 "(text, tel, url, email, …)."
@@ -545,15 +589,15 @@ msgstr ""
 "Het geselecteerde veld levert het e-mailadres van de abonnee. Elk veldtype "
 "kan worden gebruikt (text, tel, url, email, …)."
 
-#: includes/contactform7/class-formpanel.php:339
-#: includes/gravityforms/class-formpanel.php:202
-#: includes/gravityforms/class-formpanel.php:312
-#: includes/wpforms/class-formpanel.php:384
+#: includes/contactform7/class-formpanel.php:343
+#: includes/gravityforms/class-formpanel.php:203
+#: includes/gravityforms/class-formpanel.php:313
+#: includes/wpforms/class-formpanel.php:394
 msgid "Firstname field"
 msgstr "Voornaam-veld"
 
-#: includes/contactform7/class-formpanel.php:358
-#: includes/wpforms/class-formpanel.php:387
+#: includes/contactform7/class-formpanel.php:362
+#: includes/wpforms/class-formpanel.php:397
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's firstname "
 "instead of being included in the subscriber properties."
@@ -561,15 +605,15 @@ msgstr ""
 "Optioneel. Indien ingesteld, wordt de veldwaarde verstuurd als de voornaam "
 "van de abonnee in plaats van opgenomen te worden in de abonnee-eigenschappen."
 
-#: includes/contactform7/class-formpanel.php:365
-#: includes/gravityforms/class-formpanel.php:203
-#: includes/gravityforms/class-formpanel.php:322
-#: includes/wpforms/class-formpanel.php:396
+#: includes/contactform7/class-formpanel.php:369
+#: includes/gravityforms/class-formpanel.php:204
+#: includes/gravityforms/class-formpanel.php:323
+#: includes/wpforms/class-formpanel.php:406
 msgid "Lastname field"
 msgstr "Achternaam-veld"
 
-#: includes/contactform7/class-formpanel.php:384
-#: includes/wpforms/class-formpanel.php:399
+#: includes/contactform7/class-formpanel.php:388
+#: includes/wpforms/class-formpanel.php:409
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's lastname "
 "instead of being included in the subscriber properties."
@@ -577,15 +621,15 @@ msgstr ""
 "Optioneel. Indien ingesteld, wordt de veldwaarde verstuurd als de achternaam "
 "van de abonnee in plaats van opgenomen te worden in de abonnee-eigenschappen."
 
-#: includes/contactform7/class-formpanel.php:391
-#: includes/gravityforms/class-formpanel.php:204
-#: includes/gravityforms/class-formpanel.php:332
-#: includes/wpforms/class-formpanel.php:408
+#: includes/contactform7/class-formpanel.php:395
+#: includes/gravityforms/class-formpanel.php:205
+#: includes/gravityforms/class-formpanel.php:333
+#: includes/wpforms/class-formpanel.php:418
 msgid "Phone field"
 msgstr "Telefoonveld"
 
-#: includes/contactform7/class-formpanel.php:410
-#: includes/wpforms/class-formpanel.php:411
+#: includes/contactform7/class-formpanel.php:414
+#: includes/wpforms/class-formpanel.php:421
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's phone under "
 "the `phone` property key."
@@ -593,42 +637,42 @@ msgstr ""
 "Optioneel. Indien ingesteld, wordt de veldwaarde verzonden als "
 "telefoonnummer van de abonnee onder de eigenschapssleutel `phone`."
 
-#: includes/contactform7/class-formpanel.php:417
-#: includes/gravityforms/class-formpanel.php:205
-#: includes/gravityforms/class-formpanel.php:348
-#: includes/wpforms/class-formpanel.php:428
+#: includes/contactform7/class-formpanel.php:421
+#: includes/gravityforms/class-formpanel.php:206
+#: includes/gravityforms/class-formpanel.php:349
+#: includes/wpforms/class-formpanel.php:438
 msgid "Send as properties"
 msgstr "Verzenden als eigenschappen"
 
-#: includes/contactform7/class-formpanel.php:422
+#: includes/contactform7/class-formpanel.php:426
 msgid "Add a field to the form template first."
 msgstr "Voeg eerst een veld toe aan het formuliersjabloon."
 
-#: includes/contactform7/class-formpanel.php:427
+#: includes/contactform7/class-formpanel.php:431
 msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Verzend deze velden naar Newsman als abonnee-eigenschappen"
 
-#: includes/contactform7/class-formpanel.php:452
-#: includes/wpforms/class-formpanel.php:453
+#: includes/contactform7/class-formpanel.php:456
+#: includes/wpforms/class-formpanel.php:463
 msgid "used as email"
 msgstr "gebruikt als e-mail"
 
-#: includes/contactform7/class-formpanel.php:454
-#: includes/wpforms/class-formpanel.php:455
+#: includes/contactform7/class-formpanel.php:458
+#: includes/wpforms/class-formpanel.php:465
 msgid "used as firstname"
 msgstr "gebruikt als voornaam"
 
-#: includes/contactform7/class-formpanel.php:456
-#: includes/wpforms/class-formpanel.php:457
+#: includes/contactform7/class-formpanel.php:460
+#: includes/wpforms/class-formpanel.php:467
 msgid "used as lastname"
 msgstr "gebruikt als achternaam"
 
-#: includes/contactform7/class-formpanel.php:458
-#: includes/wpforms/class-formpanel.php:459
+#: includes/contactform7/class-formpanel.php:462
+#: includes/wpforms/class-formpanel.php:469
 msgid "used as phone"
 msgstr "gebruikt als telefoon"
 
-#: includes/contactform7/class-formpanel.php:465
+#: includes/contactform7/class-formpanel.php:469
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
@@ -673,7 +717,7 @@ msgid "Newsman List"
 msgstr "Newsman-lijst"
 
 #: includes/elementor/class-atomicformcontrols.php:296
-#: includes/gravityforms/class-formpanel.php:198
+#: includes/gravityforms/class-formpanel.php:199
 msgid ""
 "List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
 "(the Sync section list is used instead)."
@@ -683,7 +727,7 @@ msgstr ""
 "gebruikt)."
 
 #: includes/elementor/class-atomicformcontrols.php:309
-#: includes/elementor/class-formcontrols.php:170
+#: includes/elementor/class-formcontrols.php:166
 msgid "Newsman Segment"
 msgstr "Newsman-segment"
 
@@ -698,22 +742,22 @@ msgstr ""
 "opgeslagen lijst hoort, wordt het bij verzending genegeerd."
 
 #: includes/elementor/class-atomicformcontrols.php:407
-#: includes/elementor/class-formcontrols.php:310
+#: includes/elementor/class-formcontrols.php:306
 msgid "Use as Newsman email"
 msgstr "Gebruiken als Newsman-e-mail"
 
 #: includes/elementor/class-atomicformcontrols.php:419
-#: includes/elementor/class-formcontrols.php:345
+#: includes/elementor/class-formcontrols.php:341
 msgid "Use as Newsman firstname"
 msgstr "Gebruik als Newsman-voornaam"
 
 #: includes/elementor/class-atomicformcontrols.php:431
-#: includes/elementor/class-formcontrols.php:380
+#: includes/elementor/class-formcontrols.php:376
 msgid "Use as Newsman lastname"
 msgstr "Gebruik als Newsman-achternaam"
 
 #: includes/elementor/class-atomicformcontrols.php:443
-#: includes/elementor/class-formcontrols.php:415
+#: includes/elementor/class-formcontrols.php:411
 msgid "Use as Newsman phone"
 msgstr "Gebruiken als Newsman-telefoon"
 
@@ -746,13 +790,13 @@ msgstr "Newsman: het e-mailveld van het atomic-formulier is leeg."
 
 #: includes/elementor/class-formcontrols.php:83
 #: includes/elementor/class-formcontrols.php:106
-#: includes/elementor/class-formcontrols.php:286
+#: includes/elementor/class-formcontrols.php:282
 msgid "On"
 msgstr "Aan"
 
 #: includes/elementor/class-formcontrols.php:84
 #: includes/elementor/class-formcontrols.php:107
-#: includes/elementor/class-formcontrols.php:287
+#: includes/elementor/class-formcontrols.php:283
 msgid "Off"
 msgstr "Uit"
 
@@ -785,7 +829,7 @@ msgstr ""
 "„Nieuwsbriefformulier” aan staat (de lijst uit de Sync-sectie wordt "
 "gebruikt)."
 
-#: includes/elementor/class-formcontrols.php:191
+#: includes/elementor/class-formcontrols.php:187
 msgid ""
 "Optional. Only segments belonging to the list selected above are shown. "
 "Changing the list clears any segment that no longer matches."
@@ -794,7 +838,7 @@ msgstr ""
 "worden getoond. Het wijzigen van de lijst wist elk segment dat niet meer "
 "overeenkomt."
 
-#: includes/elementor/class-formcontrols.php:290
+#: includes/elementor/class-formcontrols.php:286
 msgid ""
 "Push this field's value as a subscriber property to Newsman (using the "
 "field's ID as the property key)."
@@ -802,28 +846,28 @@ msgstr ""
 "Stuurt de waarde van dit veld als abonnee-eigenschap naar Newsman (de ID van "
 "het veld wordt gebruikt als eigenschapsleutel)."
 
-#: includes/elementor/class-formcontrols.php:312
-#: includes/elementor/class-formcontrols.php:347
-#: includes/elementor/class-formcontrols.php:382
-#: includes/elementor/class-formcontrols.php:417
+#: includes/elementor/class-formcontrols.php:308
+#: includes/elementor/class-formcontrols.php:343
+#: includes/elementor/class-formcontrols.php:378
+#: includes/elementor/class-formcontrols.php:413
 msgid "Yes"
 msgstr "Ja"
 
-#: includes/elementor/class-formcontrols.php:313
-#: includes/elementor/class-formcontrols.php:348
-#: includes/elementor/class-formcontrols.php:383
-#: includes/elementor/class-formcontrols.php:418
+#: includes/elementor/class-formcontrols.php:309
+#: includes/elementor/class-formcontrols.php:344
+#: includes/elementor/class-formcontrols.php:379
+#: includes/elementor/class-formcontrols.php:414
 msgid "No"
 msgstr "Nee"
 
-#: includes/elementor/class-formcontrols.php:316
+#: includes/elementor/class-formcontrols.php:312
 msgid ""
 "Mark this field as the email used to subscribe the user to the Newsman list."
 msgstr ""
 "Markeer dit veld als het e-mailadres dat wordt gebruikt om de gebruiker op "
 "de Newsman-lijst te abonneren."
 
-#: includes/elementor/class-formcontrols.php:351
+#: includes/elementor/class-formcontrols.php:347
 msgid ""
 "Mark this field as the subscriber's firstname. The value is sent via context "
 "instead of being included in the subscriber properties."
@@ -832,7 +876,7 @@ msgstr ""
 "context verstuurd in plaats van opgenomen te worden in de abonnee-"
 "eigenschappen."
 
-#: includes/elementor/class-formcontrols.php:386
+#: includes/elementor/class-formcontrols.php:382
 msgid ""
 "Mark this field as the subscriber's lastname. The value is sent via context "
 "instead of being included in the subscriber properties."
@@ -841,7 +885,7 @@ msgstr ""
 "context verstuurd in plaats van opgenomen te worden in de abonnee-"
 "eigenschappen."
 
-#: includes/elementor/class-formcontrols.php:421
+#: includes/elementor/class-formcontrols.php:417
 msgid ""
 "Mark this field as the subscriber's phone. The value is pushed to Newsman "
 "under the `phone` property key."
@@ -1140,16 +1184,16 @@ msgstr "Formulier niet gevonden."
 msgid "Newsman settings saved."
 msgstr "Newsman-instellingen opgeslagen."
 
-#: includes/gravityforms/class-formpanel.php:197
+#: includes/gravityforms/class-formpanel.php:198
 msgid ""
 "When on, submissions go to the list and segment configured in Newsman - Sync "
 "(the per-form list and segment below are stored but ignored)."
 msgstr ""
 "Wanneer ingeschakeld, gaan inzendingen naar de lijst en het segment "
-"geconfigureerd in Newsman - Sync (de per-formulier waarden hieronder worden"
-"opgeslagen maar genegeerd)."
+"geconfigureerd in Newsman - Sync (de per-formulier waarden hieronder "
+"wordenopgeslagen maar genegeerd)."
 
-#: includes/gravityforms/class-formpanel.php:199
+#: includes/gravityforms/class-formpanel.php:200
 msgid ""
 "Optional. Segments are list-scoped — only segments that belong to the "
 "selected list are kept. If they do not match, the segment is dropped at "
@@ -1159,14 +1203,14 @@ msgstr ""
 "geselecteerde lijst horen worden behouden. Als ze niet overeenkomen, wordt "
 "het segment bij indienen verwijderd."
 
-#: includes/gravityforms/class-formpanel.php:201
+#: includes/gravityforms/class-formpanel.php:202
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used."
 msgstr ""
 "Het geselecteerde veld levert het abonnee-e-mailadres. Elk veldtype kan "
 "worden gebruikt."
 
-#: includes/gravityforms/class-formpanel.php:202
+#: includes/gravityforms/class-formpanel.php:203
 msgid ""
 "Optional. For Name fields, pick the sub-input corresponding to the First "
 "Name (e.g. 1.3)."
@@ -1174,7 +1218,7 @@ msgstr ""
 "Optioneel. Voor Naam-velden, kies de sub-invoer die overeenkomt met de "
 "Voornaam (bv. 1.3)."
 
-#: includes/gravityforms/class-formpanel.php:203
+#: includes/gravityforms/class-formpanel.php:204
 msgid ""
 "Optional. For Name fields, pick the sub-input corresponding to the Last Name "
 "(e.g. 1.6)."
@@ -1182,7 +1226,7 @@ msgstr ""
 "Optioneel. Voor Naam-velden, kies de sub-invoer die overeenkomt met de "
 "Achternaam (bv. 1.6)."
 
-#: includes/gravityforms/class-formpanel.php:204
+#: includes/gravityforms/class-formpanel.php:205
 msgid ""
 "Optional. When set, the field value is sent as the subscriber phone under "
 "the `phone` property key."
@@ -1190,34 +1234,34 @@ msgstr ""
 "Optioneel. Wanneer ingesteld, wordt de veldwaarde verzonden als het "
 "telefoonnummer van de abonnee onder de eigenschapsleutel `phone`."
 
-#: includes/gravityforms/class-formpanel.php:205
+#: includes/gravityforms/class-formpanel.php:206
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label sanitized to lowercase snake_case (or by the field id when no "
 "label is set)."
 msgstr ""
-"Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap, "
-"met als sleutel het veldlabel genormaliseerd naar snake_case (of het "
-"veld-id wanneer geen label is ingesteld)."
+"Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap, met "
+"als sleutel het veldlabel genormaliseerd naar snake_case (of het veld-id "
+"wanneer geen label is ingesteld)."
 
-#: includes/gravityforms/class-formpanel.php:268
-#: includes/gravityforms/class-formpanel.php:296
+#: includes/gravityforms/class-formpanel.php:269
+#: includes/gravityforms/class-formpanel.php:297
 msgid "Field mapping"
 msgstr "Veldtoewijzing"
 
-#: includes/gravityforms/class-formpanel.php:271
-#: includes/wpforms/class-formpanel.php:336
+#: includes/gravityforms/class-formpanel.php:272
+#: includes/wpforms/class-formpanel.php:346
 msgid "Add a field to the form to enable Newsman."
 msgstr "Voeg een veld toe aan het formulier om Newsman in te schakelen."
 
-#: includes/gravityforms/class-formpanel.php:374
+#: includes/gravityforms/class-formpanel.php:375
 msgid "Update Settings"
 msgstr "Instellingen bijwerken"
 
 #. translators: %s: Gravity Forms field id.
 #. translators: %s: WPForms field id.
-#: includes/gravityforms/class-formpanel.php:548
-#: includes/wpforms/class-formpanel.php:586
+#: includes/gravityforms/class-formpanel.php:605
+#: includes/wpforms/class-formpanel.php:596
 #, php-format
 msgid "Field #%s"
 msgstr "Veld #%s"
@@ -1227,9 +1271,8 @@ msgid ""
 "Newsman: Gravity Forms form is marked as newsletter form but no list is "
 "configured in Newsman - Sync."
 msgstr ""
-"Newsman: het Gravity Forms-formulier is gemarkeerd als "
-"nieuwsbriefformulier, maar er is geen lijst geconfigureerd in Newsman - "
-"Sync."
+"Newsman: het Gravity Forms-formulier is gemarkeerd als nieuwsbriefformulier, "
+"maar er is geen lijst geconfigureerd in Newsman - Sync."
 
 #: includes/gravityforms/class-formprocessor.php:83
 msgid "Newsman: Gravity Forms form is enabled but no list is selected."
@@ -1239,7 +1282,8 @@ msgstr ""
 
 #: includes/gravityforms/class-formprocessor.php:93
 msgid "Newsman: Gravity Forms form has no email field configured."
-msgstr "Newsman: het Gravity Forms-formulier heeft geen e-mailveld geconfigureerd."
+msgstr ""
+"Newsman: het Gravity Forms-formulier heeft geen e-mailveld geconfigureerd."
 
 #: includes/gravityforms/class-formprocessor.php:110
 msgid "Newsman: Gravity Forms email field is empty."
@@ -1498,17 +1542,16 @@ msgstr ""
 "geconfigureerd in Newsman - Sync (de per-formulier lijst en segment "
 "hieronder zijn verborgen omdat ze niet meer van toepassing zijn)."
 
-#: includes/wpforms/class-formpanel.php:271
+#: includes/wpforms/class-formpanel.php:275
 msgid ""
-"Optional. Segments are list-scoped — only segments that belong to the "
-"selected list are kept. If they don't match, the segment is dropped at "
-"submit time."
+"Optional. Segments are list-scoped — only segments belonging to the selected "
+"list are shown. Switching the list refreshes this dropdown."
 msgstr ""
 "Optioneel. Segmenten zijn lijst-specifiek — alleen segmenten die bij de "
-"geselecteerde lijst horen, worden bewaard. Als ze niet overeenkomen, wordt "
-"het segment bij verzending genegeerd."
+"geselecteerde lijst horen worden getoond. Het wisselen van lijst ververst "
+"deze dropdown."
 
-#: includes/wpforms/class-formpanel.php:465
+#: includes/wpforms/class-formpanel.php:475
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
@@ -2111,10 +2154,10 @@ msgid ""
 "Forms."
 msgstr ""
 "Wanneer ingeschakeld, verschijnt een \"Newsman\"-subpagina onder het Form "
-"Settings-menu van elk formulier (per-formulier lijst, segment, e-mailveld "
-"en eigenschappen), en inzendingen sturen de e-mail plus gemarkeerde "
-"veldwaarden naar de geselecteerde Newsman-lijst. Schakel uit om de "
-"subpagina te verwijderen en het doorsturen voor Gravity Forms te stoppen."
+"Settings-menu van elk formulier (per-formulier lijst, segment, e-mailveld en "
+"eigenschappen), en inzendingen sturen de e-mail plus gemarkeerde veldwaarden "
+"naar de geselecteerde Newsman-lijst. Schakel uit om de subpagina te "
+"verwijderen en het doorsturen voor Gravity Forms te stoppen."
 
 #: src/backend-settings.php:531
 msgid ""
@@ -2123,8 +2166,8 @@ msgid ""
 "users / WooCommerce orders."
 msgstr ""
 "Wanneer ingeschakeld, haalt het Newsman subscriber.list API v1-eindpunt "
-"abonnees op uit Gravity Forms-inzendingen van het geselecteerde formulier "
-"in plaats van uit WordPress-gebruikers / WooCommerce-bestellingen."
+"abonnees op uit Gravity Forms-inzendingen van het geselecteerde formulier in "
+"plaats van uit WordPress-gebruikers / WooCommerce-bestellingen."
 
 #: src/backend-settings.php:548
 msgid ""
@@ -2142,8 +2185,8 @@ msgid ""
 "Only one form per store is supported. Gravity Forms persists every "
 "submission of the selected form to wp_gf_entry / wp_gf_entry_meta."
 msgstr ""
-"Slechts één formulier per winkel wordt ondersteund. Gravity Forms bewaart"
-"elke inzending van het geselecteerde formulier in wp_gf_entry / "
+"Slechts één formulier per winkel wordt ondersteund. Gravity Forms "
+"bewaartelke inzending van het geselecteerde formulier in wp_gf_entry / "
 "wp_gf_entry_meta."
 
 #: src/backend-settings.php:560
@@ -2417,6 +2460,25 @@ msgstr "Selecteer een SMS-lijst"
 msgid "Select a list of SMS to be synced with phone numbers"
 msgstr "Selecteer een SMS-lijst om te synchroniseren met telefoonnummers"
 
+#: src/backend-sync.php:121
+msgid "Refresh lists & segments cache"
+msgstr "Cache van lijsten & segmenten vernieuwen"
+
+#: src/backend-sync.php:122
+msgid ""
+"Force-refreshes the Newsman lists, segments and SMS lists cache used by this "
+"page and by the form integrations (Elementor, CF7, WPForms, Gravity Forms). "
+"On a Multisite install this iterates every site that has Newsman credentials "
+"configured. Cache lifetime is 15 minutes; this button is only useful when "
+"you need to see Newsman-side changes immediately."
+msgstr ""
+"Forceert een vernieuwing van de Newsman-cache voor lijsten, segmenten en SMS-"
+"lijsten die door deze pagina en de formulierintegraties (Elementor, CF7, "
+"WPForms, Gravity Forms) wordt gebruikt. Op een Multisite-installatie "
+"doorloopt dit elke site met geconfigureerde Newsman-inloggegevens. De cache-"
+"levensduur is 15 minuten; deze knop is alleen nuttig wanneer u Newsman-zijde "
+"wijzigingen onmiddellijk moet zien."
+
 #: src/backend.php:37
 msgid "NewsMAN Info"
 msgstr "NewsMAN-info"
@@ -2510,6 +2572,55 @@ msgstr "Configuratiehandleiding (Engels)"
 #: src/backend.php:126
 msgid "Ghid de configurare (Romana)"
 msgstr "Configuratiehandleiding (Roemeens)"
+
+#~ msgid ""
+#~ "Optional. Segments are list-scoped — only segments belonging to the "
+#~ "selected list above are kept. Changing the list resets the segment."
+#~ msgstr ""
+#~ "Optioneel. Segmenten zijn lijst-specifiek — alleen segmenten die bij de "
+#~ "hierboven geselecteerde lijst horen, worden bewaard. Het wijzigen van de "
+#~ "lijst reset het segment."
+
+#~ msgid ""
+#~ "Optional. Segments are list-scoped — only segments that belong to the "
+#~ "selected list are kept. If they don't match, the segment is dropped at "
+#~ "submit time."
+#~ msgstr ""
+#~ "Optioneel. Segmenten zijn lijst-specifiek — alleen segmenten die bij de "
+#~ "geselecteerde lijst horen, worden bewaard. Als ze niet overeenkomen, "
+#~ "wordt het segment bij verzending genegeerd."
+
+#, php-format
+#~ msgid ""
+#~ "Newsman lists and segments cache refreshed: %1$d blog(s), %2$d list(s), "
+#~ "%3$d segment(s)."
+#~ msgstr ""
+#~ "Cache van Newsman-lijsten en -segmenten vernieuwd: %1$d blog(s), %2$d "
+#~ "lijst(en), %3$d segment(en)."
+
+#, php-format
+#~ msgid ""
+#~ "Cache refresh completed with errors. Refreshed %1$d blog(s), %2$d "
+#~ "list(s), %3$d segment(s). Existing cached values for the failing API "
+#~ "calls are kept until they expire. Errors: %4$s"
+#~ msgstr ""
+#~ "Cache-vernieuwing voltooid met fouten. Vernieuwd: %1$d blog(s), %2$d "
+#~ "lijst(en), %3$d segment(en). Bestaande gecachte waarden voor mislukte API-"
+#~ "aanroepen blijven behouden tot ze verlopen. Fouten: %4$s"
+
+#~ msgid ""
+#~ "Force-refreshes the Newsman lists and segments cache used by the form "
+#~ "integrations (Elementor, CF7, WPForms, Gravity Forms). On a Multisite "
+#~ "install this iterates every site that has Newsman credentials configured. "
+#~ "Cache lifetime is 15 minutes; this button is only useful when you need to "
+#~ "see Newsman-side changes immediately."
+#~ msgstr ""
+#~ "Forceert een vernieuwing van de Newsman-cache voor lijsten en segmenten "
+#~ "diedoor de formulierintegraties (Elementor, CF7, WPForms, Gravity Forms) "
+#~ "wordtgebruikt. Op een Multisite-installatie doorloopt dit elke site met "
+#~ "geconfigureerde Newsman-inloggegevens. De cache-levensduur is 15 minuten; "
+#~ "deze knop is alleen nuttig wanneer u Newsman-zijde wijzigingen "
+#~ "onmiddellijkmoet zien."
 
 #, php-format
 #~ msgid ""

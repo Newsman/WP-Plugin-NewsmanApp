@@ -160,6 +160,32 @@ Accesati **NewsMAN > Sync** pentru a alege unde sunt trimisi abonatii dvs. in Ne
 
 - **Select an SMS list** - Alegeti lista SMS Newsman pentru sincronizarea numerelor de telefon.
 
+### Refresh lists & segments cache
+
+Langa butonul **Save Changes** de pe aceasta pagina exista un al doilea buton: **Refresh lists & segments cache**.
+
+Integrarile de formulare (Elementor, Contact Form 7, WPForms, Gravity Forms) si pagina Sync memoreaza in cache datele din dropdown-urile din contul dvs. Newsman astfel incat deschiderea unei pagini admin sa nu apeleze API-ul Newsman de fiecare data. Cache-ul foloseste tranziente WordPress si se completeaza automat prima data cand un administrator viziteaza o pagina Newsman care are nevoie de aceste date. Sunt folosite trei tranziente separate:
+
+- **Liste** — per-blog, indexate dupa User ID Newsman. **TTL 1 ora.**
+- **Segmente** — per-blog, indexate dupa List ID Newsman. **TTL 6 ore** (mai lung deoarece endpoint-ul `segment.all` Newsman este limitat la 10 apeluri pe minut, iar segmentele se schimba rar).
+- **Liste SMS** — per-blog, indexate dupa User ID Newsman. **TTL 1 ora.**
+
+Fiecare tranzient scrie si o copie persistenta de rezerva (un `wp_option` obisnuit, fara TTL). La un cache miss in care si apelul API live esueaza (rate limit, eroare de retea, credentiale expirate), apelantii servesc ultima valoare cunoscuta-buna din rezerva in loc de un dropdown gol. Rezerva este suprascrisa silentios la fiecare reactualizare reusita, deci reflecta mereu ultimul raspuns reusit.
+
+Cautarea segmentelor in panourile editoarelor de formulare (Elementor, CF7, WPForms, Gravity Forms) este **lazy** — deschiderea unui editor de formular incarca doar segmentele listei salvate in formular. Schimbarea dropdown-ului de lista declanseaza un apel admin-AJAX (`wp_ajax_newsman_load_segments`) pentru a aduce segmentele noii liste. Asta inseamna ca o deschidere de editor face cel mult un apel API `segment.all`, indiferent cate liste aveti, ceea ce mentine apelurile cu mult sub rate limit-ul Newsman in navigarea normala.
+
+Apasand **Refresh lists & segments cache**:
+
+- Pe o instalare WordPress simpla, reactualizeaza listele, segmentele si listele SMS pentru User ID-ul Newsman al site-ului curent.
+- Pe o instalare WP Multisite (retea), itereaza toate site-urile din retea care au credentiale Newsman (User ID + API key) configurate si reactualizeaza toate cele trei cache-uri pentru fiecare.
+- Foloseste aceeasi cheie API Newsman per-blog ca restul plugin-ului — nu exista credentiale partajate la nivel de retea.
+
+Cand sa apasati: doar atunci cand ati facut modificari in contul dvs. Newsman (ati adaugat/sters liste sau segmente) si doriti ca acestea sa apara imediat in dropdown-urile editoarelor de formulare, in loc sa asteptati pana la 1 ora (liste) sau 6 ore (segmente) pentru expirarea naturala a cache-ului.
+
+Daca un apel API Newsman esueaza in timpul reactualizarii (rate limit, eroare retea, credentiale expirate), valoarea existenta din cache pentru acea lista/blog este **pastrata** — reactualizarea este "best-effort". Pagina se intoarce cu o notificare care listeaza apelurile esuate, iar urmatoarea incarcare a paginii admin foloseste in continuare valorile cache-ului anterior pana cand intrarile esuate pot fi re-aduse. Stratul persistent de rezerva mentionat mai sus inseamna ca nici calea de citire nu returneaza vreodata un dropdown gol din cauza unui hop API tranzitoriu — serveste ultima valoare cunoscuta-buna cu o intrare de log discreta.
+
+Fluxul OAuth (**NewsMAN > Settings - Reconfigure with Newsman OAuth**) ocoleste in intregime cache-ul astfel incat credentiale aflate in tranzit sa nu il poata polua.
+
 ---
 
 ## Pagina Remarketing

@@ -298,7 +298,7 @@ class Settings extends \Newsman\Admin\Settings {
 	 * Scans `_elementor_data` post meta on every post/page to extract every Form / Atomic_Form
 	 * widget whose `newsman_enable` AND `newsman_newsletter_form` are both truthy. Result is
 	 * keyed by the 8-char widget ID — same value that appears in Elementor's submissions grid
-	 * and matches `wp_e_submissions.form_id`. Cached for 5 minutes in a per-blog transient;
+	 * and matches `wp_e_submissions.form_id`. Cached for 15 minutes in a per-blog transient;
 	 * invalidated on Newsman settings save and on every `elementor/document/after_save`
 	 * (see `Newsman\Elementor\Integration::invalidate_form_dropdown_cache`).
 	 *
@@ -359,7 +359,7 @@ class Settings extends \Newsman\Admin\Settings {
 
 		$forms = apply_filters( 'newsman_admin_settings_elementor_newsletter_forms', $forms );
 
-		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+		set_transient( $transient_key, $forms, 15 * MINUTE_IN_SECONDS );
 		return $forms;
 	}
 
@@ -371,7 +371,7 @@ class Settings extends \Newsman\Admin\Settings {
 	 * post_id is also the value of `wp_wpforms_entries.form_id`, which the retriever
 	 * uses to scope its query.
 	 *
-	 * Cached for 5 minutes in a per-blog transient; invalidated on Newsman settings
+	 * Cached for 15 minutes in a per-blog transient; invalidated on Newsman settings
 	 * save and on `wpforms_save_form` (see `Newsman\WPForms\Integration`).
 	 *
 	 * @return array<int,string>
@@ -390,7 +390,7 @@ class Settings extends \Newsman\Admin\Settings {
 		// the post type only registers on `init`, and this dropdown may be built
 		// from contexts where `init` has not yet fired.
 		if ( ! defined( 'WPFORMS_VERSION' ) ) {
-			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+			set_transient( $transient_key, $forms, 15 * MINUTE_IN_SECONDS );
 			return $forms;
 		}
 
@@ -405,7 +405,7 @@ class Settings extends \Newsman\Admin\Settings {
 		);
 
 		if ( empty( $query->posts ) ) {
-			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+			set_transient( $transient_key, $forms, 15 * MINUTE_IN_SECONDS );
 			return $forms;
 		}
 
@@ -445,7 +445,7 @@ class Settings extends \Newsman\Admin\Settings {
 
 		$forms = apply_filters( 'newsman_admin_settings_wpforms_newsletter_forms', $forms );
 
-		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+		set_transient( $transient_key, $forms, 15 * MINUTE_IN_SECONDS );
 		return $forms;
 	}
 
@@ -457,7 +457,7 @@ class Settings extends \Newsman\Admin\Settings {
 	 * `newsman_enable='1'` AND `newsman_newsletter_form='1'`. The form_id matches
 	 * `wp_gf_entry.form_id`, which the retriever uses to scope its query.
 	 *
-	 * Cached for 5 minutes in a per-blog transient; invalidated on Newsman settings
+	 * Cached for 15 minutes in a per-blog transient; invalidated on Newsman settings
 	 * save and on `gform_after_save_form` (see `Newsman\GravityForms\Integration`).
 	 *
 	 * @return array<int,string>
@@ -475,7 +475,7 @@ class Settings extends \Newsman\Admin\Settings {
 		// GFAPI-bootstrap timing trap (GF init runs late, same priority as our
 		// API router).
 		if ( ! defined( 'GF_MIN_WP_VERSION' ) ) {
-			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+			set_transient( $transient_key, $forms, 15 * MINUTE_IN_SECONDS );
 			return $forms;
 		}
 
@@ -519,7 +519,7 @@ class Settings extends \Newsman\Admin\Settings {
 
 		$forms = apply_filters( 'newsman_admin_settings_gravity_forms_newsletter_forms', $forms );
 
-		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+		set_transient( $transient_key, $forms, 15 * MINUTE_IN_SECONDS );
 		return $forms;
 	}
 
