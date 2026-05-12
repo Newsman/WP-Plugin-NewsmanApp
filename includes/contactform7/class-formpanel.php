@@ -12,6 +12,7 @@
 namespace Newsman\ContactForm7;
 
 use Newsman\Subscribe\Lists;
+use Newsman\Subscribe\Segments;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -221,6 +222,23 @@ class FormPanel {
 					</tr>
 					<tr>
 						<th scope="row">
+							<label for="wpcf7-newsman-newsletter-form"><?php esc_html_e( 'Newsletter form', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="checkbox"
+								name="wpcf7-newsman[newsletter_form]"
+								id="wpcf7-newsman-newsletter-form"
+								value="1"
+								<?php checked( ! empty( $prop['newsletter_form'] ) ); ?>
+							/>
+							<span class="description">
+								<?php esc_html_e( 'When enabled, submissions are routed to the Newsman list and segment configured in Newsman - Sync (the per-form Newsman list and Segment rows below are hidden because they no longer apply).', 'newsman' ); ?>
+							</span>
+						</td>
+					</tr>
+					<tr class="newsman-list-row">
+						<th scope="row">
 							<label for="wpcf7-newsman-list-id"><?php esc_html_e( 'Newsman list', 'newsman' ); ?></label>
 						</th>
 						<td>
@@ -237,7 +255,59 @@ class FormPanel {
 										</option>
 									<?php endforeach; ?>
 								</select>
+								<p class="description">
+									<?php esc_html_e( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the configured Sync list is used instead).', 'newsman' ); ?>
+								</p>
 							<?php endif; ?>
+						</td>
+					</tr>
+					<?php $segments_by_list = Segments::get_by_list( get_current_blog_id() ); ?>
+					<tr class="newsman-segment-row">
+						<th scope="row">
+							<label for="wpcf7-newsman-segment-id"><?php esc_html_e( 'Newsman segment', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<select name="wpcf7-newsman[segment_id]" id="wpcf7-newsman-segment-id">
+								<option value="" data-list-id=""><?php esc_html_e( '— none —', 'newsman' ); ?></option>
+								<?php foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) : ?>
+									<?php foreach ( $segments_for_list as $segment_id => $segment_name ) : ?>
+										<option value="<?php echo esc_attr( (string) $segment_id ); ?>"
+												data-list-id="<?php echo esc_attr( (string) $seg_list_id ); ?>"
+												<?php selected( (string) $prop['segment_id'], (string) $segment_id ); ?>>
+											<?php echo esc_html( (string) $segment_name ); ?>
+										</option>
+									<?php endforeach; ?>
+								<?php endforeach; ?>
+							</select>
+							<p class="description">
+								<?php esc_html_e( 'Optional. Segments are list-scoped — only segments belonging to the selected list above are kept. Changing the list resets the segment.', 'newsman' ); ?>
+							</p>
+						</td>
+					</tr>
+					<?php
+					// CF7's WPCF7_HTMLFormatter kses-filters the panel callback output and
+					// strips any inline <script> tags. Defer the script print to admin_footer,
+					// which fires after the formatter has emitted the panel HTML.
+					if ( ! has_action( 'admin_footer', array( __CLASS__, 'print_panel_script' ) ) ) {
+						add_action( 'admin_footer', array( __CLASS__, 'print_panel_script' ) );
+					}
+					?>
+					<tr>
+						<th scope="row">
+							<label for="wpcf7-newsman-optin-mode"><?php esc_html_e( 'Opt-in mode', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<select name="wpcf7-newsman[optin_mode]" id="wpcf7-newsman-optin-mode">
+								<option value="single" <?php selected( (string) $prop['optin_mode'], 'single' ); ?>>
+									<?php esc_html_e( 'Single opt-in', 'newsman' ); ?>
+								</option>
+								<option value="double" <?php selected( (string) $prop['optin_mode'], 'double' ); ?>>
+									<?php esc_html_e( 'Double opt-in', 'newsman' ); ?>
+								</option>
+							</select>
+							<p class="description">
+								<?php esc_html_e( 'Single opt-in subscribes the user immediately. Double opt-in sends a confirmation email; the subscription is only completed once the user clicks the link.', 'newsman' ); ?>
+							</p>
 						</td>
 					</tr>
 					<tr>
@@ -265,6 +335,84 @@ class FormPanel {
 					</tr>
 					<tr>
 						<th scope="row">
+							<label for="wpcf7-newsman-firstname-field"><?php esc_html_e( 'Firstname field', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<?php if ( empty( $choices ) ) : ?>
+								<em>
+									<?php esc_html_e( 'Add a field to the form template to enable Newsman.', 'newsman' ); ?>
+								</em>
+							<?php else : ?>
+								<select name="wpcf7-newsman[firstname_field]" id="wpcf7-newsman-firstname-field">
+									<option value="" <?php selected( $prop['firstname_field'], '' ); ?>>
+										<?php esc_html_e( '— none —', 'newsman' ); ?>
+									</option>
+									<?php foreach ( $choices as $choice ) : ?>
+										<option value="<?php echo esc_attr( $choice['name'] ); ?>" <?php selected( $prop['firstname_field'], $choice['name'] ); ?>>
+											<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description">
+									<?php esc_html_e( 'Optional. When set, the field value is sent as the subscriber\'s firstname instead of being included in the subscriber properties.', 'newsman' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="wpcf7-newsman-lastname-field"><?php esc_html_e( 'Lastname field', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<?php if ( empty( $choices ) ) : ?>
+								<em>
+									<?php esc_html_e( 'Add a field to the form template to enable Newsman.', 'newsman' ); ?>
+								</em>
+							<?php else : ?>
+								<select name="wpcf7-newsman[lastname_field]" id="wpcf7-newsman-lastname-field">
+									<option value="" <?php selected( $prop['lastname_field'], '' ); ?>>
+										<?php esc_html_e( '— none —', 'newsman' ); ?>
+									</option>
+									<?php foreach ( $choices as $choice ) : ?>
+										<option value="<?php echo esc_attr( $choice['name'] ); ?>" <?php selected( $prop['lastname_field'], $choice['name'] ); ?>>
+											<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description">
+									<?php esc_html_e( 'Optional. When set, the field value is sent as the subscriber\'s lastname instead of being included in the subscriber properties.', 'newsman' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="wpcf7-newsman-phone-field"><?php esc_html_e( 'Phone field', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<?php if ( empty( $choices ) ) : ?>
+								<em>
+									<?php esc_html_e( 'Add a field to the form template to enable Newsman.', 'newsman' ); ?>
+								</em>
+							<?php else : ?>
+								<select name="wpcf7-newsman[phone_field]" id="wpcf7-newsman-phone-field">
+									<option value="" <?php selected( $prop['phone_field'], '' ); ?>>
+										<?php esc_html_e( '— none —', 'newsman' ); ?>
+									</option>
+									<?php foreach ( $choices as $choice ) : ?>
+										<option value="<?php echo esc_attr( $choice['name'] ); ?>" <?php selected( $prop['phone_field'], $choice['name'] ); ?>>
+											<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description">
+									<?php esc_html_e( 'Optional. When set, the field value is sent as the subscriber\'s phone under the `phone` property key.', 'newsman' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<?php esc_html_e( 'Send as properties', 'newsman' ); ?>
 						</th>
 						<td>
@@ -280,9 +428,13 @@ class FormPanel {
 									<ul style="margin:0;padding:0;list-style:none;">
 										<?php foreach ( $choices as $choice ) : ?>
 											<?php
-											$is_email_field = ( $choice['name'] === $prop['email_field'] );
-											$default_on     = empty( $prop['send_fields'] )
-												? ! $is_email_field
+											$is_email_field     = ( $choice['name'] === $prop['email_field'] );
+											$is_firstname_field = ( '' !== $prop['firstname_field'] && $choice['name'] === $prop['firstname_field'] );
+											$is_lastname_field  = ( '' !== $prop['lastname_field'] && $choice['name'] === $prop['lastname_field'] );
+											$is_phone_field     = ( '' !== $prop['phone_field'] && $choice['name'] === $prop['phone_field'] );
+											$is_reserved        = ( $is_email_field || $is_firstname_field || $is_lastname_field || $is_phone_field );
+											$default_on         = empty( $prop['send_fields'] )
+												? ! $is_reserved
 												: isset( $send_fields_set[ $choice['name'] ] );
 											?>
 											<li>
@@ -292,11 +444,17 @@ class FormPanel {
 														name="wpcf7-newsman[send_fields][]"
 														value="<?php echo esc_attr( $choice['name'] ); ?>"
 														<?php checked( $default_on ); ?>
-														<?php disabled( $is_email_field ); ?>
+														<?php disabled( $is_reserved ); ?>
 													/>
 													<?php echo esc_html( $this->format_choice_label( $choice ) ); ?>
 													<?php if ( $is_email_field ) : ?>
 														<em>(<?php esc_html_e( 'used as email', 'newsman' ); ?>)</em>
+													<?php elseif ( $is_firstname_field ) : ?>
+														<em>(<?php esc_html_e( 'used as firstname', 'newsman' ); ?>)</em>
+													<?php elseif ( $is_lastname_field ) : ?>
+														<em>(<?php esc_html_e( 'used as lastname', 'newsman' ); ?>)</em>
+													<?php elseif ( $is_phone_field ) : ?>
+														<em>(<?php esc_html_e( 'used as phone', 'newsman' ); ?>)</em>
 													<?php endif; ?>
 												</label>
 											</li>
@@ -363,11 +521,30 @@ class FormPanel {
 			? $posted['send_fields']
 			: array();
 
+		$optin_mode = isset( $posted['optin_mode'] ) ? sanitize_text_field( (string) $posted['optin_mode'] ) : 'single';
+		if ( 'double' !== $optin_mode ) {
+			$optin_mode = 'single';
+		}
+
+		$list_id    = isset( $posted['list_id'] ) ? sanitize_text_field( (string) $posted['list_id'] ) : '';
+		$segment_id = isset( $posted['segment_id'] ) ? sanitize_text_field( (string) $posted['segment_id'] ) : '';
+		// Drop a stale segment_id whose list no longer matches (admin switched lists
+		// in the editor without re-picking a segment, or the segment was removed).
+		if ( '' !== $segment_id && ! Segments::belongs_to_list( get_current_blog_id(), $list_id, $segment_id ) ) {
+			$segment_id = '';
+		}
+
 		$prop = array(
-			'enable'      => ! empty( $posted['enable'] ),
-			'list_id'     => isset( $posted['list_id'] ) ? sanitize_text_field( (string) $posted['list_id'] ) : '',
-			'email_field' => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
-			'send_fields' => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
+			'enable'          => ! empty( $posted['enable'] ),
+			'newsletter_form' => ! empty( $posted['newsletter_form'] ),
+			'list_id'         => $list_id,
+			'segment_id'      => $segment_id,
+			'optin_mode'      => $optin_mode,
+			'email_field'     => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
+			'firstname_field' => isset( $posted['firstname_field'] ) ? sanitize_text_field( (string) $posted['firstname_field'] ) : '',
+			'lastname_field'  => isset( $posted['lastname_field'] ) ? sanitize_text_field( (string) $posted['lastname_field'] ) : '',
+			'phone_field'     => isset( $posted['phone_field'] ) ? sanitize_text_field( (string) $posted['phone_field'] ) : '',
+			'send_fields'     => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
 		);
 
 		/**
@@ -412,16 +589,87 @@ class FormPanel {
 	}
 
 	/**
+	 * Print the panel's filtering JS to admin_footer.
+	 *
+	 * CF7's `WPCF7_HTMLFormatter` runs every panel callback's output through a kses-style
+	 * filter that strips `<script>` tags — so inline JS inside `render()` never reaches
+	 * the page. Hooking on `admin_footer` from within `render()` sidesteps the formatter
+	 * entirely and lets the DOM elements created by the panel still be present when this
+	 * runs.
+	 *
+	 * @return void
+	 */
+	public static function print_panel_script() {
+		?>
+		<script>
+		(function () {
+			function init() {
+				var listEl    = document.getElementById('wpcf7-newsman-list-id');
+				var segEl     = document.getElementById('wpcf7-newsman-segment-id');
+				var newsEl    = document.getElementById('wpcf7-newsman-newsletter-form');
+				var listRow   = document.querySelector('.newsman-list-row');
+				var segRow    = document.querySelector('.newsman-segment-row');
+				if ( ! segRow ) { return; }
+
+				function filterSegments() {
+					if ( ! segEl || ! listEl ) { return; }
+					var currentListId = listEl.value;
+					var opts = segEl.querySelectorAll('option');
+					var selectedStillVisible = false;
+					for ( var i = 0; i < opts.length; i++ ) {
+						var o = opts[i];
+						var optListId = o.getAttribute('data-list-id') || '';
+						var visible   = ( '' === optListId ) || ( optListId === currentListId );
+						o.hidden = ! visible;
+						o.disabled = ! visible;
+						if ( visible && o.value === segEl.value ) {
+							selectedStillVisible = true;
+						}
+					}
+					if ( ! selectedStillVisible ) {
+						segEl.value = '';
+					}
+				}
+
+				function toggleNewsletterMode() {
+					if ( ! newsEl ) { return; }
+					var on = newsEl.checked;
+					if ( listRow ) { listRow.style.display = on ? 'none' : ''; }
+					if ( segRow )  { segRow.style.display  = on ? 'none' : ''; }
+				}
+
+				if ( listEl ) { listEl.addEventListener('change', filterSegments); }
+				if ( newsEl ) { newsEl.addEventListener('change', toggleNewsletterMode); }
+				filterSegments();
+				toggleNewsletterMode();
+			}
+			if ( document.readyState === 'loading' ) {
+				document.addEventListener('DOMContentLoaded', init);
+			} else {
+				init();
+			}
+		})();
+		</script>
+		<?php
+	}
+
+	/**
 	 * Default Newsman property shape.
 	 *
 	 * @return array
 	 */
 	public static function defaults() {
 		return array(
-			'enable'      => false,
-			'list_id'     => '',
-			'email_field' => '',
-			'send_fields' => array(),
+			'enable'          => false,
+			'newsletter_form' => false,
+			'list_id'         => '',
+			'segment_id'      => '',
+			'optin_mode'      => 'single',
+			'email_field'     => '',
+			'firstname_field' => '',
+			'lastname_field'  => '',
+			'phone_field'     => '',
+			'send_fields'     => array(),
 		);
 	}
 

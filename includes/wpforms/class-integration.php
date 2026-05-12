@@ -90,5 +90,22 @@ class Integration {
 			10,
 			4
 		);
+
+		// Invalidate the Settings page form-dropdown cache whenever a WPForms form is
+		// saved in the builder. Without this, freshly-flagged newsletter forms only
+		// appear after the 5-minute transient expires or after Newsman settings save.
+		add_action( 'wpforms_save_form', array( $this, 'invalidate_form_dropdown_cache' ) );
+	}
+
+	/**
+	 * Delete the cached newsletter-forms list for the current blog.
+	 *
+	 * Bound to `wpforms_save_form` so the Settings page rescans
+	 * the `wpforms` post-type JSON on the next render.
+	 *
+	 * @return void
+	 */
+	public function invalidate_form_dropdown_cache() {
+		delete_transient( 'newsman_wpforms_newsletter_forms_' . get_current_blog_id() );
 	}
 }

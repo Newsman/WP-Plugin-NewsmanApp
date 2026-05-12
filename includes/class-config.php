@@ -248,7 +248,7 @@ class Config {
 	 * @return bool
 	 */
 	public function use_elementor( $blog_id = null ) {
-		$value = $this->get_blog_option( $blog_id, 'newsman_developer_use_elementor', 'on' );
+		$value = $this->get_blog_option( $blog_id, 'newsman_elementor_active', 'on' );
 		return 'on' === $value;
 	}
 
@@ -262,7 +262,7 @@ class Config {
 	 * @return bool
 	 */
 	public function use_contact_form_7( $blog_id = null ) {
-		$value = $this->get_blog_option( $blog_id, 'newsman_developer_use_contact_form_7', 'on' );
+		$value = $this->get_blog_option( $blog_id, 'newsman_contact_form_7_active', 'on' );
 		return 'on' === $value;
 	}
 
@@ -276,8 +276,88 @@ class Config {
 	 * @return bool
 	 */
 	public function use_wpforms( $blog_id = null ) {
-		$value = $this->get_blog_option( $blog_id, 'newsman_developer_use_wpforms', 'on' );
+		$value = $this->get_blog_option( $blog_id, 'newsman_wpforms_active', 'on' );
 		return 'on' === $value;
+	}
+
+	/**
+	 * Whether the Contact Form 7 + Flamingo export subscribers source is enabled.
+	 *
+	 * Seeded 'off' by Setup v14.0.0. The retriever priority chain consults this before
+	 * falling through to WC/WP. Set on the settings page and gated by Flamingo presence.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_contact_form_7_export_subscribers( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_contact_form_7_export_subscribers', 'off' );
+	}
+
+	/**
+	 * The CF7 form (post ID) selected as the export source.
+	 *
+	 * Only forms with `newsman.enable=true` AND `newsman.newsletter_form=true` qualify.
+	 * Resolved to a Flamingo channel slug at query time by the retriever.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_contact_form_7_export_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_contact_form_7_export_form_id', '' );
+	}
+
+	/**
+	 * Whether the Elementor Pro export subscribers source is enabled.
+	 *
+	 * Seeded 'off' by Setup v14.0.0. The retriever priority chain consults this before
+	 * the CF7 source. Gated by Elementor Pro presence.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_elementor_export_subscribers( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_elementor_export_subscribers', 'off' );
+	}
+
+	/**
+	 * The Elementor form widget ID (8-char hex) selected as the export source.
+	 *
+	 * Matches the `form_id` column on `wp_e_submissions` and the value shown in
+	 * Elementor's submissions grid. Only widgets with `newsman_enable=true` AND
+	 * `newsman_newsletter_form=true` qualify.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_elementor_export_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_elementor_export_form_id', '' );
+	}
+
+	/**
+	 * Whether the WPForms export subscribers source is enabled.
+	 *
+	 * The retriever priority chain consults this after Elementor + CF7. WPForms Pro
+	 * persists entries to `wp_wpforms_entries`/`wp_wpforms_entry_fields`; Lite does
+	 * not store entries so the retriever returns empty regardless of this flag.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_wpforms_export_subscribers( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_wpforms_export_subscribers', 'off' );
+	}
+
+	/**
+	 * The WPForms form (post ID) selected as the export source.
+	 *
+	 * Only forms with `settings.newsman_enable='1'` AND `settings.newsman_newsletter_form='1'`
+	 * qualify. Matches the `form_id` column on `wp_wpforms_entries`.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_wpforms_export_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_wpforms_export_form_id', '' );
 	}
 
 	/**

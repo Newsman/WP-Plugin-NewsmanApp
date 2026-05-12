@@ -11,6 +11,7 @@
 
 namespace Newsman\Elementor;
 
+use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Subscribe\Helper as SubscribeHelper;
 use Newsman\User\IpAddress;
@@ -76,19 +77,47 @@ class AtomicFormProcessor {
 				return;
 			}
 
-			$list_id = (string) $this->resolve_atomic_value( $widget_settings['newsman_list_id'] ?? '' );
-			if ( '' === trim( $list_id ) ) {
-				$logger->error( esc_html__( 'Newsman: Atomic Form is enabled but no list is selected.', 'newsman' ) );
-				return;
+			$config             = Config::init();
+			$is_newsletter_form = $this->is_truthy( $this->resolve_atomic_value( $widget_settings['newsman_newsletter_form'] ?? false ) );
+
+			if ( $is_newsletter_form ) {
+				$list_id    = trim( (string) $config->get_list_id( get_current_blog_id() ) );
+				$segment_id = trim( (string) $config->get_segment_id( get_current_blog_id() ) );
+				if ( '' === $list_id ) {
+					$logger->error( esc_html__( 'Newsman: Atomic Form is marked as newsletter form but no list is configured in Newsman - Sync.', 'newsman' ) );
+					return;
+				}
+			} else {
+				$list_id    = trim( (string) $this->resolve_atomic_value( $widget_settings['newsman_list_id'] ?? '' ) );
+				$segment_id = trim( (string) $this->resolve_atomic_value( $widget_settings['newsman_segment_id'] ?? '' ) );
+				if ( '' === $list_id ) {
+					$logger->error( esc_html__( 'Newsman: Atomic Form is enabled but no list is selected.', 'newsman' ) );
+					return;
+				}
+				if ( '' !== $segment_id && ! \Newsman\Subscribe\Segments::belongs_to_list( get_current_blog_id(), $list_id, $segment_id ) ) {
+					$segment_id = '';
+				}
 			}
 
 			$inputs_meta = $this->collect_inputs_meta( $post_data['post_id'], $post_data['form_id'] );
 
-			$email_widget_id = '';
-			$prop_widget_ids = array();
+			$email_widget_id     = '';
+			$firstname_widget_id = '';
+			$lastname_widget_id  = '';
+			$phone_widget_id     = '';
+			$prop_widget_ids     = array();
 			foreach ( $inputs_meta as $widget_id => $flags ) {
 				if ( '' === $email_widget_id && ! empty( $flags['is_email'] ) ) {
 					$email_widget_id = $widget_id;
+				}
+				if ( '' === $firstname_widget_id && ! empty( $flags['is_firstname'] ) ) {
+					$firstname_widget_id = $widget_id;
+				}
+				if ( '' === $lastname_widget_id && ! empty( $flags['is_lastname'] ) ) {
+					$lastname_widget_id = $widget_id;
+				}
+				if ( '' === $phone_widget_id && ! empty( $flags['is_phone'] ) ) {
+					$phone_widget_id = $widget_id;
 				}
 				if ( ! empty( $flags['send'] ) ) {
 					$prop_widget_ids[ $widget_id ] = $flags['prop_key'];
@@ -118,9 +147,32 @@ class AtomicFormProcessor {
 				return;
 			}
 
+			$firstname = '';
+			if ( '' !== $firstname_widget_id && array_key_exists( $firstname_widget_id, $submitted ) ) {
+				$firstname = trim( (string) $submitted[ $firstname_widget_id ] );
+			}
+			$lastname = '';
+			if ( '' !== $lastname_widget_id && array_key_exists( $lastname_widget_id, $submitted ) ) {
+				$lastname = trim( (string) $submitted[ $lastname_widget_id ] );
+			}
+			$phone = '';
+			if ( '' !== $phone_widget_id && array_key_exists( $phone_widget_id, $submitted ) ) {
+				$phone = trim( (string) $submitted[ $phone_widget_id ] );
+			}
+
 			$properties = array();
 			foreach ( $prop_widget_ids as $widget_id => $prop_key ) {
 				if ( $widget_id === $email_widget_id ) {
+					continue;
+				}
+				// Firstname/lastname/phone inputs are sent via dedicated keys, not under their prop key.
+				if ( '' !== $firstname_widget_id && $widget_id === $firstname_widget_id ) {
+					continue;
+				}
+				if ( '' !== $lastname_widget_id && $widget_id === $lastname_widget_id ) {
+					continue;
+				}
+				if ( '' !== $phone_widget_id && $widget_id === $phone_widget_id ) {
 					continue;
 				}
 				if ( ! array_key_exists( $widget_id, $submitted ) ) {
@@ -128,6 +180,10 @@ class AtomicFormProcessor {
 				}
 				$value                   = $submitted[ $widget_id ];
 				$properties[ $prop_key ] = is_scalar( $value ) ? (string) $value : wp_json_encode( $value );
+			}
+
+			if ( '' !== $phone ) {
+				$properties['phone'] = $phone;
 			}
 
 			/**
@@ -140,12 +196,19 @@ class AtomicFormProcessor {
 			 */
 			$properties = apply_filters( 'newsman_atomic_form_properties', $properties, $widget_settings, $post_data, $email );
 
+			$optin_mode = (string) $this->resolve_atomic_value( $widget_settings['newsman_optin_mode'] ?? 'single' );
+			$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
+
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
 				$list_id,
 				$email,
 				$properties,
-				IpAddress::init()->get_ip()
+				IpAddress::init()->get_ip(),
+				$optin_mode,
+				$firstname,
+				$lastname,
+				$segment_id
 			);
 
 			/**
@@ -285,9 +348,12 @@ class AtomicFormProcessor {
 			}
 
 			$meta[ $widget_id ] = array(
-				'send'     => $this->is_truthy( $settings['newsman_send_field'] ?? true ),
-				'is_email' => $this->is_truthy( $settings['newsman_is_email'] ?? false ),
-				'prop_key' => $cssid,
+				'send'         => $this->is_truthy( $settings['newsman_send_field'] ?? true ),
+				'is_email'     => $this->is_truthy( $settings['newsman_is_email'] ?? false ),
+				'is_firstname' => $this->is_truthy( $settings['newsman_is_firstname'] ?? false ),
+				'is_lastname'  => $this->is_truthy( $settings['newsman_is_lastname'] ?? false ),
+				'is_phone'     => $this->is_truthy( $settings['newsman_is_phone'] ?? false ),
+				'prop_key'     => $cssid,
 			);
 		}
 

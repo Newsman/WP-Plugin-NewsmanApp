@@ -12,6 +12,7 @@
 namespace Newsman\Elementor;
 
 use Newsman\Subscribe\Lists;
+use Newsman\Subscribe\Segments;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -90,6 +91,43 @@ class AtomicFormControls {
 		$boolean = '\Elementor\Modules\AtomicWidgets\PropTypes\Primitives\Boolean_Prop_Type';
 		$string  = '\Elementor\Modules\AtomicWidgets\PropTypes\Primitives\String_Prop_Type';
 
+		// Mirror legacy Form widget visibility for Newsman List + Newsman Segment.
+		// Atomic widget dependencies with `effect: hide` express the visibility
+		// *condition*: the prop is visible WHEN the boolean over the terms matches.
+		// Using AND-relation with two terms means: visible when Send to Newsman is ON
+		// AND Newsletter form is OFF — i.e. hidden whenever either toggle disagrees.
+		$list_segment_dependencies = null;
+		if ( class_exists( '\Elementor\Modules\AtomicWidgets\PropDependencies\Manager' ) ) {
+			$dep_manager = '\Elementor\Modules\AtomicWidgets\PropDependencies\Manager';
+
+			$list_segment_dependencies = $dep_manager::make( $dep_manager::RELATION_AND )
+				->where(
+					array(
+						'operator' => 'eq',
+						'path'     => array( 'newsman_enable' ),
+						'value'    => true,
+						'effect'   => 'hide',
+					)
+				)
+				->where(
+					array(
+						'operator' => 'ne',
+						'path'     => array( 'newsman_newsletter_form' ),
+						'value'    => true,
+						'effect'   => 'hide',
+					)
+				)
+				->get();
+		}
+
+		$list_prop    = $string::make()->default( '' );
+		$segment_prop = $string::make()->default( '' );
+		$optin_prop   = $string::make()->default( 'single' );
+		if ( null !== $list_segment_dependencies ) {
+			$list_prop    = $list_prop->set_dependencies( $list_segment_dependencies );
+			$segment_prop = $segment_prop->set_dependencies( $list_segment_dependencies );
+		}
+
 		/**
 		 * Filter the Newsman atomic prop definitions before they are merged into the schema.
 		 *
@@ -102,10 +140,16 @@ class AtomicFormControls {
 		$newsman_props = apply_filters(
 			'newsman_atomic_form_props',
 			array(
-				'newsman_enable'     => $boolean::make()->default( false ),
-				'newsman_list_id'    => $string::make()->default( '' ),
-				'newsman_send_field' => $boolean::make()->default( true ),
-				'newsman_is_email'   => $boolean::make()->default( false ),
+				'newsman_enable'          => $boolean::make()->default( false ),
+				'newsman_newsletter_form' => $boolean::make()->default( false ),
+				'newsman_list_id'         => $list_prop,
+				'newsman_segment_id'      => $segment_prop,
+				'newsman_optin_mode'      => $optin_prop,
+				'newsman_send_field'      => $boolean::make()->default( true ),
+				'newsman_is_email'        => $boolean::make()->default( false ),
+				'newsman_is_firstname'    => $boolean::make()->default( false ),
+				'newsman_is_lastname'     => $boolean::make()->default( false ),
+				'newsman_is_phone'        => $boolean::make()->default( false ),
 			),
 			$schema
 		);
@@ -235,9 +279,21 @@ class AtomicFormControls {
 		 */
 		$enable_control = apply_filters( 'newsman_atomic_form_enable_control', $enable_control );
 
+		$newsletter_form_control = $switch_class::bind_to( 'newsman_newsletter_form' )
+			->set_label( esc_html__( 'Newsletter form', 'newsman' ) )
+			->set_description( esc_html__( 'When on, the form uses the list and segment configured in Newsman - Sync; the per-form Newsman List and Newsman Segment values below are stored but ignored.', 'newsman' ) );
+
+		/**
+		 * Filter the form-level "Newsletter form" Switch_Control.
+		 *
+		 * @param object $newsletter_form_control Switch_Control bound to `newsman_newsletter_form`.
+		 */
+		$newsletter_form_control = apply_filters( 'newsman_atomic_form_newsletter_form_control', $newsletter_form_control );
+
 		$list_options = $this->build_list_options();
 		$list_control = $select_class::bind_to( 'newsman_list_id' )
 			->set_label( esc_html__( 'Newsman List', 'newsman' ) )
+			->set_description( esc_html__( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the Sync section list is used instead).', 'newsman' ) )
 			->set_options( $list_options );
 
 		/**
@@ -247,6 +303,42 @@ class AtomicFormControls {
 		 * @param array  $list_options Options array passed to `set_options()`.
 		 */
 		$list_control = apply_filters( 'newsman_atomic_form_list_control', $list_control, $list_options );
+
+		$segment_options = $this->build_segment_options();
+		$segment_control = $select_class::bind_to( 'newsman_segment_id' )
+			->set_label( esc_html__( 'Newsman Segment', 'newsman' ) )
+			->set_description( esc_html__( 'Optional. Segments are list-scoped — each option is labeled "List name — Segment name". If the selected segment does not belong to the saved list, it is dropped at submit time.', 'newsman' ) )
+			->set_options( $segment_options );
+
+		/**
+		 * Filter the form-level Newsman segment Select_Control.
+		 *
+		 * @param object $segment_control Select_Control bound to `newsman_segment_id`.
+		 * @param array  $segment_options Options array passed to `set_options()`.
+		 */
+		$segment_control = apply_filters( 'newsman_atomic_form_segment_control', $segment_control, $segment_options );
+
+		$optin_options = array(
+			array(
+				'label' => esc_html__( 'Single opt-in', 'newsman' ),
+				'value' => 'single',
+			),
+			array(
+				'label' => esc_html__( 'Double opt-in', 'newsman' ),
+				'value' => 'double',
+			),
+		);
+		$optin_control = $select_class::bind_to( 'newsman_optin_mode' )
+			->set_label( esc_html__( 'Opt-in mode', 'newsman' ) )
+			->set_options( $optin_options );
+
+		/**
+		 * Filter the form-level Newsman opt-in mode Select_Control.
+		 *
+		 * @param object $optin_control Select_Control bound to `newsman_optin_mode`.
+		 * @param array  $optin_options Options array passed to `set_options()`.
+		 */
+		$optin_control = apply_filters( 'newsman_atomic_form_optin_mode_control', $optin_control, $optin_options );
 
 		/**
 		 * Filter the array of items composing the form-level Newsman section.
@@ -259,11 +351,14 @@ class AtomicFormControls {
 			'newsman_atomic_form_section_items',
 			array(
 				$enable_control,
+				$newsletter_form_control,
 				$list_control,
+				$segment_control,
+				$optin_control,
 			)
 		);
 		if ( ! is_array( $items ) ) {
-			$items = array( $enable_control, $list_control );
+			$items = array( $enable_control, $newsletter_form_control, $list_control, $segment_control, $optin_control );
 		}
 
 		$section = $section_class::make()
@@ -306,7 +401,7 @@ class AtomicFormControls {
 
 		$items = array( $send_control );
 
-		// Email-marker only makes sense for text-like inputs, not checkboxes.
+		// Email/firstname/lastname markers only make sense for text-like inputs, not checkboxes.
 		if ( 'e-form-checkbox' !== $widget_type ) {
 			$is_email_control = $switch_class::bind_to( 'newsman_is_email' )
 				->set_label( esc_html__( 'Use as Newsman email', 'newsman' ) );
@@ -319,6 +414,42 @@ class AtomicFormControls {
 			 */
 			$is_email_control = apply_filters( 'newsman_atomic_form_is_email_control', $is_email_control, $widget_type );
 			$items[]          = $is_email_control;
+
+			$is_firstname_control = $switch_class::bind_to( 'newsman_is_firstname' )
+				->set_label( esc_html__( 'Use as Newsman firstname', 'newsman' ) );
+
+			/**
+			 * Filter the per-field "Use as Newsman firstname" Switch_Control.
+			 *
+			 * @param object $is_firstname_control Switch_Control bound to `newsman_is_firstname`.
+			 * @param string $widget_type          Atomic input widget type.
+			 */
+			$is_firstname_control = apply_filters( 'newsman_atomic_form_is_firstname_control', $is_firstname_control, $widget_type );
+			$items[]              = $is_firstname_control;
+
+			$is_lastname_control = $switch_class::bind_to( 'newsman_is_lastname' )
+				->set_label( esc_html__( 'Use as Newsman lastname', 'newsman' ) );
+
+			/**
+			 * Filter the per-field "Use as Newsman lastname" Switch_Control.
+			 *
+			 * @param object $is_lastname_control Switch_Control bound to `newsman_is_lastname`.
+			 * @param string $widget_type         Atomic input widget type.
+			 */
+			$is_lastname_control = apply_filters( 'newsman_atomic_form_is_lastname_control', $is_lastname_control, $widget_type );
+			$items[]             = $is_lastname_control;
+
+			$is_phone_control = $switch_class::bind_to( 'newsman_is_phone' )
+				->set_label( esc_html__( 'Use as Newsman phone', 'newsman' ) );
+
+			/**
+			 * Filter the per-field "Use as Newsman phone" Switch_Control.
+			 *
+			 * @param object $is_phone_control Switch_Control bound to `newsman_is_phone`.
+			 * @param string $widget_type      Atomic input widget type.
+			 */
+			$is_phone_control = apply_filters( 'newsman_atomic_form_is_phone_control', $is_phone_control, $widget_type );
+			$items[]          = $is_phone_control;
 		}
 
 		/**
@@ -382,6 +513,50 @@ class AtomicFormControls {
 		 * @param array $lists   Raw `[ id => name ]` map fetched from `Lists::get_for_select()`.
 		 */
 		$options = apply_filters( 'newsman_atomic_form_list_options', $options, $lists );
+
+		return is_array( $options ) ? $options : array();
+	}
+
+	/**
+	 * Build the SELECT options list for the Newsman Segment dropdown.
+	 *
+	 * Segments are list-scoped on the Newsman API side. Atomic Select_Control has no
+	 * conditional-option support and no editor-side dynamic refetch, so we render a
+	 * flat list of every segment across every list, with the list name prefixed in
+	 * the label. The processor drops a segment that doesn't belong to the saved
+	 * list at submit time (see `AtomicFormProcessor` + `Segments::belongs_to_list`).
+	 *
+	 * @return array
+	 */
+	protected function build_segment_options() {
+		$options = array(
+			array(
+				'label' => esc_html__( '— none —', 'newsman' ),
+				'value' => '',
+			),
+		);
+
+		$lists      = Lists::get_for_select( get_current_blog_id() );
+		$by_list    = Segments::get_by_list( get_current_blog_id() );
+		$list_names = is_array( $lists ) ? $lists : array();
+
+		foreach ( $by_list as $list_id => $segments_for_list ) {
+			$list_label = isset( $list_names[ $list_id ] ) ? (string) $list_names[ $list_id ] : (string) $list_id;
+			foreach ( $segments_for_list as $segment_id => $segment_name ) {
+				$options[] = array(
+					'label' => sprintf( '%1$s — %2$s', $list_label, (string) $segment_name ),
+					'value' => (string) $segment_id,
+				);
+			}
+		}
+
+		/**
+		 * Filter the Newsman Segment Select_Control options array.
+		 *
+		 * @param array $options Options array as built by this method.
+		 * @param array $by_list Raw `[ list_id => [ segment_id => segment_name ] ]` map.
+		 */
+		$options = apply_filters( 'newsman_atomic_form_segment_options', $options, $by_list );
 
 		return is_array( $options ) ? $options : array();
 	}

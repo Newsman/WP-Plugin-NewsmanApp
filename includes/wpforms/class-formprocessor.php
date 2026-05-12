@@ -11,6 +11,7 @@
 
 namespace Newsman\WPForms;
 
+use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Subscribe\Helper as SubscribeHelper;
 use Newsman\User\IpAddress;
@@ -68,11 +69,26 @@ class FormProcessor {
 		}
 
 		$logger = Logger::init();
+		$config = Config::init();
 
-		$list_id = isset( $prop['newsman_list_id'] ) ? trim( (string) $prop['newsman_list_id'] ) : '';
-		if ( '' === $list_id ) {
-			$logger->error( esc_html__( 'Newsman: WPForms form is enabled but no list is selected.', 'newsman' ) );
-			return;
+		$is_newsletter_form = '1' === (string) $prop['newsman_newsletter_form'];
+		if ( $is_newsletter_form ) {
+			$list_id    = trim( (string) $config->get_list_id( get_current_blog_id() ) );
+			$segment_id = trim( (string) $config->get_segment_id( get_current_blog_id() ) );
+			if ( '' === $list_id ) {
+				$logger->error( esc_html__( 'Newsman: WPForms form is marked as newsletter form but no list is configured in Newsman - Sync.', 'newsman' ) );
+				return;
+			}
+		} else {
+			$list_id    = isset( $prop['newsman_list_id'] ) ? trim( (string) $prop['newsman_list_id'] ) : '';
+			$segment_id = isset( $prop['newsman_segment_id'] ) ? trim( (string) $prop['newsman_segment_id'] ) : '';
+			if ( '' === $list_id ) {
+				$logger->error( esc_html__( 'Newsman: WPForms form is enabled but no list is selected.', 'newsman' ) );
+				return;
+			}
+			if ( '' !== $segment_id && ! \Newsman\Subscribe\Segments::belongs_to_list( get_current_blog_id(), $list_id, $segment_id ) ) {
+				$segment_id = '';
+			}
 		}
 
 		$email_field_id = isset( $prop['newsman_email_field'] ) ? trim( (string) $prop['newsman_email_field'] ) : '';
@@ -103,10 +119,37 @@ class FormProcessor {
 			? array_keys( $prop['newsman_send_fields'] )
 			: array();
 
+		$firstname_field_id = isset( $prop['newsman_firstname_field'] ) ? trim( (string) $prop['newsman_firstname_field'] ) : '';
+		$lastname_field_id  = isset( $prop['newsman_lastname_field'] ) ? trim( (string) $prop['newsman_lastname_field'] ) : '';
+		$phone_field_id     = isset( $prop['newsman_phone_field'] ) ? trim( (string) $prop['newsman_phone_field'] ) : '';
+
+		$firstname = '';
+		if ( '' !== $firstname_field_id ) {
+			$firstname = trim( (string) self::flatten_value( self::field_value( $fields, $firstname_field_id ) ) );
+		}
+		$lastname = '';
+		if ( '' !== $lastname_field_id ) {
+			$lastname = trim( (string) self::flatten_value( self::field_value( $fields, $lastname_field_id ) ) );
+		}
+		$phone = '';
+		if ( '' !== $phone_field_id ) {
+			$phone = trim( (string) self::flatten_value( self::field_value( $fields, $phone_field_id ) ) );
+		}
+
 		$properties = array();
 		foreach ( $send_fields as $field_id ) {
 			$field_id = (string) $field_id;
 			if ( '' === $field_id || $field_id === $email_field_id ) {
+				continue;
+			}
+			// Firstname/lastname/phone fields are sent via dedicated keys, not under their property key.
+			if ( '' !== $firstname_field_id && $field_id === $firstname_field_id ) {
+				continue;
+			}
+			if ( '' !== $lastname_field_id && $field_id === $lastname_field_id ) {
+				continue;
+			}
+			if ( '' !== $phone_field_id && $field_id === $phone_field_id ) {
 				continue;
 			}
 			$value = self::field_value( $fields, $field_id );
@@ -115,6 +158,10 @@ class FormProcessor {
 			}
 			$key                = self::property_key( $fields, $form_data, $field_id );
 			$properties[ $key ] = self::format_value( $value );
+		}
+
+		if ( '' !== $phone ) {
+			$properties['phone'] = $phone;
 		}
 
 		/**
@@ -128,13 +175,19 @@ class FormProcessor {
 		 */
 		$properties = apply_filters( 'newsman_wpforms_properties', $properties, $fields, $entry, $form_data, $email );
 
+		$optin_mode = isset( $prop['newsman_optin_mode'] ) && 'double' === $prop['newsman_optin_mode'] ? 'double' : 'single';
+
 		try {
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
 				$list_id,
 				$email,
 				$properties,
-				IpAddress::init()->get_ip()
+				IpAddress::init()->get_ip(),
+				$optin_mode,
+				$firstname,
+				$lastname,
+				$segment_id
 			);
 
 			/**
