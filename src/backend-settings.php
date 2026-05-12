@@ -504,6 +504,55 @@ $form_values = $this->get_form_values();
 						</tr>
 					</table>
 					<?php endif; ?>
+					<?php if ( $this->is_gravity_forms_exists() ) : ?>
+					<h2><?php echo esc_html__( 'Gravity Forms', 'newsman' ); ?></h2>
+					<table class="form-table newsman-table newsman-tbl-fixed">
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_gravity_forms_active"><?php echo esc_html__( 'Use Gravity Forms Integration', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_gravity_forms_active" type="checkbox"
+									id="newsman_gravity_forms_active" <?php echo ( ! empty( $form_values['newsman_gravity_forms_active'] ) && 'on' === $form_values['newsman_gravity_forms_active'] ) ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When enabled, a "Newsman" sub-page appears under each form\'s Form Settings menu (per-form list, segment, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove the sub-page and stop submission forwarding for Gravity Forms.', 'newsman' ); ?></p>
+							</td>
+						</tr>
+						<?php
+						$gravity_forms_export_on = ( ! empty( $form_values['newsman_gravity_forms_export_subscribers'] ) && 'on' === $form_values['newsman_gravity_forms_export_subscribers'] );
+						$gravity_forms_forms     = $this->get_gravity_forms_newsletter_forms();
+						?>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_gravity_forms_export_subscribers"><?php echo esc_html__( 'Export Subscribers from Form Submissions', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_gravity_forms_export_subscribers" type="checkbox"
+									id="newsman_gravity_forms_export_subscribers" <?php echo $gravity_forms_export_on ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers from Gravity Forms entries of the selected form instead of from WordPress users / WooCommerce orders.', 'newsman' ); ?></p>
+							</td>
+						</tr>
+						<tr style="display: <?php echo $gravity_forms_export_on ? 'table-row' : 'none'; ?>;">
+							<th scope="row">
+								<label class="nzm-label" for="newsman_gravity_forms_export_form_id"><?php echo esc_html__( 'Source Form', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<select name="newsman_gravity_forms_export_form_id" id="newsman_gravity_forms_export_form_id">
+									<option value=""><?php echo esc_html__( '— select a form —', 'newsman' ); ?></option>
+									<?php foreach ( $gravity_forms_forms as $gravity_forms_form_id => $label ) : ?>
+										<option value="<?php echo esc_attr( (string) $gravity_forms_form_id ); ?>" <?php selected( (string) $form_values['newsman_gravity_forms_export_form_id'], (string) $gravity_forms_form_id ); ?>>
+											<?php echo esc_html( (string) $label ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<?php if ( empty( $gravity_forms_forms ) ) : ?>
+									<p class="description"><em><?php echo esc_html__( 'No Gravity Forms forms are marked as newsletter forms yet. Open a Gravity Forms form, go to Form Settings - Newsman, and turn on both "Send to Newsman" and "Newsletter form" to make it available here.', 'newsman' ); ?></em></p>
+								<?php else : ?>
+									<p class="description"><?php echo esc_html__( 'Only one form per store is supported. Gravity Forms persists every submission of the selected form to wp_gf_entry / wp_gf_entry_meta.', 'newsman' ); ?></p>
+								<?php endif; ?>
+							</td>
+						</tr>
+					</table>
+					<?php endif; ?>
 					<h2>Developer</h2>
 					<table class="form-table newsman-table newsman-tbl-fixed">
 						<tr class="newsman_developerlogseverity">

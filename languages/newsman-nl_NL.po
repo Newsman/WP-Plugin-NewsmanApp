@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-12T13:56:58+00:00\n"
+"POT-Creation-Date: 2026-05-12T18:28:32+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -42,6 +42,9 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:467
 #: includes/elementor/class-formcontrols.php:58
 #: includes/elementor/class-formcontrols.php:65
+#: includes/gravityforms/class-formpanel.php:92
+#: includes/gravityforms/class-formpanel.php:136
+#: includes/gravityforms/class-formpanel.php:214
 #: includes/wpforms/class-formpanel.php:111
 #: includes/wpforms/class-formpanel.php:206
 msgid "Newsman"
@@ -102,14 +105,14 @@ msgid "Could not save integration setup. Please try again."
 msgstr "Kan de integratie-instellingen niet opslaan. Probeer het opnieuw."
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:99
+#: includes/admin/settings/class-settings.php:102
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Ongeautoriseerde gebruiker"
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:163
+#: includes/admin/settings/class-settings.php:167
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Opties opgeslagen."
@@ -119,52 +122,60 @@ msgstr "Opties opgeslagen."
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Ongeldige inloggegevens. Configureer deze in het tabblad Instellingen."
 
-#: includes/admin/settings/class-settings.php:167
-#: includes/admin/settings/class-settings.php:181
+#: includes/admin/settings/class-settings.php:171
+#: includes/admin/settings/class-settings.php:185
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Ongeldige inloggegevens"
 
-#: includes/admin/settings/class-settings.php:202 src/backend-settings.php:348
+#: includes/admin/settings/class-settings.php:206 src/backend-settings.php:348
 msgid "Elementor"
 msgstr "Elementor"
 
-#: includes/admin/settings/class-settings.php:206 src/backend-settings.php:399
+#: includes/admin/settings/class-settings.php:210 src/backend-settings.php:399
 msgid "Contact Form 7"
 msgstr "Contact Form 7"
 
-#: includes/admin/settings/class-settings.php:210 src/backend-settings.php:450
+#: includes/admin/settings/class-settings.php:214 src/backend-settings.php:450
 msgid "WPForms"
 msgstr "WPForms"
 
+#: includes/admin/settings/class-settings.php:218 src/backend-settings.php:508
+msgid "Gravity Forms"
+msgstr "Gravity Forms"
+
 #. translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7").
-#: includes/admin/settings/class-settings.php:221
+#: includes/admin/settings/class-settings.php:229
 #, php-format
 msgid ""
 "More than one \"Export Subscribers from Form Submissions\" is enabled (%s). "
-"Only the first in priority order (Elementor - Contact Form 7 - WPForms) will "
-"be used by subscriber.list; the others are ignored. Disable all but one."
+"Only the first in priority order (Elementor - Contact Form 7 - WPForms - "
+"Gravity Forms) will be used by subscriber.list; the others are ignored. "
+"Disable all but one."
 msgstr ""
 "Meer dan één \"Abonnees exporteren uit formulierinzendingen\" is "
 "ingeschakeld (%s). Alleen de eerste in prioriteitsvolgorde (Elementor - "
-"Contact Form 7 - WPForms) wordt door subscriber.list gebruikt; de andere "
-"worden genegeerd. Schakel alle behalve één uit."
+"Contact Form 7 - WPForms - Gravity Forms) wordt door subscriber.list "
+"gebruikt; de andere worden genegeerd. Schakel alle behalve één uit."
 
-#: includes/admin/settings/class-settings.php:261
-#: includes/admin/settings/class-settings.php:335
-#: includes/admin/settings/class-settings.php:407
+#: includes/admin/settings/class-settings.php:269
+#: includes/admin/settings/class-settings.php:343
+#: includes/admin/settings/class-settings.php:415
+#: includes/admin/settings/class-settings.php:494
 msgid "Trash"
 msgstr "Prullenbak"
 
 #. translators: %d: CF7 form post id.
 #. translators: %d: WPForms form post id.
-#: includes/admin/settings/class-settings.php:276
-#: includes/admin/settings/class-settings.php:429
+#. translators: %d: Gravity Forms form id.
+#: includes/admin/settings/class-settings.php:284
+#: includes/admin/settings/class-settings.php:437
+#: includes/admin/settings/class-settings.php:511
 #, php-format
 msgid "Form #%d"
 msgstr "Formulier #%d"
 
-#: includes/admin/settings/class-settings.php:478
+#: includes/admin/settings/class-settings.php:560
 msgid "Untitled form"
 msgstr "Naamloos formulier"
 
@@ -359,11 +370,14 @@ msgstr ""
 #: includes/elementor/class-atomicformcontrols.php:392
 #: includes/elementor/class-formcontrols.php:81
 #: includes/elementor/class-formcontrols.php:284
+#: includes/gravityforms/class-formpanel.php:196
+#: includes/gravityforms/class-formpanel.php:220
 #: includes/wpforms/class-formpanel.php:214
 msgid "Send to Newsman"
 msgstr "Verzenden naar Newsman"
 
 #: includes/contactform7/class-formpanel.php:219
+#: includes/gravityforms/class-formpanel.php:196
 #: includes/wpforms/class-formpanel.php:216
 msgid ""
 "When enabled, every successful submission of this form is subscribed to the "
@@ -375,6 +389,8 @@ msgstr ""
 #: includes/contactform7/class-formpanel.php:225
 #: includes/elementor/class-atomicformcontrols.php:283
 #: includes/elementor/class-formcontrols.php:104
+#: includes/gravityforms/class-formpanel.php:197
+#: includes/gravityforms/class-formpanel.php:226
 #: includes/wpforms/class-formpanel.php:225
 msgid "Newsletter form"
 msgstr "Nieuwsbriefformulier"
@@ -391,6 +407,8 @@ msgstr ""
 "van toepassing zijn)."
 
 #: includes/contactform7/class-formpanel.php:242
+#: includes/gravityforms/class-formpanel.php:198
+#: includes/gravityforms/class-formpanel.php:232
 #: includes/wpforms/class-formpanel.php:245
 msgid "Newsman list"
 msgstr "Newsman-lijst"
@@ -405,6 +423,7 @@ msgstr ""
 "op de Newsman-instellingenpagina."
 
 #: includes/contactform7/class-formpanel.php:251
+#: includes/gravityforms/class-formpanel.php:172
 #: includes/wpforms/class-formpanel.php:140
 #: includes/wpforms/class-formpanel.php:172
 msgid "— select a list —"
@@ -420,24 +439,42 @@ msgstr ""
 "„Nieuwsbriefformulier” aan staat (de geconfigureerde Sync-lijst wordt "
 "gebruikt)."
 
-#: includes/contactform7/class-formpanel.php:267
+#: includes/contactform7/class-formpanel.php:260
+#: includes/elementor/class-atomicformcontrols.php:296
+#: includes/elementor/class-formcontrols.php:147
+#: includes/gravityforms/class-formpanel.php:198
+#: includes/wpforms/class-formpanel.php:248
+msgid ""
+"Do not pick the same list as the one configured in Newsman - Sync unless you "
+"intend submissions to land in your global newsletter list. To send to that "
+"list, turn on \"Newsletter form\" instead."
+msgstr ""
+"Kies niet dezelfde lijst als die geconfigureerd is in Newsman - Sync tenzij"
+"u wilt dat inzendingen in uw globale nieuwsbrieflijst terechtkomen. Schakel"
+"in plaats daarvan \"Newsletter form\" in om naar die lijst te verzenden."
+
+#: includes/contactform7/class-formpanel.php:268
+#: includes/gravityforms/class-formpanel.php:199
+#: includes/gravityforms/class-formpanel.php:242
 #: includes/wpforms/class-formpanel.php:268
 msgid "Newsman segment"
 msgstr "Newsman-segment"
 
-#: includes/contactform7/class-formpanel.php:271
-#: includes/contactform7/class-formpanel.php:348
-#: includes/contactform7/class-formpanel.php:374
-#: includes/contactform7/class-formpanel.php:400
+#: includes/contactform7/class-formpanel.php:272
+#: includes/contactform7/class-formpanel.php:349
+#: includes/contactform7/class-formpanel.php:375
+#: includes/contactform7/class-formpanel.php:401
 #: includes/elementor/class-atomicformcontrols.php:534
 #: includes/elementor/class-formcontrols.php:160
 #: includes/elementor/class-formcontrols.php:531
+#: includes/gravityforms/class-formpanel.php:180
+#: includes/gravityforms/class-formpanel.php:280
 #: includes/wpforms/class-formpanel.php:254
 #: includes/wpforms/class-formpanel.php:374
 msgid "— none —"
 msgstr "— geen —"
 
-#: includes/contactform7/class-formpanel.php:283
+#: includes/contactform7/class-formpanel.php:284
 msgid ""
 "Optional. Segments are list-scoped — only segments belonging to the selected "
 "list above are kept. Changing the list resets the segment."
@@ -446,29 +483,34 @@ msgstr ""
 "hierboven geselecteerde lijst horen, worden bewaard. Het wijzigen van de "
 "lijst reset het segment."
 
-#: includes/contactform7/class-formpanel.php:297
+#: includes/contactform7/class-formpanel.php:298
 #: includes/elementor/class-atomicformcontrols.php:332
 #: includes/elementor/class-formcontrols.php:208
+#: includes/gravityforms/class-formpanel.php:200
+#: includes/gravityforms/class-formpanel.php:252
 #: includes/wpforms/class-formpanel.php:323
 msgid "Opt-in mode"
 msgstr "Opt-in-modus"
 
-#: includes/contactform7/class-formpanel.php:302
+#: includes/contactform7/class-formpanel.php:303
 #: includes/elementor/class-atomicformcontrols.php:323
 #: includes/elementor/class-formcontrols.php:211
+#: includes/gravityforms/class-formpanel.php:255
 #: includes/wpforms/class-formpanel.php:326
 msgid "Single opt-in"
 msgstr "Enkele opt-in"
 
-#: includes/contactform7/class-formpanel.php:305
+#: includes/contactform7/class-formpanel.php:306
 #: includes/elementor/class-atomicformcontrols.php:327
 #: includes/elementor/class-formcontrols.php:212
+#: includes/gravityforms/class-formpanel.php:256
 #: includes/wpforms/class-formpanel.php:327
 msgid "Double opt-in"
 msgstr "Dubbele opt-in"
 
-#: includes/contactform7/class-formpanel.php:309
+#: includes/contactform7/class-formpanel.php:310
 #: includes/elementor/class-formcontrols.php:219
+#: includes/gravityforms/class-formpanel.php:200
 #: includes/wpforms/class-formpanel.php:330
 msgid ""
 "Single opt-in subscribes the user immediately. Double opt-in sends a "
@@ -479,20 +521,22 @@ msgstr ""
 "stuurt een bevestigingsmail; de inschrijving is pas voltooid als de "
 "gebruiker op de link klikt."
 
-#: includes/contactform7/class-formpanel.php:315
+#: includes/contactform7/class-formpanel.php:316
+#: includes/gravityforms/class-formpanel.php:201
+#: includes/gravityforms/class-formpanel.php:302
 #: includes/wpforms/class-formpanel.php:366
 msgid "Email field"
 msgstr "E-mailveld"
 
-#: includes/contactform7/class-formpanel.php:320
-#: includes/contactform7/class-formpanel.php:343
-#: includes/contactform7/class-formpanel.php:369
-#: includes/contactform7/class-formpanel.php:395
+#: includes/contactform7/class-formpanel.php:321
+#: includes/contactform7/class-formpanel.php:344
+#: includes/contactform7/class-formpanel.php:370
+#: includes/contactform7/class-formpanel.php:396
 msgid "Add a field to the form template to enable Newsman."
 msgstr ""
 "Voeg een veld toe aan het formuliersjabloon om Newsman in te schakelen."
 
-#: includes/contactform7/class-formpanel.php:331
+#: includes/contactform7/class-formpanel.php:332
 #: includes/wpforms/class-formpanel.php:369
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used "
@@ -501,12 +545,14 @@ msgstr ""
 "Het geselecteerde veld levert het e-mailadres van de abonnee. Elk veldtype "
 "kan worden gebruikt (text, tel, url, email, …)."
 
-#: includes/contactform7/class-formpanel.php:338
+#: includes/contactform7/class-formpanel.php:339
+#: includes/gravityforms/class-formpanel.php:202
+#: includes/gravityforms/class-formpanel.php:312
 #: includes/wpforms/class-formpanel.php:384
 msgid "Firstname field"
 msgstr "Voornaam-veld"
 
-#: includes/contactform7/class-formpanel.php:357
+#: includes/contactform7/class-formpanel.php:358
 #: includes/wpforms/class-formpanel.php:387
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's firstname "
@@ -515,12 +561,14 @@ msgstr ""
 "Optioneel. Indien ingesteld, wordt de veldwaarde verstuurd als de voornaam "
 "van de abonnee in plaats van opgenomen te worden in de abonnee-eigenschappen."
 
-#: includes/contactform7/class-formpanel.php:364
+#: includes/contactform7/class-formpanel.php:365
+#: includes/gravityforms/class-formpanel.php:203
+#: includes/gravityforms/class-formpanel.php:322
 #: includes/wpforms/class-formpanel.php:396
 msgid "Lastname field"
 msgstr "Achternaam-veld"
 
-#: includes/contactform7/class-formpanel.php:383
+#: includes/contactform7/class-formpanel.php:384
 #: includes/wpforms/class-formpanel.php:399
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's lastname "
@@ -529,12 +577,14 @@ msgstr ""
 "Optioneel. Indien ingesteld, wordt de veldwaarde verstuurd als de achternaam "
 "van de abonnee in plaats van opgenomen te worden in de abonnee-eigenschappen."
 
-#: includes/contactform7/class-formpanel.php:390
+#: includes/contactform7/class-formpanel.php:391
+#: includes/gravityforms/class-formpanel.php:204
+#: includes/gravityforms/class-formpanel.php:332
 #: includes/wpforms/class-formpanel.php:408
 msgid "Phone field"
 msgstr "Telefoonveld"
 
-#: includes/contactform7/class-formpanel.php:409
+#: includes/contactform7/class-formpanel.php:410
 #: includes/wpforms/class-formpanel.php:411
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's phone under "
@@ -543,40 +593,42 @@ msgstr ""
 "Optioneel. Indien ingesteld, wordt de veldwaarde verzonden als "
 "telefoonnummer van de abonnee onder de eigenschapssleutel `phone`."
 
-#: includes/contactform7/class-formpanel.php:416
+#: includes/contactform7/class-formpanel.php:417
+#: includes/gravityforms/class-formpanel.php:205
+#: includes/gravityforms/class-formpanel.php:348
 #: includes/wpforms/class-formpanel.php:428
 msgid "Send as properties"
 msgstr "Verzenden als eigenschappen"
 
-#: includes/contactform7/class-formpanel.php:421
+#: includes/contactform7/class-formpanel.php:422
 msgid "Add a field to the form template first."
 msgstr "Voeg eerst een veld toe aan het formuliersjabloon."
 
-#: includes/contactform7/class-formpanel.php:426
+#: includes/contactform7/class-formpanel.php:427
 msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Verzend deze velden naar Newsman als abonnee-eigenschappen"
 
-#: includes/contactform7/class-formpanel.php:451
+#: includes/contactform7/class-formpanel.php:452
 #: includes/wpforms/class-formpanel.php:453
 msgid "used as email"
 msgstr "gebruikt als e-mail"
 
-#: includes/contactform7/class-formpanel.php:453
+#: includes/contactform7/class-formpanel.php:454
 #: includes/wpforms/class-formpanel.php:455
 msgid "used as firstname"
 msgstr "gebruikt als voornaam"
 
-#: includes/contactform7/class-formpanel.php:455
+#: includes/contactform7/class-formpanel.php:456
 #: includes/wpforms/class-formpanel.php:457
 msgid "used as lastname"
 msgstr "gebruikt als achternaam"
 
-#: includes/contactform7/class-formpanel.php:457
+#: includes/contactform7/class-formpanel.php:458
 #: includes/wpforms/class-formpanel.php:459
 msgid "used as phone"
 msgstr "gebruikt als telefoon"
 
-#: includes/contactform7/class-formpanel.php:464
+#: includes/contactform7/class-formpanel.php:465
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
@@ -621,6 +673,7 @@ msgid "Newsman List"
 msgstr "Newsman-lijst"
 
 #: includes/elementor/class-atomicformcontrols.php:296
+#: includes/gravityforms/class-formpanel.php:198
 msgid ""
 "List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
 "(the Sync section list is used instead)."
@@ -1071,6 +1124,127 @@ msgstr "Bestelstatus-SMS verzenden"
 msgid "Subscribe"
 msgstr "Abonneren"
 
+#: includes/gravityforms/class-formpanel.php:127
+msgid "Gravity Forms is not loaded."
+msgstr "Gravity Forms is niet geladen."
+
+#: includes/gravityforms/class-formpanel.php:140
+msgid "Invalid form id."
+msgstr "Ongeldig formulier-ID."
+
+#: includes/gravityforms/class-formpanel.php:147
+msgid "Form not found."
+msgstr "Formulier niet gevonden."
+
+#: includes/gravityforms/class-formpanel.php:165
+msgid "Newsman settings saved."
+msgstr "Newsman-instellingen opgeslagen."
+
+#: includes/gravityforms/class-formpanel.php:197
+msgid ""
+"When on, submissions go to the list and segment configured in Newsman - Sync "
+"(the per-form list and segment below are stored but ignored)."
+msgstr ""
+"Wanneer ingeschakeld, gaan inzendingen naar de lijst en het segment "
+"geconfigureerd in Newsman - Sync (de per-formulier waarden hieronder worden"
+"opgeslagen maar genegeerd)."
+
+#: includes/gravityforms/class-formpanel.php:199
+msgid ""
+"Optional. Segments are list-scoped — only segments that belong to the "
+"selected list are kept. If they do not match, the segment is dropped at "
+"submit time."
+msgstr ""
+"Optioneel. Segmenten zijn lijst-specifiek — alleen segmenten die bij de "
+"geselecteerde lijst horen worden behouden. Als ze niet overeenkomen, wordt "
+"het segment bij indienen verwijderd."
+
+#: includes/gravityforms/class-formpanel.php:201
+msgid ""
+"The selected field provides the subscriber email. Any field type may be used."
+msgstr ""
+"Het geselecteerde veld levert het abonnee-e-mailadres. Elk veldtype kan "
+"worden gebruikt."
+
+#: includes/gravityforms/class-formpanel.php:202
+msgid ""
+"Optional. For Name fields, pick the sub-input corresponding to the First "
+"Name (e.g. 1.3)."
+msgstr ""
+"Optioneel. Voor Naam-velden, kies de sub-invoer die overeenkomt met de "
+"Voornaam (bv. 1.3)."
+
+#: includes/gravityforms/class-formpanel.php:203
+msgid ""
+"Optional. For Name fields, pick the sub-input corresponding to the Last Name "
+"(e.g. 1.6)."
+msgstr ""
+"Optioneel. Voor Naam-velden, kies de sub-invoer die overeenkomt met de "
+"Achternaam (bv. 1.6)."
+
+#: includes/gravityforms/class-formpanel.php:204
+msgid ""
+"Optional. When set, the field value is sent as the subscriber phone under "
+"the `phone` property key."
+msgstr ""
+"Optioneel. Wanneer ingesteld, wordt de veldwaarde verzonden als het "
+"telefoonnummer van de abonnee onder de eigenschapsleutel `phone`."
+
+#: includes/gravityforms/class-formpanel.php:205
+msgid ""
+"Each checked field is sent to Newsman as a subscriber property keyed by the "
+"field label sanitized to lowercase snake_case (or by the field id when no "
+"label is set)."
+msgstr ""
+"Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap, "
+"met als sleutel het veldlabel genormaliseerd naar snake_case (of het "
+"veld-id wanneer geen label is ingesteld)."
+
+#: includes/gravityforms/class-formpanel.php:268
+#: includes/gravityforms/class-formpanel.php:296
+msgid "Field mapping"
+msgstr "Veldtoewijzing"
+
+#: includes/gravityforms/class-formpanel.php:271
+#: includes/wpforms/class-formpanel.php:336
+msgid "Add a field to the form to enable Newsman."
+msgstr "Voeg een veld toe aan het formulier om Newsman in te schakelen."
+
+#: includes/gravityforms/class-formpanel.php:374
+msgid "Update Settings"
+msgstr "Instellingen bijwerken"
+
+#. translators: %s: Gravity Forms field id.
+#. translators: %s: WPForms field id.
+#: includes/gravityforms/class-formpanel.php:548
+#: includes/wpforms/class-formpanel.php:586
+#, php-format
+msgid "Field #%s"
+msgstr "Veld #%s"
+
+#: includes/gravityforms/class-formprocessor.php:76
+msgid ""
+"Newsman: Gravity Forms form is marked as newsletter form but no list is "
+"configured in Newsman - Sync."
+msgstr ""
+"Newsman: het Gravity Forms-formulier is gemarkeerd als "
+"nieuwsbriefformulier, maar er is geen lijst geconfigureerd in Newsman - "
+"Sync."
+
+#: includes/gravityforms/class-formprocessor.php:83
+msgid "Newsman: Gravity Forms form is enabled but no list is selected."
+msgstr ""
+"Newsman: het Gravity Forms-formulier is ingeschakeld maar er is geen lijst "
+"geselecteerd."
+
+#: includes/gravityforms/class-formprocessor.php:93
+msgid "Newsman: Gravity Forms form has no email field configured."
+msgstr "Newsman: het Gravity Forms-formulier heeft geen e-mailveld geconfigureerd."
+
+#: includes/gravityforms/class-formprocessor.php:110
+msgid "Newsman: Gravity Forms email field is empty."
+msgstr "Newsman: het e-mailveld van Gravity Forms is leeg."
+
 #. translators: 1: Email
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
@@ -1334,10 +1508,6 @@ msgstr ""
 "geselecteerde lijst horen, worden bewaard. Als ze niet overeenkomen, wordt "
 "het segment bij verzending genegeerd."
 
-#: includes/wpforms/class-formpanel.php:336
-msgid "Add a field to the form to enable Newsman."
-msgstr "Voeg een veld toe aan het formulier om Newsman in te schakelen."
-
 #: includes/wpforms/class-formpanel.php:465
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
@@ -1345,12 +1515,6 @@ msgid ""
 msgstr ""
 "Elk aangevinkt veld wordt naar Newsman verzonden als abonnee-eigenschap met "
 "het veldlabel als sleutel (of de ID als er geen label is ingesteld)."
-
-#. translators: %s: WPForms field id.
-#: includes/wpforms/class-formpanel.php:586
-#, php-format
-msgid "Field #%s"
-msgstr "Veld #%s"
 
 #: includes/wpforms/class-formprocessor.php:79
 msgid ""
@@ -1538,7 +1702,7 @@ msgstr ""
 "Selecteer welke klantattributen (van bestellingen) u wilt opnemen in uw "
 "remarketinggegevens."
 
-#: src/backend-remarketing.php:206 src/backend-settings.php:644
+#: src/backend-remarketing.php:206 src/backend-settings.php:693
 #: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
@@ -1780,7 +1944,7 @@ msgstr ""
 "Elementor te verwijderen."
 
 #: src/backend-settings.php:367 src/backend-settings.php:418
-#: src/backend-settings.php:474
+#: src/backend-settings.php:474 src/backend-settings.php:526
 msgid "Export Subscribers from Form Submissions"
 msgstr "Abonnees exporteren uit formulierinzendingen"
 
@@ -1796,12 +1960,12 @@ msgstr ""
 "hieronder het bronformulier."
 
 #: src/backend-settings.php:377 src/backend-settings.php:428
-#: src/backend-settings.php:487
+#: src/backend-settings.php:487 src/backend-settings.php:536
 msgid "Source Form"
 msgstr "Bronformulier"
 
 #: src/backend-settings.php:381 src/backend-settings.php:432
-#: src/backend-settings.php:491
+#: src/backend-settings.php:491 src/backend-settings.php:540
 msgid "— select a form —"
 msgstr "— selecteer een formulier —"
 
@@ -1910,10 +2074,10 @@ msgid ""
 "the database. Without entries, this export source will return no rows. "
 "Install or upgrade to WPForms Pro to use this feature."
 msgstr ""
-"WPForms Lite slaat geen formulierinzendingen op — alleen WPForms Pro "
-"bewaart ze in de database. Zonder inzendingen zal deze exportbron geen "
-"rijen retourneren. Installeer of upgrade naar WPForms Pro om deze functie "
-"te gebruiken."
+"WPForms Lite slaat geen formulierinzendingen op — alleen WPForms Pro bewaart "
+"ze in de database. Zonder inzendingen zal deze exportbron geen rijen "
+"retourneren. Installeer of upgrade naar WPForms Pro om deze functie te "
+"gebruiken."
 
 #: src/backend-settings.php:499
 msgid ""
@@ -1922,8 +2086,8 @@ msgid ""
 "form\" to make it available here."
 msgstr ""
 "Er zijn nog geen WPForms-formulieren gemarkeerd als nieuwsbriefformulieren."
-"Open een WPForms-formulier, ga naar Instellingen - Newsman en schakel zowel"
-"\"Verzenden naar Newsman\" als \"Nieuwsbriefformulier\" in om het hier "
+"Open een WPForms-formulier, ga naar Instellingen - Newsman en schakel "
+"zowel\"Verzenden naar Newsman\" als \"Nieuwsbriefformulier\" in om het hier "
 "beschikbaar te maken."
 
 #: src/backend-settings.php:501
@@ -1932,26 +2096,73 @@ msgid ""
 "the selected form to wp_wpforms_entries (Pro only)."
 msgstr ""
 "Slechts één formulier per winkel wordt ondersteund. WPForms bewaart elke "
-"inzending van het geselecteerde formulier in wp_wpforms_entries (alleen "
-"Pro)."
+"inzending van het geselecteerde formulier in wp_wpforms_entries (alleen Pro)."
 
-#: src/backend-settings.php:511
+#: src/backend-settings.php:512
+msgid "Use Gravity Forms Integration"
+msgstr "Gravity Forms-integratie gebruiken"
+
+#: src/backend-settings.php:517
+msgid ""
+"When enabled, a \"Newsman\" sub-page appears under each form's Form Settings "
+"menu (per-form list, segment, email field, and properties), and submissions "
+"push the email plus marked field values to the selected Newsman list. "
+"Disable to remove the sub-page and stop submission forwarding for Gravity "
+"Forms."
+msgstr ""
+"Wanneer ingeschakeld, verschijnt een \"Newsman\"-subpagina onder het Form "
+"Settings-menu van elk formulier (per-formulier lijst, segment, e-mailveld "
+"en eigenschappen), en inzendingen sturen de e-mail plus gemarkeerde "
+"veldwaarden naar de geselecteerde Newsman-lijst. Schakel uit om de "
+"subpagina te verwijderen en het doorsturen voor Gravity Forms te stoppen."
+
+#: src/backend-settings.php:531
+msgid ""
+"When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
+"from Gravity Forms entries of the selected form instead of from WordPress "
+"users / WooCommerce orders."
+msgstr ""
+"Wanneer ingeschakeld, haalt het Newsman subscriber.list API v1-eindpunt "
+"abonnees op uit Gravity Forms-inzendingen van het geselecteerde formulier "
+"in plaats van uit WordPress-gebruikers / WooCommerce-bestellingen."
+
+#: src/backend-settings.php:548
+msgid ""
+"No Gravity Forms forms are marked as newsletter forms yet. Open a Gravity "
+"Forms form, go to Form Settings - Newsman, and turn on both \"Send to "
+"Newsman\" and \"Newsletter form\" to make it available here."
+msgstr ""
+"Er zijn nog geen Gravity Forms-formulieren gemarkeerd als "
+"nieuwsbriefformulieren. Open een Gravity Forms-formulier, ga naar Form "
+"Settings - Newsman en schakel zowel \"Send to Newsman\" als \"Newsletter "
+"form\" in om het hier beschikbaar te maken."
+
+#: src/backend-settings.php:550
+msgid ""
+"Only one form per store is supported. Gravity Forms persists every "
+"submission of the selected form to wp_gf_entry / wp_gf_entry_meta."
+msgstr ""
+"Slechts één formulier per winkel wordt ondersteund. Gravity Forms bewaart"
+"elke inzending van het geselecteerde formulier in wp_gf_entry / "
+"wp_gf_entry_meta."
+
+#: src/backend-settings.php:560
 msgid "Logging level"
 msgstr "Logboekniveau"
 
-#: src/backend-settings.php:520
+#: src/backend-settings.php:569
 msgid "No Logging"
 msgstr "Geen logboek"
 
-#: src/backend-settings.php:567
+#: src/backend-settings.php:616
 msgid "API Timeout"
 msgstr "API-timeout"
 
-#: src/backend-settings.php:579
+#: src/backend-settings.php:628
 msgid "Enable Test User IP"
 msgstr "Test gebruikers-IP inschakelen"
 
-#: src/backend-settings.php:584
+#: src/backend-settings.php:633
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -1959,15 +2170,15 @@ msgstr ""
 "Waarschuwing! Gebruik dit IP-adres niet in productie omdat het wordt "
 "gebruikt door het API-eindpunt subscriber.saveSubscribe."
 
-#: src/backend-settings.php:589
+#: src/backend-settings.php:638
 msgid "Test User IP address"
 msgstr "Test gebruikers-IP-adres"
 
-#: src/backend-settings.php:600
+#: src/backend-settings.php:649
 msgid "Plugin Loaded Priority"
 msgstr "Plugin-laadprioriteit"
 
-#: src/backend-settings.php:606
+#: src/backend-settings.php:655
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -1976,19 +2187,19 @@ msgstr ""
 "plugins_loaded en de prioriteit ingesteld in deze configuratie. Standaard is "
 "20."
 
-#: src/backend-settings.php:612
+#: src/backend-settings.php:661
 msgid "Use Action Scheduler"
 msgstr "Action Scheduler gebruiken"
 
-#: src/backend-settings.php:617
+#: src/backend-settings.php:666
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Gebruik de Action Scheduler-plugin voor sommige NewsMAN API-acties."
 
-#: src/backend-settings.php:622
+#: src/backend-settings.php:671
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Action Scheduler gebruiken voor abonneren"
 
-#: src/backend-settings.php:627
+#: src/backend-settings.php:676
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -1996,11 +2207,11 @@ msgstr ""
 "In de winkel Action Scheduler gebruiken voor acties voor het abonneren op e-"
 "mail- en SMS-lijsten."
 
-#: src/backend-settings.php:632
+#: src/backend-settings.php:681
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Action Scheduler gebruiken voor afmelden"
 
-#: src/backend-settings.php:637
+#: src/backend-settings.php:686
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
@@ -2299,6 +2510,18 @@ msgstr "Configuratiehandleiding (Engels)"
 #: src/backend.php:126
 msgid "Ghid de configurare (Romana)"
 msgstr "Configuratiehandleiding (Roemeens)"
+
+#, php-format
+#~ msgid ""
+#~ "More than one \"Export Subscribers from Form Submissions\" is enabled "
+#~ "(%s). Only the first in priority order (Elementor - Contact Form 7 - "
+#~ "WPForms) will be used by subscriber.list; the others are ignored. Disable "
+#~ "all but one."
+#~ msgstr ""
+#~ "Meer dan één \"Abonnees exporteren uit formulierinzendingen\" is "
+#~ "ingeschakeld (%s). Alleen de eerste in prioriteitsvolgorde (Elementor - "
+#~ "Contact Form 7 - WPForms) wordt door subscriber.list gebruikt; de andere "
+#~ "worden genegeerd. Schakel alle behalve één uit."
 
 #~ msgid ""
 #~ "When enabled, marks this form as a newsletter signup form. Informational "

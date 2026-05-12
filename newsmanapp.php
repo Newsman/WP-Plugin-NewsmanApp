@@ -187,6 +187,11 @@ class WP_Newsman {
 		if ( $wpforms_exist->exist() && $this->config->use_wpforms() ) {
 			( new \Newsman\WPForms\Integration() )->init_hooks();
 		}
+
+		$gravity_forms_exist = new \Newsman\Util\GravityFormsExist();
+		if ( $gravity_forms_exist->exist() && $this->config->use_gravity_forms() ) {
+			( new \Newsman\GravityForms\Integration() )->init_hooks();
+		}
 	}
 
 	/**

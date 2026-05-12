@@ -293,7 +293,7 @@ class AtomicFormControls {
 		$list_options = $this->build_list_options();
 		$list_control = $select_class::bind_to( 'newsman_list_id' )
 			->set_label( esc_html__( 'Newsman List', 'newsman' ) )
-			->set_description( esc_html__( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the Sync section list is used instead).', 'newsman' ) )
+			->set_description( esc_html__( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the Sync section list is used instead).', 'newsman' ) . ' ' . esc_html__( 'Do not pick the same list as the one configured in Newsman - Sync unless you intend submissions to land in your global newsletter list. To send to that list, turn on "Newsletter form" instead.', 'newsman' ) )
 			->set_options( $list_options );
 
 		/**

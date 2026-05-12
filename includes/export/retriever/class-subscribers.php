@@ -23,11 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Resolves the active subscriber export source for the current request and delegates
  * to the matching retriever. Priority is: Elementor Pro - CF7 (via Flamingo) -
- * WPForms (Pro entries) - WC - WP. Each step checks its precondition (option on,
- * plugins active, source form is still marked as Newsman + newsletter form); if
- * the precondition fails the chain falls through to the next source. If nothing
- * matches an `ApiV1Exception(3002)` is thrown for API v1 callers, and a legacy
- * exception otherwise.
+ * WPForms (Pro entries) - Gravity Forms - WC - WP. Each step checks its
+ * precondition (option on, plugins active, source form is still marked as Newsman
+ * + newsletter form); if the precondition fails the chain falls through to the
+ * next source. If nothing matches an `ApiV1Exception(3002)` is thrown for API v1
+ * callers, and a legacy exception otherwise.
  *
  * @class \Newsman\Export\Retriever\Subscribers
  */
@@ -62,13 +62,19 @@ class Subscribers extends AbstractRetriever implements RetrieverInterface {
 			return $retriever->process( $data, $blog_id );
 		}
 
-		// 4. WooCommerce subscribers (existing).
+		// 4. Gravity Forms entries.
+		if ( $config->is_gravity_forms_export_subscribers( $blog_id ) && SubscribersGravityForms::is_eligible( $blog_id ) ) {
+			$retriever = new SubscribersGravityForms();
+			return $retriever->process( $data, $blog_id );
+		}
+
+		// 5. WooCommerce subscribers (existing).
 		if ( $this->remarketing_config->is_export_woocommerce_subscribers( $blog_id ) ) {
 			$retriever = new SubscribersWoocommerceFeed();
 			return $retriever->process( $data, $blog_id );
 		}
 
-		// 4. WordPress users (existing).
+		// 6. WordPress users (existing).
 		if ( $this->remarketing_config->is_export_wordpress_subscribers( $blog_id ) ) {
 			$retriever = new SubscribersWordpressFeed();
 			return $retriever->process( $data, $blog_id );

@@ -155,6 +155,7 @@
 			$show( '#newsman_elementor_export_subscribers', true, ['#newsman_elementor_export_form_id'], 'table-row' );
 			$show( '#newsman_contact_form_7_export_subscribers', true, ['#newsman_contact_form_7_export_form_id'], 'table-row' );
 			$show( '#newsman_wpforms_export_subscribers', true, ['#newsman_wpforms_export_form_id'], 'table-row' );
+			$show( '#newsman_gravity_forms_export_subscribers', true, ['#newsman_gravity_forms_export_form_id'], 'table-row' );
 		}
 	);
 } (jQuery));

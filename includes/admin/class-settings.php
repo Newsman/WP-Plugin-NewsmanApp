@@ -18,6 +18,7 @@ use Newsman\Util\ElementorExist;
 use Newsman\Util\ContactForm7Exist;
 use Newsman\Util\FlamingoExist;
 use Newsman\Util\WPFormsExist;
+use Newsman\Util\GravityFormsExist;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -87,6 +88,13 @@ class Settings {
 	protected $flamingo_exists;
 
 	/**
+	 *  Gravity Forms Exists
+	 *
+	 * @var GravityFormsExist
+	 */
+	protected $gravity_forms_exists;
+
+	/**
 	 * Page nonce action
 	 *
 	 * @var string
@@ -147,6 +155,7 @@ class Settings {
 		$this->contact_form_7_exists = new ContactForm7Exist();
 		$this->wpforms_exists        = new WPFormsExist();
 		$this->flamingo_exists       = new FlamingoExist();
+		$this->gravity_forms_exists  = new GravityFormsExist();
 	}
 
 	/**
@@ -860,6 +869,18 @@ class Settings {
 	 */
 	public function is_flamingo_exists() {
 		return $this->flamingo_exists->exist();
+	}
+
+	/**
+	 * Gravity Forms exists.
+	 *
+	 * Used by the backend settings template to gate the "Use Gravity Forms Integration"
+	 * toggle so the row only renders when the plugin is actually present.
+	 *
+	 * @return bool
+	 */
+	public function is_gravity_forms_exists() {
+		return $this->gravity_forms_exists->exist();
 	}
 
 	/**

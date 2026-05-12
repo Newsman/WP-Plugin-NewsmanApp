@@ -257,6 +257,7 @@ class FormPanel {
 								</select>
 								<p class="description">
 									<?php esc_html_e( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the configured Sync list is used instead).', 'newsman' ); ?>
+									<?php esc_html_e( 'Do not pick the same list as the one configured in Newsman - Sync unless you intend submissions to land in your global newsletter list. To send to that list, turn on "Newsletter form" instead.', 'newsman' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
