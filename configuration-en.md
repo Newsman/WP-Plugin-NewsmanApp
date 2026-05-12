@@ -15,6 +15,7 @@ This guide walks you through every setting in the Newsman plugin so you can conn
 - [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
 - [Contact Form 7](#contact-form-7)
 - [WPForms](#wpforms)
+- [Gravity Forms](#gravity-forms)
 - [Exporting Subscribers from Form Submissions](#exporting-subscribers-from-form-submissions)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
@@ -261,7 +262,7 @@ Open any page in the Elementor editor and select a Form widget. In the **Content
 
 - **Newsletter form** - Off by default. Turn this on to mark the form as your site's newsletter form. Two things change when on: (1) the per-form **Newsman List** and **Newsman Segment** below are hidden — submissions go to the list and segment configured in **NewsMAN > Sync** instead; (2) the form becomes eligible to be picked as the **Source Form** for the API v1 `subscriber.list` export (see *Exporting Subscribers from Form Submissions* further below).
 
-- **Newsman List** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions from this form. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes. If the dropdown is empty, see the troubleshooting note at the end of this section.
+- **Newsman List** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions from this form. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes. If the dropdown is empty, see the troubleshooting note at the end of this section. **Important:** do not pick the same list as the one configured in **NewsMAN > Sync** unless you intend submissions to land in your global newsletter list. To send to that list, turn on **Newsletter form** above instead.
 
 - **Newsman Segment** - Visible under the same conditions as **Newsman List**. Optional. Lets you assign new subscribers to a segment of the selected list. The dropdown is list-scoped — only segments that belong to the picked **Newsman List** are shown, and changing the list clears any segment that no longer matches. Cross-list segments are dropped at submission time as a safety net.
 
@@ -323,7 +324,7 @@ Open a page with an Atomic Form on the canvas. Click the form container (the par
 
 - **Newsletter form** - Off by default. Same semantics as on the legacy Form widget — when on, the per-form **Newsman List** and **Newsman Segment** below are hidden (submissions go to the list and segment configured in **NewsMAN > Sync**) and the form becomes eligible to be the **Source Form** for the API v1 `subscriber.list` export.
 
-- **Newsman List** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is shared with the legacy Forms integration: lists come from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, cached for 10 minutes.
+- **Newsman List** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is shared with the legacy Forms integration: lists come from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, cached for 10 minutes. **Important:** do not pick the same list as the one configured in **NewsMAN > Sync** unless you intend submissions to land in your global newsletter list. To send to that list, turn on **Newsletter form** above instead.
 
 - **Newsman Segment** - Visible under the same conditions as **Newsman List**. Optional, list-scoped — same behavior as on the legacy Form widget.
 
@@ -370,6 +371,8 @@ If your site uses the [Contact Form 7](https://wordpress.org/plugins/contact-for
 
 > The integration is gated by the **Use Contact Form 7 Integration** toggle in **NewsMAN > Settings > Developer Settings**. The toggle (and the Newsman tab it controls) only appears when Contact Form 7 is installed.
 
+> **Tested with:** Contact Form 7 **6.x** and Flamingo **2.6.x**. Flamingo is required for the "Export Subscribers from Form Submissions" feature (it is what persists CF7 submissions to the database for later export); the per-form submission processor itself works without Flamingo.
+
 ### Per-form settings
 
 In the WP admin, open **Contact > Contact Forms** and click any form to edit it. A new **Newsman** tab appears next to **Form**, **Mail**, **Messages**, and **Additional Settings**, with these options:
@@ -378,7 +381,7 @@ In the WP admin, open **Contact > Contact Forms** and click any form to edit it.
 
 - **Newsletter form** - Off by default. Turn this on to mark the form as your site's newsletter form. When on, the per-form **Newsman list** and **Newsman segment** below are hidden — submissions go to the list and segment configured in **NewsMAN > Sync** instead. Setting this also makes the form eligible to be picked as the **Source Form** for the API v1 `subscriber.list` export (see *Exporting Subscribers from Form Submissions* further below).
 
-- **Newsman list** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor integration). If the dropdown is empty or shows "No Newsman lists are available", check your credentials.
+- **Newsman list** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor integration). If the dropdown is empty or shows "No Newsman lists are available", check your credentials. **Important:** do not pick the same list as the one configured in **NewsMAN > Sync** unless you intend submissions to land in your global newsletter list. To send to that list, turn on **Newsletter form** above instead.
 
 - **Newsman segment** - Visible under the same conditions as **Newsman list**. Optional. Lets you assign new subscribers to a segment of the selected list. The dropdown is list-scoped — only segments that belong to the picked list are shown; changing the list clears any segment that no longer matches; cross-list segments are dropped at submission time.
 
@@ -422,6 +425,8 @@ If your site uses [WPForms](https://wordpress.org/plugins/wpforms-lite/) (Lite o
 
 > The integration is gated by the **Use WPForms Integration** toggle in **NewsMAN > Settings > Developer Settings**. The toggle (and the Newsman section it controls) only appears when WPForms is installed.
 
+> **Tested with:** WPForms Lite **1.10.x** and WPForms (Pro) **1.10.x**. The per-form submission processor works on both editions; the "Export Subscribers from Form Submissions" feature requires Pro (Lite does not persist entries to the database).
+
 ### Per-form settings
 
 In the WP admin, open **WPForms > All Forms** and click **Edit** on any form. In the form builder, click the **Settings** panel on the left, then the new **Newsman** section in the inner sidebar. The section has these options:
@@ -430,7 +435,7 @@ In the WP admin, open **WPForms > All Forms** and click **Edit** on any form. In
 
 - **Newsletter form** - Off by default. Turn this on to mark the form as your site's newsletter form. When on, the per-form **Newsman list** and **Newsman segment** below are hidden — submissions go to the list and segment configured in **NewsMAN > Sync** instead. Setting this also makes the form eligible to be picked as the **Source Form** for the API v1 `subscriber.list` export (see *Exporting Subscribers from Form Submissions* further below).
 
-- **Newsman list** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor and Contact Form 7 integrations). If the dropdown is empty or shows "No Newsman lists are available", check your credentials.
+- **Newsman list** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the Elementor and Contact Form 7 integrations). If the dropdown is empty or shows "No Newsman lists are available", check your credentials. **Important:** do not pick the same list as the one configured in **NewsMAN > Sync** unless you intend submissions to land in your global newsletter list. To send to that list, turn on **Newsletter form** above instead.
 
 - **Newsman segment** - Visible under the same conditions as **Newsman list**. Optional, list-scoped. The dropdown lists every segment with the list name prefixed for readability; segments that don't belong to the selected list are hidden in the UI and dropped at submission time as a safety net.
 
@@ -468,11 +473,66 @@ WPForms' submission flow runs its own success/error response cycle. Newsman subs
 
 ---
 
+## Gravity Forms
+
+If your site uses [Gravity Forms](https://www.gravityforms.com/), the plugin can subscribe submissions to a Newsman list and send the values of any fields you choose as subscriber properties.
+
+> The integration is gated by the **Use Gravity Forms Integration** toggle in **NewsMAN > Settings > Developer Settings**. The toggle (and the Form Settings sub-page it controls) only appears when Gravity Forms is installed.
+
+> **Tested with:** Gravity Forms **2.10.x**. Gravity Forms is a paid plugin with no Lite/free edition; the "Export Subscribers from Form Submissions" feature works on every install since entries are always persisted to `wp_gf_entry` / `wp_gf_entry_meta`.
+
+### Per-form settings
+
+In the WP admin, open **Forms > Forms** and click any form. In the Form Settings sidebar, click the new **Newsman** item (red Newsman logo) next to **Settings**, **Confirmations**, **Notifications**, and **Personal Data**. The page has these options:
+
+- **Send to Newsman** - Off by default. Turn this on to enable Newsman for this form. When off, no data is sent to Newsman regardless of the per-field settings below.
+
+- **Newsletter form** - Off by default. Turn this on to mark the form as your site's newsletter form. When on, the per-form **Newsman list** and **Newsman segment** below are hidden — submissions go to the list and segment configured in **NewsMAN > Sync** instead. Setting this also makes the form eligible to be picked as the **Source Form** for the API v1 `subscriber.list` export (see *Exporting Subscribers from Form Submissions* further below).
+
+- **Newsman list** - Visible only when **Send to Newsman** is on and **Newsletter form** is off. Pick the Newsman list that should receive submissions. The dropdown is populated automatically from your Newsman account using the API Key and User ID configured in **NewsMAN > Settings**, and is cached for 10 minutes (the cache is shared with the other form integrations). If the dropdown is empty or shows "No Newsman lists are available", check your credentials. **Important:** do not pick the same list as the one configured in **NewsMAN > Sync** unless you intend submissions to land in your global newsletter list. To send to that list, turn on **Newsletter form** above instead.
+
+- **Newsman segment** - Visible under the same conditions as **Newsman list**. Optional, list-scoped. The dropdown lists every segment with the list name prefixed for readability; segments that don't belong to the selected list are hidden in the UI and dropped at submission time as a safety net.
+
+- **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
+
+- **Email field** - Pick which form field holds the subscriber's email address. **Any** field type can be used here (text, tel, url, number, email, hidden, ...), not just the dedicated **Email** field type — useful when the form collects email through a custom-validated text field. The dropdown lists each field's label followed by its id and type to make picking easier.
+
+- **Firstname field** - Optional. Pick which form field holds the subscriber's firstname. When set, the field is sent through Newsman's dedicated firstname channel instead of as a generic property. For compound fields (Gravity Forms **Name**, **Address**), each sub-input appears as its own option with the dotted id Gravity uses for storage (e.g. `1.3` for the First Name sub-input of a Name field with id `1`). Leave on "— none —" to skip.
+
+- **Lastname field** - Optional. Same as Firstname, but for the lastname attribute (the Last Name sub-input is typically `1.6` on a Name field).
+
+- **Phone field** - Optional. Pick which form field holds the subscriber's phone (the dedicated **Phone** field type or any text field). When set, the field value is sent as the subscriber's `phone` property.
+
+- **Send as properties** - A checkbox list of every form field (compound fields are flattened into their sub-inputs). Each checked field is sent to Newsman as a subscriber property keyed by the field label sanitized to a stable lowercase snake_case key (or by the field id when no label is set). The selected Email/Firstname/Lastname/Phone fields are shown but disabled — they cannot also be properties because they are already used through their dedicated channels. Defaults: every non-system field except the four reserved ones is checked.
+
+> Internal helper field types (Section Divider, Page Break, HTML, CAPTCHA, File Upload, Password, Credit Card, Product, Total, Donation, Shipping, Option, Quantity) are excluded from both the email-field dropdown and the property checkboxes — they don't carry user-entered values that make sense as subscriber data.
+
+### What happens on submission
+
+When a visitor submits the form successfully:
+
+1. If **Send to Newsman** is off, nothing happens.
+2. If on, the plugin reads the email from the configured email field, builds a property map from the checked fields (multi-value fields like checkboxes are JSON-encoded), and subscribes (or refreshes) the email to the chosen Newsman list with those properties.
+3. The form's normal flow (entry storage, notifications, confirmations) is unaffected. A Newsman API failure is logged but does **not** block Gravity Forms' processing — the visitor still sees the success state.
+
+### Limitation: errors are not surfaced inline (v1)
+
+Gravity Forms runs its own confirmation/notification cycle after `gform_after_submission` fires. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Plain WordPress installs have no log destination — check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+
+### Troubleshooting
+
+- **Newsman item does not appear in Form Settings**: confirm Gravity Forms is active and that **Use Gravity Forms Integration** is on in **NewsMAN > Settings > Developer Settings**.
+- **Newsman list dropdown is empty**: same as the other integrations — confirm credentials in **NewsMAN > Settings** and wait up to 10 minutes for the cache to refresh.
+- **Submitter email not appearing in Newsman**: confirm the **Email field** dropdown points to a field that the visitor actually fills in. For a Gravity Forms **Email** field with a "Confirm" sub-input, the validated email lands at the top-level field id (e.g. `2`), not at the confirm sub-id (`2.2`).
+- **Name not being captured**: for a Gravity Forms **Name** field, you must select the dotted sub-inputs (e.g. `1.3` for First Name and `1.6` for Last Name) in the Firstname/Lastname dropdowns, **not** the parent field id.
+
+---
+
 ## Exporting Subscribers from Form Submissions
 
 The plugin can use **form submissions** as the data source for the API v1 `subscriber.list` endpoint, instead of the default WordPress users / WooCommerce orders source. This is useful for sites whose authoritative subscriber list lives in form submissions rather than in WP users.
 
-Each of the three form integrations (Elementor, Contact Form 7, WPForms) exposes its own toggle and Source Form selector in **NewsMAN > Settings**, directly under the matching **Use {Integration} Integration** row.
+Each of the four form integrations (Elementor, Contact Form 7, WPForms, Gravity Forms) exposes its own toggle and Source Form selector in **NewsMAN > Settings**, directly under the matching **Use {Integration} Integration** row.
 
 ### Settings
 
@@ -488,9 +548,11 @@ Each of the three form integrations (Elementor, Contact Form 7, WPForms) exposes
 
 - **WPForms** - reads from `wp_wpforms_entries` joined to `wp_wpforms_entry_fields`, scoped by the WPForms form post id. **WPForms Lite does not persist entries**; only WPForms Pro does. The settings row shows a notice when Lite is detected and the entries table is missing.
 
+- **Gravity Forms** - reads from `wp_gf_entry` joined to `wp_gf_entry_meta`, scoped by the Gravity Forms form id. Field values are keyed by the field id (or the dotted sub-input id for compound fields like Name and Address, e.g. `1.3` for the First Name sub-input). Trashed forms are kept in the dropdown with a `[Trash]` suffix.
+
 ### Priority chain
 
-`subscriber.list` consults exports in this order: **Elementor → Contact Form 7 → WPForms → WooCommerce → WordPress**. The first eligible source wins; later ones are ignored.
+`subscriber.list` consults exports in this order: **Elementor → Contact Form 7 → WPForms → Gravity Forms → WooCommerce → WordPress**. The first eligible source wins; later ones are ignored.
 
 If you enable more than one form export at once and select a Source Form for each, the Newsman settings page shows a red admin notice listing the conflicting sources — without this notice a misconfiguration would silently produce a result from the wrong source. Disable all but one.
 

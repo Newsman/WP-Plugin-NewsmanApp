@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '14.0.0';
+	protected static $setup_version = '15.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -529,6 +529,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_fourteen_zero_zero();
 			update_option( 'newsman_setup_version', '14.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '15.0.0', '<' ) ) {
+			self::upgrade_options_fifteen_zero_zero();
+			update_option( 'newsman_setup_version', '15.0.0', true );
+		}
 	}
 
 	/**
@@ -777,6 +782,26 @@ jt/modal_{{api_key}}.js'
 		add_option( 'newsman_contact_form_7_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_elementor_export_subscribers', 'off', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_elementor_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
+	 * Version 15.0.0 — seed WPForms + Gravity Forms export options and the
+	 * Gravity Forms master toggle.
+	 *
+	 * WPForms export keys were added in the same release as the integration but
+	 * were not previously seeded; back-fill here so existing installs get the
+	 * default 'off'. Gravity Forms is brand-new: seed master toggle 'on' to
+	 * match the Elementor/CF7/WPForms convention, and export keys 'off' so the
+	 * retriever chain stays inert until the admin explicitly opts in.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_fifteen_zero_zero() {
+		add_option( 'newsman_wpforms_export_subscribers', 'off', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_wpforms_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_gravity_forms_active', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_gravity_forms_export_subscribers', 'off', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_gravity_forms_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**

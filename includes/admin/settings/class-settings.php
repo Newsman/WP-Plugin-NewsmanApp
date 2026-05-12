@@ -78,6 +78,9 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_elementor_export_form_id',
 		'newsman_wpforms_export_subscribers',
 		'newsman_wpforms_export_form_id',
+		'newsman_gravity_forms_active',
+		'newsman_gravity_forms_export_subscribers',
+		'newsman_gravity_forms_export_form_id',
 	);
 
 	/**
@@ -119,9 +122,10 @@ class Settings extends \Newsman\Admin\Settings {
 			$this->init_form_values_from_post();
 			$this->save_form_values();
 
-			// Invalidate the Elementor + WPForms newsletter-forms scans so a freshly-flipped form shows up.
+			// Invalidate the Elementor + WPForms + Gravity Forms newsletter-forms scans so a freshly-flipped form shows up.
 			delete_transient( 'newsman_elementor_newsletter_forms_' . get_current_blog_id() );
 			delete_transient( 'newsman_wpforms_newsletter_forms_' . get_current_blog_id() );
+			delete_transient( 'newsman_gravity_forms_newsletter_forms_' . get_current_blog_id() );
 
 			$this->is_oauth();
 
@@ -189,9 +193,9 @@ class Settings extends \Newsman\Admin\Settings {
 	 * Push an admin error notice when more than one "Export Subscribers from Form
 	 * Submissions" source is fully configured (toggle on AND a Source Form selected).
 	 *
-	 * The retriever priority chain (Elementor - CF7 - WPForms) silently picks the
-	 * first eligible source, so a misconfigured admin would otherwise not realize
-	 * the second/third sources are being ignored.
+	 * The retriever priority chain (Elementor - CF7 - WPForms - Gravity Forms)
+	 * silently picks the first eligible source, so a misconfigured admin would
+	 * otherwise not realize the later sources are being ignored.
 	 *
 	 * @return void
 	 */
@@ -209,6 +213,10 @@ class Settings extends \Newsman\Admin\Settings {
 			&& '' !== (string) $this->get_form_value( 'newsman_wpforms_export_form_id' ) ) {
 			$active[] = esc_html__( 'WPForms', 'newsman' );
 		}
+		if ( 'on' === (string) $this->get_form_value( 'newsman_gravity_forms_export_subscribers' )
+			&& '' !== (string) $this->get_form_value( 'newsman_gravity_forms_export_form_id' ) ) {
+			$active[] = esc_html__( 'Gravity Forms', 'newsman' );
+		}
 
 		if ( count( $active ) <= 1 ) {
 			return;
@@ -218,7 +226,7 @@ class Settings extends \Newsman\Admin\Settings {
 			'error',
 			sprintf(
 				/* translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7"). */
-				esc_html__( 'More than one "Export Subscribers from Form Submissions" is enabled (%s). Only the first in priority order (Elementor - Contact Form 7 - WPForms) will be used by subscriber.list; the others are ignored. Disable all but one.', 'newsman' ),
+				esc_html__( 'More than one "Export Subscribers from Form Submissions" is enabled (%s). Only the first in priority order (Elementor - Contact Form 7 - WPForms - Gravity Forms) will be used by subscriber.list; the others are ignored. Disable all but one.', 'newsman' ),
 				implode( ', ', $active )
 			)
 		);
@@ -436,6 +444,80 @@ class Settings extends \Newsman\Admin\Settings {
 		}
 
 		$forms = apply_filters( 'newsman_admin_settings_wpforms_newsletter_forms', $forms );
+
+		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+		return $forms;
+	}
+
+	/**
+	 * Build the Gravity Forms form dropdown for the "Export Subscribers from Form Submissions" option.
+	 *
+	 * Returns GF forms (form_id => "Form Title (#form_id)") whose persisted form
+	 * settings (inside `wp_gf_form_meta.display_meta` JSON) have both
+	 * `newsman_enable='1'` AND `newsman_newsletter_form='1'`. The form_id matches
+	 * `wp_gf_entry.form_id`, which the retriever uses to scope its query.
+	 *
+	 * Cached for 5 minutes in a per-blog transient; invalidated on Newsman settings
+	 * save and on `gform_after_save_form` (see `Newsman\GravityForms\Integration`).
+	 *
+	 * @return array<int,string>
+	 */
+	public function get_gravity_forms_newsletter_forms() {
+		$transient_key = 'newsman_gravity_forms_newsletter_forms_' . get_current_blog_id();
+		$cached        = get_transient( $transient_key );
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$forms = array();
+
+		// Gate on the GF main constant. Querying wp_gf_form directly avoids the
+		// GFAPI-bootstrap timing trap (GF init runs late, same priority as our
+		// API router).
+		if ( ! defined( 'GF_MIN_WP_VERSION' ) ) {
+			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+			return $forms;
+		}
+
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$rows = $wpdb->get_results(
+			"SELECT f.id, f.title, f.is_trash, fm.display_meta
+			 FROM {$wpdb->prefix}gf_form f
+			 LEFT JOIN {$wpdb->prefix}gf_form_meta fm ON fm.form_id = f.id",
+			ARRAY_A
+		);
+		if ( ! is_array( $rows ) ) {
+			$rows = array();
+		}
+
+		$trash_suffix = ' [' . esc_html__( 'Trash', 'newsman' ) . ']';
+		foreach ( $rows as $row ) {
+			$data = isset( $row['display_meta'] ) ? json_decode( (string) $row['display_meta'], true ) : null;
+			if ( ! is_array( $data ) ) {
+				continue;
+			}
+			$enable     = isset( $data['newsman_enable'] ) ? (string) $data['newsman_enable'] : '';
+			$newsletter = isset( $data['newsman_newsletter_form'] ) ? (string) $data['newsman_newsletter_form'] : '';
+			if ( '1' !== $enable || '1' !== $newsletter ) {
+				continue;
+			}
+
+			$title = isset( $row['title'] ) ? trim( (string) $row['title'] ) : '';
+			if ( '' === $title && isset( $data['title'] ) ) {
+				$title = trim( (string) $data['title'] );
+			}
+			if ( '' === $title ) {
+				$title = sprintf( /* translators: %d: Gravity Forms form id. */ __( 'Form #%d', 'newsman' ), (int) $row['id'] );
+			}
+			$label = sprintf( '%1$s (#%2$d)', $title, (int) $row['id'] );
+			if ( ! empty( $row['is_trash'] ) ) {
+				$label .= $trash_suffix;
+			}
+			$forms[ (int) $row['id'] ] = $label;
+		}
+
+		$forms = apply_filters( 'newsman_admin_settings_gravity_forms_newsletter_forms', $forms );
 
 		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
 		return $forms;

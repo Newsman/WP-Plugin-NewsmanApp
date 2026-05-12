@@ -144,7 +144,7 @@ class FormControls {
 						),
 					),
 				),
-				'description' => esc_html__( 'List for this campaign-specific form. Hidden when "Newsletter form" is on (the Sync section list is used instead).', 'newsman' ),
+				'description' => esc_html__( 'List for this campaign-specific form. Hidden when "Newsletter form" is on (the Sync section list is used instead).', 'newsman' ) . ' ' . esc_html__( 'Do not pick the same list as the one configured in Newsman - Sync unless you intend submissions to land in your global newsletter list. To send to that list, turn on "Newsletter form" instead.', 'newsman' ),
 			),
 			$element
 		);

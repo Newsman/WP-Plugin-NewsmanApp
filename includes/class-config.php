@@ -281,6 +281,20 @@ class Config {
 	}
 
 	/**
+	 * Whether the Gravity Forms integration is enabled.
+	 *
+	 * Default is on. Mirrors the per-integration master toggle pattern used by
+	 * Elementor, CF7, and WPForms.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function use_gravity_forms( $blog_id = null ) {
+		$value = $this->get_blog_option( $blog_id, 'newsman_gravity_forms_active', 'on' );
+		return 'on' === $value;
+	}
+
+	/**
 	 * Whether the Contact Form 7 + Flamingo export subscribers source is enabled.
 	 *
 	 * Seeded 'off' by Setup v14.0.0. The retriever priority chain consults this before
@@ -358,6 +372,34 @@ class Config {
 	 */
 	public function get_wpforms_export_form_id( $blog_id = null ) {
 		return (string) $this->get_blog_option( $blog_id, 'newsman_wpforms_export_form_id', '' );
+	}
+
+	/**
+	 * Whether the Gravity Forms export subscribers source is enabled.
+	 *
+	 * The retriever priority chain consults this after Elementor + CF7 + WPForms.
+	 * Gravity Forms persists entries to `wp_gf_entry` / `wp_gf_entry_meta`; no
+	 * Lite/Pro split.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_gravity_forms_export_subscribers( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_gravity_forms_export_subscribers', 'off' );
+	}
+
+	/**
+	 * The Gravity Forms form (numeric form id) selected as the export source.
+	 *
+	 * Only forms whose Newsman settings have both `newsman_enable='1'` AND
+	 * `newsman_newsletter_form='1'` qualify. Matches the `form_id` column on
+	 * `wp_gf_entry`.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_gravity_forms_export_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_gravity_forms_export_form_id', '' );
 	}
 
 	/**
