@@ -15,6 +15,7 @@ Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea cone
 - [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
 - [Contact Form 7](#contact-form-7)
 - [WPForms](#wpforms)
+- [Export abonati din trimiteri de formulare](#export-abonati-din-trimiteri-de-formulare)
 - [Intrebari Frecvente](#intrebari-frecvente)
 
 ---
@@ -265,21 +266,31 @@ Daca site-ul foloseste widget-ul Form din Elementor Pro, plugin-ul poate abona t
 
 ### Setari per Formular
 
-Deschideti orice pagina in editorul Elementor si selectati un widget Form. In tab-ul **Content**, dupa sectiunea **Form Fields**, veti vedea o noua sectiune **Newsman** cu trei optiuni:
+Deschideti orice pagina in editorul Elementor si selectati un widget Form. In tab-ul **Content**, dupa sectiunea **Form Fields**, veti vedea o noua sectiune **Newsman** cu urmatoarele optiuni:
 
 - **Send to Newsman** - Dezactivat implicit. Activati pentru a porni Newsman pe acest formular. Cand este dezactivat, nicio data din formular nu este trimisa catre Newsman, indiferent de optiunile per camp de mai jos.
 
-- **Newsman List** - Vizibil doar cand **Send to Newsman** este activat. Alegeti lista Newsman care va primi trimiterile din acest formular. Dropdown-ul este populat automat din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, si este pus in cache 10 minute. Daca dropdown-ul este gol, vedeti nota de depanare de la finalul acestei sectiuni.
+- **Newsletter form** - Dezactivat implicit. Activati pentru a marca formularul ca formularul principal de newsletter al site-ului. Doua lucruri se schimba cand este activat: (1) **Newsman List** si **Newsman Segment** per formular de mai jos se ascund — trimiterile merg in lista si segmentul configurate in **NewsMAN > Sync** in locul lor; (2) formularul devine eligibil sa fie ales ca **Source Form** pentru exportul API v1 `subscriber.list` (vedeti *Export abonati din trimiteri de formulare* mai jos).
+
+- **Newsman List** - Vizibil doar cand **Send to Newsman** este activat si **Newsletter form** este dezactivat. Alegeti lista Newsman care va primi trimiterile din acest formular. Dropdown-ul este populat automat din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, si este pus in cache 10 minute. Daca dropdown-ul este gol, vedeti nota de depanare de la finalul acestei sectiuni.
+
+- **Newsman Segment** - Vizibil in aceleasi conditii ca **Newsman List**. Optional. Permite atribuirea abonatilor noi la un segment al listei selectate. Dropdown-ul este restrans la lista — doar segmentele care apartin **Newsman List**-ului ales sunt afisate, iar schimbarea listei sterge orice segment care nu mai corespunde. Segmentele care nu apartin listei salvate sunt eliminate la trimitere ca masura de siguranta.
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
 ### Setari per Camp
 
-Fiecare camp din formular are doua optiuni suplimentare in tab-ul **Advanced**:
+Fiecare camp din formular are urmatoarele optiuni suplimentare in tab-ul **Advanced**:
 
 - **Send to Newsman** - Activat implicit pentru campurile noi. Cand este activat, valoarea acelui camp este trimisa catre Newsman ca proprietate de abonat. **ID**-ul campului (setat in **Advanced > Custom ID**) devine cheia proprietatii in Newsman, asa ca folositi ID-uri stabile in snake_case precum `phone`, `company` sau `birthdate`.
 
 - **Use as Newsman email** - Dezactivat implicit. Bifati exact un camp cu aceasta optiune pentru a indica ce camp contine adresa de email a abonatului. Doar tipurile **Email** si **Text** pot fi marcate. Daca niciun camp nu este marcat, sau campul marcat este gol la trimitere, formularul va esua cu un mesaj de eroare afisat in pagina.
+
+- **Use as Newsman firstname** - Dezactivat implicit. Optional. Bifati un camp cu aceasta optiune pentru a trimite valoarea sa ca prenumele abonatului (atributul `firstname` la API-ul Newsman). Cand este setat, campul este trimis prin canalul dedicat de firstname in loc de proprietate generica. Util pe campuri text.
+
+- **Use as Newsman lastname** - Dezactivat implicit. Optional. La fel ca Firstname, dar pentru atributul lastname (nume).
+
+- **Use as Newsman phone** - Dezactivat implicit. Optional. Bifati un camp cu aceasta optiune pentru a trimite valoarea sa ca telefonul abonatului (stocat ca proprietate `phone` a abonatului). Util pe campuri `tel`/`text`.
 
 > Sugestie: **Custom ID**-ul unui camp Elementor este valoarea setata in **Advanced > Custom ID**. ID-urile implicite sunt auto-generate (de exemplu `field_a1b2c3d`) si nu sunt usor de citit in Newsman. Recomandam sa setati un Custom ID semnificativ pentru fiecare camp marcat cu **Send to Newsman**.
 
@@ -317,11 +328,15 @@ Elementor 4.x a introdus **Atomic Forms**, o arhitectura separata in care formul
 
 ### Setari per Formular
 
-Deschideti o pagina care contine un Atomic Form. Faceti click pe containerul formularului (elementul parinte care contine input-urile) pentru a-l selecta. Sub sectiunile **Content** si **Settings** existente in panoul editorului, apare o noua sectiune **Newsman** cu trei optiuni:
+Deschideti o pagina care contine un Atomic Form. Faceti click pe containerul formularului (elementul parinte care contine input-urile) pentru a-l selecta. Sub sectiunile **Content** si **Settings** existente in panoul editorului, apare o noua sectiune **Newsman** cu urmatoarele optiuni:
 
 - **Send to Newsman** - Dezactivat implicit. Activati pentru a porni Newsman pe acest formular. Cand este dezactivat, nu se trimite nicio data catre Newsman, indiferent de setarile per input.
 
-- **Newsman List** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este partajat cu integrarea Forms clasica: listele provin din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, cu cache de 10 minute.
+- **Newsletter form** - Dezactivat implicit. Aceleasi semantici ca pe widget-ul Form clasic — cand este activat, **Newsman List** si **Newsman Segment** per formular de mai jos se ascund (trimiterile merg in lista si segmentul configurate in **NewsMAN > Sync**), iar formularul devine eligibil sa fie **Source Form** pentru exportul API v1 `subscriber.list`.
+
+- **Newsman List** - Vizibil doar cand **Send to Newsman** este activat si **Newsletter form** este dezactivat. Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este partajat cu integrarea Forms clasica: listele provin din contul dvs. Newsman folosind API Key si User ID configurate in **NewsMAN > Settings**, cu cache de 10 minute.
+
+- **Newsman Segment** - Vizibil in aceleasi conditii ca **Newsman List**. Optional, restrans la lista — aceeasi comportare ca pe widget-ul Form clasic.
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
@@ -332,6 +347,8 @@ Faceti click pe orice widget **Input**, **Textarea** sau **Checkbox** din interi
 - **Send to Newsman** - Activat implicit. Cand este activat, valoarea trimisa de acest widget este inclusa ca proprietate de abonat. Cheia proprietatii este **ID**-ul widget-ului (setat in sectiunea **Settings**, controlul etichetat **ID**); recomandam sa setati un ID stabil, in snake_case, precum `phone`, `company` sau `birthdate`.
 
 - **Use as Newsman email** - Dezactivat implicit. Bifati exact un input sau textarea cu aceasta optiune pentru a indica ce widget contine adresa de email a abonatului. Widget-ul Checkbox nu expune aceasta optiune (un checkbox nu poate fi campul de email).
+
+- **Use as Newsman firstname** / **Use as Newsman lastname** / **Use as Newsman phone** - Dezactivate implicit. Optionale. Bifati cel mult un input per atribut pentru a trimite valoarea sa prin canalele dedicate firstname / lastname / phone in loc de proprietate generica. Nu sunt expuse pe widget-ul Checkbox.
 
 > **ID**-ul widget-ului in Atomic Forms este acelasi camp folosit ca atribut HTML `name` la trimiterea formularului. Cele doua trebuie sa coincida pentru ca integrarea sa gaseasca valoarea, motiv pentru care folosim ID-ul direct.
 
@@ -370,13 +387,23 @@ In WP admin, deschideti **Contact > Contact Forms** si dati click pe orice formu
 
 - **Send to Newsman** - Dezactivat implicit. Activati-l pentru a porni Newsman pentru acest formular. Cand este dezactivat, nu se trimit date catre Newsman, indiferent de setarile per camp de mai jos.
 
-- **Newsman list** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarea Elementor). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
+- **Newsletter form** - Dezactivat implicit. Activati pentru a marca formularul ca formularul principal de newsletter al site-ului. Cand este activat, **Newsman list** si **Newsman segment** per formular de mai jos se ascund — trimiterile merg in lista si segmentul configurate in **NewsMAN > Sync** in locul lor. Setarea face de asemenea formularul eligibil sa fie ales ca **Source Form** pentru exportul API v1 `subscriber.list` (vedeti *Export abonati din trimiteri de formulare* mai jos).
+
+- **Newsman list** - Vizibil doar cand **Send to Newsman** este activat si **Newsletter form** este dezactivat. Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarea Elementor). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
+
+- **Newsman segment** - Vizibil in aceleasi conditii ca **Newsman list**. Optional. Permite atribuirea abonatilor noi la un segment al listei selectate. Dropdown-ul este restrans la lista — doar segmentele care apartin listei alese sunt afisate; schimbarea listei sterge orice segment care nu mai corespunde; segmentele care nu apartin listei salvate sunt eliminate la trimitere.
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
 - **Email field** - Alegeti care form-tag detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, email, number, ...), nu doar tag-urile `[email]` - util pentru formulare care colecteaza emailul printr-un camp text cu validare proprie. Selectia implicita este primul form-tag `[email]` din template; daca nu exista un tag email, este selectat primul camp disponibil. Dropdown-ul afiseaza si basetype-ul fiecarui tag langa nume pentru a usura selectia.
 
-- **Send as properties** - O lista de checkbox-uri cu toate form-tag-urile din template. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie numele form-tag-ului. Campul email selectat este afisat dar dezactivat (nu poate fi proprietate, deoarece este deja folosit ca email de abonat). Implicit: fiecare tag non-sistem cu exceptia campului email este bifat.
+- **Firstname field** - Optional. Alegeti care form-tag detine prenumele abonatului. Cand este setat, campul este trimis prin canalul dedicat firstname al Newsman in loc de proprietate generica. Lasati pe "— none —" pentru a sari peste.
+
+- **Lastname field** - Optional. La fel ca Firstname, dar pentru atributul lastname (nume).
+
+- **Phone field** - Optional. Alegeti care form-tag detine numarul de telefon al abonatului. Cand este setat, valoarea campului este trimisa ca proprietate `phone` a abonatului.
+
+- **Send as properties** - O lista de checkbox-uri cu toate form-tag-urile din template. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie numele form-tag-ului. Campurile Email/Firstname/Lastname/Phone selectate sunt afisate dar dezactivate — nu pot fi si proprietati, deoarece sunt deja folosite prin canalele dedicate. Implicit: fiecare tag non-sistem cu exceptia celor patru campuri rezervate este bifat.
 
 > Tag-urile interne (butonul Submit, file uploads, acceptance, reCAPTCHA, captcha-c, captcha-r, quiz) sunt excluse atat din dropdown-ul de email cat si din checkbox-urile de proprietati - nu poarta valori introduse de utilizator care sa aiba sens ca date de abonat.
 
@@ -412,13 +439,23 @@ In WP admin, deschideti **WPForms > All Forms** si dati click pe **Edit** pentru
 
 - **Send to Newsman** - Dezactivat implicit. Activati comutatorul pentru a porni Newsman pentru acest formular. Cand este dezactivat, nu se trimit date catre Newsman, indiferent de setarile per camp de mai jos.
 
-- **Newsman list** - Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarile Elementor si Contact Form 7). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
+- **Newsletter form** - Dezactivat implicit. Activati pentru a marca formularul ca formularul principal de newsletter al site-ului. Cand este activat, **Newsman list** si **Newsman segment** per formular de mai jos se ascund — trimiterile merg in lista si segmentul configurate in **NewsMAN > Sync** in locul lor. Setarea face de asemenea formularul eligibil sa fie ales ca **Source Form** pentru exportul API v1 `subscriber.list` (vedeti *Export abonati din trimiteri de formulare* mai jos).
+
+- **Newsman list** - Vizibil doar cand **Send to Newsman** este activat si **Newsletter form** este dezactivat. Alegeti lista Newsman care va primi trimiterile. Dropdown-ul este populat automat din contul Newsman folosind API Key-ul si User ID-ul configurate in **NewsMAN > Settings**, si este memorat in cache 10 minute (cache-ul este partajat cu integrarile Elementor si Contact Form 7). Daca dropdown-ul este gol sau afiseaza "No Newsman lists are available", verificati credentialele.
+
+- **Newsman segment** - Vizibil in aceleasi conditii ca **Newsman list**. Optional, restrans la lista. Dropdown-ul afiseaza fiecare segment cu numele listei prefixat pentru lizibilitate; segmentele care nu apartin listei selectate sunt ascunse in UI si eliminate la trimitere ca masura de siguranta.
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
 - **Email field** - Alegeti care camp din formular detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, number, email, hidden, ...), nu doar tipul dedicat **Email** - util cand formularul colecteaza emailul printr-un camp text cu validare proprie. Dropdown-ul afiseaza eticheta fiecarui camp urmata de tipul lui pentru a usura selectia.
 
-- **Send as properties** - O lista de checkbox-uri cu toate campurile din formular. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie eticheta campului normalizata in snake_case (sau ID-ul campului cand nu este setata o eticheta). Campul email selectat este afisat dar dezactivat (nu poate fi proprietate, deoarece este deja folosit ca email de abonat). Implicit: fiecare camp non-sistem cu exceptia campului email este bifat.
+- **Firstname field** - Optional. Alegeti care camp din formular detine prenumele abonatului. Cand este setat, campul este trimis prin canalul dedicat firstname al Newsman in loc de proprietate generica. Lasati pe "— none —" pentru a sari peste.
+
+- **Lastname field** - Optional. La fel ca Firstname, dar pentru atributul lastname (nume).
+
+- **Phone field** - Optional. Alegeti care camp din formular detine numarul de telefon al abonatului. Cand este setat, valoarea campului este trimisa ca proprietate `phone` a abonatului.
+
+- **Send as properties** - O lista de checkbox-uri cu toate campurile din formular. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie eticheta campului normalizata in snake_case (sau ID-ul campului cand nu este setata o eticheta). Campurile Email/Firstname/Lastname/Phone selectate sunt afisate dar dezactivate — nu pot fi si proprietati, deoarece sunt deja folosite prin canalele dedicate. Implicit: fiecare camp non-sistem cu exceptia celor patru campuri rezervate este bifat.
 
 > Campurile interne (Page Break, HTML, Section Divider, Content, Internal Information, Entry Preview, widget-uri captcha) sunt excluse atat din dropdown-ul de email cat si din checkbox-urile de proprietati - nu poarta valori introduse de utilizator care sa aiba sens ca date de abonat.
 
@@ -439,6 +476,36 @@ Fluxul de trimitere WPForms ruleaza propriul ciclu de raspuns succes/eroare. Ese
 - **Sectiunea Newsman nu apare**: confirmati ca WPForms este activ si ca **Use WPForms Integration** este pornit in **NewsMAN > Settings > Developer Settings**.
 - **Dropdown-ul Newsman list este gol**: la fel ca la celelalte integrari - confirmati credentialele in **NewsMAN > Settings** si asteptati pana la 10 minute pentru reimprospatarea cache-ului.
 - **Emailul nu apare in Newsman**: confirmati ca dropdown-ul **Email field** indica un camp pe care vizitatorul il completeaza efectiv. Daca campul este gol la momentul trimiterii, randul este omis si se scrie o intrare de log de tip debug.
+
+---
+
+## Export abonati din trimiteri de formulare
+
+Plugin-ul poate folosi **trimiterile de formulare** ca sursa de date pentru endpoint-ul API v1 `subscriber.list`, in loc de sursa implicita (utilizatori WordPress / comenzi WooCommerce). Util pentru site-urile a caror lista autoritativa de abonati se afla in trimiterile de formulare in loc de utilizatorii WP.
+
+Fiecare dintre cele trei integrari de formulare (Elementor, Contact Form 7, WPForms) expune propriul comutator si selector de Source Form in **NewsMAN > Settings**, direct sub randul **Use {Integration} Integration** corespunzator.
+
+### Setari
+
+- **Export Subscribers from Form Submissions** - Dezactivat implicit, per integrare. Cand este activat, `subscriber.list` returneaza randuri preluate din stocarea de trimiteri a acestei integrari in loc de utilizatori WP / comenzi WC. Dropdown-ul Source Form de mai jos alege ce formular le furnizeaza.
+
+- **Source Form** - Vizibil doar cand comutatorul de export de mai sus este activat. Listeaza fiecare formular care are atat **Send to Newsman** cat si **Newsletter form** activate — singurul mod de a califica un formular pentru export. Dropdown-ul este pus in cache 5 minute per site si reimprospatat la fiecare salvare de formular (Elementor `elementor/document/after_save`, WPForms `wpforms_save_form`, listele CF7 nu sunt puse in cache) sau la fiecare salvare a paginii Newsman Settings. Formularele aruncate la cos raman in lista cu sufixul "**[Trash]**" — trimiterile persista in baza de date cand formularul este aruncat, deci sursa de export continua sa functioneze pana cand WordPress sterge definitiv formularul (implicit: 30 de zile).
+
+### Sursa de date din spatele fiecarei integrari
+
+- **Elementor** - citeste din `wp_e_submissions` unit cu `wp_e_submissions_values`, indexat dupa ID-ul widget-ului formularului. Functioneaza atat pentru widget-ul Form clasic cat si pentru Atomic Forms.
+
+- **Contact Form 7** - citeste din mesajele Inbound ale plugin-ului [Flamingo](https://wordpress.org/plugins/flamingo/), restranse la slug-ul taxonomic al canalului formularului CF7. Randul Source Form apare doar cand Flamingo este instalat (fara Flamingo, trimiterile CF7 nu sunt persistate nicaieri). Dropdown-urile per formular **Email field** / **Firstname field** / **Lastname field** / **Phone field** decid ce cheie postmeta este citita pentru fiecare atribut al abonatului.
+
+- **WPForms** - citeste din `wp_wpforms_entries` unit cu `wp_wpforms_entry_fields`, restranse la ID-ul postului formularului WPForms. **WPForms Lite nu persista trimiterile**; doar WPForms Pro. Randul de setari afiseaza o notificare cand este detectat Lite si tabelul de trimiteri lipseste.
+
+### Lant de prioritate
+
+`subscriber.list` consulta exporturile in aceasta ordine: **Elementor → Contact Form 7 → WPForms → WooCommerce → WordPress**. Prima sursa eligibila castiga; cele ulterioare sunt ignorate.
+
+Daca activati mai mult de un export de formular si selectati un Source Form pentru fiecare, pagina Newsman Settings afiseaza o notificare admin rosie care listeaza sursele in conflict — fara aceasta notificare, o configuratie gresita ar produce silentios un rezultat din sursa gresita. Dezactivati toate, cu exceptia uneia.
+
+Daca niciun export de formular nu este activat si optiunile de export WC/WP din **NewsMAN > Remarketing** sunt si ele dezactivate, `subscriber.list` returneaza `{"error": {"code": 3002, "message": "Subscriber export not enabled"}}`.
 
 ---
 
