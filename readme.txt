@@ -111,6 +111,14 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.16 =
+* Add "Export Subscribers from Form Submissions" API v1 source for Contact Form 7 (via Flamingo), Elementor Pro (legacy Form widget + Atomic Forms), and WPForms (Pro entries); per-integration toggle plus a Source Form dropdown that lists every form flagged with both "Send to Newsman" and "Newsletter form"
+* Add per-form "Newsletter form" toggle, "Newsman Segment" dropdown, and firstname/lastname/phone field markers on all four form integrations (legacy Elementor, Atomic, CF7, WPForms)
+* Add admin error notice when more than one form-export source is fully configured — surfaces the priority chain (Elementor - CF7 - WPForms) so a misconfiguration doesn't silently fall through to the wrong source
+* Include trashed source forms in the Source Form dropdown with a "[Trash]" suffix — submissions persist after the host form is moved to Trash, so the export keeps working until WordPress auto-purges
+* Fix Elementor export retriever: `wp_e_submissions` column is `element_id`, not `form_id`; Atomic Form submissions are keyed by the input widget id, not by `_cssid`
+* Skip `subscriber.updateProps` when the props payload is empty, avoiding a no-op API round-trip on every existing-subscriber form submission
+
 = 3.7.15 =
 * Add WPForms integration — new "Newsman" tab on the form-builder Settings panel with per-form enable, list selection, email-field dropdown, and a checkbox list of the form's fields to send as Newsman subscriber properties
 
