@@ -50,10 +50,12 @@ class SubscribersWPForms extends AbstractRetriever implements RetrieverInterface
 	 * @return bool
 	 */
 	public static function is_eligible( $blog_id = null ) {
+		// Use WPFORMS_VERSION (defined when the plugin loads its main file) as the
+		// active-plugin signal. Don't check `post_type_exists('wpforms')` — that
+		// only returns true after the `init` hook fires, but the Newsman API endpoint
+		// hooks `init` itself at the same priority, so the wpforms post type may not
+		// be registered yet when this eligibility check runs.
 		if ( ! defined( 'WPFORMS_VERSION' ) ) {
-			return false;
-		}
-		if ( ! post_type_exists( 'wpforms' ) ) {
 			return false;
 		}
 

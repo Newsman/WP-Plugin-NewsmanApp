@@ -377,8 +377,11 @@ class Settings extends \Newsman\Admin\Settings {
 
 		$forms = array();
 
-		// WPForms can be Lite (free) or Pro — both register the `wpforms` post type.
-		if ( ! post_type_exists( 'wpforms' ) ) {
+		// WPForms can be Lite (free) or Pro — both define WPFORMS_VERSION when their
+		// main plugin file loads. We don't gate on `post_type_exists('wpforms')` since
+		// the post type only registers on `init`, and this dropdown may be built
+		// from contexts where `init` has not yet fired.
+		if ( ! defined( 'WPFORMS_VERSION' ) ) {
 			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
 			return $forms;
 		}

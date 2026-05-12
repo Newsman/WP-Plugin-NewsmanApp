@@ -191,7 +191,10 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 		$values_table      = $wpdb->prefix . 'e_submissions_values';
 
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$where  = $wpdb->prepare( 's.form_id = %s', $form_id );
+		// wp_e_submissions stores the widget id in `element_id` (varchar(20)) — the
+		// column shown as "Form" in Elementor's Submissions admin grid. There's no
+		// `form_id` column on this table.
+		$where  = $wpdb->prepare( 's.element_id = %s', $form_id );
 		$joins  = $wpdb->prepare( "INNER JOIN {$values_table} v_email ON v_email.submission_id = s.id AND v_email.`key` = %s", $email_field );
 		$select = 'v_email.value AS email, MAX(s.id) AS id, MAX(s.created_at) AS created_at, MAX(s.user_ip) AS user_ip';
 
@@ -499,22 +502,23 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 		$input_types = array( 'e-form-input', 'e-form-textarea', 'e-form-checkbox' );
 		if ( in_array( $type, $input_types, true ) ) {
 			$settings = isset( $node['settings'] ) && is_array( $node['settings'] ) ? $node['settings'] : array();
-			$cssid    = self::resolve_string( $settings, '_cssid' );
-			if ( '' === $cssid ) {
-				$cssid = isset( $node['id'] ) ? (string) $node['id'] : '';
-			}
-			if ( '' !== $cssid ) {
+			// Atomic Form submissions are stored in wp_e_submissions_values with `key`
+			// set to the input widget id (the 7-char hex node['id']), not the input's
+			// `_cssid` setting. cssid is for CSS targeting only and never appears as a
+			// submission key.
+			$field_key = isset( $node['id'] ) ? (string) $node['id'] : '';
+			if ( '' !== $field_key ) {
 				if ( '' === $fields['email'] && self::resolve_flag( $settings, 'newsman_is_email' ) ) {
-					$fields['email'] = $cssid;
+					$fields['email'] = $field_key;
 				}
 				if ( '' === $fields['firstname'] && self::resolve_flag( $settings, 'newsman_is_firstname' ) ) {
-					$fields['firstname'] = $cssid;
+					$fields['firstname'] = $field_key;
 				}
 				if ( '' === $fields['lastname'] && self::resolve_flag( $settings, 'newsman_is_lastname' ) ) {
-					$fields['lastname'] = $cssid;
+					$fields['lastname'] = $field_key;
 				}
 				if ( '' === $fields['phone'] && self::resolve_flag( $settings, 'newsman_is_phone' ) ) {
-					$fields['phone'] = $cssid;
+					$fields['phone'] = $field_key;
 				}
 			}
 		}
