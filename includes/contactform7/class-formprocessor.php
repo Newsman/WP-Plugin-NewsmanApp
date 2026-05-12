@@ -11,6 +11,7 @@
 
 namespace Newsman\ContactForm7;
 
+use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Subscribe\Helper as SubscribeHelper;
 use Newsman\User\IpAddress;
@@ -71,11 +72,27 @@ class FormProcessor {
 		}
 
 		$logger = Logger::init();
+		$config = Config::init();
 
-		$list_id = isset( $prop['list_id'] ) ? trim( (string) $prop['list_id'] ) : '';
-		if ( '' === $list_id ) {
-			$logger->error( esc_html__( 'Newsman: CF7 form is enabled but no list is selected.', 'newsman' ) );
-			return;
+		// Newsletter-form mode: override list_id and segment_id from the Newsman - Sync config.
+		// Campaign-form mode: use the per-form list_id and segment_id.
+		if ( ! empty( $prop['newsletter_form'] ) ) {
+			$list_id    = trim( (string) $config->get_list_id( get_current_blog_id() ) );
+			$segment_id = trim( (string) $config->get_segment_id( get_current_blog_id() ) );
+			if ( '' === $list_id ) {
+				$logger->error( esc_html__( 'Newsman: CF7 form is marked as newsletter form but no list is configured in Newsman - Sync.', 'newsman' ) );
+				return;
+			}
+		} else {
+			$list_id    = isset( $prop['list_id'] ) ? trim( (string) $prop['list_id'] ) : '';
+			$segment_id = isset( $prop['segment_id'] ) ? trim( (string) $prop['segment_id'] ) : '';
+			if ( '' === $list_id ) {
+				$logger->error( esc_html__( 'Newsman: CF7 form is enabled but no list is selected.', 'newsman' ) );
+				return;
+			}
+			if ( '' !== $segment_id && ! \Newsman\Subscribe\Segments::belongs_to_list( get_current_blog_id(), $list_id, $segment_id ) ) {
+				$segment_id = '';
+			}
 		}
 
 		$email_field = isset( $prop['email_field'] ) ? trim( (string) $prop['email_field'] ) : '';
@@ -107,6 +124,7 @@ class FormProcessor {
 
 		$firstname_field = isset( $prop['firstname_field'] ) ? trim( (string) $prop['firstname_field'] ) : '';
 		$lastname_field  = isset( $prop['lastname_field'] ) ? trim( (string) $prop['lastname_field'] ) : '';
+		$phone_field     = isset( $prop['phone_field'] ) ? trim( (string) $prop['phone_field'] ) : '';
 
 		$firstname = '';
 		if ( '' !== $firstname_field ) {
@@ -116,6 +134,10 @@ class FormProcessor {
 		if ( '' !== $lastname_field ) {
 			$lastname = trim( (string) self::flatten_value( $submission->get_posted_data( $lastname_field ) ) );
 		}
+		$phone = '';
+		if ( '' !== $phone_field ) {
+			$phone = trim( (string) self::flatten_value( $submission->get_posted_data( $phone_field ) ) );
+		}
 
 		$properties = array();
 		foreach ( $send_fields as $field_name ) {
@@ -123,11 +145,14 @@ class FormProcessor {
 			if ( '' === $field_name || $field_name === $email_field ) {
 				continue;
 			}
-			// Firstname/lastname fields are sent via the context, not props.
+			// Firstname/lastname/phone fields are sent via dedicated keys, not under their form-tag name.
 			if ( '' !== $firstname_field && $field_name === $firstname_field ) {
 				continue;
 			}
 			if ( '' !== $lastname_field && $field_name === $lastname_field ) {
+				continue;
+			}
+			if ( '' !== $phone_field && $field_name === $phone_field ) {
 				continue;
 			}
 			$value = $submission->get_posted_data( $field_name );
@@ -135,6 +160,10 @@ class FormProcessor {
 				continue;
 			}
 			$properties[ $field_name ] = self::format_value( $value );
+		}
+
+		if ( '' !== $phone ) {
+			$properties['phone'] = $phone;
 		}
 
 		/**
@@ -158,7 +187,8 @@ class FormProcessor {
 				IpAddress::init()->get_ip(),
 				$optin_mode,
 				$firstname,
-				$lastname
+				$lastname,
+				$segment_id
 			);
 
 			/**

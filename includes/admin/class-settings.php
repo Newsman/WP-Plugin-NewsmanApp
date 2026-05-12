@@ -16,6 +16,7 @@ use Newsman\Logger;
 use Newsman\Util\WooCommerceExist;
 use Newsman\Util\ElementorExist;
 use Newsman\Util\ContactForm7Exist;
+use Newsman\Util\FlamingoExist;
 use Newsman\Util\WPFormsExist;
 use Newsman\Util\ActionScheduler as NewsmanActionScheduler;
 
@@ -79,6 +80,13 @@ class Settings {
 	protected $wpforms_exists;
 
 	/**
+	 *  Flamingo Exists
+	 *
+	 * @var FlamingoExist
+	 */
+	protected $flamingo_exists;
+
+	/**
 	 * Page nonce action
 	 *
 	 * @var string
@@ -138,6 +146,7 @@ class Settings {
 		$this->elementor_exists      = new ElementorExist();
 		$this->contact_form_7_exists = new ContactForm7Exist();
 		$this->wpforms_exists        = new WPFormsExist();
+		$this->flamingo_exists       = new FlamingoExist();
 	}
 
 	/**
@@ -839,6 +848,30 @@ class Settings {
 	 */
 	public function is_wpforms_exists() {
 		return $this->wpforms_exists->exist();
+	}
+
+	/**
+	 * Flamingo exists.
+	 *
+	 * Required for the CF7 "Export Subscribers from Form Submissions" option since
+	 * Flamingo is what persists CF7 submissions to `flamingo_inbound` for later export.
+	 *
+	 * @return bool
+	 */
+	public function is_flamingo_exists() {
+		return $this->flamingo_exists->exist();
+	}
+
+	/**
+	 * Elementor Pro exists.
+	 *
+	 * Required for the Elementor "Export Subscribers from Form Submissions" option since
+	 * the Form widget (and its submissions table `wp_e_submissions`) only ship in Pro.
+	 *
+	 * @return bool
+	 */
+	public function is_elementor_pro_exists() {
+		return $this->elementor_exists->exist();
 	}
 
 	/**

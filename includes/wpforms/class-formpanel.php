@@ -12,6 +12,7 @@
 namespace Newsman\WPForms;
 
 use Newsman\Subscribe\Lists;
+use Newsman\Subscribe\Segments;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -216,6 +217,21 @@ class FormPanel {
 			)
 		);
 
+		wpforms_panel_field(
+			'toggle',
+			'settings',
+			'newsman_newsletter_form',
+			$form_data,
+			esc_html__( 'Newsletter form', 'newsman' ),
+			array(
+				'tooltip' => esc_html__( 'When on, submissions go to the list and segment configured in Newsman - Sync (the per-form list and segment below are hidden because they no longer apply).', 'newsman' ),
+			)
+		);
+
+		// Wrap list + segment rows so the inline JS below can toggle their visibility
+		// when "Newsletter form" is on.
+		echo '<div class="newsman-list-segment-wrap">';
+
 		if ( count( $list_select ) === 1 ) {
 			echo '<p class="newsman-empty-lists"><em>';
 			echo esc_html__( 'No Newsman lists are available. Configure your Newsman API key on the Newsman settings page first.', 'newsman' );
@@ -229,9 +245,75 @@ class FormPanel {
 				esc_html__( 'Newsman list', 'newsman' ),
 				array(
 					'options' => $list_select,
+					'tooltip' => esc_html__( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the configured Sync list is used instead).', 'newsman' ),
 				)
 			);
+
+			// Segments — flat list across all lists; option labels prefix the list name.
+			// JS below hides options whose list doesn't match the currently selected list.
+			$segment_select   = array( '' => esc_html__( '— none —', 'newsman' ) );
+			$segments_by_list = Segments::get_by_list( get_current_blog_id() );
+			foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
+				$list_label = isset( $list_select[ (string) $seg_list_id ] ) ? (string) $list_select[ (string) $seg_list_id ] : (string) $seg_list_id;
+				foreach ( $segments_for_list as $segment_id => $segment_name ) {
+					$segment_select[ (string) $segment_id ] = sprintf( '%1$s — %2$s', $list_label, (string) $segment_name );
+				}
+			}
+
+			wpforms_panel_field(
+				'select',
+				'settings',
+				'newsman_segment_id',
+				$form_data,
+				esc_html__( 'Newsman segment', 'newsman' ),
+				array(
+					'options' => $segment_select,
+					'tooltip' => esc_html__( 'Optional. Segments are list-scoped — only segments that belong to the selected list are kept. If they don\'t match, the segment is dropped at submit time.', 'newsman' ),
+				)
+			);
+
+			// Build a JS-readable segment - list_id map for filtering on list change.
+			$segment_to_list = array( '' => '' );
+			foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
+				foreach ( $segments_for_list as $segment_id => $unused_name ) {
+					$segment_to_list[ (string) $segment_id ] = (string) $seg_list_id;
+				}
+			}
+
+			echo '<script>(function($){' .
+				'var segmentToList = ' . wp_json_encode( $segment_to_list ) . ';' .
+				'function filterSegments(){' .
+				'  var $list = $("#wpforms-panel-field-settings-newsman_list_id");' .
+				'  var $seg  = $("#wpforms-panel-field-settings-newsman_segment_id");' .
+				'  if ( ! $list.length || ! $seg.length ) return;' .
+				'  var currentList = String($list.val() || "");' .
+				'  var stillVisible = false;' .
+				'  $seg.find("option").each(function(){' .
+				'    var v = String($(this).val());' .
+				'    var listForSeg = segmentToList[v];' .
+				'    if ( typeof listForSeg === "undefined" ) listForSeg = "";' .
+				'    var visible = ( "" === listForSeg ) || ( listForSeg === currentList );' .
+				'    $(this).prop("hidden", ! visible).prop("disabled", ! visible);' .
+				'    if ( visible && v === String($seg.val()) ) { stillVisible = true; }' .
+				'  });' .
+				'  if ( ! stillVisible ) { $seg.val("").trigger("change"); }' .
+				'}' .
+				'function toggleNewsletterMode(){' .
+				'  var $news = $("#wpforms-panel-field-settings-newsman_newsletter_form");' .
+				'  var $wrap = $(".newsman-list-segment-wrap");' .
+				'  if ( ! $news.length ) return;' .
+				'  $wrap.toggle( ! $news.is(":checked") );' .
+				'}' .
+				'$(function(){' .
+				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_list_id", filterSegments);' .
+				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_newsletter_form", toggleNewsletterMode);' .
+				'  filterSegments();' .
+				'  toggleNewsletterMode();' .
+				'});' .
+				'})(jQuery);</script>';
 		}
+
+		echo '</div>';
 
 		wpforms_panel_field(
 			'select',
@@ -318,6 +400,18 @@ class FormPanel {
 			)
 		);
 
+		wpforms_panel_field(
+			'select',
+			'settings',
+			'newsman_phone_field',
+			$form_data,
+			esc_html__( 'Phone field', 'newsman' ),
+			array(
+				'options' => $name_options,
+				'tooltip' => esc_html__( 'Optional. When set, the field value is sent as the subscriber\'s phone under the `phone` property key.', 'newsman' ),
+			)
+		);
+
 		// Custom HTML for the per-field "send as property" checkbox list. The
 		// inputs save under settings[newsman_send_fields][<id>] = "1" so the
 		// final form_data shape is `[ field_id => '1', ... ]`.
@@ -328,6 +422,7 @@ class FormPanel {
 		$selected_email     = isset( $prop['newsman_email_field'] ) ? (string) $prop['newsman_email_field'] : '';
 		$selected_firstname = isset( $prop['newsman_firstname_field'] ) ? (string) $prop['newsman_firstname_field'] : '';
 		$selected_lastname  = isset( $prop['newsman_lastname_field'] ) ? (string) $prop['newsman_lastname_field'] : '';
+		$selected_phone     = isset( $prop['newsman_phone_field'] ) ? (string) $prop['newsman_phone_field'] : '';
 
 		echo '<div class="wpforms-panel-field wpforms-panel-field-checkbox">';
 		echo '<label>' . esc_html__( 'Send as properties', 'newsman' ) . '</label>';
@@ -336,7 +431,8 @@ class FormPanel {
 			$is_email_field     = ( (string) $field_id === $selected_email );
 			$is_firstname_field = ( '' !== $selected_firstname && (string) $field_id === $selected_firstname );
 			$is_lastname_field  = ( '' !== $selected_lastname && (string) $field_id === $selected_lastname );
-			$is_reserved        = ( $is_email_field || $is_firstname_field || $is_lastname_field );
+			$is_phone_field     = ( '' !== $selected_phone && (string) $field_id === $selected_phone );
+			$is_reserved        = ( $is_email_field || $is_firstname_field || $is_lastname_field || $is_phone_field );
 			$default_on         = $has_existing
 				? ! empty( $send_fields[ (string) $field_id ] )
 				: ! $is_reserved;
@@ -359,6 +455,8 @@ class FormPanel {
 				echo ' <em>(' . esc_html__( 'used as firstname', 'newsman' ) . ')</em>';
 			} elseif ( $is_lastname_field ) {
 				echo ' <em>(' . esc_html__( 'used as lastname', 'newsman' ) . ')</em>';
+			} elseif ( $is_phone_field ) {
+				echo ' <em>(' . esc_html__( 'used as phone', 'newsman' ) . ')</em>';
 			}
 			echo '</label>';
 			echo '</li>';
@@ -391,29 +489,35 @@ class FormPanel {
 		return wp_parse_args(
 			array(
 				'newsman_enable'          => isset( $settings['newsman_enable'] ) ? $settings['newsman_enable'] : '',
+				'newsman_newsletter_form' => isset( $settings['newsman_newsletter_form'] ) ? $settings['newsman_newsletter_form'] : '',
 				'newsman_list_id'         => isset( $settings['newsman_list_id'] ) ? $settings['newsman_list_id'] : '',
+				'newsman_segment_id'      => isset( $settings['newsman_segment_id'] ) ? $settings['newsman_segment_id'] : '',
 				'newsman_optin_mode'      => $optin_mode,
 				'newsman_email_field'     => isset( $settings['newsman_email_field'] ) ? $settings['newsman_email_field'] : '',
 				'newsman_firstname_field' => isset( $settings['newsman_firstname_field'] ) ? $settings['newsman_firstname_field'] : '',
 				'newsman_lastname_field'  => isset( $settings['newsman_lastname_field'] ) ? $settings['newsman_lastname_field'] : '',
+				'newsman_phone_field'     => isset( $settings['newsman_phone_field'] ) ? $settings['newsman_phone_field'] : '',
 				'newsman_send_fields'     => isset( $settings['newsman_send_fields'] ) && is_array( $settings['newsman_send_fields'] )
 					? $settings['newsman_send_fields']
 					: array(),
 			),
 			array(
 				'newsman_enable'          => '',
+				'newsman_newsletter_form' => '',
 				'newsman_list_id'         => '',
+				'newsman_segment_id'      => '',
 				'newsman_optin_mode'      => 'single',
 				'newsman_email_field'     => '',
 				'newsman_firstname_field' => '',
 				'newsman_lastname_field'  => '',
+				'newsman_phone_field'     => '',
 				'newsman_send_fields'     => array(),
 			)
 		);
 	}
 
 	/**
-	 * Build the field-id → metadata map shown in the panel.
+	 * Build the field-id - metadata map shown in the panel.
 	 *
 	 * Excludes non-data field types (divider, pagebreak, html, etc.) and fields
 	 * without an id. Result is keyed by field id (matching `$form_data['fields']`).

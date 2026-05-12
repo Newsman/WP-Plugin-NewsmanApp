@@ -16,10 +16,12 @@ use Newsman\Service\Context\GetByEmail as GetByEmailContext;
 use Newsman\Service\Context\InitSubscribeEmail as InitSubscribeEmailContext;
 use Newsman\Service\Context\SubscribeEmail as SubscribeEmailContext;
 use Newsman\Service\Context\Subscriber\Update as UpdateContext;
+use Newsman\Service\Context\Segment\AddSubscriber as AddSubscriberContext;
 use Newsman\Service\Context\Subscriber\UpdateProps as UpdatePropsContext;
 use Newsman\Service\GetByEmail;
 use Newsman\Service\InitSubscribeEmail;
 use Newsman\Service\Response\Subscriber\Status as SubscriberStatus;
+use Newsman\Service\Segment\AddSubscriber;
 use Newsman\Service\SubscribeEmail;
 use Newsman\Service\Subscriber\Update as UpdateService;
 use Newsman\Service\Subscriber\UpdateProps;
@@ -37,7 +39,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * remain unchanged. To fix this, the flow becomes:
  *
  *   1. Look up the email via `subscriber.getByEmail`.
- *   2. If a subscriber is returned -> call `subscriber.updateProps` with their id.
+ *   2. If a subscriber is returned -> call `subscriber.updateProps` with their id, but
+ *      only when there is at least one property to push (an empty props payload would
+ *      be a no-op API round-trip).
  *   3. If not found (or the lookup fails) -> call `subscriber.saveSubscribe` with props
  *      inline (which DOES persist props on first creation).
  *
@@ -58,13 +62,19 @@ class Helper {
 	 * @param string $email      Subscriber email address.
 	 * @param array  $properties Custom properties to set/refresh on the subscriber.
 	 * @param string $ip         Client IP for audit (passed to saveSubscribe/initSubscribe).
-	 * @param string $optin_mode `'single'` (default) → saveSubscribe; `'double'` → initSubscribe.
+	 * @param string $optin_mode `'single'` (default) - saveSubscribe; `'double'` - initSubscribe.
 	 * @param string $firstname  Optional subscriber first name (sets context->set_firstname).
 	 * @param string $lastname   Optional subscriber last name (sets context->set_lastname).
+	 * @param string $segment_id Optional Newsman segment ID. For initSubscribe (double opt-in)
+	 *                           it's passed as `options.segments=[id]` per the API docs. For
+	 *                           saveSubscribe (single opt-in) and updateProps (existing
+	 *                           subscriber refresh) the API does not accept a segments
+	 *                           parameter — we follow up with a separate `segment.addSubscriber`
+	 *                           call. Empty string = skip segment handling entirely.
 	 * @return void
 	 * @throws \Exception When SubscribeEmail, InitSubscribeEmail, or UpdateProps fail.
 	 */
-	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '', $optin_mode = 'single', $firstname = '', $lastname = '' ) {
+	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '', $optin_mode = 'single', $firstname = '', $lastname = '', $segment_id = '' ) {
 		$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
 
 		/**
@@ -133,6 +143,23 @@ class Helper {
 		$lastname  = isset( $names['lastname'] ) ? (string) $names['lastname'] : '';
 
 		/**
+		 * Filter the Newsman segment ID before the subscribe runs.
+		 *
+		 * Return an empty string to skip segment handling entirely; return a non-empty
+		 * segment ID to either add it to the subscriber after saveSubscribe/updateProps
+		 * (via `segment.addSubscriber`) or to pass `options.segments=[id]` into
+		 * initSubscribe directly.
+		 *
+		 * @param string $segment_id Resolved segment ID (may be empty).
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 */
+		$segment_id = (string) apply_filters( 'newsman_subscribe_segment_id', (string) $segment_id, $blog_id, $list_id, $email, $properties, $ip );
+
+		/**
 		 * Filter whether to perform the subscribe at all.
 		 *
 		 * Return false to short-circuit and skip every API call.
@@ -178,44 +205,57 @@ class Helper {
 				}
 			}
 
-			try {
-				self::update_props( $blog_id, $list_id, $email, $subscriber_id, $properties );
-			} catch ( \Exception $e ) {
+			// Skip subscriber.updateProps when there are no properties to push — the API
+			// call would be a no-op round-trip. The segment add below still runs so an
+			// existing subscriber can be moved into the configured segment regardless.
+			if ( ! empty( $properties ) ) {
+				try {
+					self::update_props( $blog_id, $list_id, $email, $subscriber_id, $properties );
+				} catch ( \Exception $e ) {
+					/**
+					 * Fires when a Newsman subscribe attempt fails.
+					 *
+					 * Stage values: 'lookup' (swallowed), 'update_subscriber' (rethrown),
+					 * 'update_props' (rethrown), 'save_subscribe' (rethrown),
+					 * 'init_subscribe' (rethrown), 'segment_add' (swallowed).
+					 *
+					 * @param \Exception $e          Caught exception.
+					 * @param string     $stage      Pipeline stage that failed.
+					 * @param int        $blog_id    Current WP blog ID.
+					 * @param string     $list_id    Newsman list ID.
+					 * @param string     $email      Subscriber email.
+					 * @param array      $properties Subscriber properties.
+					 * @param string     $ip         Client IP.
+					 */
+					do_action( 'newsman_subscribe_failed', $e, 'update_props', $blog_id, $list_id, $email, $properties, $ip );
+					throw $e;
+				}
+
 				/**
-				 * Fires when a Newsman subscribe attempt fails.
+				 * Fires after props were refreshed on an existing subscriber.
 				 *
-				 * Stage values: 'lookup' (swallowed), 'update_subscriber' (rethrown),
-				 * 'update_props' (rethrown), 'save_subscribe' (rethrown),
-				 * 'init_subscribe' (rethrown).
+				 * Only fires when at least one property was actually pushed via
+				 * subscriber.updateProps.
 				 *
-				 * @param \Exception $e          Caught exception.
-				 * @param string     $stage      Pipeline stage that failed.
-				 * @param int        $blog_id    Current WP blog ID.
-				 * @param string     $list_id    Newsman list ID.
-				 * @param string     $email      Subscriber email.
-				 * @param array      $properties Subscriber properties.
-				 * @param string     $ip         Client IP.
+				 * @param int|string $subscriber_id Subscriber id from GetByEmail.
+				 * @param int        $blog_id       Current WP blog ID.
+				 * @param string     $list_id       Newsman list ID.
+				 * @param string     $email         Subscriber email.
+				 * @param array      $properties    Properties pushed to the subscriber.
 				 */
-				do_action( 'newsman_subscribe_failed', $e, 'update_props', $blog_id, $list_id, $email, $properties, $ip );
-				throw $e;
+				do_action( 'newsman_props_updated', $subscriber_id, $blog_id, $list_id, $email, $properties );
 			}
 
-			/**
-			 * Fires after props were refreshed on an existing subscriber.
-			 *
-			 * @param int|string $subscriber_id Subscriber id from GetByEmail.
-			 * @param int        $blog_id       Current WP blog ID.
-			 * @param string     $list_id       Newsman list ID.
-			 * @param string     $email         Subscriber email.
-			 * @param array      $properties    Properties pushed to the subscriber.
-			 */
-			do_action( 'newsman_props_updated', $subscriber_id, $blog_id, $list_id, $email, $properties );
+			if ( '' !== $segment_id ) {
+				self::add_to_segment_best_effort( $blog_id, $segment_id, $subscriber_id, $email, $properties, $ip );
+			}
+
 			return;
 		}
 
 		if ( 'double' === $optin_mode ) {
 			try {
-				self::save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname, $lastname );
+				self::save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname, $lastname, $segment_id );
 			} catch ( \Exception $e ) {
 				do_action( 'newsman_subscribe_failed', $e, 'init_subscribe', $blog_id, $list_id, $email, $properties, $ip );
 				throw $e;
@@ -241,6 +281,13 @@ class Helper {
 			throw $e;
 		}
 
+		if ( '' !== $segment_id ) {
+			$new_subscriber_id = self::resolve_subscriber_id( $blog_id, $list_id, $email );
+			if ( '' !== $new_subscriber_id ) {
+				self::add_to_segment_best_effort( $blog_id, $segment_id, $new_subscriber_id, $email, $properties, $ip );
+			}
+		}
+
 		/**
 		 * Fires after a new subscriber was created via saveSubscribe.
 		 *
@@ -251,6 +298,67 @@ class Helper {
 		 * @param string $ip         Client IP.
 		 */
 		do_action( 'newsman_subscribed', $blog_id, $list_id, $email, $properties, $ip );
+	}
+
+	/**
+	 * Resolve the subscriber ID for an email that was just created via `saveSubscribe`.
+	 *
+	 * `subscriber.saveSubscribe` returns the API result directly (often without a numeric
+	 * ID we can rely on across the SDK shapes), so we re-fetch via `subscriber.getByEmail`
+	 * to obtain a stable subscriber_id usable for `segment.addSubscriber`.
+	 *
+	 * @param int    $blog_id WP blog ID.
+	 * @param string $list_id Newsman list ID.
+	 * @param string $email   Subscriber email.
+	 * @return string Subscriber ID as string, or empty string when not resolvable.
+	 */
+	protected static function resolve_subscriber_id( $blog_id, $list_id, $email ) {
+		$lookup = self::lookup_subscriber( $blog_id, $list_id, $email );
+		if ( null === $lookup || empty( $lookup['id'] ) ) {
+			return '';
+		}
+		return (string) $lookup['id'];
+	}
+
+	/**
+	 * Add a subscriber to a Newsman segment, swallowing API errors.
+	 *
+	 * Used after `saveSubscribe` / `updateProps` where the subscriber endpoint itself does
+	 * not accept a `segments` parameter — the segment association is a separate API call
+	 * (`segment.addSubscriber`). Failures here must not fail the broader subscribe flow.
+	 *
+	 * @param int        $blog_id       WP blog ID.
+	 * @param string     $segment_id    Newsman segment ID.
+	 * @param int|string $subscriber_id Subscriber ID returned by getByEmail/saveSubscribe.
+	 * @param string     $email         Subscriber email (for logging).
+	 * @param array      $properties    Subscriber properties (passed through to the failure action).
+	 * @param string     $ip            Client IP (passed through to the failure action).
+	 * @return void
+	 */
+	protected static function add_to_segment_best_effort( $blog_id, $segment_id, $subscriber_id, $email, $properties, $ip ) {
+		try {
+			$context = new AddSubscriberContext();
+			$context->set_blog_id( $blog_id )
+				->set_segment_id( $segment_id )
+				->set_subscriber_id( $subscriber_id );
+
+			/**
+			 * Filter the context passed to `segment.addSubscriber` after subscribe/updateProps.
+			 *
+			 * @param object $context Segment AddSubscriber context.
+			 * @param int    $blog_id Current WP blog ID.
+			 * @param string $email   Subscriber email.
+			 */
+			$context = apply_filters( 'newsman_subscribe_segment_add_context', $context, $blog_id, $email );
+
+			$service = new AddSubscriber();
+			$service->set_blog_id( $blog_id );
+			$service->execute( $context );
+		} catch ( \Exception $e ) {
+			Logger::init()->log_exception( $e );
+			/** This action is documented in self::subscribe_with_props(). */
+			do_action( 'newsman_subscribe_failed', $e, 'segment_add', $blog_id, '', $email, $properties, $ip );
+		}
 	}
 
 	/**
@@ -376,10 +484,12 @@ class Helper {
 	 * @param string $ip         Client IP for audit.
 	 * @param string $firstname  Subscriber firstname; empty string skips the setter.
 	 * @param string $lastname   Subscriber lastname; empty string skips the setter.
+	 * @param string $segment_id Newsman segment ID; empty skips. Passed via `options.segments=[id]`
+	 *                           as documented in https://kb.newsman.com/api/1.2/subscriber.initSubscribe.
 	 * @return void
 	 * @throws \Exception On API error (e.g. 128 too-many-requests).
 	 */
-	protected static function save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname = '', $lastname = '' ) {
+	protected static function save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname = '', $lastname = '', $segment_id = '' ) {
 		$context = new InitSubscribeEmailContext();
 		$context->set_blog_id( $blog_id )
 			->set_list_id( $list_id )
@@ -392,6 +502,13 @@ class Helper {
 		}
 		if ( '' !== $lastname ) {
 			$context->set_lastname( $lastname );
+		}
+		if ( '' !== $segment_id ) {
+			$context->set_options(
+				array(
+					'segments' => array( (int) $segment_id ),
+				)
+			);
 		}
 
 		$service = new InitSubscribeEmail();

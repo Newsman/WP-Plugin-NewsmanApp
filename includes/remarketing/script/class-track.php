@@ -105,8 +105,8 @@ class Track {
 
 	/**
 	 * Include track cart script and return contents.
-	 * Theme Cart Compatibility ON  → classic polling + XHR/fetch interception tracker.
-	 * Theme Cart Compatibility OFF → WooCommerce Store API response listener.
+	 * Theme Cart Compatibility ON  - classic polling + XHR/fetch interception tracker.
+	 * Theme Cart Compatibility OFF - WooCommerce Store API response listener.
 	 * The two modes never coexist.
 	 *
 	 * @return string

@@ -87,6 +87,11 @@ class Integration {
 			);
 
 			add_action(
+				'elementor/editor/footer',
+				array( $this->form_controls, 'print_editor_segment_filter_script' )
+			);
+
+			add_action(
 				'elementor_pro/forms/process',
 				array( $this->form_processor, 'process' ),
 				10,
@@ -95,5 +100,23 @@ class Integration {
 		}
 
 		$this->atomic_form_integration->init_hooks();
+
+		// Invalidate the Settings page form-dropdown cache whenever an Elementor document
+		// is saved — covers legacy Form and Atomic Form widgets in the same hook. Without
+		// this, freshly-flagged newsletter forms only appear after the 5-minute transient
+		// expires or after the Newsman settings page is saved.
+		add_action( 'elementor/document/after_save', array( $this, 'invalidate_form_dropdown_cache' ) );
+	}
+
+	/**
+	 * Delete the cached newsletter-forms list for the current blog.
+	 *
+	 * Bound to `elementor/document/after_save` so the Settings page rescans
+	 * `_elementor_data` on the next render and picks up any newly-flagged form.
+	 *
+	 * @return void
+	 */
+	public function invalidate_form_dropdown_cache() {
+		delete_transient( 'newsman_elementor_newsletter_forms_' . get_current_blog_id() );
 	}
 }

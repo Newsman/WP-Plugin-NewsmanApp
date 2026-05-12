@@ -151,6 +151,9 @@
 			$show( '#newsman_sms_send_cargus_awb', true, ['#newsman_sms_cargus_awb_message'], 'table-row' );
 			$show( '#newsman_sms_send_sameday_awb', true, ['#newsman_sms_sameday_awb_message'], 'table-row' );
 			$show( '#newsman_sms_send_fancourier_awb', true, ['#newsman_sms_fancourier_awb_message'], 'table-row' );
+
+			$show( '#newsman_elementor_export_subscribers', true, ['#newsman_elementor_export_form_id'], 'table-row' );
+			$show( '#newsman_contact_form_7_export_subscribers', true, ['#newsman_contact_form_7_export_form_id'], 'table-row' );
 		}
 	);
 } (jQuery));

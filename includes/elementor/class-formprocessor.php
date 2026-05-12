@@ -11,6 +11,7 @@
 
 namespace Newsman\Elementor;
 
+use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Subscribe\Helper as SubscribeHelper;
 use Newsman\User\IpAddress;
@@ -67,14 +68,33 @@ class FormProcessor {
 			return;
 		}
 
-		$logger  = Logger::init();
-		$list_id = isset( $settings['newsman_list_id'] ) ? trim( (string) $settings['newsman_list_id'] ) : '';
+		$logger = Logger::init();
+		$config = Config::init();
 
-		if ( '' === $list_id ) {
-			$message = esc_html__( 'Newsman list is not configured for this form.', 'newsman' );
-			$logger->error( $message );
-			$this->add_error( $ajax_handler, $this->filter_error_message( $message, 'no_list', $record ) );
-			return;
+		$is_newsletter_form = isset( $settings['newsman_newsletter_form'] ) && 'yes' === $settings['newsman_newsletter_form'];
+		if ( $is_newsletter_form ) {
+			$list_id    = trim( (string) $config->get_list_id( get_current_blog_id() ) );
+			$segment_id = trim( (string) $config->get_segment_id( get_current_blog_id() ) );
+			if ( '' === $list_id ) {
+				$message = esc_html__( 'Newsman list is not configured in the Newsman - Sync section.', 'newsman' );
+				$logger->error( $message );
+				$this->add_error( $ajax_handler, $this->filter_error_message( $message, 'no_list', $record ) );
+				return;
+			}
+		} else {
+			$list_id    = isset( $settings['newsman_list_id'] ) ? trim( (string) $settings['newsman_list_id'] ) : '';
+			$segment_id = isset( $settings['newsman_segment_id'] ) ? trim( (string) $settings['newsman_segment_id'] ) : '';
+			if ( '' === $list_id ) {
+				$message = esc_html__( 'Newsman list is not configured for this form.', 'newsman' );
+				$logger->error( $message );
+				$this->add_error( $ajax_handler, $this->filter_error_message( $message, 'no_list', $record ) );
+				return;
+			}
+			// Drop a segment that doesn't belong to the selected list (admin picked one,
+			// then changed the list, then didn't update the segment).
+			if ( '' !== $segment_id && ! \Newsman\Subscribe\Segments::belongs_to_list( get_current_blog_id(), $list_id, $segment_id ) ) {
+				$segment_id = '';
+			}
 		}
 
 		$form_fields_settings = isset( $settings['form_fields'] ) && is_array( $settings['form_fields'] )
@@ -84,6 +104,7 @@ class FormProcessor {
 		$email_field_id     = '';
 		$firstname_field_id = '';
 		$lastname_field_id  = '';
+		$phone_field_id     = '';
 		$prop_field_ids     = array();
 
 		foreach ( $form_fields_settings as $row ) {
@@ -102,6 +123,9 @@ class FormProcessor {
 			}
 			if ( '' === $lastname_field_id && isset( $row['newsman_is_lastname'] ) && 'yes' === $row['newsman_is_lastname'] ) {
 				$lastname_field_id = $custom_id;
+			}
+			if ( '' === $phone_field_id && isset( $row['newsman_is_phone'] ) && 'yes' === $row['newsman_is_phone'] ) {
+				$phone_field_id = $custom_id;
 			}
 			if ( isset( $row['newsman_send_field'] ) && 'yes' === $row['newsman_send_field'] ) {
 				$prop_field_ids[ $custom_id ] = $custom_id;
@@ -148,17 +172,24 @@ class FormProcessor {
 		if ( '' !== $lastname_field_id && isset( $submitted[ $lastname_field_id ]['value'] ) ) {
 			$lastname = trim( (string) $submitted[ $lastname_field_id ]['value'] );
 		}
+		$phone = '';
+		if ( '' !== $phone_field_id && isset( $submitted[ $phone_field_id ]['value'] ) ) {
+			$phone = trim( (string) $submitted[ $phone_field_id ]['value'] );
+		}
 
 		$properties = array();
 		foreach ( $prop_field_ids as $field_id ) {
 			if ( $field_id === $email_field_id ) {
 				continue;
 			}
-			// Firstname/lastname fields are sent via the context, not props.
+			// Firstname/lastname/phone fields are sent via dedicated keys, not under their widget id.
 			if ( '' !== $firstname_field_id && $field_id === $firstname_field_id ) {
 				continue;
 			}
 			if ( '' !== $lastname_field_id && $field_id === $lastname_field_id ) {
+				continue;
+			}
+			if ( '' !== $phone_field_id && $field_id === $phone_field_id ) {
 				continue;
 			}
 			if ( ! isset( $submitted[ $field_id ] ) ) {
@@ -166,6 +197,10 @@ class FormProcessor {
 			}
 			$value                   = isset( $submitted[ $field_id ]['value'] ) ? $submitted[ $field_id ]['value'] : '';
 			$properties[ $field_id ] = is_scalar( $value ) ? (string) $value : wp_json_encode( $value );
+		}
+
+		if ( '' !== $phone ) {
+			$properties['phone'] = $phone;
 		}
 
 		/**
@@ -192,7 +227,8 @@ class FormProcessor {
 				IpAddress::init()->get_ip(),
 				$optin_mode,
 				$firstname,
-				$lastname
+				$lastname,
+				$segment_id
 			);
 
 			/**

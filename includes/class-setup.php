@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '12.0.0';
+	protected static $setup_version = '14.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -519,6 +519,16 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_twelve_zero_zero();
 			update_option( 'newsman_setup_version', '12.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '13.0.0', '<' ) ) {
+			self::upgrade_options_thirteen_zero_zero();
+			update_option( 'newsman_setup_version', '13.0.0', true );
+		}
+
+		if ( version_compare( self::$current_version, '14.0.0', '<' ) ) {
+			self::upgrade_options_fourteen_zero_zero();
+			update_option( 'newsman_setup_version', '14.0.0', true );
+		}
 	}
 
 	/**
@@ -698,7 +708,7 @@ jt/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function upgrade_options_ten_zero_zero() {
-		add_option( 'newsman_developer_use_elementor', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_elementor_active', 'on', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**
@@ -710,7 +720,7 @@ jt/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function upgrade_options_eleven_zero_zero() {
-		add_option( 'newsman_developer_use_contact_form_7', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_contact_form_7_active', 'on', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**
@@ -722,7 +732,51 @@ jt/modal_{{api_key}}.js'
 	 * @return void
 	 */
 	protected static function upgrade_options_twelve_zero_zero() {
-		add_option( 'newsman_developer_use_wpforms', 'on', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_wpforms_active', 'on', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
+	 * Version 13.0.0 — rename form-integration toggles out of the `developer_use_*` namespace.
+	 *
+	 * Copies each old option value to its new key and deletes the old key. Sites that never
+	 * stored the legacy names (fresh installs running the chain in one pass) are unaffected,
+	 * because their `upgrade_options_ten/eleven/twelve_zero_zero` already seed the new names.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_thirteen_zero_zero() {
+		$renames = array(
+			'newsman_developer_use_elementor'      => 'newsman_elementor_active',
+			'newsman_developer_use_contact_form_7' => 'newsman_contact_form_7_active',
+			'newsman_developer_use_wpforms'        => 'newsman_wpforms_active',
+		);
+		foreach ( $renames as $old_key => $new_key ) {
+			$sentinel = '__newsman_missing__';
+			$value    = get_option( $old_key, $sentinel );
+			if ( $sentinel === $value ) {
+				continue;
+			}
+			add_option( $new_key, $value, '', Config::AUTOLOAD_OPTIONS );
+			update_option( $new_key, $value, Config::AUTOLOAD_OPTIONS );
+			delete_option( $old_key );
+		}
+	}
+
+	/**
+	 * Version 14.0.0 — seed "Export Subscribers from Form Submissions" options
+	 * for the Contact Form 7 (via Flamingo) and Elementor Pro integrations.
+	 *
+	 * Both export toggles default to 'off' and the selected form IDs default to ''.
+	 * The retriever priority chain only consults these when the relevant plugins
+	 * are active and a form_id is set; otherwise it falls through to WC/WP/3002.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_fourteen_zero_zero() {
+		add_option( 'newsman_contact_form_7_export_subscribers', 'off', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_contact_form_7_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_elementor_export_subscribers', 'off', '', Config::AUTOLOAD_OPTIONS );
+		add_option( 'newsman_elementor_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**
