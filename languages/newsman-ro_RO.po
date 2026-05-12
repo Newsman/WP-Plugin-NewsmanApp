@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-11T21:01:58+00:00\n"
+"POT-Creation-Date: 2026-05-12T13:56:58+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -37,8 +37,8 @@ msgstr ""
 #. Author of the plugin
 #: newsmanapp.php includes/contactform7/class-formpanel.php:99
 #: includes/contactform7/class-formpanel.php:199
-#: includes/elementor/class-atomicformcontrols.php:328
-#: includes/elementor/class-atomicformcontrols.php:430
+#: includes/elementor/class-atomicformcontrols.php:365
+#: includes/elementor/class-atomicformcontrols.php:467
 #: includes/elementor/class-formcontrols.php:58
 #: includes/elementor/class-formcontrols.php:65
 #: includes/wpforms/class-formpanel.php:111
@@ -104,14 +104,14 @@ msgstr ""
 "Nu s-a putut salva configurarea integrării. Vă rugăm să încercați din nou."
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:97
+#: includes/admin/settings/class-settings.php:99
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Utilizator neautorizat"
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:160
+#: includes/admin/settings/class-settings.php:163
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Opțiuni salvate."
@@ -121,19 +121,52 @@ msgstr "Opțiuni salvate."
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Credențiale invalide. Vă rugăm să le configurați în fila Setări."
 
-#: includes/admin/settings/class-settings.php:164
-#: includes/admin/settings/class-settings.php:178
+#: includes/admin/settings/class-settings.php:167
+#: includes/admin/settings/class-settings.php:181
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Credențiale invalide"
 
+#: includes/admin/settings/class-settings.php:202 src/backend-settings.php:348
+msgid "Elementor"
+msgstr "Elementor"
+
+#: includes/admin/settings/class-settings.php:206 src/backend-settings.php:399
+msgid "Contact Form 7"
+msgstr "Contact Form 7"
+
+#: includes/admin/settings/class-settings.php:210 src/backend-settings.php:450
+msgid "WPForms"
+msgstr "WPForms"
+
+#. translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7").
+#: includes/admin/settings/class-settings.php:221
+#, php-format
+msgid ""
+"More than one \"Export Subscribers from Form Submissions\" is enabled (%s). "
+"Only the first in priority order (Elementor - Contact Form 7 - WPForms) will "
+"be used by subscriber.list; the others are ignored. Disable all but one."
+msgstr ""
+"Mai mult de o opțiune „Exportă abonații din trimiterile de formulare\""
+"este activată (%s). Doar prima în ordinea priorității (Elementor - "
+"Contact Form 7 - WPForms) va fi folosită de subscriber.list; celelalte "
+"sunt ignorate. Dezactivează toate cu excepția uneia."
+
+#: includes/admin/settings/class-settings.php:261
+#: includes/admin/settings/class-settings.php:335
+#: includes/admin/settings/class-settings.php:407
+msgid "Trash"
+msgstr "Coș de gunoi"
+
 #. translators: %d: CF7 form post id.
-#: includes/admin/settings/class-settings.php:227
+#. translators: %d: WPForms form post id.
+#: includes/admin/settings/class-settings.php:276
+#: includes/admin/settings/class-settings.php:429
 #, php-format
 msgid "Form #%d"
 msgstr "Formular #%d"
 
-#: includes/admin/settings/class-settings.php:319
+#: includes/admin/settings/class-settings.php:478
 msgid "Untitled form"
 msgstr "Formular fără titlu"
 
@@ -170,8 +203,7 @@ msgstr ""
 
 #: includes/admin/settings/class-sms.php:260
 msgid ""
-"The SMS was not sent. Please fill the test phone number and the test "
-"message."
+"The SMS was not sent. Please fill the test phone number and the test message."
 msgstr ""
 "SMS-ul nu a fost trimis. Vă rugăm să completați numărul de telefon de test "
 "și mesajul de test."
@@ -329,8 +361,8 @@ msgstr ""
 "impinse ca proprietati de abonat Newsman."
 
 #: includes/contactform7/class-formpanel.php:208
-#: includes/elementor/class-atomicformcontrols.php:236
-#: includes/elementor/class-atomicformcontrols.php:355
+#: includes/elementor/class-atomicformcontrols.php:273
+#: includes/elementor/class-atomicformcontrols.php:392
 #: includes/elementor/class-formcontrols.php:81
 #: includes/elementor/class-formcontrols.php:284
 #: includes/wpforms/class-formpanel.php:214
@@ -343,11 +375,11 @@ msgid ""
 "When enabled, every successful submission of this form is subscribed to the "
 "selected Newsman list."
 msgstr ""
-"Cand este activat, fiecare trimitere reusita a acestui formular este abonata"
-" la lista Newsman selectata."
+"Cand este activat, fiecare trimitere reusita a acestui formular este abonata "
+"la lista Newsman selectata."
 
 #: includes/contactform7/class-formpanel.php:225
-#: includes/elementor/class-atomicformcontrols.php:246
+#: includes/elementor/class-atomicformcontrols.php:283
 #: includes/elementor/class-formcontrols.php:104
 #: includes/wpforms/class-formpanel.php:225
 msgid "Newsletter form"
@@ -386,8 +418,8 @@ msgstr "— selectati o lista —"
 #: includes/contactform7/class-formpanel.php:259
 #: includes/wpforms/class-formpanel.php:248
 msgid ""
-"List for this campaign-specific form. Ignored when \"Newsletter form\" is on"
-" (the configured Sync list is used instead)."
+"List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
+"(the configured Sync list is used instead)."
 msgstr ""
 "Lista pentru acest formular specific campaniei. Ignorată când „Formular "
 "newsletter” este activat (se folosește lista din Sync)."
@@ -401,7 +433,7 @@ msgstr "Segment Newsman"
 #: includes/contactform7/class-formpanel.php:348
 #: includes/contactform7/class-formpanel.php:374
 #: includes/contactform7/class-formpanel.php:400
-#: includes/elementor/class-atomicformcontrols.php:497
+#: includes/elementor/class-atomicformcontrols.php:534
 #: includes/elementor/class-formcontrols.php:160
 #: includes/elementor/class-formcontrols.php:531
 #: includes/wpforms/class-formpanel.php:254
@@ -411,29 +443,29 @@ msgstr "— niciunul —"
 
 #: includes/contactform7/class-formpanel.php:283
 msgid ""
-"Optional. Segments are list-scoped — only segments belonging to the selected"
-" list above are kept. Changing the list resets the segment."
+"Optional. Segments are list-scoped — only segments belonging to the selected "
+"list above are kept. Changing the list resets the segment."
 msgstr ""
 "Opțional. Segmentele sunt specifice listei — doar segmentele care aparțin "
 "listei selectate mai sus sunt păstrate. Schimbarea listei resetează "
 "segmentul."
 
 #: includes/contactform7/class-formpanel.php:297
-#: includes/elementor/class-atomicformcontrols.php:295
+#: includes/elementor/class-atomicformcontrols.php:332
 #: includes/elementor/class-formcontrols.php:208
 #: includes/wpforms/class-formpanel.php:323
 msgid "Opt-in mode"
 msgstr "Mod de opt-in"
 
 #: includes/contactform7/class-formpanel.php:302
-#: includes/elementor/class-atomicformcontrols.php:286
+#: includes/elementor/class-atomicformcontrols.php:323
 #: includes/elementor/class-formcontrols.php:211
 #: includes/wpforms/class-formpanel.php:326
 msgid "Single opt-in"
 msgstr "Opt-in simplu"
 
 #: includes/contactform7/class-formpanel.php:305
-#: includes/elementor/class-atomicformcontrols.php:290
+#: includes/elementor/class-atomicformcontrols.php:327
 #: includes/elementor/class-formcontrols.php:212
 #: includes/wpforms/class-formpanel.php:327
 msgid "Double opt-in"
@@ -466,8 +498,8 @@ msgstr "Adaugati un camp in sablonul formularului pentru a activa Newsman."
 #: includes/contactform7/class-formpanel.php:331
 #: includes/wpforms/class-formpanel.php:369
 msgid ""
-"The selected field provides the subscriber email. Any field type may be used"
-" (text, tel, url, email, …)."
+"The selected field provides the subscriber email. Any field type may be used "
+"(text, tel, url, email, …)."
 msgstr ""
 "Campul selectat furnizeaza emailul abonatului. Orice tip de camp poate fi "
 "folosit (text, tel, url, email, …)."
@@ -552,8 +584,8 @@ msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
 msgstr ""
-"Fiecare camp bifat este trimis la Newsman ca proprietate de abonat, avand ca"
-" cheie numele form-tag-ului."
+"Fiecare camp bifat este trimis la Newsman ca proprietate de abonat, avand ca "
+"cheie numele form-tag-ului."
 
 #: includes/contactform7/class-formprocessor.php:83
 msgid ""
@@ -576,7 +608,7 @@ msgstr "Newsman: formularul CF7 nu are configurat un camp de email."
 msgid "Newsman: CF7 email field is empty."
 msgstr "Newsman: campul de email al formularului CF7 este gol."
 
-#: includes/elementor/class-atomicformcontrols.php:247
+#: includes/elementor/class-atomicformcontrols.php:284
 msgid ""
 "When on, the form uses the list and segment configured in Newsman - Sync; "
 "the per-form Newsman List and Newsman Segment values below are stored but "
@@ -586,55 +618,55 @@ msgstr ""
 "Newsman - Sync; valorile Listă Newsman și Segment Newsman per formular de "
 "mai jos sunt salvate dar ignorate."
 
-#: includes/elementor/class-atomicformcontrols.php:258
+#: includes/elementor/class-atomicformcontrols.php:295
 #: includes/elementor/class-formcontrols.php:127
 msgid "Newsman List"
 msgstr "Lista Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:259
+#: includes/elementor/class-atomicformcontrols.php:296
 msgid ""
-"List for this campaign-specific form. Ignored when \"Newsletter form\" is on"
-" (the Sync section list is used instead)."
+"List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
+"(the Sync section list is used instead)."
 msgstr ""
 "Lista pentru acest formular specific campaniei. Ignorată când „Formular "
 "newsletter” este activat (se folosește lista din secțiunea Sync)."
 
-#: includes/elementor/class-atomicformcontrols.php:272
+#: includes/elementor/class-atomicformcontrols.php:309
 #: includes/elementor/class-formcontrols.php:170
 msgid "Newsman Segment"
 msgstr "Segment Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:273
+#: includes/elementor/class-atomicformcontrols.php:310
 msgid ""
 "Optional. Segments are list-scoped — each option is labeled \"List name — "
 "Segment name\". If the selected segment does not belong to the saved list, "
 "it is dropped at submit time."
 msgstr ""
-"Opțional. Segmentele sunt specifice listei — fiecare opțiune este etichetată"
-" „Nume listă — Nume segment”. Dacă segmentul selectat nu aparține listei "
+"Opțional. Segmentele sunt specifice listei — fiecare opțiune este etichetată "
+"„Nume listă — Nume segment”. Dacă segmentul selectat nu aparține listei "
 "salvate, este eliminat la trimitere."
 
-#: includes/elementor/class-atomicformcontrols.php:370
+#: includes/elementor/class-atomicformcontrols.php:407
 #: includes/elementor/class-formcontrols.php:310
 msgid "Use as Newsman email"
 msgstr "Foloseste ca email Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:382
+#: includes/elementor/class-atomicformcontrols.php:419
 #: includes/elementor/class-formcontrols.php:345
 msgid "Use as Newsman firstname"
 msgstr "Foloseste ca prenume Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:394
+#: includes/elementor/class-atomicformcontrols.php:431
 #: includes/elementor/class-formcontrols.php:380
 msgid "Use as Newsman lastname"
 msgstr "Foloseste ca nume Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:406
+#: includes/elementor/class-atomicformcontrols.php:443
 #: includes/elementor/class-formcontrols.php:415
 msgid "Use as Newsman phone"
 msgstr "Folosește ca telefon Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:454
+#: includes/elementor/class-atomicformcontrols.php:491
 msgid "-- select a list --"
 msgstr "-- selectati o lista --"
 
@@ -653,8 +685,8 @@ msgstr "Newsman: Atomic Form este activat, dar nu este selectata nicio lista."
 #: includes/elementor/class-atomicformprocessor.php:128
 msgid "Newsman: no field is marked as the email field on this Atomic Form."
 msgstr ""
-"Newsman: niciun camp nu este marcat ca fiind campul de email pe acest Atomic"
-" Form."
+"Newsman: niciun camp nu este marcat ca fiind campul de email pe acest Atomic "
+"Form."
 
 #: includes/elementor/class-atomicformprocessor.php:146
 msgid "Newsman: Atomic Form email field is empty."
@@ -737,8 +769,8 @@ msgstr ""
 
 #: includes/elementor/class-formcontrols.php:351
 msgid ""
-"Mark this field as the subscriber's firstname. The value is sent via context"
-" instead of being included in the subscriber properties."
+"Mark this field as the subscriber's firstname. The value is sent via context "
+"instead of being included in the subscriber properties."
 msgstr ""
 "Marcheaza acest camp drept prenumele abonatului. Valoarea este trimisa prin "
 "context in loc sa fie inclusa in proprietatile abonatului."
@@ -756,8 +788,8 @@ msgid ""
 "Mark this field as the subscriber's phone. The value is pushed to Newsman "
 "under the `phone` property key."
 msgstr ""
-"Marchează acest câmp ca telefon al abonatului. Valoarea este transmisă către"
-" Newsman sub cheia de proprietate `phone`."
+"Marchează acest câmp ca telefon al abonatului. Valoarea este transmisă către "
+"Newsman sub cheia de proprietate `phone`."
 
 #: includes/elementor/class-formprocessor.php:79
 msgid "Newsman list is not configured in the Newsman - Sync section."
@@ -801,8 +833,7 @@ msgstr "Adăugați cupoane: %s"
 msgid "Added %1$d coupons %2$s"
 msgstr "S-au adăugat %1$d cupoane %2$s"
 
-#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5:
-#. Date created
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
 #: includes/export/retriever/class-cronsubscribers.php:64
 #, php-format
 msgid "Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
@@ -812,8 +843,7 @@ msgstr "Trimite abonați %1$s %2$d, %3$d, ID blog %4$s, dată %5$s"
 msgid "No subscribers found."
 msgstr "Nu s-au găsit abonați."
 
-#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5:
-#. Date created
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
 #: includes/export/retriever/class-cronsubscribers.php:130
 #, php-format
 msgid "Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
@@ -987,8 +1017,7 @@ msgstr "Te-ai dezabonat deja de la newsletter-ul nostru!"
 
 #: includes/form/account/class-processor.php:215
 msgid "A subscription confirmation email will be sent to you shortly."
-msgstr ""
-"Un e-mail de confirmare a abonamentului vă va fi trimis în scurt timp."
+msgstr "Un e-mail de confirmare a abonamentului vă va fi trimis în scurt timp."
 
 #: includes/form/account/class-processor.php:222
 msgid "You have successfully subscribed to our newsletter!"
@@ -1007,8 +1036,8 @@ msgid ""
 "You have unsubscribed from our newsletter! An unsubscription confirmation "
 "email will be sent to you shortly."
 msgstr ""
-"V-ați dezabonat de la newsletter-ul nostru! Veți primi în scurt timp un "
-"e-mail de confirmare a dezabonării."
+"V-ați dezabonat de la newsletter-ul nostru! Veți primi în scurt timp un e-"
+"mail de confirmare a dezabonării."
 
 #: includes/form/account/class-processor.php:259
 msgid "You have unsubscribed from our newsletter!"
@@ -1147,8 +1176,7 @@ msgstr "Fluxul %s a fost actualizat"
 #: includes/service/configuration/integration/class-savelistintegrationsetup.php:58
 #, php-format
 msgid "Saving list integration setup for list %1$s, integration %2$s"
-msgstr ""
-"Se salvează configurarea integrării pentru lista %1$s, integrarea %2$s"
+msgstr "Se salvează configurarea integrării pentru lista %1$s, integrarea %2$s"
 
 #. translators: 1: list ID, 2: integration name
 #: includes/service/configuration/integration/class-savelistintegrationsetup.php:84
@@ -1266,15 +1294,14 @@ msgid "Updated subscriber properties for %s"
 msgstr "Proprietatile abonatului au fost actualizate pentru %s"
 
 #. translators: 1: Email, 2: error message.
-#: includes/subscribe/class-helper.php:398
+#: includes/subscribe/class-helper.php:409
 #, php-format
 msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 "Newsman: GetByEmail nu a returnat %1$s, se va folosi saveSubscribe (%2$s)."
 
-#. translators: surfaced to the user when subscriber.initSubscribe returns API
-#. error 128.
-#: includes/subscribe/class-helper.php:559
+#. translators: surfaced to the user when subscriber.initSubscribe returns API error 128.
+#: includes/subscribe/class-helper.php:570
 msgid ""
 "Too many requests for this subscriber. Can only send once per 10 minutes"
 msgstr ""
@@ -1283,8 +1310,8 @@ msgstr ""
 
 #: includes/wpforms/class-formpanel.php:227
 msgid ""
-"When on, submissions go to the list and segment configured in Newsman - Sync"
-" (the per-form list and segment below are hidden because they no longer "
+"When on, submissions go to the list and segment configured in Newsman - Sync "
+"(the per-form list and segment below are hidden because they no longer "
 "apply)."
 msgstr ""
 "Când este activ, trimiterile merg către lista și segmentul configurate în "
@@ -1310,8 +1337,8 @@ msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
 msgstr ""
-"Fiecare camp bifat este trimis la Newsman ca proprietate de abonat, avand ca"
-" cheie eticheta campului (sau ID-ul cand eticheta lipseste)."
+"Fiecare camp bifat este trimis la Newsman ca proprietate de abonat, avand ca "
+"cheie eticheta campului (sau ID-ul cand eticheta lipseste)."
 
 #. translators: %s: WPForms field id.
 #: includes/wpforms/class-formpanel.php:586
@@ -1321,8 +1348,8 @@ msgstr "Camp #%s"
 
 #: includes/wpforms/class-formprocessor.php:79
 msgid ""
-"Newsman: WPForms form is marked as newsletter form but no list is configured"
-" in Newsman - Sync."
+"Newsman: WPForms form is marked as newsletter form but no list is configured "
+"in Newsman - Sync."
 msgstr ""
 "Newsman: formularul WPForms este marcat ca formular newsletter, dar nicio "
 "listă nu este configurată în Newsman - Sync."
@@ -1435,19 +1462,18 @@ msgid ""
 "Enable for the most reliable detection of cart changes on any theme "
 "(background polling plus AJAX/fetch interception against the Newsman cart "
 "endpoint). Disable for a lighter mechanism that reads cart data directly "
-"from the WooCommerce Store API (/wc/store/v1/cart/add-item and "
-"/wc/store/v1/batch) responses (no polling). If you disable this option, use "
-"the newsman.app Remarketing Check installation tool to verify cart events "
-"are detected on your theme."
+"from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/"
+"batch) responses (no polling). If you disable this option, use the newsman."
+"app Remarketing Check installation tool to verify cart events are detected "
+"on your theme."
 msgstr ""
 "Activati pentru cea mai sigura detectare a schimbarilor din cos pe orice "
 "tema (polling in fundal plus interceptare AJAX/fetch catre endpoint-ul de "
 "cos Newsman). Dezactivati pentru un mecanism mai usor care citeste datele "
-"cosului direct din raspunsurile WooCommerce Store API "
-"(/wc/store/v1/cart/add-item si /wc/store/v1/batch), fara polling. Daca "
-"dezactivati aceasta optiune, folositi instrumentul „Check installation\" din"
-" Remarketing in newsman.app pentru a verifica daca evenimentele de cos sunt "
-"detectate pe tema dvs."
+"cosului direct din raspunsurile WooCommerce Store API (/wc/store/v1/cart/add-"
+"item si /wc/store/v1/batch), fara polling. Daca dezactivati aceasta optiune, "
+"folositi instrumentul „Check installation\" din Remarketing in newsman.app "
+"pentru a verifica daca evenimentele de cos sunt detectate pe tema dvs."
 
 #: src/backend-remarketing.php:112
 msgid "Export WordPress Subscribers"
@@ -1458,8 +1484,8 @@ msgid ""
 "Optional. Include WordPress users with the subscriber role when syncing "
 "subscribers."
 msgstr ""
-"Opțional. Include utilizatorii WordPress cu rolul de abonat la sincronizarea"
-" abonaților."
+"Opțional. Include utilizatorii WordPress cu rolul de abonat la sincronizarea "
+"abonaților."
 
 #: src/backend-remarketing.php:122
 msgid "Export WooCommerce Buyers as Subscribers"
@@ -1506,7 +1532,7 @@ msgstr ""
 "Selectați atributele clienților (din comenzi) pe care să le includeți în "
 "datele de remarketing."
 
-#: src/backend-remarketing.php:206 src/backend-settings.php:601
+#: src/backend-remarketing.php:206 src/backend-settings.php:644
 #: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Salvați modificările"
@@ -1557,12 +1583,12 @@ msgstr "Adresă IP a serverului"
 
 #: src/backend-settings.php:125
 msgid ""
-"Please set the public IP address of the server if the user IP address is not"
-" sent. NewsMAN subscribe to newsletter requires an IP address."
+"Please set the public IP address of the server if the user IP address is not "
+"sent. NewsMAN subscribe to newsletter requires an IP address."
 msgstr ""
 "Vă rugăm să introduceți adresa IP publică a serverului dacă adresa IP a "
-"utilizatorului nu este trimisă. Abonarea la newsletter-ul NewsMAN necesită o"
-" adresă IP."
+"utilizatorului nu este trimisă. Abonarea la newsletter-ul NewsMAN necesită o "
+"adresă IP."
 
 #: src/backend-settings.php:130
 msgid "Import Authorize Header Name"
@@ -1583,8 +1609,8 @@ msgid ""
 "Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce "
 "&gt; Feeds and set Header Authorization."
 msgstr ""
-"Vă rugăm să accesați <a target=\"_blank\" href=\"%s\">newsman.app</a> în "
-"E-Commerce > Feeds și să introduceți Autorizarea antetului (Header "
+"Vă rugăm să accesați <a target=\"_blank\" href=\"%s\">newsman.app</a> în E-"
+"Commerce > Feeds și să introduceți Autorizarea antetului (Header "
 "Authorization)."
 
 #: src/backend-settings.php:151 src/backend-settings.php:178
@@ -1635,11 +1661,11 @@ msgstr ""
 
 #: src/backend-settings.php:213
 msgid ""
-"Forms can be created in <a target=\"_blank\" "
-"href=\"https://newsman.app/manager\">newsman.app</a> &gt; Forms."
+"Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/"
+"manager\">newsman.app</a> &gt; Forms."
 msgstr ""
-"Formularele pot fi create în <a target=\"_blank\" "
-"href=\"https://newsman.app/manager\">newsman.app</a> > Formulare."
+"Formularele pot fi create în <a target=\"_blank\" href=\"https://newsman.app/"
+"manager\">newsman.app</a> > Formulare."
 
 #: src/backend-settings.php:229
 msgid "Checkout Subscribe to Newsletter and SMS"
@@ -1666,8 +1692,7 @@ msgstr "Caseta de selectare pentru newsletter este bifată în mod implicit?"
 #: src/backend-settings.php:262
 msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr ""
-"Activează SMS-urile, sincronizează numerele de telefon cu lista ta de SMS-"
-"uri"
+"Activează SMS-urile, sincronizează numerele de telefon cu lista ta de SMS-uri"
 
 #: src/backend-settings.php:267
 msgid ""
@@ -1733,10 +1758,6 @@ msgstr ""
 "Eticheta de pe caseta de selectare a abonării la newsletter din contul "
 "clientului."
 
-#: src/backend-settings.php:348
-msgid "Elementor"
-msgstr "Elementor"
-
 #: src/backend-settings.php:352
 msgid "Use Elementor Integration"
 msgstr "Foloseste Integrarea Elementor"
@@ -1744,17 +1765,18 @@ msgstr "Foloseste Integrarea Elementor"
 #: src/backend-settings.php:357
 msgid ""
 "When enabled, the Newsman section appears on Elementor Pro Form widgets and "
-"Atomic Forms in the editor, and submissions push the email plus marked field"
-" values to the selected Newsman list. Disable to remove all Newsman editor "
+"Atomic Forms in the editor, and submissions push the email plus marked field "
+"values to the selected Newsman list. Disable to remove all Newsman editor "
 "controls and submission handling for Elementor."
 msgstr ""
 "Cand este activat, sectiunea Newsman apare pe widget-urile Form din "
-"Elementor Pro si pe Atomic Forms in editor, iar trimiterile transmit emailul"
-" si valorile campurilor marcate catre lista Newsman selectata. Dezactivati "
+"Elementor Pro si pe Atomic Forms in editor, iar trimiterile transmit emailul "
+"si valorile campurilor marcate catre lista Newsman selectata. Dezactivati "
 "pentru a elimina toate controalele Newsman din editor si gestionarea "
 "trimiterilor pentru Elementor."
 
 #: src/backend-settings.php:367 src/backend-settings.php:418
+#: src/backend-settings.php:474
 msgid "Export Subscribers from Form Submissions"
 msgstr "Exportă abonații din trimiterile de formular"
 
@@ -1764,16 +1786,18 @@ msgid ""
 "from Elementor Pro form submissions (wp_e_submissions) instead of from "
 "WordPress users / WooCommerce orders. Pick the source form below."
 msgstr ""
-"Când este activat, endpoint-ul API v1 Newsman subscriber.list preia abonații"
-" din trimiterile de formular Elementor Pro (wp_e_submissions) în loc de "
+"Când este activat, endpoint-ul API v1 Newsman subscriber.list preia abonații "
+"din trimiterile de formular Elementor Pro (wp_e_submissions) în loc de "
 "utilizatorii WordPress / comenzile WooCommerce. Alege formularul sursă mai "
 "jos."
 
 #: src/backend-settings.php:377 src/backend-settings.php:428
+#: src/backend-settings.php:487
 msgid "Source Form"
 msgstr "Formular sursă"
 
 #: src/backend-settings.php:381 src/backend-settings.php:432
+#: src/backend-settings.php:491
 msgid "— select a form —"
 msgstr "— selectează un formular —"
 
@@ -1784,8 +1808,8 @@ msgid ""
 "it available here."
 msgstr ""
 "Niciun formular Elementor nu este încă marcat ca formular newsletter. "
-"Deschide un formular în editor și activează atât „Trimite la Newsman” cât și"
-" „Formular newsletter” pentru a-l face disponibil aici."
+"Deschide un formular în editor și activează atât „Trimite la Newsman” cât și "
+"„Formular newsletter” pentru a-l face disponibil aici."
 
 #: src/backend-settings.php:391
 msgid ""
@@ -1795,10 +1819,6 @@ msgstr ""
 "Este acceptat un singur formular per magazin. ID-ul de 8 caractere afișat "
 "corespunde cu cel din Elementor admin - Submissions - coloana Form."
 
-#: src/backend-settings.php:399
-msgid "Contact Form 7"
-msgstr "Contact Form 7"
-
 #: src/backend-settings.php:403
 msgid "Use Contact Form 7 Integration"
 msgstr "Foloseste integrarea Contact Form 7"
@@ -1806,17 +1826,17 @@ msgstr "Foloseste integrarea Contact Form 7"
 #: src/backend-settings.php:408
 msgid ""
 "When enabled, the Newsman tab appears on Contact Form 7 forms in the editor "
-"(per-form list selection, email field, and properties), and submissions push"
-" the email plus marked field values to the selected Newsman list. Disable to"
-" remove all Newsman editor controls and submission handling for Contact Form"
-" 7."
+"(per-form list selection, email field, and properties), and submissions push "
+"the email plus marked field values to the selected Newsman list. Disable to "
+"remove all Newsman editor controls and submission handling for Contact Form "
+"7."
 msgstr ""
 "Cand este activat, tab-ul Newsman apare pe formularele Contact Form 7 in "
 "editor (selectie lista per formular, camp de email si proprietati), iar "
 "trimiterile impinge emailul si valorile campurilor marcate catre lista "
 "Newsman selectata. Dezactivati pentru a elimina toate controalele Newsman "
-"din editor si pentru a opri redirectionarea trimiterilor pentru Contact Form"
-" 7."
+"din editor si pentru a opri redirectionarea trimiterilor pentru Contact Form "
+"7."
 
 #: src/backend-settings.php:423
 msgid ""
@@ -1824,19 +1844,19 @@ msgid ""
 "from Flamingo Inbound Messages of the selected Contact Form 7 form instead "
 "of from WordPress users / WooCommerce orders."
 msgstr ""
-"Când este activat, endpoint-ul API v1 Newsman subscriber.list preia abonații"
-" din mesajele Inbound Flamingo ale formularului Contact Form 7 selectat, în "
+"Când este activat, endpoint-ul API v1 Newsman subscriber.list preia abonații "
+"din mesajele Inbound Flamingo ale formularului Contact Form 7 selectat, în "
 "loc de utilizatorii WordPress / comenzile WooCommerce."
 
 #: src/backend-settings.php:440
 msgid ""
-"No Contact Form 7 forms are marked as newsletter forms yet. Open a CF7 form,"
-" go to the Newsman tab, and turn on both \"Send to Newsman\" and "
-"\"Newsletter form\" to make it available here."
+"No Contact Form 7 forms are marked as newsletter forms yet. Open a CF7 form, "
+"go to the Newsman tab, and turn on both \"Send to Newsman\" and \"Newsletter "
+"form\" to make it available here."
 msgstr ""
 "Niciun formular Contact Form 7 nu este încă marcat ca formular newsletter. "
-"Deschide un formular CF7, mergi la tab-ul Newsman și activează atât „Trimite"
-" la Newsman” cât și „Formular newsletter” pentru a-l face disponibil aici."
+"Deschide un formular CF7, mergi la tab-ul Newsman și activează atât „Trimite "
+"la Newsman” cât și „Formular newsletter” pentru a-l face disponibil aici."
 
 #: src/backend-settings.php:442
 msgid ""
@@ -1847,10 +1867,6 @@ msgstr ""
 "trimitere a formularului selectat în canalul flamingo_inbound care "
 "corespunde slug-ului formularului."
 
-#: src/backend-settings.php:450
-msgid "WPForms"
-msgstr "WPForms"
-
 #: src/backend-settings.php:454
 msgid "Use WPForms Integration"
 msgstr "Foloseste integrarea WPForms"
@@ -1860,33 +1876,74 @@ msgid ""
 "When enabled, a Newsman section appears in the Settings panel of every "
 "WPForms form (per-form list selection, email field, and properties), and "
 "submissions push the email plus marked field values to the selected Newsman "
-"list. Disable to remove all Newsman builder controls and submission handling"
-" for WPForms."
+"list. Disable to remove all Newsman builder controls and submission handling "
+"for WPForms."
 msgstr ""
 "Cand este activat, o sectiune Newsman apare in panoul Settings al fiecarui "
 "formular WPForms (selectie lista per formular, camp de email si "
-"proprietati), iar trimiterile impinge emailul si valorile campurilor marcate"
-" catre lista Newsman selectata. Dezactivati pentru a elimina toate "
+"proprietati), iar trimiterile impinge emailul si valorile campurilor marcate "
+"catre lista Newsman selectata. Dezactivati pentru a elimina toate "
 "controalele Newsman din builder si pentru a opri redirectionarea "
 "trimiterilor pentru WPForms."
 
-#: src/backend-settings.php:468
+#: src/backend-settings.php:479
+msgid ""
+"When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
+"from WPForms entries of the selected form instead of from WordPress users / "
+"WooCommerce orders."
+msgstr ""
+"Când este activată, endpoint-ul Newsman subscriber.list API v1 preia "
+"abonații din intrările WPForms ale formularului selectat în loc de "
+"utilizatorii WordPress / comenzile WooCommerce."
+
+#: src/backend-settings.php:481
+msgid ""
+"WPForms Lite does not store form entries — only WPForms Pro persists them to "
+"the database. Without entries, this export source will return no rows. "
+"Install or upgrade to WPForms Pro to use this feature."
+msgstr ""
+"WPForms Lite nu stochează intrările de formulare — doar WPForms Pro le "
+"persistă în baza de date. Fără intrări, această sursă de export nu "
+"va returna niciun rând. Instalează sau actualizează la WPForms Pro "
+"pentru a folosi această funcție."
+
+#: src/backend-settings.php:499
+msgid ""
+"No WPForms forms are marked as newsletter forms yet. Open a WPForms form, go "
+"to Settings - Newsman, and turn on both \"Send to Newsman\" and \"Newsletter "
+"form\" to make it available here."
+msgstr ""
+"Niciun formular WPForms nu este marcat încă drept formular de newsletter."
+"Deschideți un formular WPForms, mergeți la Settings - Newsman și "
+"activați atât „Send to Newsman\" cât și „Newsletter form\" pentru "
+"a-l face disponibil aici."
+
+#: src/backend-settings.php:501
+msgid ""
+"Only one form per store is supported. WPForms persists every submission of "
+"the selected form to wp_wpforms_entries (Pro only)."
+msgstr ""
+"Este suportat doar un singur formular per magazin. WPForms persistă "
+"fiecare trimitere a formularului selectat în wp_wpforms_entries (doar "
+"Pro)."
+
+#: src/backend-settings.php:511
 msgid "Logging level"
 msgstr "Nivel Jurnalizare "
 
-#: src/backend-settings.php:477
+#: src/backend-settings.php:520
 msgid "No Logging"
 msgstr "Fara Jurnalizare"
 
-#: src/backend-settings.php:524
+#: src/backend-settings.php:567
 msgid "API Timeout"
 msgstr "Expirare API"
 
-#: src/backend-settings.php:536
+#: src/backend-settings.php:579
 msgid "Enable Test User IP"
 msgstr "Activează adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:541
+#: src/backend-settings.php:584
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -1894,15 +1951,15 @@ msgstr ""
 "Atenție! Vă rugăm să nu utilizați această adresă IP în producție, deoarece "
 "este utilizată de endpoint-ul API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:546
+#: src/backend-settings.php:589
 msgid "Test User IP address"
 msgstr "Adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:557
+#: src/backend-settings.php:600
 msgid "Plugin Loaded Priority"
 msgstr "Prioritate încărcare plugin"
 
-#: src/backend-settings.php:563
+#: src/backend-settings.php:606
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -1911,21 +1968,21 @@ msgstr ""
 "plugins_loaded și prioritatea este setată în această configurație. Implicit "
 "este 20."
 
-#: src/backend-settings.php:569
+#: src/backend-settings.php:612
 msgid "Use Action Scheduler"
 msgstr "Utilizează Planificatorul de acțiuni"
 
-#: src/backend-settings.php:574
+#: src/backend-settings.php:617
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
-"Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile"
-" API-ului NewsMAN."
+"Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile "
+"API-ului NewsMAN."
 
-#: src/backend-settings.php:579
+#: src/backend-settings.php:622
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Folosește Planificatorul de acțiuni pentru Abonare"
 
-#: src/backend-settings.php:584
+#: src/backend-settings.php:627
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -1933,16 +1990,16 @@ msgstr ""
 "În magazinul virtual, folosiți planificatorul de acțiuni pentru abonarea la "
 "listele de e-mail și SMS."
 
-#: src/backend-settings.php:589
+#: src/backend-settings.php:632
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
 
-#: src/backend-settings.php:594
+#: src/backend-settings.php:637
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
-"În magazinul virtual, utilizați planificatorul de acțiuni pentru acțiunea de"
-" dezabonare de la listele de e-mail."
+"În magazinul virtual, utilizați planificatorul de acțiuni pentru acțiunea de "
+"dezabonare de la listele de e-mail."
 
 #: src/backend-sms.php:103
 msgid "Please configure the credentials in Settings tab."
@@ -2038,8 +2095,8 @@ msgid ""
 "has in it a Cargus AWB."
 msgstr ""
 "Trimiteți SMS cu numărul Cargus AWB. Adaugă o acțiune în vizualizarea "
-"comenzii administrative Acțiuni comandă pentru a trimite mesajul SMS. Linkul"
-" va fi afișat după ce comanda conține un AWB Cargus."
+"comenzii administrative Acțiuni comandă pentru a trimite mesajul SMS. Linkul "
+"va fi afișat după ce comanda conține un AWB Cargus."
 
 #: src/backend-sms.php:290
 msgid "(from official SamedayCourier plugin)"
@@ -2067,8 +2124,8 @@ msgid ""
 "order has in it a FAN Courier AWB."
 msgstr ""
 "Trimiteți SMS cu numărul FAN Courier AWB. Adaugă o acțiune în vizualizarea "
-"comenzii administrative Acțiuni comandă pentru a trimite mesajul SMS. Linkul"
-" va fi afișat după ce comanda conține un AWB FAN Courier."
+"comenzii administrative Acțiuni comandă pentru a trimite mesajul SMS. Linkul "
+"va fi afișat după ce comanda conține un AWB FAN Courier."
 
 #: src/backend-sms.php:343
 msgid "SMS production debug"
@@ -2135,8 +2192,8 @@ msgid ""
 "The dropdown has the updated segments as options after the new list was "
 "saved."
 msgstr ""
-"Meniul derulant conține segmentele actualizate ca opțiuni după salvarea noii"
-" liste."
+"Meniul derulant conține segmentele actualizate ca opțiuni după salvarea noii "
+"liste."
 
 #: src/backend-sync.php:100
 msgid "Select an SMS list"
@@ -2161,8 +2218,8 @@ msgstr "Meniuri"
 
 #: src/backend.php:78
 msgid ""
-"You will be able to sync your shop customers and newsletter subscribers with"
-" NewsMAN list / segments"
+"You will be able to sync your shop customers and newsletter subscribers with "
+"NewsMAN list / segments"
 msgstr ""
 "Vei putea sincroniza clienții magazinului și abonații la newsletter cu "
 "listele/segmentele NewsMAN"
@@ -2174,9 +2231,8 @@ msgid ""
 "such as product viewed, added to cart, completed order etc."
 msgstr ""
 "Oferă o experiență valoroasă clientului tău prin automatizarea comunicării "
-"cu acesta. Creează fluxuri automate de e-mailuri bazate pe acțiunile sale pe"
-" site, cum ar fi produsul vizualizat, adăugat în coș, comanda finalizată "
-"etc."
+"cu acesta. Creează fluxuri automate de e-mailuri bazate pe acțiunile sale pe "
+"site, cum ar fi produsul vizualizat, adăugat în coș, comanda finalizată etc."
 
 #: src/backend.php:95
 msgid ""
@@ -2184,9 +2240,9 @@ msgid ""
 "attention. Create and manage campaigns or send transactional SMS directly "
 "from NewsMAN platform."
 msgstr ""
-"SMS-urile (mesaje scurte) reprezintă una dintre cele mai eficiente metode de"
-" a capta atenția utilizatorilor. Creați și gestionați campanii sau trimiteți"
-" SMS-uri tranzacționale direct de pe platforma NewsMAN."
+"SMS-urile (mesaje scurte) reprezintă una dintre cele mai eficiente metode de "
+"a capta atenția utilizatorilor. Creați și gestionați campanii sau trimiteți "
+"SMS-uri tranzacționale direct de pe platforma NewsMAN."
 
 #: src/backend.php:104
 msgid ""
@@ -2246,19 +2302,20 @@ msgstr "Ghid de configurare (romana)"
 #~ "When enabled, marks this form as a newsletter signup form. Informational "
 #~ "metadata only; available to integrations via filters."
 #~ msgstr ""
-#~ "Cand este activat, marcheaza acest formular drept formular de inscriere la "
-#~ "newsletter. Doar metadate informative; disponibile integrarilor prin filtre."
+#~ "Cand este activat, marcheaza acest formular drept formular de inscriere "
+#~ "la newsletter. Doar metadate informative; disponibile integrarilor prin "
+#~ "filtre."
 
 #~ msgid ""
 #~ "Required when Newsman is enabled. Lists are fetched from your Newsman "
 #~ "account and cached for 10 minutes."
 #~ msgstr ""
-#~ "Obligatoriu cand Newsman este activat. Listele sunt preluate din contul dvs."
-#~ " Newsman si pastrate in cache 10 minute."
+#~ "Obligatoriu cand Newsman este activat. Listele sunt preluate din contul "
+#~ "dvs. Newsman si pastrate in cache 10 minute."
 
 #~ msgid ""
-#~ "Export all WordPress users with role subscriber on regular basis (using Woo "
-#~ "Commerce Action Scheduler)."
+#~ "Export all WordPress users with role subscriber on regular basis (using "
+#~ "Woo Commerce Action Scheduler)."
 #~ msgstr ""
 #~ "Trimiteți toți utilizatorii WordPress cu rol de abonat în mod regulat "
 #~ "(folosind Woo Commerce Action Scheduler)."
@@ -2271,64 +2328,69 @@ msgstr "Ghid de configurare (romana)"
 #~ "Export latest WordPress subscribers registered in last X days every %d "
 #~ "hours."
 #~ msgstr ""
-#~ "Trimite cei mai recenți abonați WordPress înregistrați în ultimele X zile la"
-#~ " fiecare %d ore."
+#~ "Trimite cei mai recenți abonați WordPress înregistrați în ultimele X zile "
+#~ "la fiecare %d ore."
 
 #~ msgid "Latest Long Period in Days"
 #~ msgstr "Ultima perioadă lungă în zile"
 
 #, php-format
 #~ msgid ""
-#~ "Export latest WordPress subscribers registered in last X days every %d days."
+#~ "Export latest WordPress subscribers registered in last X days every %d "
+#~ "days."
 #~ msgstr ""
-#~ "Trimite cei mai recenți abonați WordPress înregistrați în ultimele X zile la"
-#~ " fiecare %d zile."
+#~ "Trimite cei mai recenți abonați WordPress înregistrați în ultimele X zile "
+#~ "la fiecare %d zile."
 
 #~ msgid ""
-#~ "Export all buyers from orders with status complete on regular basis (using "
-#~ "Woo Commerce Action Scheduler)."
+#~ "Export all buyers from orders with status complete on regular basis "
+#~ "(using Woo Commerce Action Scheduler)."
 #~ msgstr ""
 #~ "Trimiteți toți cumpărătorii din comenzile cu starea „Finalizat” în mod "
 #~ "regulat (folosind Woo Commerce Action Scheduler)."
 
 #, php-format
 #~ msgid ""
-#~ "Export latest buyers from orders created in the last X days every %d hours."
+#~ "Export latest buyers from orders created in the last X days every %d "
+#~ "hours."
 #~ msgstr ""
-#~ "Trimite cei mai recenți cumpărători din comenzile create în ultimele X zile "
-#~ "la fiecare %d ore."
+#~ "Trimite cei mai recenți cumpărători din comenzile create în ultimele X "
+#~ "zile la fiecare %d ore."
 
 #, php-format
 #~ msgid ""
 #~ "Export latest buyers from orders created in the last X days every %d days."
 #~ msgstr ""
-#~ "Trimite cei mai recenți cumpărători din comenzile create în ultimele X zile "
-#~ "la fiecare %d zile."
+#~ "Trimite cei mai recenți cumpărători din comenzile create în ultimele X "
+#~ "zile la fiecare %d zile."
 
 #~ msgid "Export Orders"
 #~ msgstr "Trimite comenzi"
 
-#~ msgid "Export orders on regular basis (using Woo Commerce Action Scheduler)."
+#~ msgid ""
+#~ "Export orders on regular basis (using Woo Commerce Action Scheduler)."
 #~ msgstr ""
-#~ "Trimiteți comenzile în mod regulat (folosind Woo Commerce Action Scheduler)."
+#~ "Trimiteți comenzile în mod regulat (folosind Woo Commerce Action "
+#~ "Scheduler)."
 
 #, php-format
 #~ msgid "Export latest orders created in the last X days every %d hours."
 #~ msgstr ""
-#~ "Trimiteți cele mai recente comenzi create în ultimele X zile la fiecare %d "
-#~ "ore."
+#~ "Trimiteți cele mai recente comenzi create în ultimele X zile la fiecare "
+#~ "%d ore."
 
 #, php-format
 #~ msgid "Export latest orders created in the last X days every %d days."
 #~ msgstr ""
-#~ "Trimiteți cele mai recente comenzi create în ultimele X zile la fiecare %d "
-#~ "zile."
+#~ "Trimiteți cele mai recente comenzi create în ultimele X zile la fiecare "
+#~ "%d zile."
 
 #~ msgid "Export Orders After Date"
 #~ msgstr "Trimite comenzile de după data"
 
 #~ msgid ""
-#~ "Export orders created after a specific date (including). Format: YYYY-MM-DD"
+#~ "Export orders created after a specific date (including). Format: YYYY-MM-"
+#~ "DD"
 #~ msgstr ""
 #~ "Comenzi care vor fi trimise după o anumită dată de creare (inclusiv). "
 #~ "Format: AAAA-LL-ZZ"
@@ -2339,8 +2401,8 @@ msgstr "Ghid de configurare (romana)"
 #~ msgid ""
 #~ "Or <em>optionally</em> synchronize data via CRON jobs (Task scheduler)."
 #~ msgstr ""
-#~ "Sau, <em>opțional</em>, sincronizați datele prin intermediul joburilor CRON "
-#~ "(Task scheduler)."
+#~ "Sau, <em>opțional</em>, sincronizați datele prin intermediul joburilor "
+#~ "CRON (Task scheduler)."
 
 #~ msgid "Click the export buttons to push all data once."
 #~ msgstr ""
@@ -2388,7 +2450,8 @@ msgstr "Ghid de configurare (romana)"
 #~ msgstr "Programați trimiterea abonaților"
 
 #~ msgid "CRON url to export WordPress users with role subscriber"
-#~ msgstr "URL CRON pentru trimiterea utilizatorilor WordPress cu rol de abonat"
+#~ msgstr ""
+#~ "URL CRON pentru trimiterea utilizatorilor WordPress cu rol de abonat"
 
 #~ msgid ""
 #~ "Export once as subscribers all buyers from orders with status complete "
@@ -2402,14 +2465,15 @@ msgstr "Ghid de configurare (romana)"
 
 #~ msgid "CRON url to export buyers from orders with status complete"
 #~ msgstr ""
-#~ "URL CRON pentru trimiterea cumpărătorilor din comenzile cu starea finalizată"
+#~ "URL CRON pentru trimiterea cumpărătorilor din comenzile cu starea "
+#~ "finalizată"
 
 #~ msgid ""
-#~ "Export once all orders to NewsMAN after the date set in Remarketing > Export"
-#~ " Orders After Date (using Woo Commerce Action Scheduler)"
+#~ "Export once all orders to NewsMAN after the date set in Remarketing > "
+#~ "Export Orders After Date (using Woo Commerce Action Scheduler)"
 #~ msgstr ""
-#~ "Trimiteți o singură dată toate comenzile către NewsMAN după data setată în "
-#~ "Remarketing > Trimiteți comenzi după data (folosind Planificatorul de "
+#~ "Trimiteți o singură dată toate comenzile către NewsMAN după data setată "
+#~ "în Remarketing > Trimiteți comenzi după data (folosind Planificatorul de "
 #~ "acțiuni Woo Commerce)"
 
 #~ msgid "Schedule Export Orders"
@@ -2431,5 +2495,5 @@ msgstr "Ghid de configurare (romana)"
 #~ "I want to receive notifications about the status of my order on my phone "
 #~ "(SMS messages)"
 #~ msgstr ""
-#~ "Doresc să primesc notificări despre starea comenzii mele pe telefon (mesaje "
-#~ "SMS)"
+#~ "Doresc să primesc notificări despre starea comenzii mele pe telefon "
+#~ "(mesaje SMS)"

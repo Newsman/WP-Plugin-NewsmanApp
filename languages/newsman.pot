@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-11T21:01:58+00:00\n"
+"POT-Creation-Date: 2026-05-12T13:56:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -33,8 +33,8 @@ msgstr ""
 #: newsmanapp.php
 #: includes/contactform7/class-formpanel.php:99
 #: includes/contactform7/class-formpanel.php:199
-#: includes/elementor/class-atomicformcontrols.php:328
-#: includes/elementor/class-atomicformcontrols.php:430
+#: includes/elementor/class-atomicformcontrols.php:365
+#: includes/elementor/class-atomicformcontrols.php:467
 #: includes/elementor/class-formcontrols.php:58
 #: includes/elementor/class-formcontrols.php:65
 #: includes/wpforms/class-formpanel.php:111
@@ -97,14 +97,14 @@ msgid "Could not save integration setup. Please try again."
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:97
+#: includes/admin/settings/class-settings.php:99
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:160
+#: includes/admin/settings/class-settings.php:163
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr ""
@@ -114,19 +114,48 @@ msgstr ""
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:164
-#: includes/admin/settings/class-settings.php:178
+#: includes/admin/settings/class-settings.php:167
+#: includes/admin/settings/class-settings.php:181
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr ""
 
+#: includes/admin/settings/class-settings.php:202
+#: src/backend-settings.php:348
+msgid "Elementor"
+msgstr ""
+
+#: includes/admin/settings/class-settings.php:206
+#: src/backend-settings.php:399
+msgid "Contact Form 7"
+msgstr ""
+
+#: includes/admin/settings/class-settings.php:210
+#: src/backend-settings.php:450
+msgid "WPForms"
+msgstr ""
+
+#. translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7").
+#: includes/admin/settings/class-settings.php:221
+#, php-format
+msgid "More than one \"Export Subscribers from Form Submissions\" is enabled (%s). Only the first in priority order (Elementor - Contact Form 7 - WPForms) will be used by subscriber.list; the others are ignored. Disable all but one."
+msgstr ""
+
+#: includes/admin/settings/class-settings.php:261
+#: includes/admin/settings/class-settings.php:335
+#: includes/admin/settings/class-settings.php:407
+msgid "Trash"
+msgstr ""
+
 #. translators: %d: CF7 form post id.
-#: includes/admin/settings/class-settings.php:227
+#. translators: %d: WPForms form post id.
+#: includes/admin/settings/class-settings.php:276
+#: includes/admin/settings/class-settings.php:429
 #, php-format
 msgid "Form #%d"
 msgstr ""
 
-#: includes/admin/settings/class-settings.php:319
+#: includes/admin/settings/class-settings.php:478
 msgid "Untitled form"
 msgstr ""
 
@@ -328,8 +357,8 @@ msgid "Subscribe form submissions to a Newsman list. The selected email field is
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:208
-#: includes/elementor/class-atomicformcontrols.php:236
-#: includes/elementor/class-atomicformcontrols.php:355
+#: includes/elementor/class-atomicformcontrols.php:273
+#: includes/elementor/class-atomicformcontrols.php:392
 #: includes/elementor/class-formcontrols.php:81
 #: includes/elementor/class-formcontrols.php:284
 #: includes/wpforms/class-formpanel.php:214
@@ -342,7 +371,7 @@ msgid "When enabled, every successful submission of this form is subscribed to t
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:225
-#: includes/elementor/class-atomicformcontrols.php:246
+#: includes/elementor/class-atomicformcontrols.php:283
 #: includes/elementor/class-formcontrols.php:104
 #: includes/wpforms/class-formpanel.php:225
 msgid "Newsletter form"
@@ -382,7 +411,7 @@ msgstr ""
 #: includes/contactform7/class-formpanel.php:348
 #: includes/contactform7/class-formpanel.php:374
 #: includes/contactform7/class-formpanel.php:400
-#: includes/elementor/class-atomicformcontrols.php:497
+#: includes/elementor/class-atomicformcontrols.php:534
 #: includes/elementor/class-formcontrols.php:160
 #: includes/elementor/class-formcontrols.php:531
 #: includes/wpforms/class-formpanel.php:254
@@ -395,21 +424,21 @@ msgid "Optional. Segments are list-scoped — only segments belonging to the sel
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:297
-#: includes/elementor/class-atomicformcontrols.php:295
+#: includes/elementor/class-atomicformcontrols.php:332
 #: includes/elementor/class-formcontrols.php:208
 #: includes/wpforms/class-formpanel.php:323
 msgid "Opt-in mode"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:302
-#: includes/elementor/class-atomicformcontrols.php:286
+#: includes/elementor/class-atomicformcontrols.php:323
 #: includes/elementor/class-formcontrols.php:211
 #: includes/wpforms/class-formpanel.php:326
 msgid "Single opt-in"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:305
-#: includes/elementor/class-atomicformcontrols.php:290
+#: includes/elementor/class-atomicformcontrols.php:327
 #: includes/elementor/class-formcontrols.php:212
 #: includes/wpforms/class-formpanel.php:327
 msgid "Double opt-in"
@@ -521,49 +550,49 @@ msgstr ""
 msgid "Newsman: CF7 email field is empty."
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:247
+#: includes/elementor/class-atomicformcontrols.php:284
 msgid "When on, the form uses the list and segment configured in Newsman - Sync; the per-form Newsman List and Newsman Segment values below are stored but ignored."
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:258
+#: includes/elementor/class-atomicformcontrols.php:295
 #: includes/elementor/class-formcontrols.php:127
 msgid "Newsman List"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:259
+#: includes/elementor/class-atomicformcontrols.php:296
 msgid "List for this campaign-specific form. Ignored when \"Newsletter form\" is on (the Sync section list is used instead)."
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:272
+#: includes/elementor/class-atomicformcontrols.php:309
 #: includes/elementor/class-formcontrols.php:170
 msgid "Newsman Segment"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:273
+#: includes/elementor/class-atomicformcontrols.php:310
 msgid "Optional. Segments are list-scoped — each option is labeled \"List name — Segment name\". If the selected segment does not belong to the saved list, it is dropped at submit time."
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:370
+#: includes/elementor/class-atomicformcontrols.php:407
 #: includes/elementor/class-formcontrols.php:310
 msgid "Use as Newsman email"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:382
+#: includes/elementor/class-atomicformcontrols.php:419
 #: includes/elementor/class-formcontrols.php:345
 msgid "Use as Newsman firstname"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:394
+#: includes/elementor/class-atomicformcontrols.php:431
 #: includes/elementor/class-formcontrols.php:380
 msgid "Use as Newsman lastname"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:406
+#: includes/elementor/class-atomicformcontrols.php:443
 #: includes/elementor/class-formcontrols.php:415
 msgid "Use as Newsman phone"
 msgstr ""
 
-#: includes/elementor/class-atomicformcontrols.php:454
+#: includes/elementor/class-atomicformcontrols.php:491
 msgid "-- select a list --"
 msgstr ""
 
@@ -1134,13 +1163,13 @@ msgid "Updated subscriber properties for %s"
 msgstr ""
 
 #. translators: 1: Email, 2: error message.
-#: includes/subscribe/class-helper.php:398
+#: includes/subscribe/class-helper.php:409
 #, php-format
 msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 
 #. translators: surfaced to the user when subscriber.initSubscribe returns API error 128.
-#: includes/subscribe/class-helper.php:559
+#: includes/subscribe/class-helper.php:570
 msgid "Too many requests for this subscriber. Can only send once per 10 minutes"
 msgstr ""
 
@@ -1321,7 +1350,7 @@ msgid "Select which customer attributes (from orders) to include in your remarke
 msgstr ""
 
 #: src/backend-remarketing.php:206
-#: src/backend-settings.php:601
+#: src/backend-settings.php:644
 #: src/backend-sms.php:391
 #: src/backend-sync.php:120
 msgid "Save Changes"
@@ -1515,10 +1544,6 @@ msgstr ""
 msgid "The label on subscribe to newsletter checkbox in customer account."
 msgstr ""
 
-#: src/backend-settings.php:348
-msgid "Elementor"
-msgstr ""
-
 #: src/backend-settings.php:352
 msgid "Use Elementor Integration"
 msgstr ""
@@ -1529,6 +1554,7 @@ msgstr ""
 
 #: src/backend-settings.php:367
 #: src/backend-settings.php:418
+#: src/backend-settings.php:474
 msgid "Export Subscribers from Form Submissions"
 msgstr ""
 
@@ -1538,11 +1564,13 @@ msgstr ""
 
 #: src/backend-settings.php:377
 #: src/backend-settings.php:428
+#: src/backend-settings.php:487
 msgid "Source Form"
 msgstr ""
 
 #: src/backend-settings.php:381
 #: src/backend-settings.php:432
+#: src/backend-settings.php:491
 msgid "— select a form —"
 msgstr ""
 
@@ -1552,10 +1580,6 @@ msgstr ""
 
 #: src/backend-settings.php:391
 msgid "Only one form per store is supported. The 8-char ID shown matches what appears in Elementor admin - Submissions - Form column."
-msgstr ""
-
-#: src/backend-settings.php:399
-msgid "Contact Form 7"
 msgstr ""
 
 #: src/backend-settings.php:403
@@ -1578,10 +1602,6 @@ msgstr ""
 msgid "Only one form per store is supported. Flamingo persists every submission of the selected form to the flamingo_inbound channel matching the form slug."
 msgstr ""
 
-#: src/backend-settings.php:450
-msgid "WPForms"
-msgstr ""
-
 #: src/backend-settings.php:454
 msgid "Use WPForms Integration"
 msgstr ""
@@ -1590,59 +1610,75 @@ msgstr ""
 msgid "When enabled, a Newsman section appears in the Settings panel of every WPForms form (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman builder controls and submission handling for WPForms."
 msgstr ""
 
-#: src/backend-settings.php:468
+#: src/backend-settings.php:479
+msgid "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers from WPForms entries of the selected form instead of from WordPress users / WooCommerce orders."
+msgstr ""
+
+#: src/backend-settings.php:481
+msgid "WPForms Lite does not store form entries — only WPForms Pro persists them to the database. Without entries, this export source will return no rows. Install or upgrade to WPForms Pro to use this feature."
+msgstr ""
+
+#: src/backend-settings.php:499
+msgid "No WPForms forms are marked as newsletter forms yet. Open a WPForms form, go to Settings - Newsman, and turn on both \"Send to Newsman\" and \"Newsletter form\" to make it available here."
+msgstr ""
+
+#: src/backend-settings.php:501
+msgid "Only one form per store is supported. WPForms persists every submission of the selected form to wp_wpforms_entries (Pro only)."
+msgstr ""
+
+#: src/backend-settings.php:511
 msgid "Logging level"
 msgstr ""
 
-#: src/backend-settings.php:477
+#: src/backend-settings.php:520
 msgid "No Logging"
 msgstr ""
 
-#: src/backend-settings.php:524
+#: src/backend-settings.php:567
 msgid "API Timeout"
 msgstr ""
 
-#: src/backend-settings.php:536
+#: src/backend-settings.php:579
 msgid "Enable Test User IP"
 msgstr ""
 
-#: src/backend-settings.php:541
+#: src/backend-settings.php:584
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr ""
 
-#: src/backend-settings.php:546
+#: src/backend-settings.php:589
 msgid "Test User IP address"
 msgstr ""
 
-#: src/backend-settings.php:557
+#: src/backend-settings.php:600
 msgid "Plugin Loaded Priority"
 msgstr ""
 
-#: src/backend-settings.php:563
+#: src/backend-settings.php:606
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr ""
 
-#: src/backend-settings.php:569
+#: src/backend-settings.php:612
 msgid "Use Action Scheduler"
 msgstr ""
 
-#: src/backend-settings.php:574
+#: src/backend-settings.php:617
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 
-#: src/backend-settings.php:579
+#: src/backend-settings.php:622
 msgid "Use Action Scheduler for Subscribe"
 msgstr ""
 
-#: src/backend-settings.php:584
+#: src/backend-settings.php:627
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr ""
 
-#: src/backend-settings.php:589
+#: src/backend-settings.php:632
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr ""
 
-#: src/backend-settings.php:594
+#: src/backend-settings.php:637
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
 

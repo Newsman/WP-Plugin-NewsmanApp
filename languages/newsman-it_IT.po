@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-11T21:01:58+00:00\n"
+"POT-Creation-Date: 2026-05-12T13:56:58+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -38,8 +38,8 @@ msgstr ""
 #. Author of the plugin
 #: newsmanapp.php includes/contactform7/class-formpanel.php:99
 #: includes/contactform7/class-formpanel.php:199
-#: includes/elementor/class-atomicformcontrols.php:328
-#: includes/elementor/class-atomicformcontrols.php:430
+#: includes/elementor/class-atomicformcontrols.php:365
+#: includes/elementor/class-atomicformcontrols.php:467
 #: includes/elementor/class-formcontrols.php:58
 #: includes/elementor/class-formcontrols.php:65
 #: includes/wpforms/class-formpanel.php:111
@@ -107,14 +107,14 @@ msgstr ""
 "riprovare."
 
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:97
+#: includes/admin/settings/class-settings.php:99
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:90
 msgid "Unauthorized user"
 msgstr "Utente non autorizzato"
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:160
+#: includes/admin/settings/class-settings.php:163
 #: includes/admin/settings/class-sync.php:163
 msgid "Options saved."
 msgstr "Opzioni salvate."
@@ -125,19 +125,52 @@ msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 "Credenziali non valide. Si prega di configurarle nella scheda Impostazioni."
 
-#: includes/admin/settings/class-settings.php:164
-#: includes/admin/settings/class-settings.php:178
+#: includes/admin/settings/class-settings.php:167
+#: includes/admin/settings/class-settings.php:181
 #: includes/admin/settings/class-sync.php:167
 msgid "Invalid Credentials"
 msgstr "Credenziali non valide"
 
+#: includes/admin/settings/class-settings.php:202 src/backend-settings.php:348
+msgid "Elementor"
+msgstr "Elementor"
+
+#: includes/admin/settings/class-settings.php:206 src/backend-settings.php:399
+msgid "Contact Form 7"
+msgstr "Contact Form 7"
+
+#: includes/admin/settings/class-settings.php:210 src/backend-settings.php:450
+msgid "WPForms"
+msgstr "WPForms"
+
+#. translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7").
+#: includes/admin/settings/class-settings.php:221
+#, php-format
+msgid ""
+"More than one \"Export Subscribers from Form Submissions\" is enabled (%s). "
+"Only the first in priority order (Elementor - Contact Form 7 - WPForms) will "
+"be used by subscriber.list; the others are ignored. Disable all but one."
+msgstr ""
+"Più di una opzione \"Esporta iscritti dagli invii di moduli\" è attiva "
+"(%s). Solo la prima in ordine di priorità (Elementor - Contact Form 7 - "
+"WPForms) sarà utilizzata da subscriber.list; le altre vengono ignorate. "
+"Disattivane tutte tranne una."
+
+#: includes/admin/settings/class-settings.php:261
+#: includes/admin/settings/class-settings.php:335
+#: includes/admin/settings/class-settings.php:407
+msgid "Trash"
+msgstr "Cestino"
+
 #. translators: %d: CF7 form post id.
-#: includes/admin/settings/class-settings.php:227
+#. translators: %d: WPForms form post id.
+#: includes/admin/settings/class-settings.php:276
+#: includes/admin/settings/class-settings.php:429
 #, php-format
 msgid "Form #%d"
 msgstr "Modulo n. %d"
 
-#: includes/admin/settings/class-settings.php:319
+#: includes/admin/settings/class-settings.php:478
 msgid "Untitled form"
 msgstr "Modulo senza titolo"
 
@@ -174,8 +207,7 @@ msgstr ""
 
 #: includes/admin/settings/class-sms.php:260
 msgid ""
-"The SMS was not sent. Please fill the test phone number and the test "
-"message."
+"The SMS was not sent. Please fill the test phone number and the test message."
 msgstr ""
 "L'SMS non è stato inviato. Si prega di compilare il numero di telefono di "
 "test e il messaggio di test."
@@ -202,8 +234,8 @@ msgstr "Impossibile aggiornare la lista dei feed"
 msgid ""
 "Newsman: Remarketing script updated successfully for site %1$s (ID: %2$d)."
 msgstr ""
-"Newsman: Script di remarketing aggiornato con successo per il sito %1$s (ID:"
-" %2$d)."
+"Newsman: Script di remarketing aggiornato con successo per il sito %1$s (ID: "
+"%2$d)."
 
 #: includes/class-admin.php:145
 msgid "Newsman: Remarketing script updated successfully."
@@ -329,13 +361,13 @@ msgid ""
 "used as the subscriber email; the chosen properties are pushed as Newsman "
 "subscriber properties."
 msgstr ""
-"Iscrivi gli invii del modulo a una lista Newsman. Il campo email selezionato"
-" è usato come email dell'iscritto; le proprietà scelte vengono inviate come "
+"Iscrivi gli invii del modulo a una lista Newsman. Il campo email selezionato "
+"è usato come email dell'iscritto; le proprietà scelte vengono inviate come "
 "proprietà dell'iscritto Newsman."
 
 #: includes/contactform7/class-formpanel.php:208
-#: includes/elementor/class-atomicformcontrols.php:236
-#: includes/elementor/class-atomicformcontrols.php:355
+#: includes/elementor/class-atomicformcontrols.php:273
+#: includes/elementor/class-atomicformcontrols.php:392
 #: includes/elementor/class-formcontrols.php:81
 #: includes/elementor/class-formcontrols.php:284
 #: includes/wpforms/class-formpanel.php:214
@@ -352,7 +384,7 @@ msgstr ""
 "lista Newsman selezionata."
 
 #: includes/contactform7/class-formpanel.php:225
-#: includes/elementor/class-atomicformcontrols.php:246
+#: includes/elementor/class-atomicformcontrols.php:283
 #: includes/elementor/class-formcontrols.php:104
 #: includes/wpforms/class-formpanel.php:225
 msgid "Newsletter form"
@@ -379,8 +411,8 @@ msgid ""
 "No Newsman lists are available. Configure your Newsman API key on the "
 "Newsman settings page first."
 msgstr ""
-"Nessuna lista Newsman disponibile. Configura prima la tua chiave API Newsman"
-" nella pagina delle impostazioni Newsman."
+"Nessuna lista Newsman disponibile. Configura prima la tua chiave API Newsman "
+"nella pagina delle impostazioni Newsman."
 
 #: includes/contactform7/class-formpanel.php:251
 #: includes/wpforms/class-formpanel.php:140
@@ -391,8 +423,8 @@ msgstr "— seleziona una lista —"
 #: includes/contactform7/class-formpanel.php:259
 #: includes/wpforms/class-formpanel.php:248
 msgid ""
-"List for this campaign-specific form. Ignored when \"Newsletter form\" is on"
-" (the configured Sync list is used instead)."
+"List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
+"(the configured Sync list is used instead)."
 msgstr ""
 "Elenco per questo modulo specifico della campagna. Ignorato quando «Modulo "
 "newsletter» è attivato (viene utilizzato l'elenco Sync)."
@@ -406,7 +438,7 @@ msgstr "Segmento Newsman"
 #: includes/contactform7/class-formpanel.php:348
 #: includes/contactform7/class-formpanel.php:374
 #: includes/contactform7/class-formpanel.php:400
-#: includes/elementor/class-atomicformcontrols.php:497
+#: includes/elementor/class-atomicformcontrols.php:534
 #: includes/elementor/class-formcontrols.php:160
 #: includes/elementor/class-formcontrols.php:531
 #: includes/wpforms/class-formpanel.php:254
@@ -416,29 +448,29 @@ msgstr "— nessuno —"
 
 #: includes/contactform7/class-formpanel.php:283
 msgid ""
-"Optional. Segments are list-scoped — only segments belonging to the selected"
-" list above are kept. Changing the list resets the segment."
+"Optional. Segments are list-scoped — only segments belonging to the selected "
+"list above are kept. Changing the list resets the segment."
 msgstr ""
-"Facoltativo. I segmenti sono vincolati all'elenco — vengono mantenuti solo i"
-" segmenti appartenenti all'elenco selezionato sopra. Cambiare l'elenco "
+"Facoltativo. I segmenti sono vincolati all'elenco — vengono mantenuti solo i "
+"segmenti appartenenti all'elenco selezionato sopra. Cambiare l'elenco "
 "reimposta il segmento."
 
 #: includes/contactform7/class-formpanel.php:297
-#: includes/elementor/class-atomicformcontrols.php:295
+#: includes/elementor/class-atomicformcontrols.php:332
 #: includes/elementor/class-formcontrols.php:208
 #: includes/wpforms/class-formpanel.php:323
 msgid "Opt-in mode"
 msgstr "Modalità di opt-in"
 
 #: includes/contactform7/class-formpanel.php:302
-#: includes/elementor/class-atomicformcontrols.php:286
+#: includes/elementor/class-atomicformcontrols.php:323
 #: includes/elementor/class-formcontrols.php:211
 #: includes/wpforms/class-formpanel.php:326
 msgid "Single opt-in"
 msgstr "Opt-in singolo"
 
 #: includes/contactform7/class-formpanel.php:305
-#: includes/elementor/class-atomicformcontrols.php:290
+#: includes/elementor/class-atomicformcontrols.php:327
 #: includes/elementor/class-formcontrols.php:212
 #: includes/wpforms/class-formpanel.php:327
 msgid "Double opt-in"
@@ -471,8 +503,8 @@ msgstr "Aggiungi un campo al modello del modulo per attivare Newsman."
 #: includes/contactform7/class-formpanel.php:331
 #: includes/wpforms/class-formpanel.php:369
 msgid ""
-"The selected field provides the subscriber email. Any field type may be used"
-" (text, tel, url, email, …)."
+"The selected field provides the subscriber email. Any field type may be used "
+"(text, tel, url, email, …)."
 msgstr ""
 "Il campo selezionato fornisce l'email dell'iscritto. Può essere usato "
 "qualsiasi tipo di campo (text, tel, url, email, …)."
@@ -557,8 +589,8 @@ msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
 msgstr ""
-"Ogni campo selezionato viene inviato a Newsman come proprietà dell'iscritto,"
-" con chiave pari al nome del form-tag."
+"Ogni campo selezionato viene inviato a Newsman come proprietà dell'iscritto, "
+"con chiave pari al nome del form-tag."
 
 #: includes/contactform7/class-formprocessor.php:83
 msgid ""
@@ -580,7 +612,7 @@ msgstr "Newsman: il modulo CF7 non ha un campo email configurato."
 msgid "Newsman: CF7 email field is empty."
 msgstr "Newsman: il campo email del modulo CF7 è vuoto."
 
-#: includes/elementor/class-atomicformcontrols.php:247
+#: includes/elementor/class-atomicformcontrols.php:284
 msgid ""
 "When on, the form uses the list and segment configured in Newsman - Sync; "
 "the per-form Newsman List and Newsman Segment values below are stored but "
@@ -590,25 +622,25 @@ msgstr ""
 "Newsman - Sync; i valori Elenco Newsman e Segmento Newsman per modulo "
 "sottostanti vengono salvati ma ignorati."
 
-#: includes/elementor/class-atomicformcontrols.php:258
+#: includes/elementor/class-atomicformcontrols.php:295
 #: includes/elementor/class-formcontrols.php:127
 msgid "Newsman List"
 msgstr "Lista Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:259
+#: includes/elementor/class-atomicformcontrols.php:296
 msgid ""
-"List for this campaign-specific form. Ignored when \"Newsletter form\" is on"
-" (the Sync section list is used instead)."
+"List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
+"(the Sync section list is used instead)."
 msgstr ""
 "Elenco per questo modulo specifico della campagna. Ignorato quando «Modulo "
 "newsletter» è attivato (viene utilizzato l'elenco della sezione Sync)."
 
-#: includes/elementor/class-atomicformcontrols.php:272
+#: includes/elementor/class-atomicformcontrols.php:309
 #: includes/elementor/class-formcontrols.php:170
 msgid "Newsman Segment"
 msgstr "Segmento Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:273
+#: includes/elementor/class-atomicformcontrols.php:310
 msgid ""
 "Optional. Segments are list-scoped — each option is labeled \"List name — "
 "Segment name\". If the selected segment does not belong to the saved list, "
@@ -618,27 +650,27 @@ msgstr ""
 "etichettata «Nome elenco — Nome segmento». Se il segmento selezionato non "
 "appartiene all'elenco salvato, viene scartato all'invio."
 
-#: includes/elementor/class-atomicformcontrols.php:370
+#: includes/elementor/class-atomicformcontrols.php:407
 #: includes/elementor/class-formcontrols.php:310
 msgid "Use as Newsman email"
 msgstr "Usa come email Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:382
+#: includes/elementor/class-atomicformcontrols.php:419
 #: includes/elementor/class-formcontrols.php:345
 msgid "Use as Newsman firstname"
 msgstr "Usa come nome Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:394
+#: includes/elementor/class-atomicformcontrols.php:431
 #: includes/elementor/class-formcontrols.php:380
 msgid "Use as Newsman lastname"
 msgstr "Usa come cognome Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:406
+#: includes/elementor/class-atomicformcontrols.php:443
 #: includes/elementor/class-formcontrols.php:415
 msgid "Use as Newsman phone"
 msgstr "Usa come telefono Newsman"
 
-#: includes/elementor/class-atomicformcontrols.php:454
+#: includes/elementor/class-atomicformcontrols.php:491
 msgid "-- select a list --"
 msgstr "-- seleziona una lista --"
 
@@ -719,8 +751,8 @@ msgid ""
 "Push this field's value as a subscriber property to Newsman (using the "
 "field's ID as the property key)."
 msgstr ""
-"Invia il valore di questo campo a Newsman come proprietà dell'iscritto (l'ID"
-" del campo è la chiave della proprietà)."
+"Invia il valore di questo campo a Newsman come proprietà dell'iscritto (l'ID "
+"del campo è la chiave della proprietà)."
 
 #: includes/elementor/class-formcontrols.php:312
 #: includes/elementor/class-formcontrols.php:347
@@ -745,8 +777,8 @@ msgstr ""
 
 #: includes/elementor/class-formcontrols.php:351
 msgid ""
-"Mark this field as the subscriber's firstname. The value is sent via context"
-" instead of being included in the subscriber properties."
+"Mark this field as the subscriber's firstname. The value is sent via context "
+"instead of being included in the subscriber properties."
 msgstr ""
 "Contrassegna questo campo come nome dell'iscritto. Il valore viene inviato "
 "tramite il contesto invece di essere incluso nelle proprietà dell'iscritto."
@@ -810,8 +842,7 @@ msgstr "Aggiungi coupon: %s"
 msgid "Added %1$d coupons %2$s"
 msgstr "Aggiunti %1$d coupon %2$s"
 
-#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5:
-#. Date created
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
 #: includes/export/retriever/class-cronsubscribers.php:64
 #, php-format
 msgid "Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
@@ -821,8 +852,7 @@ msgstr "Esporta abbonati %1$s %2$d, %3$d, blog ID %4$s, data %5$s"
 msgid "No subscribers found."
 msgstr "Nessun abbonato trovato."
 
-#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5:
-#. Date created
+#. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
 #: includes/export/retriever/class-cronsubscribers.php:130
 #, php-format
 msgid "Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
@@ -1277,26 +1307,24 @@ msgid "Updated subscriber properties for %s"
 msgstr "Proprietà dell'iscritto aggiornate per %s"
 
 #. translators: 1: Email, 2: error message.
-#: includes/subscribe/class-helper.php:398
+#: includes/subscribe/class-helper.php:409
 #, php-format
 msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
-"Newsman: GetByEmail non ha restituito %1$s, verrà usato saveSubscribe "
-"(%2$s)."
+"Newsman: GetByEmail non ha restituito %1$s, verrà usato saveSubscribe (%2$s)."
 
-#. translators: surfaced to the user when subscriber.initSubscribe returns API
-#. error 128.
-#: includes/subscribe/class-helper.php:559
+#. translators: surfaced to the user when subscriber.initSubscribe returns API error 128.
+#: includes/subscribe/class-helper.php:570
 msgid ""
 "Too many requests for this subscriber. Can only send once per 10 minutes"
 msgstr ""
-"Troppe richieste per questo iscritto. Può essere inviato solo una volta ogni"
-" 10 minuti"
+"Troppe richieste per questo iscritto. Può essere inviato solo una volta ogni "
+"10 minuti"
 
 #: includes/wpforms/class-formpanel.php:227
 msgid ""
-"When on, submissions go to the list and segment configured in Newsman - Sync"
-" (the per-form list and segment below are hidden because they no longer "
+"When on, submissions go to the list and segment configured in Newsman - Sync "
+"(the per-form list and segment below are hidden because they no longer "
 "apply)."
 msgstr ""
 "Quando attivo, gli invii vanno all'elenco e segmento configurati in Newsman "
@@ -1309,8 +1337,8 @@ msgid ""
 "selected list are kept. If they don't match, the segment is dropped at "
 "submit time."
 msgstr ""
-"Facoltativo. I segmenti sono vincolati all'elenco — vengono mantenuti solo i"
-" segmenti che appartengono all'elenco selezionato. Se non corrispondono, il "
+"Facoltativo. I segmenti sono vincolati all'elenco — vengono mantenuti solo i "
+"segmenti che appartengono all'elenco selezionato. Se non corrispondono, il "
 "segmento viene scartato all'invio."
 
 #: includes/wpforms/class-formpanel.php:336
@@ -1322,8 +1350,8 @@ msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
 msgstr ""
-"Ogni campo selezionato viene inviato a Newsman come proprietà dell'iscritto,"
-" con chiave pari all'etichetta del campo (o all'ID se non è impostata "
+"Ogni campo selezionato viene inviato a Newsman come proprietà dell'iscritto, "
+"con chiave pari all'etichetta del campo (o all'ID se non è impostata "
 "l'etichetta)."
 
 #. translators: %s: WPForms field id.
@@ -1334,11 +1362,11 @@ msgstr "Campo #%s"
 
 #: includes/wpforms/class-formprocessor.php:79
 msgid ""
-"Newsman: WPForms form is marked as newsletter form but no list is configured"
-" in Newsman - Sync."
+"Newsman: WPForms form is marked as newsletter form but no list is configured "
+"in Newsman - Sync."
 msgstr ""
-"Newsman: il modulo WPForms è contrassegnato come modulo newsletter ma nessun"
-" elenco è configurato in Newsman - Sync."
+"Newsman: il modulo WPForms è contrassegnato come modulo newsletter ma nessun "
+"elenco è configurato in Newsman - Sync."
 
 #: includes/wpforms/class-formprocessor.php:86
 msgid "Newsman: WPForms form is enabled but no list is selected."
@@ -1448,10 +1476,10 @@ msgid ""
 "Enable for the most reliable detection of cart changes on any theme "
 "(background polling plus AJAX/fetch interception against the Newsman cart "
 "endpoint). Disable for a lighter mechanism that reads cart data directly "
-"from the WooCommerce Store API (/wc/store/v1/cart/add-item and "
-"/wc/store/v1/batch) responses (no polling). If you disable this option, use "
-"the newsman.app Remarketing Check installation tool to verify cart events "
-"are detected on your theme."
+"from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/"
+"batch) responses (no polling). If you disable this option, use the newsman."
+"app Remarketing Check installation tool to verify cart events are detected "
+"on your theme."
 msgstr ""
 "Abilita per il rilevamento più affidabile delle modifiche al carrello su "
 "qualsiasi tema (polling in background più intercettazione AJAX/fetch "
@@ -1515,10 +1543,10 @@ msgid ""
 "Select which customer attributes (from orders) to include in your "
 "remarketing data."
 msgstr ""
-"Seleziona quali attributi del cliente (dagli ordini) includere nei tuoi dati"
-" di remarketing."
+"Seleziona quali attributi del cliente (dagli ordini) includere nei tuoi dati "
+"di remarketing."
 
-#: src/backend-remarketing.php:206 src/backend-settings.php:601
+#: src/backend-remarketing.php:206 src/backend-settings.php:644
 #: src/backend-sms.php:391 src/backend-sync.php:120
 msgid "Save Changes"
 msgstr "Salva modifiche"
@@ -1569,8 +1597,8 @@ msgstr "Indirizzo IP del server"
 
 #: src/backend-settings.php:125
 msgid ""
-"Please set the public IP address of the server if the user IP address is not"
-" sent. NewsMAN subscribe to newsletter requires an IP address."
+"Please set the public IP address of the server if the user IP address is not "
+"sent. NewsMAN subscribe to newsletter requires an IP address."
 msgstr ""
 "Si prega di impostare l'indirizzo IP pubblico del server se l'indirizzo IP "
 "dell'utente non viene inviato. L'iscrizione alla newsletter di NewsMAN "
@@ -1595,8 +1623,8 @@ msgid ""
 "Please go to <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-Commerce "
 "&gt; Feeds and set Header Authorization."
 msgstr ""
-"Si prega di andare su <a target=\"_blank\" href=\"%s\">newsman.app</a> in "
-"E-Commerce &gt; Feed e impostare l'autorizzazione dell'header."
+"Si prega di andare su <a target=\"_blank\" href=\"%s\">newsman.app</a> in E-"
+"Commerce &gt; Feed e impostare l'autorizzazione dell'header."
 
 #: src/backend-settings.php:151 src/backend-settings.php:178
 msgid "NewsMAN will be able to import product feeds securely."
@@ -1645,11 +1673,11 @@ msgstr ""
 
 #: src/backend-settings.php:213
 msgid ""
-"Forms can be created in <a target=\"_blank\" "
-"href=\"https://newsman.app/manager\">newsman.app</a> &gt; Forms."
+"Forms can be created in <a target=\"_blank\" href=\"https://newsman.app/"
+"manager\">newsman.app</a> &gt; Forms."
 msgstr ""
-"I moduli possono essere creati in <a target=\"_blank\" "
-"href=\"https://newsman.app/manager\">newsman.app</a> &gt; Moduli."
+"I moduli possono essere creati in <a target=\"_blank\" href=\"https://"
+"newsman.app/manager\">newsman.app</a> &gt; Moduli."
 
 #: src/backend-settings.php:229
 msgid "Checkout Subscribe to Newsletter and SMS"
@@ -1746,10 +1774,6 @@ msgstr ""
 "L'etichetta della casella di controllo per l'iscrizione alla newsletter "
 "nell'account del cliente."
 
-#: src/backend-settings.php:348
-msgid "Elementor"
-msgstr "Elementor"
-
 #: src/backend-settings.php:352
 msgid "Use Elementor Integration"
 msgstr "Usa l'integrazione Elementor"
@@ -1757,17 +1781,18 @@ msgstr "Usa l'integrazione Elementor"
 #: src/backend-settings.php:357
 msgid ""
 "When enabled, the Newsman section appears on Elementor Pro Form widgets and "
-"Atomic Forms in the editor, and submissions push the email plus marked field"
-" values to the selected Newsman list. Disable to remove all Newsman editor "
+"Atomic Forms in the editor, and submissions push the email plus marked field "
+"values to the selected Newsman list. Disable to remove all Newsman editor "
 "controls and submission handling for Elementor."
 msgstr ""
-"Quando abilitato, la sezione Newsman appare nei widget Form di Elementor Pro"
-" e negli Atomic Forms dell'editor, e gli invii trasmettono l'email insieme "
-"ai valori dei campi contrassegnati alla lista Newsman selezionata. "
-"Disabilita per rimuovere tutti i controlli dell'editor Newsman e la gestione"
-" degli invii per Elementor."
+"Quando abilitato, la sezione Newsman appare nei widget Form di Elementor Pro "
+"e negli Atomic Forms dell'editor, e gli invii trasmettono l'email insieme ai "
+"valori dei campi contrassegnati alla lista Newsman selezionata. Disabilita "
+"per rimuovere tutti i controlli dell'editor Newsman e la gestione degli "
+"invii per Elementor."
 
 #: src/backend-settings.php:367 src/backend-settings.php:418
+#: src/backend-settings.php:474
 msgid "Export Subscribers from Form Submissions"
 msgstr "Esporta abbonati dagli invii di moduli"
 
@@ -1783,10 +1808,12 @@ msgstr ""
 "sorgente."
 
 #: src/backend-settings.php:377 src/backend-settings.php:428
+#: src/backend-settings.php:487
 msgid "Source Form"
 msgstr "Modulo sorgente"
 
 #: src/backend-settings.php:381 src/backend-settings.php:432
+#: src/backend-settings.php:491
 msgid "— select a form —"
 msgstr "— seleziona un modulo —"
 
@@ -1796,9 +1823,9 @@ msgid ""
 "editor and turn on both \"Send to Newsman\" and \"Newsletter form\" to make "
 "it available here."
 msgstr ""
-"Nessun modulo Elementor è ancora contrassegnato come modulo newsletter. Apri"
-" un modulo nell'editor e attiva sia «Invia a Newsman» che «Modulo "
-"newsletter» per renderlo disponibile qui."
+"Nessun modulo Elementor è ancora contrassegnato come modulo newsletter. Apri "
+"un modulo nell'editor e attiva sia «Invia a Newsman» che «Modulo newsletter» "
+"per renderlo disponibile qui."
 
 #: src/backend-settings.php:391
 msgid ""
@@ -1809,10 +1836,6 @@ msgstr ""
 "corrisponde a quello che appare in Elementor admin - Submissions - colonna "
 "Form."
 
-#: src/backend-settings.php:399
-msgid "Contact Form 7"
-msgstr "Contact Form 7"
-
 #: src/backend-settings.php:403
 msgid "Use Contact Form 7 Integration"
 msgstr "Usa integrazione Contact Form 7"
@@ -1820,10 +1843,10 @@ msgstr "Usa integrazione Contact Form 7"
 #: src/backend-settings.php:408
 msgid ""
 "When enabled, the Newsman tab appears on Contact Form 7 forms in the editor "
-"(per-form list selection, email field, and properties), and submissions push"
-" the email plus marked field values to the selected Newsman list. Disable to"
-" remove all Newsman editor controls and submission handling for Contact Form"
-" 7."
+"(per-form list selection, email field, and properties), and submissions push "
+"the email plus marked field values to the selected Newsman list. Disable to "
+"remove all Newsman editor controls and submission handling for Contact Form "
+"7."
 msgstr ""
 "Quando attivato, la scheda Newsman appare sui moduli Contact Form 7 "
 "nell'editor (selezione lista per modulo, campo email e proprietà), e gli "
@@ -1843,12 +1866,12 @@ msgstr ""
 
 #: src/backend-settings.php:440
 msgid ""
-"No Contact Form 7 forms are marked as newsletter forms yet. Open a CF7 form,"
-" go to the Newsman tab, and turn on both \"Send to Newsman\" and "
-"\"Newsletter form\" to make it available here."
+"No Contact Form 7 forms are marked as newsletter forms yet. Open a CF7 form, "
+"go to the Newsman tab, and turn on both \"Send to Newsman\" and \"Newsletter "
+"form\" to make it available here."
 msgstr ""
-"Nessun modulo Contact Form 7 è ancora contrassegnato come modulo newsletter."
-" Apri un modulo CF7, vai alla scheda Newsman e attiva sia «Invia a Newsman» "
+"Nessun modulo Contact Form 7 è ancora contrassegnato come modulo newsletter. "
+"Apri un modulo CF7, vai alla scheda Newsman e attiva sia «Invia a Newsman» "
 "che «Modulo newsletter» per renderlo disponibile qui."
 
 #: src/backend-settings.php:442
@@ -1857,12 +1880,8 @@ msgid ""
 "the selected form to the flamingo_inbound channel matching the form slug."
 msgstr ""
 "È supportato un solo modulo per negozio. Flamingo memorizza ogni invio del "
-"modulo selezionato nel canale flamingo_inbound che corrisponde allo slug del"
-" modulo."
-
-#: src/backend-settings.php:450
-msgid "WPForms"
-msgstr "WPForms"
+"modulo selezionato nel canale flamingo_inbound che corrisponde allo slug del "
+"modulo."
 
 #: src/backend-settings.php:454
 msgid "Use WPForms Integration"
@@ -1873,32 +1892,71 @@ msgid ""
 "When enabled, a Newsman section appears in the Settings panel of every "
 "WPForms form (per-form list selection, email field, and properties), and "
 "submissions push the email plus marked field values to the selected Newsman "
-"list. Disable to remove all Newsman builder controls and submission handling"
-" for WPForms."
+"list. Disable to remove all Newsman builder controls and submission handling "
+"for WPForms."
 msgstr ""
 "Quando attivato, una sezione Newsman appare nel pannello Impostazioni di "
-"ogni modulo WPForms (selezione lista per modulo, campo email e proprietà), e"
-" gli invii spingono l'email e i valori dei campi selezionati nella lista "
+"ogni modulo WPForms (selezione lista per modulo, campo email e proprietà), e "
+"gli invii spingono l'email e i valori dei campi selezionati nella lista "
 "Newsman scelta. Disattiva per rimuovere tutti i controlli del builder "
 "Newsman e la gestione degli invii per WPForms."
 
-#: src/backend-settings.php:468
+#: src/backend-settings.php:479
+msgid ""
+"When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
+"from WPForms entries of the selected form instead of from WordPress users / "
+"WooCommerce orders."
+msgstr ""
+"Quando attivato, l'endpoint Newsman subscriber.list API v1 recupera gli "
+"iscritti dalle voci WPForms del modulo selezionato invece che dagli utenti "
+"WordPress / ordini WooCommerce."
+
+#: src/backend-settings.php:481
+msgid ""
+"WPForms Lite does not store form entries — only WPForms Pro persists them to "
+"the database. Without entries, this export source will return no rows. "
+"Install or upgrade to WPForms Pro to use this feature."
+msgstr ""
+"WPForms Lite non memorizza le voci dei moduli — solo WPForms Pro le "
+"persiste nel database. Senza voci, questa origine di esportazione non "
+"restituirà righe. Installa o aggiorna a WPForms Pro per usare questa "
+"funzione."
+
+#: src/backend-settings.php:499
+msgid ""
+"No WPForms forms are marked as newsletter forms yet. Open a WPForms form, go "
+"to Settings - Newsman, and turn on both \"Send to Newsman\" and \"Newsletter "
+"form\" to make it available here."
+msgstr ""
+"Nessun modulo WPForms è ancora contrassegnato come modulo newsletter. Apri"
+"un modulo WPForms, vai su Impostazioni - Newsman e attiva sia \"Invia a "
+"Newsman\" che \"Modulo newsletter\" per renderlo disponibile qui."
+
+#: src/backend-settings.php:501
+msgid ""
+"Only one form per store is supported. WPForms persists every submission of "
+"the selected form to wp_wpforms_entries (Pro only)."
+msgstr ""
+"È supportato solo un modulo per negozio. WPForms persiste ogni invio del "
+"modulo selezionato in wp_wpforms_entries (solo Pro)."
+
+#: src/backend-settings.php:511
 msgid "Logging level"
 msgstr "Livello di registrazione"
 
-#: src/backend-settings.php:477
+#: src/backend-settings.php:520
 msgid "No Logging"
 msgstr "Nessuna registrazione"
 
-#: src/backend-settings.php:524
+#: src/backend-settings.php:567
 msgid "API Timeout"
 msgstr "Timeout API"
 
-#: src/backend-settings.php:536
+#: src/backend-settings.php:579
 msgid "Enable Test User IP"
 msgstr "Attiva IP utente di test"
 
-#: src/backend-settings.php:541
+#: src/backend-settings.php:584
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -1906,15 +1964,15 @@ msgstr ""
 "Attenzione! Si prega di non utilizzare questo indirizzo IP in produzione "
 "perché è utilizzato dall'endpoint API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:546
+#: src/backend-settings.php:589
 msgid "Test User IP address"
 msgstr "Indirizzo IP utente di test"
 
-#: src/backend-settings.php:557
+#: src/backend-settings.php:600
 msgid "Plugin Loaded Priority"
 msgstr "Priorità di caricamento del plugin"
 
-#: src/backend-settings.php:563
+#: src/backend-settings.php:606
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -1923,31 +1981,31 @@ msgstr ""
 "plugins_loaded e la priorità impostata in questa configurazione. Il valore "
 "predefinito è 20."
 
-#: src/backend-settings.php:569
+#: src/backend-settings.php:612
 msgid "Use Action Scheduler"
 msgstr "Usa Action Scheduler"
 
-#: src/backend-settings.php:574
+#: src/backend-settings.php:617
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Usa il plugin Action Scheduler per alcune azioni dell'API NewsMAN."
 
-#: src/backend-settings.php:579
+#: src/backend-settings.php:622
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Usa Action Scheduler per l'iscrizione"
 
-#: src/backend-settings.php:584
+#: src/backend-settings.php:627
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
 msgstr ""
-"Nella vetrina, usa Action Scheduler per le azioni di iscrizione alle liste "
-"e-mail e SMS."
+"Nella vetrina, usa Action Scheduler per le azioni di iscrizione alle liste e-"
+"mail e SMS."
 
-#: src/backend-settings.php:589
+#: src/backend-settings.php:632
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Usa Action Scheduler per la disiscrizione"
 
-#: src/backend-settings.php:594
+#: src/backend-settings.php:637
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
@@ -2047,8 +2105,8 @@ msgid ""
 "has in it a Cargus AWB."
 msgstr ""
 "Invia SMS con il numero AWB Cargus. Aggiunge un'azione nella vista ordini "
-"dell'amministratore per inviare il messaggio SMS. Il link verrà visualizzato"
-" dopo che l'ordine contiene un AWB Cargus."
+"dell'amministratore per inviare il messaggio SMS. Il link verrà visualizzato "
+"dopo che l'ordine contiene un AWB Cargus."
 
 #: src/backend-sms.php:290
 msgid "(from official SamedayCourier plugin)"
@@ -2091,8 +2149,8 @@ msgid ""
 "The message will be sent to your specified phone and not to customer phone. "
 "SMS are sent on order status changes."
 msgstr ""
-"Il messaggio verrà inviato al tuo telefono specificato e non al telefono del"
-" cliente. Gli SMS vengono inviati al cambio di stato dell'ordine."
+"Il messaggio verrà inviato al tuo telefono specificato e non al telefono del "
+"cliente. Gli SMS vengono inviati al cambio di stato dell'ordine."
 
 #: src/backend-sms.php:356
 msgid "Phone for tests"
@@ -2168,8 +2226,8 @@ msgstr "Menu"
 
 #: src/backend.php:78
 msgid ""
-"You will be able to sync your shop customers and newsletter subscribers with"
-" NewsMAN list / segments"
+"You will be able to sync your shop customers and newsletter subscribers with "
+"NewsMAN list / segments"
 msgstr ""
 "Potrai sincronizzare i clienti del tuo negozio e gli abbonati alla "
 "newsletter con le liste / segmenti di NewsMAN"
@@ -2180,8 +2238,8 @@ msgid ""
 "with them. Create automatic email flows based on their actions on the site, "
 "such as product viewed, added to cart, completed order etc."
 msgstr ""
-"Offri un'esperienza preziosa ai tuoi clienti automatizzando la comunicazione"
-" con loro. Crea flussi di e-mail automatici basati sulle loro azioni sul "
+"Offri un'esperienza preziosa ai tuoi clienti automatizzando la comunicazione "
+"con loro. Crea flussi di e-mail automatici basati sulle loro azioni sul "
 "sito, come prodotto visualizzato, aggiunto al carrello, ordine completato, "
 "ecc."
 
@@ -2233,8 +2291,8 @@ msgid ""
 msgstr ""
 "Accedi al tuo account NewsMAN: Seleziona Lista -> Impostazioni -> Moduli di "
 "iscrizione -> Crea/Modifica modulo -> Finestra modale -> Attiva finestra "
-"modale per l'iscrizione alla newsletter -> Seleziona modulo integrato. Copia"
-" e incolla lo shortcode newsman_subscribe_widget"
+"modale per l'iscrizione alla newsletter -> Seleziona modulo integrato. Copia "
+"e incolla lo shortcode newsman_subscribe_widget"
 
 #: src/backend.php:119
 msgid "Documentation"
@@ -2252,13 +2310,13 @@ msgstr "Guida alla configurazione (in rumeno)"
 #~ "When enabled, marks this form as a newsletter signup form. Informational "
 #~ "metadata only; available to integrations via filters."
 #~ msgstr ""
-#~ "Quando attivato, contrassegna questo modulo come modulo di iscrizione alla "
-#~ "newsletter. Metadati solo informativi; disponibili alle integrazioni tramite"
-#~ " filtri."
+#~ "Quando attivato, contrassegna questo modulo come modulo di iscrizione "
+#~ "alla newsletter. Metadati solo informativi; disponibili alle integrazioni "
+#~ "tramite filtri."
 
 #~ msgid ""
 #~ "Required when Newsman is enabled. Lists are fetched from your Newsman "
 #~ "account and cached for 10 minutes."
 #~ msgstr ""
-#~ "Obbligatorio quando Newsman è abilitato. Le liste vengono recuperate dal tuo"
-#~ " account Newsman e memorizzate nella cache per 10 minuti."
+#~ "Obbligatorio quando Newsman è abilitato. Le liste vengono recuperate dal "
+#~ "tuo account Newsman e memorizzate nella cache per 10 minuti."
