@@ -459,6 +459,49 @@ $form_values = $this->get_form_values();
 								<p class="description"><?php echo esc_html__( 'When enabled, a Newsman section appears in the Settings panel of every WPForms form (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman builder controls and submission handling for WPForms.', 'newsman' ); ?></p>
 							</td>
 						</tr>
+						<?php
+						global $wpdb;
+						$wpforms_export_on    = ( ! empty( $form_values['newsman_wpforms_export_subscribers'] ) && 'on' === $form_values['newsman_wpforms_export_subscribers'] );
+						$wpforms_forms        = $this->get_wpforms_newsletter_forms();
+						// WPForms Lite does not create the entries tables; only Pro does. We still
+						// render the row (per the chosen UX) but flag the empty-state.
+						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+						$wpforms_entries_table = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'wpforms_entries' ) );
+						$wpforms_entries_exist = ! empty( $wpforms_entries_table );
+						?>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_wpforms_export_subscribers"><?php echo esc_html__( 'Export Subscribers from Form Submissions', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_wpforms_export_subscribers" type="checkbox"
+									id="newsman_wpforms_export_subscribers" <?php echo $wpforms_export_on ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers from WPForms entries of the selected form instead of from WordPress users / WooCommerce orders.', 'newsman' ); ?></p>
+								<?php if ( ! $wpforms_entries_exist ) : ?>
+									<p class="description"><em><?php echo esc_html__( 'WPForms Lite does not store form entries — only WPForms Pro persists them to the database. Without entries, this export source will return no rows. Install or upgrade to WPForms Pro to use this feature.', 'newsman' ); ?></em></p>
+								<?php endif; ?>
+							</td>
+						</tr>
+						<tr style="display: <?php echo $wpforms_export_on ? 'table-row' : 'none'; ?>;">
+							<th scope="row">
+								<label class="nzm-label" for="newsman_wpforms_export_form_id"><?php echo esc_html__( 'Source Form', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<select name="newsman_wpforms_export_form_id" id="newsman_wpforms_export_form_id">
+									<option value=""><?php echo esc_html__( '— select a form —', 'newsman' ); ?></option>
+									<?php foreach ( $wpforms_forms as $wpforms_post_id => $label ) : ?>
+										<option value="<?php echo esc_attr( (string) $wpforms_post_id ); ?>" <?php selected( (string) $form_values['newsman_wpforms_export_form_id'], (string) $wpforms_post_id ); ?>>
+											<?php echo esc_html( (string) $label ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<?php if ( empty( $wpforms_forms ) ) : ?>
+									<p class="description"><em><?php echo esc_html__( 'No WPForms forms are marked as newsletter forms yet. Open a WPForms form, go to Settings - Newsman, and turn on both "Send to Newsman" and "Newsletter form" to make it available here.', 'newsman' ); ?></em></p>
+								<?php else : ?>
+									<p class="description"><?php echo esc_html__( 'Only one form per store is supported. WPForms persists every submission of the selected form to wp_wpforms_entries (Pro only).', 'newsman' ); ?></p>
+								<?php endif; ?>
+							</td>
+						</tr>
 					</table>
 					<?php endif; ?>
 					<h2>Developer</h2>

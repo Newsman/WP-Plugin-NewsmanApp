@@ -335,6 +335,9 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 			return null;
 		}
 
+		// Include trashed pages: wp_e_submissions rows for this widget id survive when
+		// the host page is trashed, so the lookup must still find the form node so the
+		// export keeps working. Exclude revisions (they duplicate their parent's data).
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
@@ -343,7 +346,8 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 				 JOIN   {$wpdb->posts} p ON p.ID = pm.post_id
 				 WHERE  pm.meta_key = %s
 				   AND  pm.meta_value LIKE %s
-				   AND  p.post_status NOT IN ('trash','auto-draft')
+				   AND  p.post_status NOT IN ('auto-draft')
+				   AND  p.post_type != 'revision'
 				 LIMIT 50",
 				'_elementor_data',
 				'%' . $wpdb->esc_like( $form_id ) . '%'

@@ -76,6 +76,8 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_contact_form_7_export_form_id',
 		'newsman_elementor_export_subscribers',
 		'newsman_elementor_export_form_id',
+		'newsman_wpforms_export_subscribers',
+		'newsman_wpforms_export_form_id',
 	);
 
 	/**
@@ -117,8 +119,9 @@ class Settings extends \Newsman\Admin\Settings {
 			$this->init_form_values_from_post();
 			$this->save_form_values();
 
-			// Invalidate the Elementor newsletter-forms scan so a freshly-flipped widget shows up.
+			// Invalidate the Elementor + WPForms newsletter-forms scans so a freshly-flipped form shows up.
 			delete_transient( 'newsman_elementor_newsletter_forms_' . get_current_blog_id() );
+			delete_transient( 'newsman_wpforms_newsletter_forms_' . get_current_blog_id() );
 
 			$this->is_oauth();
 
@@ -178,6 +181,47 @@ class Settings extends \Newsman\Admin\Settings {
 				$this->set_message_backend( 'error', esc_html__( 'Invalid Credentials', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		}
+
+		$this->warn_if_multiple_export_sources_active();
+	}
+
+	/**
+	 * Push an admin error notice when more than one "Export Subscribers from Form
+	 * Submissions" source is fully configured (toggle on AND a Source Form selected).
+	 *
+	 * The retriever priority chain (Elementor - CF7 - WPForms) silently picks the
+	 * first eligible source, so a misconfigured admin would otherwise not realize
+	 * the second/third sources are being ignored.
+	 *
+	 * @return void
+	 */
+	protected function warn_if_multiple_export_sources_active() {
+		$active = array();
+		if ( 'on' === (string) $this->get_form_value( 'newsman_elementor_export_subscribers' )
+			&& '' !== (string) $this->get_form_value( 'newsman_elementor_export_form_id' ) ) {
+			$active[] = esc_html__( 'Elementor', 'newsman' );
+		}
+		if ( 'on' === (string) $this->get_form_value( 'newsman_contact_form_7_export_subscribers' )
+			&& '' !== (string) $this->get_form_value( 'newsman_contact_form_7_export_form_id' ) ) {
+			$active[] = esc_html__( 'Contact Form 7', 'newsman' );
+		}
+		if ( 'on' === (string) $this->get_form_value( 'newsman_wpforms_export_subscribers' )
+			&& '' !== (string) $this->get_form_value( 'newsman_wpforms_export_form_id' ) ) {
+			$active[] = esc_html__( 'WPForms', 'newsman' );
+		}
+
+		if ( count( $active ) <= 1 ) {
+			return;
+		}
+
+		$this->set_message_backend(
+			'error',
+			sprintf(
+				/* translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7"). */
+				esc_html__( 'More than one "Export Subscribers from Form Submissions" is enabled (%s). Only the first in priority order (Elementor - Contact Form 7 - WPForms) will be used by subscriber.list; the others are ignored. Disable all but one.', 'newsman' ),
+				implode( ', ', $active )
+			)
+		);
 	}
 
 	/**
@@ -194,11 +238,15 @@ class Settings extends \Newsman\Admin\Settings {
 			return array();
 		}
 
+		// Include trashed CF7 forms: Flamingo persists submissions to a channel taxonomy
+		// keyed by form slug, independent of the form post's status. `'post_status'=>'any'`
+		// would silently exclude trash (it filters statuses with exclude_from_search=true),
+		// so list the statuses explicitly.
 		$forms = array();
 		$query = new \WP_Query(
 			array(
 				'post_type'              => 'wpcf7_contact_form',
-				'post_status'            => 'any',
+				'post_status'            => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
 				'posts_per_page'         => -1,
 				'no_found_rows'          => true,
 				'update_post_term_cache' => false,
@@ -210,6 +258,7 @@ class Settings extends \Newsman\Admin\Settings {
 			return $forms;
 		}
 
+		$trash_suffix = ' [' . esc_html__( 'Trash', 'newsman' ) . ']';
 		foreach ( $query->posts as $post_id ) {
 			$contact_form = \WPCF7_ContactForm::get_instance( $post_id );
 			if ( ! is_object( $contact_form ) || ! method_exists( $contact_form, 'prop' ) ) {
@@ -225,6 +274,9 @@ class Settings extends \Newsman\Admin\Settings {
 			}
 			if ( '' === $title ) {
 				$title = sprintf( /* translators: %d: CF7 form post id. */ __( 'Form #%d', 'newsman' ), (int) $post_id );
+			}
+			if ( 'trash' === (string) get_post_field( 'post_status', $post_id ) ) {
+				$title .= $trash_suffix;
 			}
 			$forms[ (int) $post_id ] = $title;
 		}
@@ -254,16 +306,21 @@ class Settings extends \Newsman\Admin\Settings {
 		$forms = array();
 		global $wpdb;
 
+		// Include trashed pages: the Elementor form's submissions live in wp_e_submissions
+		// keyed by widget id, so they survive when the host page is trashed. Exclude
+		// revisions (post_type='revision', status='inherit') — they duplicate their
+		// parent's _elementor_data and would otherwise leak forms whose parent is in trash.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT pm.post_id, pm.meta_value, p.post_title
+				"SELECT pm.post_id, pm.meta_value, p.post_title, p.post_status
 				 FROM   {$wpdb->postmeta} pm
 				 JOIN   {$wpdb->posts} p ON p.ID = pm.post_id
 				 WHERE  pm.meta_key = %s
 				   AND  pm.meta_value LIKE %s
 				   AND  pm.meta_value LIKE %s
-				   AND  p.post_status NOT IN ('trash','auto-draft')",
+				   AND  p.post_status NOT IN ('auto-draft')
+				   AND  p.post_type != 'revision'",
 				'_elementor_data',
 				'%newsman_enable%',
 				'%newsman_newsletter_form%'
@@ -275,19 +332,107 @@ class Settings extends \Newsman\Admin\Settings {
 			$rows = array();
 		}
 
+		$trash_suffix = ' [' . esc_html__( 'Trash', 'newsman' ) . ']';
 		foreach ( $rows as $row ) {
 			$data = json_decode( (string) $row['meta_value'], true );
 			if ( ! is_array( $data ) ) {
 				continue;
 			}
+			$post_title = (string) $row['post_title'];
+			if ( 'trash' === (string) $row['post_status'] ) {
+				$post_title .= $trash_suffix;
+			}
 			// `_elementor_data` decodes to a list of top-level sections; walk each one
 			// individually since the walker inspects keys directly on the node it receives.
 			foreach ( $data as $top_node ) {
-				$this->walk_elementor_data_for_newsletter_forms( $top_node, (string) $row['post_title'], $forms );
+				$this->walk_elementor_data_for_newsletter_forms( $top_node, $post_title, $forms );
 			}
 		}
 
 		$forms = apply_filters( 'newsman_admin_settings_elementor_newsletter_forms', $forms );
+
+		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+		return $forms;
+	}
+
+	/**
+	 * Build the WPForms form dropdown for the "Export Subscribers from Form Submissions" option.
+	 *
+	 * Returns WPForms forms (post_id => "Form Title (#post_id)") whose persisted form
+	 * settings have both `newsman_enable='1'` AND `newsman_newsletter_form='1'`. The
+	 * post_id is also the value of `wp_wpforms_entries.form_id`, which the retriever
+	 * uses to scope its query.
+	 *
+	 * Cached for 5 minutes in a per-blog transient; invalidated on Newsman settings
+	 * save and on `wpforms_save_form` (see `Newsman\WPForms\Integration`).
+	 *
+	 * @return array<int,string>
+	 */
+	public function get_wpforms_newsletter_forms() {
+		$transient_key = 'newsman_wpforms_newsletter_forms_' . get_current_blog_id();
+		$cached        = get_transient( $transient_key );
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$forms = array();
+
+		// WPForms can be Lite (free) or Pro — both register the `wpforms` post type.
+		if ( ! post_type_exists( 'wpforms' ) ) {
+			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+			return $forms;
+		}
+
+		$query = new \WP_Query(
+			array(
+				'post_type'              => 'wpforms',
+				'post_status'            => 'any',
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		if ( empty( $query->posts ) ) {
+			set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
+			return $forms;
+		}
+
+		// Include trashed WPForms forms: entries persist in wp_wpforms_entries keyed by
+		// form_id (= post_id), independent of the form post's status. Exclude auto-draft
+		// only.
+		$trash_suffix = ' [' . esc_html__( 'Trash', 'newsman' ) . ']';
+		foreach ( $query->posts as $post ) {
+			if ( 'auto-draft' === $post->post_status ) {
+				continue;
+			}
+			$data = json_decode( (string) $post->post_content, true );
+			if ( ! is_array( $data ) || empty( $data['settings'] ) || ! is_array( $data['settings'] ) ) {
+				continue;
+			}
+			$settings = $data['settings'];
+
+			$enable     = isset( $settings['newsman_enable'] ) ? (string) $settings['newsman_enable'] : '';
+			$newsletter = isset( $settings['newsman_newsletter_form'] ) ? (string) $settings['newsman_newsletter_form'] : '';
+			if ( '1' !== $enable || '1' !== $newsletter ) {
+				continue;
+			}
+
+			$title = isset( $settings['form_title'] ) ? trim( (string) $settings['form_title'] ) : '';
+			if ( '' === $title ) {
+				$title = (string) $post->post_title;
+			}
+			if ( '' === $title ) {
+				$title = sprintf( /* translators: %d: WPForms form post id. */ __( 'Form #%d', 'newsman' ), (int) $post->ID );
+			}
+			$label = sprintf( '%1$s (#%2$d)', $title, (int) $post->ID );
+			if ( 'trash' === (string) $post->post_status ) {
+				$label .= $trash_suffix;
+			}
+			$forms[ (int) $post->ID ] = $label;
+		}
+
+		$forms = apply_filters( 'newsman_admin_settings_wpforms_newsletter_forms', $forms );
 
 		set_transient( $transient_key, $forms, 5 * MINUTE_IN_SECONDS );
 		return $forms;

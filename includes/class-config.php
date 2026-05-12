@@ -334,6 +334,33 @@ class Config {
 	}
 
 	/**
+	 * Whether the WPForms export subscribers source is enabled.
+	 *
+	 * The retriever priority chain consults this after Elementor + CF7. WPForms Pro
+	 * persists entries to `wp_wpforms_entries`/`wp_wpforms_entry_fields`; Lite does
+	 * not store entries so the retriever returns empty regardless of this flag.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_wpforms_export_subscribers( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_wpforms_export_subscribers', 'off' );
+	}
+
+	/**
+	 * The WPForms form (post ID) selected as the export source.
+	 *
+	 * Only forms with `settings.newsman_enable='1'` AND `settings.newsman_newsletter_form='1'`
+	 * qualify. Matches the `form_id` column on `wp_wpforms_entries`.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return string
+	 */
+	public function get_wpforms_export_form_id( $blog_id = null ) {
+		return (string) $this->get_blog_option( $blog_id, 'newsman_wpforms_export_form_id', '' );
+	}
+
+	/**
 	 * Get authenticate token.
 	 *
 	 * @param null|int $blog_id WP blog ID.
