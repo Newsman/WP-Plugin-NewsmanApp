@@ -111,6 +111,12 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.17 =
+* Add Gravity Forms integration — new "Newsman" sub-page under each form's Form Settings menu with per-form list selection, segment, opt-in mode, email/firstname/lastname/phone field dropdowns, and a checkbox list of the form's fields to send as Newsman subscriber properties; submissions on `gform_after_submission` push to the selected Newsman list
+* Add Gravity Forms branch to the API v1 `subscriber.list` export — read entries from `wp_gf_entry` joined to `wp_gf_entry_meta`, with compound-field sub-input resolution (e.g. `1.3` for the First Name sub-input of a Name field); routing priority is now Elementor - Contact Form 7 - WPForms - Gravity Forms - WC - WP
+* Add a warning to the per-form "Newsman List" field across all five form integrations (Elementor legacy, Atomic, CF7, WPForms, Gravity Forms): "Do not pick the same list as the one configured in Newsman - Sync unless you intend submissions to land in your global newsletter list. To send to that list, turn on 'Newsletter form' instead."
+* Document tested versions: Contact Form 7 6.x + Flamingo 2.6.x, WPForms Lite and Pro 1.10.x, Gravity Forms 2.10.x
+
 = 3.7.16 =
 * Add "Export Subscribers from Form Submissions" API v1 source for Contact Form 7 (via Flamingo), Elementor Pro (legacy Form widget + Atomic Forms), and WPForms (Pro entries); per-integration toggle plus a Source Form dropdown that lists every form flagged with both "Send to Newsman" and "Newsletter form"
 * Add per-form "Newsletter form" toggle, "Newsman Segment" dropdown, and firstname/lastname/phone field markers on all four form integrations (legacy Elementor, Atomic, CF7, WPForms)
