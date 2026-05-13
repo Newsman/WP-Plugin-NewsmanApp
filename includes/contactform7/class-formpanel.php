@@ -263,12 +263,14 @@ class FormPanel {
 						</td>
 					</tr>
 					<?php
-					// Lazy-load: only fetch segments for the currently-saved list. Switching
-					// the list dropdown triggers `wp_ajax_newsman_load_segments` to replace
-					// these options. Mitigates Newsman's `segment.all` 10/min rate limit.
-					$cf7_current_list_id = isset( $prop['list_id'] ) ? (string) $prop['list_id'] : '';
-					$cf7_segments_now    = '' !== $cf7_current_list_id
-						? Segments::get_for_list( get_current_blog_id(), $cf7_current_list_id )
+					// Full per-list segment map (cached for 1h, populated via one
+					// `segment.all?list_id=all` API call). The list-change JS in
+					// `print_panel_script()` reads the inline JSON below to swap
+					// options client-side — no per-list AJAX needed.
+					$cf7_current_list_id  = isset( $prop['list_id'] ) ? (string) $prop['list_id'] : '';
+					$cf7_segments_by_list = Segments::get_by_list( get_current_blog_id() );
+					$cf7_segments_now     = '' !== $cf7_current_list_id && isset( $cf7_segments_by_list[ $cf7_current_list_id ] )
+						? $cf7_segments_by_list[ $cf7_current_list_id ]
 						: array();
 					?>
 					<tr class="newsman-segment-row">
@@ -605,15 +607,13 @@ class FormPanel {
 	 * @return void
 	 */
 	public static function print_panel_script() {
-		$ajax_url   = esc_url_raw( admin_url( 'admin-ajax.php' ) );
-		$ajax_nonce = \Newsman\Admin\Ajax\Segments_Endpoint::create_nonce();
-		$none_label = esc_html__( '— none —', 'newsman' );
+		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
+		$none_label       = esc_html__( '— none —', 'newsman' );
 		?>
 		<script>
 		(function () {
-			var ajaxUrl   = <?php echo wp_json_encode( $ajax_url ); ?>;
-			var ajaxNonce = <?php echo wp_json_encode( $ajax_nonce ); ?>;
-			var noneLabel = <?php echo wp_json_encode( $none_label ); ?>;
+			var segmentsByList = <?php echo wp_json_encode( (object) $segments_by_list ); ?>;
+			var noneLabel      = <?php echo wp_json_encode( $none_label ); ?>;
 
 			function init() {
 				var listEl    = document.getElementById('wpcf7-newsman-list-id');
@@ -624,54 +624,28 @@ class FormPanel {
 				if ( ! segRow ) { return; }
 
 				// Saved segment id at panel load — used to re-select it if it
-				// still belongs to the list after an AJAX refresh.
+				// still belongs to the freshly picked list.
 				var savedSegment = segEl ? String(segEl.value || '') : '';
 
 				function reloadSegments() {
 					if ( ! segEl || ! listEl ) { return; }
 					var currentListId = String(listEl.value || '');
-					if ( '' === currentListId ) {
-						segEl.innerHTML = '';
-						var optNone = document.createElement('option');
-						optNone.value = '';
-						optNone.textContent = noneLabel;
-						segEl.appendChild(optNone);
-						segEl.value = '';
-						return;
-					}
-					segEl.disabled = true;
-					var body = new URLSearchParams();
-					body.append('action', 'newsman_load_segments');
-					body.append('list_id', currentListId);
-					body.append('_ajax_nonce', ajaxNonce);
-					fetch(ajaxUrl, {
-						method: 'POST',
-						credentials: 'same-origin',
-						headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-						body: body.toString()
-					}).then(function (r) { return r.json(); })
-					.then(function (resp) {
-						segEl.disabled = false;
-						if ( ! resp || ! resp.success ) { return; }
-						var segments = (resp.data && resp.data.segments) || {};
-						var prevSelected = String(segEl.value || '') || savedSegment;
-						segEl.innerHTML = '';
-						var optNone = document.createElement('option');
-						optNone.value = '';
-						optNone.textContent = noneLabel;
-						segEl.appendChild(optNone);
-						Object.keys(segments).forEach(function (id) {
-							var o = document.createElement('option');
-							o.value = id;
-							o.textContent = segments[id];
-							segEl.appendChild(o);
-						});
-						if ( segments.hasOwnProperty(prevSelected) ) {
-							segEl.value = prevSelected;
-						} else {
-							segEl.value = '';
-						}
-					})['catch'](function () { segEl.disabled = false; });
+					var segments = '' !== currentListId && segmentsByList.hasOwnProperty(currentListId)
+						? segmentsByList[currentListId]
+						: {};
+					var prevSelected = String(segEl.value || '') || savedSegment;
+					segEl.innerHTML = '';
+					var optNone = document.createElement('option');
+					optNone.value = '';
+					optNone.textContent = noneLabel;
+					segEl.appendChild(optNone);
+					Object.keys(segments).forEach(function (id) {
+						var o = document.createElement('option');
+						o.value = id;
+						o.textContent = segments[id];
+						segEl.appendChild(o);
+					});
+					segEl.value = segments.hasOwnProperty(prevSelected) ? prevSelected : '';
 				}
 
 				function toggleNewsletterMode() {

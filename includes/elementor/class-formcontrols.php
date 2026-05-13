@@ -153,11 +153,10 @@ class FormControls {
 		}
 
 		// Server-side render: only the "— none —" sentinel. The editor-footer
-		// JS hooked on `elementor/editor/footer` fetches segments per-list via
-		// `wp_ajax_newsman_load_segments` whenever `newsman_list_id` changes —
-		// avoids the pre-load of all-lists segments that tripped Newsman's
-		// `segment.all` 10-calls-per-minute rate limit on big accounts. See the
-		// `wp_segment_all_rate_limit` memory note for the broader plan.
+		// JS hooked on `elementor/editor/footer` reads the inline JSON map of
+		// every list's segments (one bulk `segment.all?list_id=all` API call
+		// cached for 1h) and rebuilds the visible options whenever
+		// `newsman_list_id` changes.
 		$segment_options = array( '' => esc_html__( '— none —', 'newsman' ) );
 
 		$segment_args = apply_filters(
@@ -514,30 +513,22 @@ class FormControls {
 	 * down to the segments belonging to the currently selected `newsman_list_id`.
 	 *
 	 * Elementor controls don't natively support dynamic option filtering driven by
-	 * another control's value, so the entire segment catalog is rendered server-side
-	 * and this JS rebuilds the visible options on every list change. Hooked on
+	 * another control's value, so the full per-list segment map is emitted inline
+	 * (one bulk `segment.all?list_id=all` API call cached for 1h) and this JS
+	 * rebuilds the visible options on every list change. Hooked on
 	 * `elementor/editor/footer` (fires once per editor session, after the panel
 	 * scripts are loaded) and runs only when the panel opens a `form` widget.
 	 *
 	 * @return void
 	 */
 	public function print_editor_segment_filter_script() {
-		$ajax_url   = esc_url_raw( admin_url( 'admin-ajax.php' ) );
-		$ajax_nonce = \Newsman\Admin\Ajax\Segments_Endpoint::create_nonce();
-		$none_label = esc_html__( '— none —', 'newsman' );
+		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
+		$none_label       = esc_html__( '— none —', 'newsman' );
 		?>
 		<script>
 		(function ($) {
-			var ajaxUrl       = <?php echo wp_json_encode( $ajax_url ); ?>;
-			var ajaxNonce     = <?php echo wp_json_encode( $ajax_nonce ); ?>;
+			var segmentsByList   = <?php echo wp_json_encode( (object) $segments_by_list ); ?>;
 			var newsmanNoneLabel = <?php echo wp_json_encode( $none_label ); ?>;
-
-			// In-memory cache for this editor session — avoids re-fetching when
-			// the admin toggles back to a previously-loaded list within the same
-			// page load. The server-side transient (15-min / 6-hour TTL) does
-			// the same job across requests; this is just a per-tab optimisation.
-			var sessionCache = {};
-			var inflight     = {};
 
 			function getSegmentControlEls(panel) {
 				if ( ! panel || ! panel.$el ) { return null; }
@@ -586,32 +577,11 @@ class FormControls {
 			}
 
 			function loadSegmentsForList(panel, settingsModel) {
-				var listId = String(settingsModel.get('newsman_list_id') || '');
-				if ( '' === listId ) {
-					applySegments(panel, settingsModel, {});
-					return;
-				}
-				if ( sessionCache.hasOwnProperty(listId) ) {
-					applySegments(panel, settingsModel, sessionCache[listId]);
-					return;
-				}
-				if ( inflight[listId] ) {
-					// Already fetching; chain another apply onto the same Deferred.
-					inflight[listId].always(function () {
-						applySegments(panel, settingsModel, sessionCache[listId] || {});
-					});
-					return;
-				}
-				inflight[listId] = $.post(ajaxUrl, {
-					action: 'newsman_load_segments',
-					list_id: listId,
-					_ajax_nonce: ajaxNonce
-				}).always(function () { delete inflight[listId]; })
-				.done(function (resp) {
-					var segs = (resp && resp.success && resp.data && resp.data.segments) || {};
-					sessionCache[listId] = segs;
-					applySegments(panel, settingsModel, segs);
-				});
+				var listId   = String(settingsModel.get('newsman_list_id') || '');
+				var segments = '' !== listId && segmentsByList.hasOwnProperty(listId)
+					? segmentsByList[listId]
+					: {};
+				applySegments(panel, settingsModel, segments);
 			}
 
 			$(window).on('elementor:init', function () {

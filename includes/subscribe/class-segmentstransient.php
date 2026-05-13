@@ -18,28 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Per-blog transient cache for the Newsman segment dropdowns.
  *
- * Stores `[ list_id => [ segment_id => segment_name ] ]` keyed by Newsman List
- * ID inside a per-blog WordPress transient. Segments are list-scoped on the
- * Newsman side (a segment id is only meaningful in the context of its parent
- * list), so the inner key is the list_id with no need for user_id scoping.
+ * Stores `[ list_id => [ segment_id => segment_name ] ]` for every list in a
+ * per-blog WordPress transient. Populated atomically from a single
+ * `segment.all?list_id=all` API call (see `Segments::fetch_all_from_api`).
  *
- * TTL is 15 minutes. The cache is read-through and supports the same OAuth
- * bypass + stale-on-error semantics as `Lists_Transient` — see that class's
- * docblock for the rationale.
+ * Supports the same OAuth bypass + stale-on-error semantics as `Lists_Transient`
+ * — see that class's docblock for the rationale.
  *
  * @class \Newsman\Subscribe\Segments_Transient
  */
 class Segments_Transient {
 	/**
-	 * Fresh-tier cache lifetime — 6 hours. Segments are list-scoped and
-	 * `segment.all` is the rate-limited endpoint on the Newsman side (10 calls
-	 * per minute). Bulk refreshing a non-trivial account therefore takes minutes
-	 * of throttled work, so the longer TTL is critical to avoid hitting the
-	 * wall during normal admin navigation. Combined with lazy per-list AJAX
-	 * loading and the persistent stale-fallback tier (see `save_fallback()` /
-	 * `get_stale()`), this keeps the segment dropdowns warm without pressure.
+	 * Fresh-tier cache lifetime — 1 hour. Mirrors `Lists_Transient::TTL` since
+	 * segments and lists are fetched together (one bulk API call each) on the
+	 * Sync page Refresh.
 	 */
-	public const TTL = 6 * HOUR_IN_SECONDS;
+	public const TTL = HOUR_IN_SECONDS;
 
 	/**
 	 * Per-blog transient key prefix. The full key is `<prefix><blog_id>`.
@@ -49,7 +43,7 @@ class Segments_Transient {
 	/**
 	 * Per-blog wp_option key prefix for the persistent stale-fallback tier.
 	 * Never expires explicitly — overwritten on every successful save, so it
-	 * always holds the last-known-good value for this `(blog_id, list_id)`.
+	 * always holds the last-known-good value for this blog.
 	 */
 	public const FALLBACK_OPTION_PREFIX = 'newsman_segments_fallback_';
 
@@ -80,132 +74,59 @@ class Segments_Transient {
 	}
 
 	/**
-	 * Read cached segments for a `(blog_id, list_id)` pair.
+	 * Persist the complete per-blog segment map in one transient + option write.
 	 *
-	 * @param int    $blog_id WP blog ID.
-	 * @param string $list_id Newsman List ID.
-	 * @return array|null `[ segment_id => segment_name ]` on hit, null on miss / bypass.
-	 */
-	public static function get( $blog_id, $list_id ) {
-		if ( self::$skip ) {
-			return null;
-		}
-		$list_id = (string) $list_id;
-		if ( '' === $list_id ) {
-			return null;
-		}
-		$cache = get_transient( self::transient_key( $blog_id ) );
-		if ( ! is_array( $cache ) ) {
-			return null;
-		}
-		return isset( $cache[ $list_id ] ) && is_array( $cache[ $list_id ] ) ? $cache[ $list_id ] : null;
-	}
-
-	/**
-	 * Persist segments for a `(blog_id, list_id)` pair, refreshing the per-blog row's TTL.
+	 * Authoritative: replaces both the fresh transient row and the persistent
+	 * fallback option with `$by_list`. Empty / non-array list entries are dropped.
 	 *
-	 * Other list_id entries already in the row are preserved.
-	 *
-	 * @param int    $blog_id  WP blog ID.
-	 * @param string $list_id  Newsman List ID.
-	 * @param array  $segments `[ segment_id => segment_name ]`.
+	 * @param int   $blog_id WP blog ID.
+	 * @param array $by_list `[ list_id => [ segment_id => segment_name ] ]`.
 	 * @return void
 	 */
-	public static function save( $blog_id, $list_id, $segments ) {
+	public static function save_all( $blog_id, $by_list ) {
 		if ( self::$skip ) {
 			return;
 		}
-		$list_id = (string) $list_id;
-		if ( '' === $list_id || ! is_array( $segments ) ) {
+		if ( ! is_array( $by_list ) ) {
 			return;
 		}
-		$key   = self::transient_key( $blog_id );
-		$cache = get_transient( $key );
-		if ( ! is_array( $cache ) ) {
-			$cache = array();
+		$clean = array();
+		foreach ( $by_list as $list_id => $segments ) {
+			$list_id = (string) $list_id;
+			if ( '' === $list_id || ! is_array( $segments ) ) {
+				continue;
+			}
+			$clean[ $list_id ] = $segments;
 		}
-		$cache[ $list_id ] = $segments;
-		set_transient( $key, $cache, self::TTL );
-
-		// Persistent fallback tier (no TTL). Mirrors the latest known value so
-		// that a future API failure on a cache miss can still serve something.
-		$fallback = get_option( self::fallback_option_key( $blog_id ), array() );
-		if ( ! is_array( $fallback ) ) {
-			$fallback = array();
-		}
-		$fallback[ $list_id ] = $segments;
-		update_option( self::fallback_option_key( $blog_id ), $fallback, false );
+		set_transient( self::transient_key( $blog_id ), $clean, self::TTL );
+		update_option( self::fallback_option_key( $blog_id ), $clean, false );
 	}
 
 	/**
-	 * Read the persistent stale-fallback value for `(blog_id, list_id)`.
-	 *
-	 * Used by callers when the fresh API call fails on a cache miss — better
-	 * to return slightly old data with a warning than to return empty.
-	 *
-	 * @param int    $blog_id WP blog ID.
-	 * @param string $list_id Newsman List ID.
-	 * @return array|null `[ segment_id => segment_name ]` or null when no fallback exists.
-	 */
-	public static function get_stale( $blog_id, $list_id ) {
-		$list_id = (string) $list_id;
-		if ( '' === $list_id ) {
-			return null;
-		}
-		$fallback = get_option( self::fallback_option_key( $blog_id ), null );
-		if ( ! is_array( $fallback ) ) {
-			return null;
-		}
-		return isset( $fallback[ $list_id ] ) && is_array( $fallback[ $list_id ] ) ? $fallback[ $list_id ] : null;
-	}
-
-	/**
-	 * Return the full per-blog cache. Useful for diagnostics + the Refresh button.
+	 * Return the full per-blog cache. Empty array when the row is missing.
 	 *
 	 * @param int $blog_id WP blog ID.
-	 * @return array `[ list_id => [ segment_id => segment_name ] ]`. Empty when the row is missing.
+	 * @return array `[ list_id => [ segment_id => segment_name ] ]`.
 	 */
 	public static function get_all( $blog_id ) {
+		if ( self::$skip ) {
+			return array();
+		}
 		$cache = get_transient( self::transient_key( $blog_id ) );
 		return is_array( $cache ) ? $cache : array();
 	}
 
 	/**
-	 * Drop the entire per-blog cache row (or one list_id entry if specified).
+	 * Drop the entire per-blog cache row (and its persistent fallback).
 	 *
-	 * @param int         $blog_id WP blog ID.
-	 * @param string|null $list_id Optional. When set, deletes only this list's
-	 *                             entry (the row stays in place with remaining lists).
+	 * @param int  $blog_id     WP blog ID.
+	 * @param bool $fresh_only  When true, the persistent fallback is preserved.
 	 * @return void
 	 */
-	public static function invalidate( $blog_id, $list_id = null, $fresh_only = false ) {
-		$key = self::transient_key( $blog_id );
-		if ( null === $list_id ) {
-			delete_transient( $key );
-			if ( ! $fresh_only ) {
-				delete_option( self::fallback_option_key( $blog_id ) );
-			}
-			return;
-		}
-		$cache = get_transient( $key );
-		if ( is_array( $cache ) ) {
-			unset( $cache[ (string) $list_id ] );
-			if ( empty( $cache ) ) {
-				delete_transient( $key );
-			} else {
-				set_transient( $key, $cache, self::TTL );
-			}
-		}
+	public static function invalidate( $blog_id, $fresh_only = false ) {
+		delete_transient( self::transient_key( $blog_id ) );
 		if ( ! $fresh_only ) {
-			$fallback = get_option( self::fallback_option_key( $blog_id ), null );
-			if ( is_array( $fallback ) ) {
-				unset( $fallback[ (string) $list_id ] );
-				if ( empty( $fallback ) ) {
-					delete_option( self::fallback_option_key( $blog_id ) );
-				} else {
-					update_option( self::fallback_option_key( $blog_id ), $fallback, false );
-				}
-			}
+			delete_option( self::fallback_option_key( $blog_id ) );
 		}
 	}
 

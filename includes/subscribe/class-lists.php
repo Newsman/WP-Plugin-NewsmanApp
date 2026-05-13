@@ -71,9 +71,9 @@ class Lists {
 		} catch ( \Exception $e ) {
 			Logger::init()->log_exception( $e );
 			// Stale-on-error: the fresh transient was empty AND the API call
-			// failed (rate limit, network blip, expired creds, ...). Fall back
-			// to the persistent last-known-good value if one exists, so the
-			// admin sees stale data with a warning instead of an empty dropdown.
+			// failed (network blip, expired creds, ...). Fall back to the
+			// persistent last-known-good value if one exists, so the admin
+			// sees stale data instead of an empty dropdown.
 			$stale = Lists_Transient::get_stale( $blog_id, $user_id );
 			if ( is_array( $stale ) ) {
 				/** This filter is documented in this file */

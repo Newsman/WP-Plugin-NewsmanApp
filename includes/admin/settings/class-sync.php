@@ -225,24 +225,25 @@ class Sync extends Settings {
 	}
 
 	/**
-	 * Refresh the per-blog Lists and Segments transient caches by hitting the
-	 * Newsman API for every blog with credentials configured.
+	 * Refresh the per-blog Lists / Segments / SMS-lists transient caches by
+	 * hitting the Newsman API for every blog with credentials configured.
 	 *
 	 * On a network install (multisite) this iterates every site via `get_sites()`,
 	 * temporarily switches to each one so `Config::get_*` and `set_transient`
-	 * resolve against the right options table, fetches the list catalogue for
-	 * that blog's User ID + API key, and then fetches the segments per list.
+	 * resolve against the right options table. Each blog makes at most three API
+	 * calls: `list.all`, `segment.all?list_id=all` (one bulk call covers every
+	 * list), and `sms_list.all`.
 	 *
 	 * Per-call failures are caught and logged. The transient row is *not*
 	 * touched on failure — whatever previous value was cached stays valid until
-	 * its TTL expires (the "stale-on-error" property the user asked for). At
-	 * the end a single admin notice summarises totals + any errors.
+	 * its TTL expires (the "stale-on-error" property). At the end a single admin
+	 * notice summarises totals + any errors.
 	 *
 	 * @return void
 	 */
 	protected function refresh_lists_and_segments_cache() {
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-			$sites = function_exists( 'get_sites' ) ? get_sites( array( 'number' => 0 ) ) : array();
+			$sites    = function_exists( 'get_sites' ) ? get_sites( array( 'number' => 0 ) ) : array();
 			$blog_ids = array();
 			foreach ( $sites as $site ) {
 				$blog_ids[] = (int) $site->blog_id;
@@ -299,26 +300,23 @@ class Sync extends Settings {
 				continue;
 			}
 
-			foreach ( array_keys( $lists ) as $list_id ) {
-				$list_id = (string) $list_id;
-				if ( '' === $list_id ) {
-					continue;
+			try {
+				$by_list = Segments::fetch_all_from_api( $blog_id, $user_id, $api_key );
+				Segments_Transient::save_all( $blog_id, $by_list );
+				foreach ( $by_list as $segments ) {
+					if ( is_array( $segments ) ) {
+						$stats['segments'] += count( $segments );
+					}
 				}
-				try {
-					$segments = Segments::fetch_from_api( $blog_id, $user_id, $api_key, $list_id );
-					Segments_Transient::save( $blog_id, $list_id, $segments );
-					$stats['segments'] += count( $segments );
-				} catch ( \Exception $e ) {
-					$this->logger->log_exception( $e );
-					$stats['errors'][] = sprintf(
-						/* translators: 1: blog id; 2: list id; 3: error message. */
-						esc_html__( 'Blog #%1$d list %2$s segments: %3$s', 'newsman' ),
-						$blog_id,
-						$list_id,
-						$e->getMessage()
-					);
-					// Stale-on-error.
-				}
+			} catch ( \Exception $e ) {
+				$this->logger->log_exception( $e );
+				$stats['errors'][] = sprintf(
+					/* translators: 1: blog id; 2: error message. */
+					esc_html__( 'Blog #%1$d segments: %2$s', 'newsman' ),
+					$blog_id,
+					$e->getMessage()
+				);
+				// Stale-on-error.
 			}
 
 			// SMS lists — separate Newsman API endpoint, separate transient. Same

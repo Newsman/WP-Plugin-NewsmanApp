@@ -249,17 +249,15 @@ class FormPanel {
 				)
 			);
 
-			// Segments — lazy-load only the currently-saved list's segments at
-			// render time, then swap them via AJAX when the admin changes the
-			// list dropdown. This avoids the eager all-lists fetch that tripped
-			// Newsman's 10-calls-per-minute `segment.all` rate limit on accounts
-			// with many lists.
+			// Full per-list segment map (cached for 1h, one `segment.all?list_id=all`
+			// API call). The list-change JS below reads the inline JSON to swap
+			// segment options client-side — no per-list AJAX.
 			$current_list_id    = isset( $prop['newsman_list_id'] ) ? (string) $prop['newsman_list_id'] : '';
 			$current_segment_id = isset( $prop['newsman_segment_id'] ) ? (string) $prop['newsman_segment_id'] : '';
+			$segments_by_list   = Segments::get_by_list( get_current_blog_id() );
 			$segment_select     = array( '' => esc_html__( '— none —', 'newsman' ) );
-			if ( '' !== $current_list_id ) {
-				$segments_for_list = Segments::get_for_list( get_current_blog_id(), $current_list_id );
-				foreach ( $segments_for_list as $segment_id => $segment_name ) {
+			if ( '' !== $current_list_id && isset( $segments_by_list[ $current_list_id ] ) ) {
+				foreach ( $segments_by_list[ $current_list_id ] as $segment_id => $segment_name ) {
 					$segment_select[ (string) $segment_id ] = (string) $segment_name;
 				}
 			}
@@ -276,13 +274,10 @@ class FormPanel {
 				)
 			);
 
-			$ajax_url   = esc_url_raw( admin_url( 'admin-ajax.php' ) );
-			$ajax_nonce = \Newsman\Admin\Ajax\Segments_Endpoint::create_nonce();
 			$none_label = esc_html__( '— none —', 'newsman' );
 
 			echo '<script>(function($){' .
-				'var ajaxUrl = ' . wp_json_encode( $ajax_url ) . ';' .
-				'var ajaxNonce = ' . wp_json_encode( $ajax_nonce ) . ';' .
+				'var segmentsByList = ' . wp_json_encode( (object) $segments_by_list ) . ';' .
 				'var noneLabel = ' . wp_json_encode( $none_label ) . ';' .
 				'var currentSaved = ' . wp_json_encode( $current_segment_id ) . ';' .
 				'function reloadSegments(){' .
@@ -290,24 +285,14 @@ class FormPanel {
 				'  var $seg  = $("#wpforms-panel-field-settings-newsman_segment_id");' .
 				'  if ( ! $list.length || ! $seg.length ) return;' .
 				'  var currentList = String($list.val() || "");' .
-				'  if ( "" === currentList ) {' .
-				'    $seg.empty().append($("<option/>").val("").text(noneLabel)).val("").trigger("change");' .
-				'    return;' .
-				'  }' .
-				'  $seg.prop("disabled", true);' .
-				'  $.post(ajaxUrl, { action: "newsman_load_segments", list_id: currentList, _ajax_nonce: ajaxNonce })' .
-				'    .always(function(){ $seg.prop("disabled", false); })' .
-				'    .done(function(resp){' .
-				'      if ( ! resp || ! resp.success ) return;' .
-				'      var segments = resp.data && resp.data.segments ? resp.data.segments : {};' .
-				'      var selectedVal = String($seg.val() || "");' .
-				'      $seg.empty().append($("<option/>").val("").text(noneLabel));' .
-				'      Object.keys(segments).forEach(function(id){' .
-				'        $seg.append($("<option/>").val(id).text(segments[id]));' .
-				'      });' .
-				'      var keep = (segments.hasOwnProperty(selectedVal)) ? selectedVal : ((segments.hasOwnProperty(currentSaved)) ? currentSaved : "");' .
-				'      $seg.val(keep).trigger("change");' .
-				'    });' .
+				'  var segments = "" !== currentList && segmentsByList.hasOwnProperty(currentList) ? segmentsByList[currentList] : {};' .
+				'  var selectedVal = String($seg.val() || "");' .
+				'  $seg.empty().append($("<option/>").val("").text(noneLabel));' .
+				'  Object.keys(segments).forEach(function(id){' .
+				'    $seg.append($("<option/>").val(id).text(segments[id]));' .
+				'  });' .
+				'  var keep = (segments.hasOwnProperty(selectedVal)) ? selectedVal : ((segments.hasOwnProperty(currentSaved)) ? currentSaved : "");' .
+				'  $seg.val(keep).trigger("change");' .
 				'}' .
 				'function toggleNewsletterMode(){' .
 				'  var $news = $("#wpforms-panel-field-settings-newsman_newsletter_form");' .
