@@ -262,26 +262,32 @@ class FormPanel {
 							<?php endif; ?>
 						</td>
 					</tr>
-					<?php $segments_by_list = Segments::get_by_list( get_current_blog_id() ); ?>
+					<?php
+					// Full per-list segment map (cached for 1h, populated via one
+					// `segment.all?list_id=all` API call). The list-change JS in
+					// `print_panel_script()` reads the inline JSON below to swap
+					// options client-side — no per-list AJAX needed.
+					$cf7_current_list_id  = isset( $prop['list_id'] ) ? (string) $prop['list_id'] : '';
+					$cf7_segments_by_list = Segments::get_by_list( get_current_blog_id() );
+					$cf7_segments_now     = '' !== $cf7_current_list_id && isset( $cf7_segments_by_list[ $cf7_current_list_id ] )
+						? $cf7_segments_by_list[ $cf7_current_list_id ]
+						: array();
+					?>
 					<tr class="newsman-segment-row">
 						<th scope="row">
 							<label for="wpcf7-newsman-segment-id"><?php esc_html_e( 'Newsman segment', 'newsman' ); ?></label>
 						</th>
 						<td>
 							<select name="wpcf7-newsman[segment_id]" id="wpcf7-newsman-segment-id">
-								<option value="" data-list-id=""><?php esc_html_e( '— none —', 'newsman' ); ?></option>
-								<?php foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) : ?>
-									<?php foreach ( $segments_for_list as $segment_id => $segment_name ) : ?>
-										<option value="<?php echo esc_attr( (string) $segment_id ); ?>"
-												data-list-id="<?php echo esc_attr( (string) $seg_list_id ); ?>"
-												<?php selected( (string) $prop['segment_id'], (string) $segment_id ); ?>>
-											<?php echo esc_html( (string) $segment_name ); ?>
-										</option>
-									<?php endforeach; ?>
+								<option value=""><?php esc_html_e( '— none —', 'newsman' ); ?></option>
+								<?php foreach ( $cf7_segments_now as $segment_id => $segment_name ) : ?>
+									<option value="<?php echo esc_attr( (string) $segment_id ); ?>" <?php selected( (string) $prop['segment_id'], (string) $segment_id ); ?>>
+										<?php echo esc_html( (string) $segment_name ); ?>
+									</option>
 								<?php endforeach; ?>
 							</select>
 							<p class="description">
-								<?php esc_html_e( 'Optional. Segments are list-scoped — only segments belonging to the selected list above are kept. Changing the list resets the segment.', 'newsman' ); ?>
+								<?php esc_html_e( 'Optional. Segments are list-scoped — only segments belonging to the selected list above are shown. Changing the list refreshes this dropdown.', 'newsman' ); ?>
 							</p>
 						</td>
 					</tr>
@@ -601,9 +607,14 @@ class FormPanel {
 	 * @return void
 	 */
 	public static function print_panel_script() {
+		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
+		$none_label       = esc_html__( '— none —', 'newsman' );
 		?>
 		<script>
 		(function () {
+			var segmentsByList = <?php echo wp_json_encode( (object) $segments_by_list ); ?>;
+			var noneLabel      = <?php echo wp_json_encode( $none_label ); ?>;
+
 			function init() {
 				var listEl    = document.getElementById('wpcf7-newsman-list-id');
 				var segEl     = document.getElementById('wpcf7-newsman-segment-id');
@@ -612,24 +623,29 @@ class FormPanel {
 				var segRow    = document.querySelector('.newsman-segment-row');
 				if ( ! segRow ) { return; }
 
-				function filterSegments() {
+				// Saved segment id at panel load — used to re-select it if it
+				// still belongs to the freshly picked list.
+				var savedSegment = segEl ? String(segEl.value || '') : '';
+
+				function reloadSegments() {
 					if ( ! segEl || ! listEl ) { return; }
-					var currentListId = listEl.value;
-					var opts = segEl.querySelectorAll('option');
-					var selectedStillVisible = false;
-					for ( var i = 0; i < opts.length; i++ ) {
-						var o = opts[i];
-						var optListId = o.getAttribute('data-list-id') || '';
-						var visible   = ( '' === optListId ) || ( optListId === currentListId );
-						o.hidden = ! visible;
-						o.disabled = ! visible;
-						if ( visible && o.value === segEl.value ) {
-							selectedStillVisible = true;
-						}
-					}
-					if ( ! selectedStillVisible ) {
-						segEl.value = '';
-					}
+					var currentListId = String(listEl.value || '');
+					var segments = '' !== currentListId && segmentsByList.hasOwnProperty(currentListId)
+						? segmentsByList[currentListId]
+						: {};
+					var prevSelected = String(segEl.value || '') || savedSegment;
+					segEl.innerHTML = '';
+					var optNone = document.createElement('option');
+					optNone.value = '';
+					optNone.textContent = noneLabel;
+					segEl.appendChild(optNone);
+					Object.keys(segments).forEach(function (id) {
+						var o = document.createElement('option');
+						o.value = id;
+						o.textContent = segments[id];
+						segEl.appendChild(o);
+					});
+					segEl.value = segments.hasOwnProperty(prevSelected) ? prevSelected : '';
 				}
 
 				function toggleNewsletterMode() {
@@ -639,9 +655,8 @@ class FormPanel {
 					if ( segRow )  { segRow.style.display  = on ? 'none' : ''; }
 				}
 
-				if ( listEl ) { listEl.addEventListener('change', filterSegments); }
+				if ( listEl ) { listEl.addEventListener('change', reloadSegments); }
 				if ( newsEl ) { newsEl.addEventListener('change', toggleNewsletterMode); }
-				filterSegments();
 				toggleNewsletterMode();
 			}
 			if ( document.readyState === 'loading' ) {

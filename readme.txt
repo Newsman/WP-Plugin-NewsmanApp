@@ -111,6 +111,10 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.18 =
+* Cache lists, segments and SMS lists in WordPress transients (1-hour TTL each) with a persistent stale-fallback tier so an API blip never returns an empty dropdown; the **NewsMAN > Sync** page now has a "Refresh lists & segments cache" button that force-refreshes every blog's caches in a multisite-aware loop
+* Switch the form-builder segment dropdowns (Contact Form 7, WPForms, Elementor, Gravity Forms) to a single bulk `segment.all?list_id=all` fetch per editor open, with the full per-list map embedded inline so list-change events swap segment options client-side without a round-trip
+
 = 3.7.17 =
 * Add Gravity Forms integration — new "Newsman" sub-page under each form's Form Settings menu with per-form list selection, segment, opt-in mode, email/firstname/lastname/phone field dropdowns, and a checkbox list of the form's fields to send as Newsman subscriber properties; submissions on `gform_after_submission` push to the selected Newsman list
 * Add Gravity Forms branch to the API v1 `subscriber.list` export — read entries from `wp_gf_entry` joined to `wp_gf_entry_meta`, with compound-field sub-input resolution (e.g. `1.3` for the First Name sub-input of a Name field); routing priority is now Elementor - Contact Form 7 - WPForms - Gravity Forms - WC - WP
