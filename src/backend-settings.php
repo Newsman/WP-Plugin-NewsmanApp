@@ -405,7 +405,7 @@ $form_values = $this->get_form_values();
 							<td>
 								<input name="newsman_contact_form_7_active" type="checkbox"
 									id="newsman_contact_form_7_active" <?php echo ( ! empty( $form_values['newsman_contact_form_7_active'] ) && 'on' === $form_values['newsman_contact_form_7_active'] ) ? 'checked' : ''; ?>/>
-								<p class="description"><?php echo esc_html__( 'When enabled, the Newsman tab appears on Contact Form 7 forms in the editor (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman editor controls and submission handling for Contact Form 7.', 'newsman' ); ?></p>
+								<p class="description"><?php echo esc_html__( 'When enabled, the Newsman tab appears on Contact Form 7 forms in the editor (per-form list selection, email field, and properties), and submissions push the email plus marked field values to the selected Newsman list. Disable to remove all Newsman editor controls and submission handling for Contact Form 7. Note: Contact Form 7 does not store form submissions in WordPress on its own — install the companion Flamingo plugin to persist submissions and enable the API v1 subscriber export from CF7 forms.', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<?php
