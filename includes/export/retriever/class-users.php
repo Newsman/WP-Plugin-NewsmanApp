@@ -113,7 +113,14 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 					$args['include'] = array( $value );
 				}
 			} elseif ( 'user_email' === $field ) {
-				$args['search']         = $value;
+				// API v1 follows SQL `LIKE` convention (`%` = wildcard), but
+				// `WP_User_Query`'s `search` arg uses `*` as the wildcard and
+				// rewrites it to `%` internally. Translate so `email:like:%@%`
+				// resolves to `WHERE user_email LIKE '%@%'` instead of being
+				// treated as a literal substring `%@%`. `eq` / non-wildcard
+				// values contain no `%` so the str_replace is a no-op and the
+				// query falls back to WP's exact-match behaviour.
+				$args['search']         = str_replace( '%', '*', (string) $value );
 				$args['search_columns'] = array( 'user_email' );
 			} else {
 				$meta_query[] = array(
