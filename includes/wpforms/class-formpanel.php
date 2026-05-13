@@ -249,14 +249,16 @@ class FormPanel {
 				)
 			);
 
-			// Segments — flat list across all lists; option labels prefix the list name.
-			// JS below hides options whose list doesn't match the currently selected list.
-			$segment_select   = array( '' => esc_html__( '— none —', 'newsman' ) );
-			$segments_by_list = Segments::get_by_list( get_current_blog_id() );
-			foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
-				$list_label = isset( $list_select[ (string) $seg_list_id ] ) ? (string) $list_select[ (string) $seg_list_id ] : (string) $seg_list_id;
-				foreach ( $segments_for_list as $segment_id => $segment_name ) {
-					$segment_select[ (string) $segment_id ] = sprintf( '%1$s — %2$s', $list_label, (string) $segment_name );
+			// Full per-list segment map (cached for 1h, one `segment.all?list_id=all`
+			// API call). The list-change JS below reads the inline JSON to swap
+			// segment options client-side — no per-list AJAX.
+			$current_list_id    = isset( $prop['newsman_list_id'] ) ? (string) $prop['newsman_list_id'] : '';
+			$current_segment_id = isset( $prop['newsman_segment_id'] ) ? (string) $prop['newsman_segment_id'] : '';
+			$segments_by_list   = Segments::get_by_list( get_current_blog_id() );
+			$segment_select     = array( '' => esc_html__( '— none —', 'newsman' ) );
+			if ( '' !== $current_list_id && isset( $segments_by_list[ $current_list_id ] ) ) {
+				foreach ( $segments_by_list[ $current_list_id ] as $segment_id => $segment_name ) {
+					$segment_select[ (string) $segment_id ] = (string) $segment_name;
 				}
 			}
 
@@ -268,35 +270,29 @@ class FormPanel {
 				esc_html__( 'Newsman segment', 'newsman' ),
 				array(
 					'options' => $segment_select,
-					'tooltip' => esc_html__( 'Optional. Segments are list-scoped — only segments that belong to the selected list are kept. If they don\'t match, the segment is dropped at submit time.', 'newsman' ),
+					'tooltip' => esc_html__( 'Optional. Segments are list-scoped — only segments belonging to the selected list are shown. Switching the list refreshes this dropdown.', 'newsman' ),
 				)
 			);
 
-			// Build a JS-readable segment - list_id map for filtering on list change.
-			$segment_to_list = array( '' => '' );
-			foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
-				foreach ( $segments_for_list as $segment_id => $unused_name ) {
-					$segment_to_list[ (string) $segment_id ] = (string) $seg_list_id;
-				}
-			}
+			$none_label = esc_html__( '— none —', 'newsman' );
 
 			echo '<script>(function($){' .
-				'var segmentToList = ' . wp_json_encode( $segment_to_list ) . ';' .
-				'function filterSegments(){' .
+				'var segmentsByList = ' . wp_json_encode( (object) $segments_by_list ) . ';' .
+				'var noneLabel = ' . wp_json_encode( $none_label ) . ';' .
+				'var currentSaved = ' . wp_json_encode( $current_segment_id ) . ';' .
+				'function reloadSegments(){' .
 				'  var $list = $("#wpforms-panel-field-settings-newsman_list_id");' .
 				'  var $seg  = $("#wpforms-panel-field-settings-newsman_segment_id");' .
 				'  if ( ! $list.length || ! $seg.length ) return;' .
 				'  var currentList = String($list.val() || "");' .
-				'  var stillVisible = false;' .
-				'  $seg.find("option").each(function(){' .
-				'    var v = String($(this).val());' .
-				'    var listForSeg = segmentToList[v];' .
-				'    if ( typeof listForSeg === "undefined" ) listForSeg = "";' .
-				'    var visible = ( "" === listForSeg ) || ( listForSeg === currentList );' .
-				'    $(this).prop("hidden", ! visible).prop("disabled", ! visible);' .
-				'    if ( visible && v === String($seg.val()) ) { stillVisible = true; }' .
+				'  var segments = "" !== currentList && segmentsByList.hasOwnProperty(currentList) ? segmentsByList[currentList] : {};' .
+				'  var selectedVal = String($seg.val() || "");' .
+				'  $seg.empty().append($("<option/>").val("").text(noneLabel));' .
+				'  Object.keys(segments).forEach(function(id){' .
+				'    $seg.append($("<option/>").val(id).text(segments[id]));' .
 				'  });' .
-				'  if ( ! stillVisible ) { $seg.val("").trigger("change"); }' .
+				'  var keep = (segments.hasOwnProperty(selectedVal)) ? selectedVal : ((segments.hasOwnProperty(currentSaved)) ? currentSaved : "");' .
+				'  $seg.val(keep).trigger("change");' .
 				'}' .
 				'function toggleNewsletterMode(){' .
 				'  var $news = $("#wpforms-panel-field-settings-newsman_newsletter_form");' .
@@ -305,9 +301,8 @@ class FormPanel {
 				'  $wrap.toggle( ! $news.is(":checked") );' .
 				'}' .
 				'$(function(){' .
-				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_list_id", filterSegments);' .
+				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_list_id", reloadSegments);' .
 				'  $(document).on("change", "#wpforms-panel-field-settings-newsman_newsletter_form", toggleNewsletterMode);' .
-				'  filterSegments();' .
 				'  toggleNewsletterMode();' .
 				'});' .
 				'})(jQuery);</script>';
@@ -428,6 +423,14 @@ class FormPanel {
 		echo '<label>' . esc_html__( 'Send as properties', 'newsman' ) . '</label>';
 		echo '<ul style="margin:0;padding:0;list-style:none;">';
 		foreach ( $choices as $field_id => $choice ) {
+			// Skip Name sub-input choices (`1.first`, `1.last`, ...). PHP rewrites
+			// dots in `$_POST` array keys to underscores so the saved id would no
+			// longer round-trip through `FormProcessor::field_value()`. The Name
+			// sub-parts are still mappable via the dedicated firstname / lastname
+			// dropdowns above, which use single-value field names.
+			if ( false !== strpos( (string) $field_id, '.' ) ) {
+				continue;
+			}
 			$is_email_field     = ( (string) $field_id === $selected_email );
 			$is_firstname_field = ( '' !== $selected_firstname && (string) $field_id === $selected_firstname );
 			$is_lastname_field  = ( '' !== $selected_lastname && (string) $field_id === $selected_lastname );
@@ -539,8 +542,33 @@ class FormPanel {
 			if ( in_array( $type, self::NON_DATA_TYPES, true ) ) {
 				continue;
 			}
-			$id             = isset( $field['id'] ) ? (string) $field['id'] : (string) $field_id;
-			$label          = isset( $field['label'] ) ? (string) $field['label'] : '';
+			$id    = isset( $field['id'] ) ? (string) $field['id'] : (string) $field_id;
+			$label = isset( $field['label'] ) ? (string) $field['label'] : '';
+
+			// Name fields with a non-simple format (e.g. `first-last`,
+			// `first-middle-last`) are compound: WPForms exposes each sub-input
+			// as a separate value (`first`, `middle`, `last`, optionally
+			// `prefix` / `suffix`). Expand the field into one choice per sub-
+			// input so the admin can map firstname / lastname / property keys
+			// to the right slice. The parent field is skipped — picking the
+			// whole Name field for "firstname" would yield the concatenated
+			// full name.
+			$name_subs = ( 'name' === $type ) ? self::name_subinputs( $field ) : array();
+			if ( ! empty( $name_subs ) ) {
+				foreach ( $name_subs as $sub ) {
+					$sub_id             = $id . '.' . $sub;
+					$sub_label          = '' === $label
+						? ucfirst( $sub )
+						: $label . ' — ' . ucfirst( $sub );
+					$choices[ $sub_id ] = array(
+						'id'    => $sub_id,
+						'type'  => $type . '/' . $sub,
+						'label' => $sub_label,
+					);
+				}
+				continue;
+			}
+
 			$choices[ $id ] = array(
 				'id'    => $id,
 				'type'  => $type,
@@ -568,6 +596,35 @@ class FormPanel {
 	 */
 	public static function email_candidate_types() {
 		return self::EMAIL_CANDIDATE_TYPES;
+	}
+
+	/**
+	 * Decode a WPForms Name field's `format` setting into the ordered list of
+	 * sub-input keys it exposes (e.g. `first-last` → `['first','last']`,
+	 * `first-middle-last` → `['first','middle','last']`). Returns an empty
+	 * array for `simple` (single input — no expansion needed).
+	 *
+	 * Sub-input names mirror the keys WPForms writes onto the processed
+	 * `$fields[<id>]` row at submission time, so the dotted choice id
+	 * `<field_id>.<sub>` resolves directly via `FormProcessor::field_value()`.
+	 *
+	 * @param array $field WPForms field definition (one entry from `$form_data['fields']`).
+	 * @return string[] Ordered list of sub-input keys.
+	 */
+	protected static function name_subinputs( $field ) {
+		$format = isset( $field['format'] ) ? (string) $field['format'] : '';
+		if ( '' === $format || 'simple' === $format ) {
+			return array();
+		}
+		$known = array( 'prefix', 'first', 'middle', 'last', 'suffix' );
+		$subs  = array();
+		foreach ( explode( '-', $format ) as $part ) {
+			$part = strtolower( trim( $part ) );
+			if ( in_array( $part, $known, true ) && ! in_array( $part, $subs, true ) ) {
+				$subs[] = $part;
+			}
+		}
+		return $subs;
 	}
 
 	/**

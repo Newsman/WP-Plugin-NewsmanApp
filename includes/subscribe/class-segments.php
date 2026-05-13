@@ -23,122 +23,127 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Shared Newsman segment fetcher used by every form-source integration's editor UI.
  *
- * Newsman segments are list-scoped: each segment belongs to exactly one list, and the
- * `segment.all` API endpoint returns segments only for a given list_id. To support the
- * "all segments, JS-filtered on list change" UX requested for the form-builder panels,
- * this helper fetches segments for every list returned by `Lists::get_for_select()` and
- * returns them keyed by list_id.
+ * Newsman segments are list-scoped: each segment belongs to exactly one list. The
+ * `segment.all` API endpoint supports `?list_id=all` which returns every segment
+ * across every list in a single response (each row carries its own `list_id`).
+ * This helper makes that one bulk call, caches the result by blog, and exposes a
+ * single read-through accessor for the form-builder panels.
  *
  * @class \Newsman\Subscribe\Segments
  */
 class Segments {
 	/**
-	 * Transient TTL for the segment dropdown cache (10 minutes).
+	 * Token sent to `segment.all` to request segments for every list in one call.
+	 *
+	 * @see https://kb.newsman.com/api/1.2/segment.all
 	 */
-	public const CACHE_TTL = 600;
+	public const FETCH_ALL_TOKEN = 'all';
 
 	/**
-	 * Transient key prefix for the cached segment dropdown options.
-	 */
-	public const CACHE_KEY_PREFIX = 'newsman_segments_';
-
-	/**
-	 * Build the per-list segment dropdown options.
+	 * Read-through accessor used by every form-builder panel.
+	 *
+	 * Fresh cache → return; cache miss → one `segment.all?list_id=all` call,
+	 * cache the result, return; API failure → persistent stale fallback.
 	 *
 	 * @param int $blog_id WP blog ID.
 	 * @return array<string,array<string,string>> Map of `[ list_id => [ segment_id => segment_name ] ]`.
 	 */
 	public static function get_by_list( $blog_id ) {
-		$transient_key = self::CACHE_KEY_PREFIX . $blog_id;
+		$config  = Config::init();
+		$user_id = (int) $config->get_user_id( $blog_id );
+		$api_key = (string) $config->get_api_key( $blog_id );
 
-		$cached = get_transient( $transient_key );
-		if ( is_array( $cached ) ) {
+		if ( $user_id <= 0 ) {
 			/**
 			 * Filter the Newsman segment options shown in the editor segment dropdown.
 			 *
 			 * @param array $options Map of `[ list_id => [ segment_id => segment_name ] ]`.
 			 * @param int   $blog_id Current WP blog ID.
 			 */
-			return apply_filters( 'newsman_segments_by_list', $cached, $blog_id );
-		}
-
-		$config  = Config::init();
-		$user_id = $config->get_user_id( $blog_id );
-		$api_key = $config->get_api_key( $blog_id );
-
-		if ( empty( $user_id ) || empty( $api_key ) ) {
-			/** This filter is documented in this file */
 			return apply_filters( 'newsman_segments_by_list', array(), $blog_id );
 		}
 
-		$lists = Lists::get_for_select( $blog_id );
-		if ( empty( $lists ) ) {
+		$fresh = Segments_Transient::get_all( $blog_id );
+		if ( ! empty( $fresh ) ) {
 			/** This filter is documented in this file */
-			return apply_filters( 'newsman_segments_by_list', array(), $blog_id );
+			return apply_filters( 'newsman_segments_by_list', self::drop_empty_lists( $fresh ), $blog_id );
 		}
 
-		$options = array();
-		foreach ( array_keys( $lists ) as $list_id ) {
-			$list_id = (string) $list_id;
+		if ( '' !== $api_key && ! Segments_Transient::is_skipped() ) {
+			try {
+				$by_list = self::fetch_all_from_api( $blog_id, $user_id, $api_key );
+				Segments_Transient::save_all( $blog_id, $by_list );
+				/** This filter is documented in this file */
+				return apply_filters( 'newsman_segments_by_list', self::drop_empty_lists( $by_list ), $blog_id );
+			} catch ( \Exception $e ) {
+				Logger::init()->log_exception( $e );
+				// Fall through to the persistent stale tier.
+			}
+		}
+
+		$stale = get_option( 'newsman_segments_fallback_' . (int) $blog_id, array() );
+		$stale = is_array( $stale ) ? self::drop_empty_lists( $stale ) : array();
+
+		/** This filter is documented in this file */
+		return apply_filters( 'newsman_segments_by_list', $stale, $blog_id );
+	}
+
+	/**
+	 * Bulk-fetch every list's segments from the Newsman API in a single call.
+	 *
+	 * Used by `get_by_list()` on a cache miss and by the Sync page Refresh button.
+	 * Throws on API failure so the caller can decide whether to surface the error
+	 * or fall back to the existing (stale) cached value.
+	 *
+	 * @param int    $blog_id WP blog ID.
+	 * @param int    $user_id Newsman User ID.
+	 * @param string $api_key Newsman API key.
+	 * @return array<string,array<string,string>> `[ list_id => [ segment_id => segment_name ] ]`.
+	 * @throws \Exception When the underlying GetSegmentAll service raises.
+	 */
+	public static function fetch_all_from_api( $blog_id, $user_id, $api_key ) {
+		$context = new EmailList();
+		$context->set_user_id( $user_id )
+			->set_api_key( $api_key )
+			->set_list_id( self::FETCH_ALL_TOKEN );
+
+		$service = new GetSegmentAll();
+		$service->set_blog_id( $blog_id );
+		$result = $service->execute( $context );
+
+		$by_list = array();
+		if ( ! is_array( $result ) ) {
+			return $by_list;
+		}
+		foreach ( $result as $row ) {
+			if ( ! is_array( $row ) ) {
+				continue;
+			}
+			$list_id = isset( $row['list_id'] ) ? (string) $row['list_id'] : '';
 			if ( '' === $list_id ) {
 				continue;
 			}
-			try {
-				$context = new EmailList();
-				$context->set_user_id( $user_id )
-					->set_api_key( $api_key )
-					->set_list_id( $list_id );
-
-				$service = new GetSegmentAll();
-				$service->set_blog_id( $blog_id );
-				$result = $service->execute( $context );
-
-				if ( ! is_array( $result ) ) {
-					continue;
-				}
-
-				$segments_for_list = array();
-				foreach ( $result as $row ) {
-					if ( ! is_array( $row ) ) {
-						continue;
-					}
-					$id = '';
-					if ( isset( $row['segment_id'] ) ) {
-						$id = (string) $row['segment_id'];
-					} elseif ( isset( $row['id'] ) ) {
-						$id = (string) $row['id'];
-					}
-					$name = $id;
-					if ( isset( $row['segment_name'] ) ) {
-						$name = (string) $row['segment_name'];
-					} elseif ( isset( $row['name'] ) ) {
-						$name = (string) $row['name'];
-					}
-					if ( '' !== $id ) {
-						$segments_for_list[ $id ] = $name;
-					}
-				}
-
-				if ( ! empty( $segments_for_list ) ) {
-					$options[ $list_id ] = $segments_for_list;
-				}
-			} catch ( \Exception $e ) {
-				Logger::init()->log_exception( $e );
+			$seg_id = '';
+			if ( isset( $row['segment_id'] ) ) {
+				$seg_id = (string) $row['segment_id'];
+			} elseif ( isset( $row['id'] ) ) {
+				$seg_id = (string) $row['id'];
+			}
+			if ( '' === $seg_id ) {
 				continue;
 			}
+			$seg_name = $seg_id;
+			if ( isset( $row['segment_name'] ) ) {
+				$seg_name = (string) $row['segment_name'];
+			} elseif ( isset( $row['name'] ) ) {
+				$seg_name = (string) $row['name'];
+			}
+			if ( ! isset( $by_list[ $list_id ] ) ) {
+				$by_list[ $list_id ] = array();
+			}
+			$by_list[ $list_id ][ $seg_id ] = $seg_name;
 		}
-
-		/**
-		 * Filter the segment dropdown cache TTL (in seconds).
-		 *
-		 * @param int $ttl     Cache TTL in seconds.
-		 * @param int $blog_id Current WP blog ID.
-		 */
-		$ttl = (int) apply_filters( 'newsman_segments_cache_ttl', self::CACHE_TTL, $blog_id );
-		set_transient( $transient_key, $options, $ttl );
-
-		/** This filter is documented in this file */
-		return apply_filters( 'newsman_segments_by_list', $options, $blog_id );
+		return $by_list;
 	}
 
 	/**
@@ -157,5 +162,21 @@ class Segments {
 		}
 		$by_list = self::get_by_list( $blog_id );
 		return isset( $by_list[ $list_id ][ $segment_id ] );
+	}
+
+	/**
+	 * Strip lists with no segments so the JS filter doesn't render meaningless option groups.
+	 *
+	 * @param array $by_list `[ list_id => [ segment_id => segment_name ] ]`.
+	 * @return array
+	 */
+	protected static function drop_empty_lists( $by_list ) {
+		$out = array();
+		foreach ( $by_list as $list_id => $segments ) {
+			if ( is_array( $segments ) && ! empty( $segments ) ) {
+				$out[ (string) $list_id ] = $segments;
+			}
+		}
+		return $out;
 	}
 }

@@ -226,17 +226,48 @@ class FormProcessor {
 	 * `value` key. We accept both string and integer keys to handle WPForms'
 	 * ambiguity (settings store ids as strings; `$fields` keys them as ints).
 	 *
+	 * A dotted id (`<field_id>.<sub>`) targets a Name field's sub-input:
+	 * `1.first`, `1.last`, `1.middle`, `1.prefix`, `1.suffix`. These match the
+	 * keys WPForms writes on the processed `$fields[<id>]` row for Name fields
+	 * in `first-last` / `first-middle-last` (and prefix/suffix) formats.
+	 *
 	 * @param array      $fields   Processed fields.
 	 * @param string|int $field_id Field id to look up.
-	 * @return mixed Returns null when the field is absent.
+	 * @return mixed Returns null when the field or sub-input is absent.
 	 */
 	protected static function field_value( $fields, $field_id ) {
-		if ( isset( $fields[ $field_id ] ) ) {
-			return isset( $fields[ $field_id ]['value'] ) ? $fields[ $field_id ]['value'] : null;
+		$field_id = (string) $field_id;
+
+		if ( false !== strpos( $field_id, '.' ) ) {
+			list( $parent_id, $sub ) = explode( '.', $field_id, 2 );
+			$row                     = self::field_row( $fields, $parent_id );
+			if ( null === $row ) {
+				return null;
+			}
+			return isset( $row[ $sub ] ) ? $row[ $sub ] : null;
+		}
+
+		$row = self::field_row( $fields, $field_id );
+		if ( null === $row ) {
+			return null;
+		}
+		return isset( $row['value'] ) ? $row['value'] : null;
+	}
+
+	/**
+	 * Look up a processed field row by id, accepting both string and integer keys.
+	 *
+	 * @param array  $fields   Processed fields.
+	 * @param string $field_id Field id (the integer part — not a dotted sub-id).
+	 * @return array|null
+	 */
+	protected static function field_row( $fields, $field_id ) {
+		if ( isset( $fields[ $field_id ] ) && is_array( $fields[ $field_id ] ) ) {
+			return $fields[ $field_id ];
 		}
 		$int_id = (int) $field_id;
-		if ( isset( $fields[ $int_id ] ) ) {
-			return isset( $fields[ $int_id ]['value'] ) ? $fields[ $int_id ]['value'] : null;
+		if ( isset( $fields[ $int_id ] ) && is_array( $fields[ $int_id ] ) ) {
+			return $fields[ $int_id ];
 		}
 		return null;
 	}
@@ -246,7 +277,9 @@ class FormProcessor {
 	 *
 	 * Prefers the field's label (sanitized to a stable lowercase snake_case
 	 * key) so Newsman properties stay readable; falls back to the field id
-	 * when no label is set.
+	 * when no label is set. For dotted Name sub-input ids (`1.first`,
+	 * `1.last`, ...) the sub-name is appended to the parent field's label so
+	 * the resulting property key is e.g. `your_name_first`.
 	 *
 	 * @param array      $fields    Processed fields.
 	 * @param array      $form_data Form definition (carries the field label).
@@ -254,6 +287,23 @@ class FormProcessor {
 	 * @return string
 	 */
 	protected static function property_key( $fields, $form_data, $field_id ) {
+		$field_id = (string) $field_id;
+
+		if ( false !== strpos( $field_id, '.' ) ) {
+			list( $parent_id, $sub ) = explode( '.', $field_id, 2 );
+			$parent_label            = '';
+			if ( isset( $form_data['fields'][ $parent_id ]['label'] ) ) {
+				$parent_label = (string) $form_data['fields'][ $parent_id ]['label'];
+			} elseif ( isset( $form_data['fields'][ (int) $parent_id ]['label'] ) ) {
+				$parent_label = (string) $form_data['fields'][ (int) $parent_id ]['label'];
+			}
+			$key = sanitize_key( $parent_label . '_' . $sub );
+			if ( '' === $key ) {
+				$key = 'field_' . str_replace( '.', '_', $field_id );
+			}
+			return $key;
+		}
+
 		$label = '';
 		if ( isset( $fields[ $field_id ]['name'] ) ) {
 			$label = (string) $fields[ $field_id ]['name'];

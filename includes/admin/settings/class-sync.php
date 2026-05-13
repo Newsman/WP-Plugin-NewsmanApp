@@ -13,6 +13,11 @@ namespace Newsman\Admin\Settings;
 
 use Newsman\Admin\Settings;
 use Newsman\Config;
+use Newsman\Subscribe\Lists;
+use Newsman\Subscribe\Lists_Transient;
+use Newsman\Subscribe\Segments;
+use Newsman\Subscribe\Segments_Transient;
+use Newsman\Subscribe\SmsLists_Transient;
 use Newsman\Util\WooCommerceExist;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -90,12 +95,30 @@ class Sync extends Settings {
 			wp_die( esc_html__( 'Unauthorized user', 'newsman' ) );
 		}
 
+		// Refresh-cache submit button branch. Runs the API-backed refresh of the
+		// Lists / Segments transients across every blog in a network install, then
+		// falls through to the normal read path so the page re-renders with the
+		// just-refreshed data.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( ! empty( $_POST['newsman_sync_refresh'] ) ) {
+			$this->refresh_lists_and_segments_cache();
+		}
+
 		$form_id_value           = '';
 		$this->valid_credentials = true;
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST[ $this->form_id ] ) && ! empty( $_POST[ $this->form_id ] ) ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$form_id_value = sanitize_text_field( wp_unslash( $_POST[ $this->form_id ] ) );
+		}
+
+		// On Refresh, treat the request as a read (no save). The refresh handler
+		// has already populated the transients + queued an admin notice; the
+		// normal else branch below will then render the page with available_lists /
+		// available_segments / available_sms_lists.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( ! empty( $_POST['newsman_sync_refresh'] ) ) {
+			$form_id_value = '';
 		}
 
 		if ( 'Y' === $form_id_value ) {
@@ -198,6 +221,156 @@ class Sync extends Settings {
 				$this->valid_credentials = false;
 				$this->set_message_backend( 'error', esc_html__( 'Could not get the lists or the segments.', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
+		}
+	}
+
+	/**
+	 * Refresh the per-blog Lists / Segments / SMS-lists transient caches by
+	 * hitting the Newsman API for every blog with credentials configured.
+	 *
+	 * On a network install (multisite) this iterates every site via `get_sites()`,
+	 * temporarily switches to each one so `Config::get_*` and `set_transient`
+	 * resolve against the right options table. Each blog makes at most three API
+	 * calls: `list.all`, `segment.all?list_id=all` (one bulk call covers every
+	 * list), and `sms_list.all`.
+	 *
+	 * Per-call failures are caught and logged. The transient row is *not*
+	 * touched on failure — whatever previous value was cached stays valid until
+	 * its TTL expires (the "stale-on-error" property). At the end a single admin
+	 * notice summarises totals + any errors.
+	 *
+	 * @return void
+	 */
+	protected function refresh_lists_and_segments_cache() {
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+			$sites    = function_exists( 'get_sites' ) ? get_sites( array( 'number' => 0 ) ) : array();
+			$blog_ids = array();
+			foreach ( $sites as $site ) {
+				$blog_ids[] = (int) $site->blog_id;
+			}
+		} else {
+			$blog_ids = array( (int) get_current_blog_id() );
+		}
+
+		$stats = array(
+			'blogs_with_credentials' => 0,
+			'lists'                  => 0,
+			'segments'               => 0,
+			'sms_lists'              => 0,
+			'errors'                 => array(),
+		);
+
+		foreach ( $blog_ids as $blog_id ) {
+			$switched = false;
+			if ( function_exists( 'is_multisite' ) && is_multisite() && (int) get_current_blog_id() !== $blog_id ) {
+				switch_to_blog( $blog_id );
+				$switched = true;
+			}
+
+			$config  = Config::init();
+			$user_id = (int) $config->get_user_id( $blog_id );
+			$api_key = (string) $config->get_api_key( $blog_id );
+
+			if ( $user_id <= 0 || '' === $api_key ) {
+				if ( $switched ) {
+					restore_current_blog();
+				}
+				continue;
+			}
+
+			++$stats['blogs_with_credentials'];
+
+			try {
+				$lists = Lists::fetch_from_api( $blog_id, $user_id, $api_key );
+				Lists_Transient::save( $blog_id, $user_id, $lists );
+				$stats['lists'] += count( $lists );
+			} catch ( \Exception $e ) {
+				$this->logger->log_exception( $e );
+				$stats['errors'][] = sprintf(
+					/* translators: 1: blog id; 2: error message. */
+					esc_html__( 'Blog #%1$d lists: %2$s', 'newsman' ),
+					$blog_id,
+					$e->getMessage()
+				);
+				// Stale-on-error: leave the transient row alone, skip segments
+				// for this blog since we have no list catalogue to iterate.
+				if ( $switched ) {
+					restore_current_blog();
+				}
+				continue;
+			}
+
+			try {
+				$by_list = Segments::fetch_all_from_api( $blog_id, $user_id, $api_key );
+				Segments_Transient::save_all( $blog_id, $by_list );
+				foreach ( $by_list as $segments ) {
+					if ( is_array( $segments ) ) {
+						$stats['segments'] += count( $segments );
+					}
+				}
+			} catch ( \Exception $e ) {
+				$this->logger->log_exception( $e );
+				$stats['errors'][] = sprintf(
+					/* translators: 1: blog id; 2: error message. */
+					esc_html__( 'Blog #%1$d segments: %2$s', 'newsman' ),
+					$blog_id,
+					$e->getMessage()
+				);
+				// Stale-on-error.
+			}
+
+			// SMS lists — separate Newsman API endpoint, separate transient. Same
+			// stale-on-error pattern as above.
+			try {
+				$context = new \Newsman\Service\Context\Configuration\User();
+				$context->set_user_id( $user_id )->set_api_key( $api_key );
+				$sms_service = new \Newsman\Service\Configuration\Sms\GetListAll();
+				$sms_lists   = $sms_service->execute( $context );
+				if ( is_array( $sms_lists ) ) {
+					SmsLists_Transient::save( $blog_id, $user_id, $sms_lists );
+					$stats['sms_lists'] += count( $sms_lists );
+				}
+			} catch ( \Exception $e ) {
+				$this->logger->log_exception( $e );
+				$stats['errors'][] = sprintf(
+					/* translators: 1: blog id; 2: error message. */
+					esc_html__( 'Blog #%1$d SMS lists: %2$s', 'newsman' ),
+					$blog_id,
+					$e->getMessage()
+				);
+				// Stale-on-error.
+			}
+
+			if ( $switched ) {
+				restore_current_blog();
+			}
+		}
+
+		if ( empty( $stats['errors'] ) ) {
+			$this->set_message_backend(
+				'updated',
+				sprintf(
+					/* translators: 1: blog count; 2: lists count; 3: segments count; 4: SMS lists count. */
+					esc_html__( 'Newsman cache refreshed: %1$d blog(s), %2$d list(s), %3$d segment(s), %4$d SMS list(s).', 'newsman' ),
+					(int) $stats['blogs_with_credentials'],
+					(int) $stats['lists'],
+					(int) $stats['segments'],
+					(int) $stats['sms_lists']
+				)
+			);
+		} else {
+			$this->set_message_backend(
+				'error',
+				sprintf(
+					/* translators: 1: blog count; 2: lists count; 3: segments count; 4: SMS lists count; 5: semicolon-separated error list. */
+					esc_html__( 'Cache refresh completed with errors. Refreshed %1$d blog(s), %2$d list(s), %3$d segment(s), %4$d SMS list(s). Existing cached values for the failing API calls are kept until they expire. Errors: %5$s', 'newsman' ),
+					(int) $stats['blogs_with_credentials'],
+					(int) $stats['lists'],
+					(int) $stats['segments'],
+					(int) $stats['sms_lists'],
+					implode( '; ', $stats['errors'] )
+				)
+			);
 		}
 	}
 

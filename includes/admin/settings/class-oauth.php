@@ -93,6 +93,15 @@ class Oauth extends Settings {
 		$this->step               = 1;
 		$this->view_state         = array();
 
+		// Bypass the Lists / Segments / SMS Lists transient caches for the
+		// entire OAuth request. The OAuth flow may receive new credentials
+		// mid-request and any cache read/write done with the previous
+		// credentials would either return wrong data or poison the row for the
+		// next admin to land here.
+		\Newsman\Subscribe\Lists_Transient::set_skip( true );
+		\Newsman\Subscribe\Segments_Transient::set_skip( true );
+		\Newsman\Subscribe\SmsLists_Transient::set_skip( true );
+
 		$this->process_form_oauth_step_one();
 		$this->process_form_settings_step_two();
 	}

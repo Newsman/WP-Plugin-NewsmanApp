@@ -13,6 +13,7 @@ namespace Newsman\Admin;
 
 use Newsman\Config;
 use Newsman\Logger;
+use Newsman\Subscribe\Segments;
 use Newsman\Util\WooCommerceExist;
 use Newsman\Util\ElementorExist;
 use Newsman\Util\ContactForm7Exist;
@@ -237,28 +238,35 @@ class Settings {
 	}
 
 	/**
-	 * Call API get all segments by list ID
+	 * Get the list of segments for a Newsman list, as `[ ['segment_id' => ..., 'segment_name' => ...], ... ]`.
+	 *
+	 * Reads through the per-blog Segments cache (populated by one bulk
+	 * `segment.all?list_id=all` call) and reshapes the entry for `$list_id` into
+	 * the legacy template format. `$user_id` / `$api_key` are accepted for
+	 * back-compat but ignored — `Segments::get_by_list()` sources credentials
+	 * from Config like every other read-through caller.
 	 *
 	 * @param string          $list_id API list ID.
-	 * @param null|int|string $user_id API user ID.
-	 * @param null|string     $api_key API key.
+	 * @param null|int|string $user_id Unused. Kept for back-compat.
+	 * @param null|string     $api_key Unused. Kept for back-compat.
 	 * @return array|false
 	 */
-	public function retrieve_api_all_segments( $list_id, $user_id = null, $api_key = null ) {
+	public function retrieve_api_all_segments( $list_id, $user_id = null, $api_key = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		try {
-			if ( null === $user_id ) {
-				$user_id = $this->config->get_user_id();
-			}
-			if ( null === $api_key ) {
-				$api_key = $this->config->get_api_key();
+			$by_list  = Segments::get_by_list( get_current_blog_id() );
+			$list_key = (string) $list_id;
+			$segments = isset( $by_list[ $list_key ] ) && is_array( $by_list[ $list_key ] )
+				? $by_list[ $list_key ]
+				: array();
+
+			$segments_data = array();
+			foreach ( $segments as $segment_id => $segment_name ) {
+				$segments_data[] = array(
+					'segment_id'   => (string) $segment_id,
+					'segment_name' => (string) $segment_name,
+				);
 			}
 
-			$context = new \Newsman\Service\Context\Configuration\EmailList();
-			$context->set_user_id( $user_id )
-				->set_api_key( $api_key )
-				->set_list_id( $list_id );
-			$get_segment_all = new \Newsman\Service\Configuration\GetSegmentAll();
-			$segments_data   = $get_segment_all->execute( $context );
 			return apply_filters(
 				'newsman_admin_settings_retrieve_api_all_segments',
 				$segments_data,
@@ -290,11 +298,31 @@ class Settings {
 				$api_key = $this->config->get_api_key();
 			}
 
+			$blog_id      = get_current_blog_id();
+			$user_id_int  = (int) $user_id;
+			$cached_lists = $user_id_int > 0 ? \Newsman\Subscribe\SmsLists_Transient::get( $blog_id, $user_id_int ) : null;
+			if ( null !== $cached_lists ) {
+				/** This filter is documented in this method */
+				return apply_filters(
+					'newsman_admin_settings_retrieve_api_sms_all_lists',
+					$cached_lists,
+					array(
+						'user_id' => $user_id,
+						'api_key' => $api_key,
+					)
+				);
+			}
+
 			$context = new \Newsman\Service\Context\Configuration\User();
 			$context->set_user_id( $user_id )
 				->set_api_key( $api_key );
 			$get_sms_list_all = new \Newsman\Service\Configuration\Sms\GetListAll();
 			$lists_data       = $get_sms_list_all->execute( $context );
+
+			if ( $user_id_int > 0 && is_array( $lists_data ) ) {
+				\Newsman\Subscribe\SmsLists_Transient::save( $blog_id, $user_id_int, $lists_data );
+			}
+
 			return apply_filters(
 				'newsman_admin_settings_retrieve_api_sms_all_lists',
 				$lists_data,
@@ -305,6 +333,22 @@ class Settings {
 			);
 		} catch ( \Exception $e ) {
 			$this->logger->log_exception( $e );
+			// Stale-on-error: serve the persistent last-known-good payload if
+			// any exists, instead of returning false (which surfaces as a "Could
+			// not get the lists or the segments" admin notice on the Sync page).
+			if ( ! empty( $user_id_int ) && $user_id_int > 0 ) {
+				$stale = \Newsman\Subscribe\SmsLists_Transient::get_stale( $blog_id, $user_id_int );
+				if ( is_array( $stale ) ) {
+					return apply_filters(
+						'newsman_admin_settings_retrieve_api_sms_all_lists',
+						$stale,
+						array(
+							'user_id' => $user_id,
+							'api_key' => $api_key,
+						)
+					);
+				}
+			}
 			return false;
 		}
 	}

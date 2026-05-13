@@ -118,6 +118,8 @@ $form_values = $this->get_form_values();
 					</table>
 					<div style="padding-top: 5px;">
 						<input type="submit" value="<?php echo esc_attr__( 'Save Changes', 'newsman' ); ?>" class="button button-primary"/>
+						<input type="submit" name="newsman_sync_refresh" value="<?php echo esc_attr__( 'Refresh lists & segments cache', 'newsman' ); ?>" class="button button-primary" style="margin-left:8px;"/>
+						<p class="description" style="margin-top:6px;"><?php echo esc_html__( 'Force-refreshes the Newsman lists, segments and SMS lists cache used by this page and by the form integrations (Elementor, CF7, WPForms, Gravity Forms). On a Multisite install this iterates every site that has Newsman credentials configured. Cache lifetime is 15 minutes; this button is only useful when you need to see Newsman-side changes immediately.', 'newsman' ); ?></p>
 					</div>
 				</form>
 			</div>

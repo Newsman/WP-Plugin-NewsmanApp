@@ -152,17 +152,12 @@ class FormControls {
 			$element->add_control( 'newsman_list_id', $list_args );
 		}
 
-		// Render every segment as an option up-front; the editor-footer JS hooked on
-		// `elementor/editor/footer` rebuilds the visible options whenever
-		// `newsman_list_id` changes so the admin only sees segments belonging to the
-		// selected list.
-		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
-		$segment_options  = array( '' => esc_html__( '— none —', 'newsman' ) );
-		foreach ( $segments_by_list as $segments_for_list ) {
-			foreach ( $segments_for_list as $segment_id => $segment_name ) {
-				$segment_options[ (string) $segment_id ] = (string) $segment_name;
-			}
-		}
+		// Server-side render: only the "— none —" sentinel. The editor-footer
+		// JS hooked on `elementor/editor/footer` reads the inline JSON map of
+		// every list's segments (one bulk `segment.all?list_id=all` API call
+		// cached for 1h) and rebuilds the visible options whenever
+		// `newsman_list_id` changes.
+		$segment_options = array( '' => esc_html__( '— none —', 'newsman' ) );
 
 		$segment_args = apply_filters(
 			'newsman_form_segment_control_args',
@@ -518,8 +513,9 @@ class FormControls {
 	 * down to the segments belonging to the currently selected `newsman_list_id`.
 	 *
 	 * Elementor controls don't natively support dynamic option filtering driven by
-	 * another control's value, so the entire segment catalog is rendered server-side
-	 * and this JS rebuilds the visible options on every list change. Hooked on
+	 * another control's value, so the full per-list segment map is emitted inline
+	 * (one bulk `segment.all?list_id=all` API call cached for 1h) and this JS
+	 * rebuilds the visible options on every list change. Hooked on
 	 * `elementor/editor/footer` (fires once per editor session, after the panel
 	 * scripts are loaded) and runs only when the panel opens a `form` widget.
 	 *
@@ -527,13 +523,12 @@ class FormControls {
 	 */
 	public function print_editor_segment_filter_script() {
 		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
-		// Always include the "none" entry so the dropdown is never empty.
-		$none_label = esc_html__( '— none —', 'newsman' );
+		$none_label       = esc_html__( '— none —', 'newsman' );
 		?>
 		<script>
 		(function ($) {
-			var newsmanSegmentsByList = <?php echo wp_json_encode( $segments_by_list ); ?>;
-			var newsmanNoneLabel      = <?php echo wp_json_encode( $none_label ); ?>;
+			var segmentsByList   = <?php echo wp_json_encode( (object) $segments_by_list ); ?>;
+			var newsmanNoneLabel = <?php echo wp_json_encode( $none_label ); ?>;
 
 			function getSegmentControlEls(panel) {
 				if ( ! panel || ! panel.$el ) { return null; }
@@ -545,41 +540,32 @@ class FormControls {
 				};
 			}
 
-			function rebuildSegmentOptions(panel, settingsModel) {
+			function applySegments(panel, settingsModel, segments) {
 				var els = getSegmentControlEls(panel);
 				if ( ! els || ! els.select.length ) { return; }
 
-				var listId        = String(settingsModel.get('newsman_list_id') || '');
-				var savedSegment  = String(settingsModel.get('newsman_segment_id') || '');
-				var segsForList   = (newsmanSegmentsByList && newsmanSegmentsByList[listId]) || {};
-				var selectEl      = els.select[0];
-				var stillVisible  = false;
+				var savedSegment = String(settingsModel.get('newsman_segment_id') || '');
+				var selectEl     = els.select[0];
+				var stillVisible = false;
 
-				// Tear down SELECT2 first so we can rebuild the underlying <select> cleanly.
 				if ( els.select.data('select2') ) {
 					try { els.select.select2('destroy'); } catch ( e ) {}
 				}
 
-				// Empty + repopulate with "none" + the segments scoped to the selected list.
 				selectEl.innerHTML = '';
 				selectEl.appendChild(new Option(newsmanNoneLabel, '', false, '' === savedSegment));
-				Object.keys(segsForList).forEach(function (segId) {
-					var name     = String(segsForList[segId]);
+				Object.keys(segments).forEach(function (segId) {
+					var name     = String(segments[segId]);
 					var selected = (savedSegment === String(segId));
 					selectEl.appendChild(new Option(name, segId, selected, selected));
 					if ( selected ) { stillVisible = true; }
 				});
 
-				// If the saved segment doesn't belong to the new list, drop it from the model.
-				// Server-side validation (Segments::belongs_to_list in the processor) would catch
-				// this at submit time too; clearing it here keeps the UI honest.
 				if ( ! stillVisible && '' !== savedSegment ) {
 					settingsModel.set('newsman_segment_id', '', { silent: false });
 					selectEl.value = '';
 				}
 
-				// Re-init SELECT2 with Elementor's defaults; the editor's own logic re-applies it
-				// when the panel re-renders, but doing it here avoids a flash of bare <select>.
 				if ( $.fn.select2 ) {
 					try {
 						els.select.select2({
@@ -590,6 +576,14 @@ class FormControls {
 				}
 			}
 
+			function loadSegmentsForList(panel, settingsModel) {
+				var listId   = String(settingsModel.get('newsman_list_id') || '');
+				var segments = '' !== listId && segmentsByList.hasOwnProperty(listId)
+					? segmentsByList[listId]
+					: {};
+				applySegments(panel, settingsModel, segments);
+			}
+
 			$(window).on('elementor:init', function () {
 				if ( typeof elementor === 'undefined' || ! elementor.hooks ) { return; }
 
@@ -598,15 +592,12 @@ class FormControls {
 					if ( ! settings ) { return; }
 
 					function run() {
-						rebuildSegmentOptions(panel, settings);
+						loadSegmentsForList(panel, settings);
 					}
 
-					// `panel/open_editor/widget/form` fires before Elementor finishes rendering
-					// the form widget's child controls — at that point the segment <select>
-					// either doesn't exist yet in the DOM, or exists with the server-rendered
-					// options but no SELECT2 wrapper yet. Poll up to ~2 s until both the row
-					// and its SELECT2 instance are present, then rebuild. Once successful, the
-					// change listeners below keep things in sync.
+					// `panel/open_editor/widget/form` fires before Elementor finishes
+					// rendering the form widget's child controls. Poll up to ~2s
+					// until the segment <select> + its SELECT2 are present, then run.
 					var attempt    = 0;
 					var maxAttempt = 40;
 					var poll       = function () {
@@ -618,18 +609,11 @@ class FormControls {
 						if ( ++attempt < maxAttempt ) {
 							setTimeout(poll, 50);
 						} else if ( els && els.select.length ) {
-							// Final attempt even without SELECT2 — our DOM edit still wins
-							// when Elementor inits SELECT2 afterwards (it reads from the
-							// underlying <select>).
 							run();
 						}
 					};
 					poll();
 
-					// Conditions on `newsman_enable` and `newsman_newsletter_form` make Elementor
-					// re-render the segment control when those toggles flip, which restores the
-					// server-rendered (unfiltered) option set. Re-apply the filter on any of the
-					// settings that affect visibility.
 					settings.on(
 						'change:newsman_list_id change:newsman_enable change:newsman_newsletter_form',
 						run

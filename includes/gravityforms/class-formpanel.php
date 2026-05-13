@@ -105,7 +105,7 @@ class FormPanel {
 		 * @param string $icon    Default icon (Newsman mini-logo URL).
 		 * @param int    $form_id Current form id.
 		 */
-		$icon = apply_filters( 'newsman_gravity_forms_menu_icon', $icon, $form_id );
+		$icon   = apply_filters( 'newsman_gravity_forms_menu_icon', $icon, $form_id );
 		$tabs[] = array(
 			'name'  => self::SUBVIEW,
 			'label' => (string) $label,
@@ -176,14 +176,15 @@ class FormPanel {
 			}
 		}
 
-		$segments_by_list = Segments::get_by_list( get_current_blog_id() );
-		$segment_select   = array( '' => esc_html__( '— none —', 'newsman' ) );
-		$segment_to_list  = array( '' => '' );
-		foreach ( $segments_by_list as $seg_list_id => $segments_for_list ) {
-			$list_label = isset( $list_select[ (string) $seg_list_id ] ) ? (string) $list_select[ (string) $seg_list_id ] : (string) $seg_list_id;
-			foreach ( $segments_for_list as $segment_id => $segment_name ) {
-				$segment_select[ (string) $segment_id ] = sprintf( '%1$s — %2$s', $list_label, (string) $segment_name );
-				$segment_to_list[ (string) $segment_id ] = (string) $seg_list_id;
+		// Full per-list segment map (cached for 1h, one `segment.all?list_id=all`
+		// API call). The list-change JS at the bottom of this method reads the
+		// inline JSON to swap segment options client-side — no per-list AJAX.
+		$gf_current_list_id  = isset( $prop['newsman_list_id'] ) ? (string) $prop['newsman_list_id'] : '';
+		$gf_segments_by_list = Segments::get_by_list( get_current_blog_id() );
+		$segment_select      = array( '' => esc_html__( '— none —', 'newsman' ) );
+		if ( '' !== $gf_current_list_id && isset( $gf_segments_by_list[ $gf_current_list_id ] ) ) {
+			foreach ( $gf_segments_by_list[ $gf_current_list_id ] as $segment_id => $segment_name ) {
+				$segment_select[ (string) $segment_id ] = (string) $segment_name;
 			}
 		}
 
@@ -284,10 +285,10 @@ class FormPanel {
 				$send_fields  = is_array( $prop['newsman_send_fields'] ) ? $prop['newsman_send_fields'] : array();
 				$has_existing = ! empty( $send_fields );
 				$reserved     = array(
-					(string) $prop['newsman_email_field']     => 'email',
+					(string) $prop['newsman_email_field'] => 'email',
 					(string) $prop['newsman_firstname_field'] => 'firstname',
-					(string) $prop['newsman_lastname_field']  => 'lastname',
-					(string) $prop['newsman_phone_field']     => 'phone',
+					(string) $prop['newsman_lastname_field'] => 'lastname',
+					(string) $prop['newsman_phone_field'] => 'phone',
 				);
 				unset( $reserved[''] );
 				?>
@@ -376,21 +377,52 @@ class FormPanel {
 		</form>
 		<script>
 		(function () {
+			var segmentsByList = <?php echo wp_json_encode( (object) $gf_segments_by_list ); ?>;
+			var noneLabel      = <?php echo wp_json_encode( esc_html__( '— none —', 'newsman' ) ); ?>;
+
 			// Hide Newsman List + Newsman Segment when "Newsletter form" is ON.
 			// When on, submissions go to the global Sync list/segment, so the
 			// per-form rows are stored but ignored. Mirrors the same behavior in
 			// the Elementor / CF7 / WPForms panels.
 			var newsletter = document.getElementById('newsman_newsletter_form');
-			if (!newsletter) return;
 			function applyVisibility() {
+				if (!newsletter) return;
 				var hide = newsletter.checked;
 				var list = document.querySelector('tr.newsman-gf-list-row');
 				var seg  = document.querySelector('tr.newsman-gf-segment-row');
 				if (list) list.style.display = hide ? 'none' : '';
 				if (seg)  seg.style.display  = hide ? 'none' : '';
 			}
-			newsletter.addEventListener('change', applyVisibility);
-			applyVisibility();
+			if (newsletter) {
+				newsletter.addEventListener('change', applyVisibility);
+				applyVisibility();
+			}
+
+			// Rebuild segment options on list change from the inline JSON map.
+			var listEl = document.getElementById('newsman_list_id');
+			var segEl  = document.getElementById('newsman_segment_id');
+			var savedSegment = segEl ? String(segEl.value || '') : '';
+			function reloadSegments() {
+				if (!listEl || !segEl) return;
+				var currentListId = String(listEl.value || '');
+				var segments = '' !== currentListId && segmentsByList.hasOwnProperty(currentListId)
+					? segmentsByList[currentListId]
+					: {};
+				var prev = String(segEl.value || '') || savedSegment;
+				segEl.innerHTML = '';
+				var optNone = document.createElement('option');
+				optNone.value = '';
+				optNone.textContent = noneLabel;
+				segEl.appendChild(optNone);
+				Object.keys(segments).forEach(function (id) {
+					var o = document.createElement('option');
+					o.value = id;
+					o.textContent = segments[id];
+					segEl.appendChild(o);
+				});
+				segEl.value = segments.hasOwnProperty(prev) ? prev : '';
+			}
+			if (listEl) listEl.addEventListener('change', reloadSegments);
 		})();
 		</script>
 		<?php
