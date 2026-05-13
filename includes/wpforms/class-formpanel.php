@@ -423,6 +423,14 @@ class FormPanel {
 		echo '<label>' . esc_html__( 'Send as properties', 'newsman' ) . '</label>';
 		echo '<ul style="margin:0;padding:0;list-style:none;">';
 		foreach ( $choices as $field_id => $choice ) {
+			// Skip Name sub-input choices (`1.first`, `1.last`, ...). PHP rewrites
+			// dots in `$_POST` array keys to underscores so the saved id would no
+			// longer round-trip through `FormProcessor::field_value()`. The Name
+			// sub-parts are still mappable via the dedicated firstname / lastname
+			// dropdowns above, which use single-value field names.
+			if ( false !== strpos( (string) $field_id, '.' ) ) {
+				continue;
+			}
 			$is_email_field     = ( (string) $field_id === $selected_email );
 			$is_firstname_field = ( '' !== $selected_firstname && (string) $field_id === $selected_firstname );
 			$is_lastname_field  = ( '' !== $selected_lastname && (string) $field_id === $selected_lastname );
@@ -534,8 +542,33 @@ class FormPanel {
 			if ( in_array( $type, self::NON_DATA_TYPES, true ) ) {
 				continue;
 			}
-			$id             = isset( $field['id'] ) ? (string) $field['id'] : (string) $field_id;
-			$label          = isset( $field['label'] ) ? (string) $field['label'] : '';
+			$id    = isset( $field['id'] ) ? (string) $field['id'] : (string) $field_id;
+			$label = isset( $field['label'] ) ? (string) $field['label'] : '';
+
+			// Name fields with a non-simple format (e.g. `first-last`,
+			// `first-middle-last`) are compound: WPForms exposes each sub-input
+			// as a separate value (`first`, `middle`, `last`, optionally
+			// `prefix` / `suffix`). Expand the field into one choice per sub-
+			// input so the admin can map firstname / lastname / property keys
+			// to the right slice. The parent field is skipped — picking the
+			// whole Name field for "firstname" would yield the concatenated
+			// full name.
+			$name_subs = ( 'name' === $type ) ? self::name_subinputs( $field ) : array();
+			if ( ! empty( $name_subs ) ) {
+				foreach ( $name_subs as $sub ) {
+					$sub_id             = $id . '.' . $sub;
+					$sub_label          = '' === $label
+						? ucfirst( $sub )
+						: $label . ' — ' . ucfirst( $sub );
+					$choices[ $sub_id ] = array(
+						'id'    => $sub_id,
+						'type'  => $type . '/' . $sub,
+						'label' => $sub_label,
+					);
+				}
+				continue;
+			}
+
 			$choices[ $id ] = array(
 				'id'    => $id,
 				'type'  => $type,
@@ -563,6 +596,35 @@ class FormPanel {
 	 */
 	public static function email_candidate_types() {
 		return self::EMAIL_CANDIDATE_TYPES;
+	}
+
+	/**
+	 * Decode a WPForms Name field's `format` setting into the ordered list of
+	 * sub-input keys it exposes (e.g. `first-last` → `['first','last']`,
+	 * `first-middle-last` → `['first','middle','last']`). Returns an empty
+	 * array for `simple` (single input — no expansion needed).
+	 *
+	 * Sub-input names mirror the keys WPForms writes onto the processed
+	 * `$fields[<id>]` row at submission time, so the dotted choice id
+	 * `<field_id>.<sub>` resolves directly via `FormProcessor::field_value()`.
+	 *
+	 * @param array $field WPForms field definition (one entry from `$form_data['fields']`).
+	 * @return string[] Ordered list of sub-input keys.
+	 */
+	protected static function name_subinputs( $field ) {
+		$format = isset( $field['format'] ) ? (string) $field['format'] : '';
+		if ( '' === $format || 'simple' === $format ) {
+			return array();
+		}
+		$known = array( 'prefix', 'first', 'middle', 'last', 'suffix' );
+		$subs  = array();
+		foreach ( explode( '-', $format ) as $part ) {
+			$part = strtolower( trim( $part ) );
+			if ( in_array( $part, $known, true ) && ! in_array( $part, $subs, true ) ) {
+				$subs[] = $part;
+			}
+		}
+		return $subs;
 	}
 
 	/**
