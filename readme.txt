@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.19 =
+* Bump bundled JS/CSS asset cache-bust versions (NEWSMAN_JS_SCRIPT_VERSION, NEWSMAN_CSS_SCRIPT_VERSION) so browsers pick up the latest tracker/admin assets
+
 = 3.7.18 =
 * Cache lists, segments and SMS lists in WordPress transients (1-hour TTL each) with a persistent stale-fallback tier so an API blip never returns an empty dropdown; the **NewsMAN > Sync** page now has a "Refresh lists & segments cache" button that force-refreshes every blog's caches in a multisite-aware loop
 * Switch the form-builder segment dropdowns (Contact Form 7, WPForms, Elementor, Gravity Forms) to a single bulk `segment.all?list_id=all` fetch per editor open, with the full per-list map embedded inline so list-change events swap segment options client-side without a round-trip
