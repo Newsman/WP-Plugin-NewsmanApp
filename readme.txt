@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.22
+Stable tag: 3.7.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,11 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.23 =
+* Sync page: the segment dropdown now updates instantly when you change the list, with no page reload, using the cached per-list segment map (same behavior as the form-builder integrations)
+* Plugin Check cleanup: added ABSPATH guards to template partials, fixed missing i18n text-domain arguments, added License/License URI headers, renamed the plugin to "NewsmanApp", and converted the WooCommerce HPOS compatibility declaration to a closure
+* Refreshed translations
 
 = 3.7.22 =
 * Product feed: default stock_quantity to 10 for in-stock products that don't track stock (stock management disabled), instead of null

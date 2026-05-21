@@ -145,7 +145,7 @@ Go to **NewsMAN > Sync** to choose where your subscribers are sent in Newsman.
 
 - **Select a list** - Pick the Newsman email list that will receive your subscribers. All lists from your Newsman account are shown here.
 
-- **Select a segment** - Optionally pick a segment within the selected list. Segments let you organize subscribers into groups (e.g., "VIP Customers", "Blog Readers"). If you don't use segments, leave this empty.
+- **Select a segment** - Optionally pick a segment within the selected list. Segments let you organize subscribers into groups (e.g., "VIP Customers", "Blog Readers"). If you don't use segments, leave this empty. The dropdown is list-scoped and updates instantly when you change the list above — no page reload is needed — using the cached per-list segment map. Remember to click **Save Changes** to apply the new list/segment.
 
 - **Select an SMS list** - Pick the Newsman SMS list for phone number synchronization.
 

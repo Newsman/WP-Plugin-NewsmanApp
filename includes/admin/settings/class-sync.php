@@ -77,6 +77,16 @@ class Sync extends Settings {
 	public $available_sms_lists = array();
 
 	/**
+	 * Full map of segments grouped by list ID: `[ list_id => [ segment_id => segment_name ] ]`.
+	 *
+	 * Emitted to the page so the segment dropdown can be repopulated client-side when the
+	 * selected list changes, without a page reload.
+	 *
+	 * @var array<string,array<string,string>>
+	 */
+	public $segments_by_list = array();
+
+	/**
 	 * Includes the html for the admin page.
 	 *
 	 * @return void
@@ -222,6 +232,11 @@ class Sync extends Settings {
 				$this->set_message_backend( 'error', esc_html__( 'Could not get the lists or the segments.', 'newsman' ) . ' | ' . $e->getMessage() );
 			}
 		}
+
+		// Full per-list segment map ([ list_id => [ segment_id => segment_name ] ]) for the
+		// live, no-reload list -> segment dropdown filter on the Sync page. Sourced from the same
+		// cached bulk `segment.all?list_id=all` payload used everywhere else, so it adds no API call.
+		$this->segments_by_list = Segments::get_by_list( get_current_blog_id() );
 	}
 
 	/**

@@ -156,7 +156,7 @@ Accesati **NewsMAN > Sync** pentru a alege unde sunt trimisi abonatii dvs. in Ne
 
 - **Select a list** - Alegeti lista de email Newsman care va primi abonatii dvs. Toate listele din contul dvs. Newsman sunt afisate aici.
 
-- **Select a segment** - Optional, alegeti un segment din lista selectata. Segmentele va permit sa organizati abonatii in grupuri (de ex., "Clienti VIP", "Cititori Blog"). Daca nu folositi segmente, lasati acest camp gol.
+- **Select a segment** - Optional, alegeti un segment din lista selectata. Segmentele va permit sa organizati abonatii in grupuri (de ex., "Clienti VIP", "Cititori Blog"). Daca nu folositi segmente, lasati acest camp gol. Dropdown-ul este restrans la lista si se actualizeaza instant cand schimbati lista de mai sus — fara reincarcarea paginii — folosind harta de segmente pe lista din cache. Nu uitati sa apasati **Save Changes** pentru a aplica noua lista/segment.
 
 - **Select an SMS list** - Alegeti lista SMS Newsman pentru sincronizarea numerelor de telefon.
 

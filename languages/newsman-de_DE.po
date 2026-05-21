@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-21T15:04:15+00:00\n"
+"POT-Creation-Date: 2026-05-21T15:49:05+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -123,13 +123,13 @@ msgstr "Remarketing-JavaScript wurde erfolgreich aktualisiert."
 #: includes/admin/settings/class-remarketing.php:90
 #: includes/admin/settings/class-settings.php:102
 #: includes/admin/settings/class-sms.php:153
-#: includes/admin/settings/class-sync.php:95
+#: includes/admin/settings/class-sync.php:105
 msgid "Unauthorized user"
 msgstr "Nicht autorisierter Benutzer"
 
 #: includes/admin/settings/class-remarketing.php:110
 #: includes/admin/settings/class-settings.php:167
-#: includes/admin/settings/class-sync.php:186
+#: includes/admin/settings/class-sync.php:196
 msgid "Options saved."
 msgstr "Optionen gespeichert."
 
@@ -141,7 +141,7 @@ msgstr ""
 
 #: includes/admin/settings/class-settings.php:171
 #: includes/admin/settings/class-settings.php:185
-#: includes/admin/settings/class-sync.php:190
+#: includes/admin/settings/class-sync.php:200
 msgid "Invalid Credentials"
 msgstr "Ungültige Anmeldedaten"
 
@@ -238,38 +238,38 @@ msgstr ""
 "Die SMS wurde nicht gesendet. Bitte geben Sie die Testtelefonnummer und die "
 "Testnachricht ein."
 
-#: includes/admin/settings/class-sync.php:140
+#: includes/admin/settings/class-sync.php:150
 msgid "Could not save integration setup. The list was not changed."
 msgstr ""
 "Die Integrationseinrichtung konnte nicht gespeichert werden. Die Liste wurde "
 "nicht geändert."
 
-#: includes/admin/settings/class-sync.php:178
-#: includes/admin/settings/class-sync.php:212
+#: includes/admin/settings/class-sync.php:188
 #: includes/admin/settings/class-sync.php:222
+#: includes/admin/settings/class-sync.php:232
 msgid "Could not get the lists or the segments."
 msgstr "Die Listen oder Segmente konnten nicht abgerufen werden."
 
 #. translators: 1: blog id; 2: error message.
-#: includes/admin/settings/class-sync.php:291
+#: includes/admin/settings/class-sync.php:306
 #, php-format
 msgid "Blog #%1$d lists: %2$s"
 msgstr "Blog #%1$d Listen: %2$s"
 
 #. translators: 1: blog id; 2: error message.
-#: includes/admin/settings/class-sync.php:315
+#: includes/admin/settings/class-sync.php:330
 #, php-format
 msgid "Blog #%1$d segments: %2$s"
 msgstr "Blog #%1$d Segmente: %2$s"
 
 #. translators: 1: blog id; 2: error message.
-#: includes/admin/settings/class-sync.php:337
+#: includes/admin/settings/class-sync.php:352
 #, php-format
 msgid "Blog #%1$d SMS lists: %2$s"
 msgstr "Blog #%1$d SMS-Listen: %2$s"
 
 #. translators: 1: blog count; 2: lists count; 3: segments count; 4: SMS lists count.
-#: includes/admin/settings/class-sync.php:354
+#: includes/admin/settings/class-sync.php:369
 #, php-format
 msgid ""
 "Newsman cache refreshed: %1$d blog(s), %2$d list(s), %3$d segment(s), %4$d "
@@ -279,7 +279,7 @@ msgstr ""
 "%4$d SMS-Liste(n)."
 
 #. translators: 1: blog count; 2: lists count; 3: segments count; 4: SMS lists count; 5: semicolon-separated error list.
-#: includes/admin/settings/class-sync.php:366
+#: includes/admin/settings/class-sync.php:381
 #, php-format
 msgid ""
 "Cache refresh completed with errors. Refreshed %1$d blog(s), %2$d list(s), "
@@ -290,7 +290,7 @@ msgstr ""
 "%2$d Liste(n), %3$d Segment(e), %4$d SMS-Liste(n). Vorhandene Werte im Cache "
 "für fehlgeschlagene API-Aufrufe bleiben bis zum Ablauf erhalten. Fehler: %5$s"
 
-#: includes/admin/settings/class-sync.php:409
+#: includes/admin/settings/class-sync.php:424
 msgid "Could not update feed list"
 msgstr "Die Feed-Liste konnte nicht aktualisiert werden"
 
@@ -2473,12 +2473,8 @@ msgid "Select a segment of subscribers."
 msgstr "Wählen Sie ein Abonnentensegment aus."
 
 #: src/backend-sync.php:100
-msgid ""
-"The dropdown has the updated segments as options after the new list was "
-"saved."
+msgid "The segment list updates automatically when you change the list above."
 msgstr ""
-"Das Dropdown-Menü enthält die aktualisierten Segmente als Optionen, nachdem "
-"die neue Liste gespeichert wurde."
 
 #: src/backend-sync.php:101
 msgid "Please save the segment after the list ID was changed."
@@ -2607,6 +2603,13 @@ msgstr "Konfigurationsanleitung (Englisch)"
 #: src/backend.php:132
 msgid "Ghid de configurare (Romana)"
 msgstr "Konfigurationsanleitung (Rumänisch)"
+
+#~ msgid ""
+#~ "The dropdown has the updated segments as options after the new list was "
+#~ "saved."
+#~ msgstr ""
+#~ "Das Dropdown-Menü enthält die aktualisierten Segmente als Optionen, "
+#~ "nachdem die neue Liste gespeichert wurde."
 
 #~ msgid "NewsmanApp for WordPress"
 #~ msgstr "NewsmanApp für WordPress"

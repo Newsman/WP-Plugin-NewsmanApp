@@ -156,6 +156,48 @@
 			$show( '#newsman_contact_form_7_export_subscribers', true, ['#newsman_contact_form_7_export_form_id'], 'table-row' );
 			$show( '#newsman_wpforms_export_subscribers', true, ['#newsman_wpforms_export_form_id'], 'table-row' );
 			$show( '#newsman_gravity_forms_export_subscribers', true, ['#newsman_gravity_forms_export_form_id'], 'table-row' );
+
+			// Sync page: live list -> segment dropdown filter.
+			// The full per-list segment map ([listId => {segmentId: name}]) is emitted as a
+			// data attribute on #newsman_segments, so changing the list repopulates the segment
+			// dropdown without a page reload (same cached map used by the form integrations).
+			var $newsmanSegments = jQuery( '#newsman_segments' );
+			if ($newsmanSegments.length) {
+				var newsmanSegmentsByList = {};
+				try {
+					newsmanSegmentsByList = JSON.parse( $newsmanSegments.attr( 'data-segments-by-list' ) || '{}' );
+				} catch (e) {
+					newsmanSegmentsByList = {};
+				}
+
+				jQuery( '#newsman_list' ).on(
+					'change',
+					function () {
+						var listId   = String( jQuery( this ).val() || '0' );
+						var segments = newsmanSegmentsByList[listId] || {};
+						var selected = String( $newsmanSegments.val() || '0' );
+
+						// Keep the first (placeholder) option, drop the rest, then rebuild.
+						$newsmanSegments.find( 'option:not(:first)' ).remove();
+						Object.keys( segments ).forEach(
+							function (segmentId) {
+								var $option = jQuery( '<option></option>' )
+									.attr( 'value', segmentId )
+									.text( String( segments[segmentId] ) );
+								if (selected === String( segmentId )) {
+									$option.attr( 'selected', 'selected' );
+								}
+								$newsmanSegments.append( $option );
+							}
+						);
+
+						// Previously selected segment no longer belongs to this list -> reset to placeholder.
+						if (selected !== '0' && ! Object.prototype.hasOwnProperty.call( segments, selected )) {
+							$newsmanSegments.val( '0' );
+						}
+					}
+				);
+			}
 		}
 	);
 } (jQuery));

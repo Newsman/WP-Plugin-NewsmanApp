@@ -85,7 +85,7 @@ $form_values = $this->get_form_values();
 								<label class="nzm-label" for="newsman_segments"><?php echo esc_html__( 'Select a segment', 'newsman' ); ?></label>
 							</th>
 							<td>
-								<select class="nzm-small-select" name="newsman_segments" id="newsman_segments">
+								<select class="nzm-small-select" name="newsman_segments" id="newsman_segments" data-segments-by-list="<?php echo esc_attr( wp_json_encode( (object) $this->segments_by_list ) ); ?>">
 									<option value="0"><?php echo esc_html__( '-- select segment (optional) --', 'newsman' ); ?></option>
 									<?php
 									if ( ! empty( $this->available_segments ) ) {
@@ -97,7 +97,7 @@ $form_values = $this->get_form_values();
 									}
 									?>
 								</select>
-								<p class="description"><?php echo esc_html__( 'Select a segment of subscribers.', 'newsman' ); ?> <?php echo esc_html__( 'The dropdown has the updated segments as options after the new list was saved.', 'newsman' ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Select a segment of subscribers.', 'newsman' ); ?> <?php echo esc_html__( 'The segment list updates automatically when you change the list above.', 'newsman' ); ?></p>
 								<p class="description"><?php echo esc_html__( 'Please save the segment after the list ID was changed.', 'newsman' ); ?></p>
 							</td>
 						</tr>
