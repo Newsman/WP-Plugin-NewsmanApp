@@ -93,19 +93,19 @@ class OrderProcessor {
 			$message = str_replace( '{{if_' . $name . '_awb}}', '', $message );
 			$message = str_replace( '{{endif_' . $name . '_awb}}', '', $message );
 			$message = str_replace( '{{' . $name . '_awb}}', $awb, $message );
-			return apply_filters( $after_filter, $message, $order, $awb );
+			return apply_filters( $after_filter, $message, $order, $awb ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- $after_filter is newsman-prefixed (built above).
 		}
 
 		// If both condition tags are missing.
 		if ( false === $start_pos && false === $end_pos ) {
 			$message = str_replace( '{{' . $name . '_awb}}', $awb, $message );
-			return apply_filters( $after_filter, $message, $order, $awb );
+			return apply_filters( $after_filter, $message, $order, $awb ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- $after_filter is newsman-prefixed (built above).
 		}
 
 		// If AWB is empty, remove entire condition and the text in between.
 		if ( empty( $awb ) ) {
 			$message = str_replace( substr( $message, $start_pos, $end_pos - $start_pos ), '', $message );
-			return apply_filters( $after_filter, $message, $order, $awb );
+			return apply_filters( $after_filter, $message, $order, $awb ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- $after_filter is newsman-prefixed (built above).
 		}
 
 		// Remove condition placeholder and replace AWB placeholder with AWB value.
@@ -113,7 +113,7 @@ class OrderProcessor {
 		$message = str_replace( '{{endif_' . $name . '_awb}}', '', $message );
 		$message = str_replace( '{{' . $name . '_awb}}', $awb, $message );
 
-		return apply_filters( $after_filter, $message, $order, $awb );
+		return apply_filters( $after_filter, $message, $order, $awb ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- $after_filter is newsman-prefixed (built above).
 	}
 
 	/**

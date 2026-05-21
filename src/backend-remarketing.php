@@ -5,6 +5,12 @@
  * @package NewsmanApp for WordPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Template partial included within a method; variables are method-local.
+
 /**
  * Current class for output
  *
@@ -54,7 +60,7 @@ $form_values = $this->get_form_values();
 				</div>
 			<?php endforeach; ?>
 			<?php if ( ! $this->valid_credentials ) { ?>
-				<div class="error"><p><strong><?php esc_html_e( 'Invalid credentials!' ); ?></strong></p></div>
+				<div class="error"><p><strong><?php esc_html_e( 'Invalid credentials!', 'newsman' ); ?></strong></p></div>
 			<?php } ?>
 			<table class="form-table newsman-table newsman-tbl-fixed">
 				<tr>

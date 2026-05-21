@@ -10,6 +10,12 @@
  * @package NewsmanApp for WordPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Template partial included within a method; variables are method-local.
+
 /**
  * Current class for output
  *

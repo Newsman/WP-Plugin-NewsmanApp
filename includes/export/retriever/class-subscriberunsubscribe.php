@@ -85,6 +85,7 @@ class SubscriberUnsubscribe extends AbstractRetriever implements RetrieverInterf
 		 * @param string   $email   The email address to unsubscribe.
 		 * @param null|int $blog_id The WordPress blog/site ID.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- ACTION_HOOK is a newsman-prefixed constant.
 		do_action( self::ACTION_HOOK, $email, $blog_id );
 
 		return array(

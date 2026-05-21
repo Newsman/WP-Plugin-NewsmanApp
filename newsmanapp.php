@@ -1,6 +1,6 @@
 <?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Main plugin file, renaming would break existing installations.
 /**
- * Plugin Name: NewsmanApp for WordPress
+ * Plugin Name: NewsmanApp
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
  * Version: 3.7.22
@@ -8,6 +8,8 @@
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
  * Domain Path: /languages
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package NewsmanApp for WordPress
  */
@@ -127,21 +129,19 @@ class WP_Newsman {
 		$admin = \Newsman\Admin::init();
 		$admin->init_hooks();
 
-		/**
-		 * Declare compatibility with custom_order_tables.
-		 *
-		 * @return void
-		 */
-		function before_woocommerce_hpos() {
-			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-					'custom_order_tables',
-					__FILE__,
-					true
-				);
+		// Declare compatibility with custom_order_tables (HPOS).
+		add_action(
+			'before_woocommerce_init',
+			function () {
+				if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+					\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+						'custom_order_tables',
+						__FILE__,
+						true
+					);
+				}
 			}
-		}
-		add_action( 'before_woocommerce_init', 'before_woocommerce_hpos' );
+		);
 	}
 
 	/**

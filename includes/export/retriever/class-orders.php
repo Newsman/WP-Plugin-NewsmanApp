@@ -116,8 +116,10 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 					$args['include']  = (array) $value;
 					$args['post__in'] = (array) $value;
 				} elseif ( 'nin' === $filter['operator'] ) {
+					// phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude, WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Required by API v1 'nin' filter; admin-triggered batch export.
 					$args['exclude']      = (array) $value;
 					$args['post__not_in'] = (array) $value;
+					// phpcs:enable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude, WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
 				} else {
 					$args['include']  = array( $value );
 					$args['post__in'] = array( $value );

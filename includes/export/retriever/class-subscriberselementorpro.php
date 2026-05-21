@@ -262,7 +262,7 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 			    LIMIT %d OFFSET %d";
 
 		$sql  = $wpdb->prepare( $sql, (int) $processed['limit'], (int) $processed['start'] );
-		$rows = $wpdb->get_results( $sql, ARRAY_A );
+		$rows = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql is built with $wpdb->prepare().
 		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		if ( ! is_array( $rows ) ) {

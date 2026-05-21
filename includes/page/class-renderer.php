@@ -31,7 +31,7 @@ class Renderer {
 	public function display_json( $data, $flags = 0 ) {
 		// Prevent WordPress from loading the theme.
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
-			define( 'WP_USE_THEMES', false );
+			define( 'WP_USE_THEMES', false ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- WordPress core constant.
 		}
 
 		header( 'Content-Type: application/json' );

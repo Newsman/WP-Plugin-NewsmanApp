@@ -5,6 +5,12 @@
  * @package NewsmanApp for WordPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Template partial included within a method; variables are method-local.
+
 /**
  * Current class for output
  *
@@ -92,7 +98,7 @@ $form_values = $this->get_form_values();
 									?>
 								</select>
 								<p class="description"><?php echo esc_html__( 'Select a segment of subscribers.', 'newsman' ); ?> <?php echo esc_html__( 'The dropdown has the updated segments as options after the new list was saved.', 'newsman' ); ?></p>
-								<p class="description"><?php echo esc_html__( 'Please save the segment after the list ID was changed.' ); ?></p>
+								<p class="description"><?php echo esc_html__( 'Please save the segment after the list ID was changed.', 'newsman' ); ?></p>
 							</td>
 						</tr>
 						<tr>

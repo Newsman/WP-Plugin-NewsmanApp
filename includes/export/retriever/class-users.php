@@ -108,6 +108,7 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 				if ( 'in' === $filter['operator'] ) {
 					$args['include'] = (array) $value;
 				} elseif ( 'nin' === $filter['operator'] ) {
+					// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Required by API v1 'nin' filter; admin-triggered batch export.
 					$args['exclude'] = (array) $value;
 				} elseif ( 'eq' === $filter['operator'] ) {
 					$args['include'] = array( $value );

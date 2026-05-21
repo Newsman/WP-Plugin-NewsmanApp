@@ -122,7 +122,7 @@ class CustomSql extends AbstractRetriever implements RetrieverInterface {
 			)
 		);
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom SQL export requires direct query execution; caching is not appropriate for arbitrary user queries.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom SQL export requires direct query execution; caching is not appropriate for arbitrary user queries.
 		$result = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( $this->is_different_blog( $blog_id ) ) {
