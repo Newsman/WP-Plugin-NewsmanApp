@@ -343,6 +343,14 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 			$quantity = null;
 		}
 
+		$in_stock = $product->is_in_stock();
+
+		// Products with stock management disabled report a null quantity; expose a
+		// default quantity for in-stock products so the feed advertises availability.
+		if ( null === $quantity && $in_stock ) {
+			$quantity = 10;
+		}
+
 		$row = array(
 			'id'             => (string) $product->get_id(),
 			'url'            => $url,
@@ -350,7 +358,7 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 			'image_url'      => $image_url,
 			'category'       => $category,
 			'subcategories'  => $subcategories,
-			'in_stock'       => $product->is_in_stock() ? '1' : '0',
+			'in_stock'       => $in_stock ? '1' : '0',
 			'stock_quantity' => $quantity,
 			'sku'            => $product->get_sku(),
 		);

@@ -111,6 +111,9 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.22 =
+* Product feed: default stock_quantity to 10 for in-stock products that don't track stock (stock management disabled), instead of null
+
 = 3.7.21 =
 * Fix product feed in_stock: derive from WooCommerce stock status (is_in_stock()) instead of tracked quantity, so products with stock management disabled are no longer reported out of stock
 * Fix customer.list missing phone: read the billing phone from user meta for WP_User customers
