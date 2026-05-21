@@ -324,8 +324,14 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 			return false;
 		}
 
-		if ( $this->remarketing_config->is_send_telephone() && method_exists( $customer, 'get_billing_phone' ) ) {
+		if ( method_exists( $customer, 'get_billing_phone' ) ) {
 			return $this->clean_phone( $customer->get_billing_phone() );
+		}
+
+		// get_users() yields WP_User objects (no get_billing_phone()); read the meta directly.
+		$user_id = ! empty( $customer->ID ) ? $customer->ID : 0;
+		if ( $user_id ) {
+			return $this->clean_phone( get_user_meta( $user_id, 'billing_phone', true ) );
 		}
 
 		return '';

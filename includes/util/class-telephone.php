@@ -25,16 +25,15 @@ class Telephone {
 	 * Clean telephone number
 	 *
 	 * @param string $phone Telephone number.
-	 * @return bool
+	 * @return string
 	 */
 	public function clean( $phone ) {
 		if ( empty( $phone ) ) {
 			return '';
 		}
-		$phone = str_replace( '+', '', $phone );
-		$phone = preg_replace( '/\s\s+/', ' ', $phone );
 		$phone = apply_filters( 'newsman_telephone_clean', $phone );
-		return trim( $phone );
+		// Keep only digits (0-9); users may enter '+', spaces, dashes, dots, parentheses, etc.
+		return (string) preg_replace( '/\D+/', '', (string) $phone );
 	}
 
 	/**

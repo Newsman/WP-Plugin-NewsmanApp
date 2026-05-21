@@ -111,6 +111,11 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.21 =
+* Fix product feed in_stock: derive from WooCommerce stock status (is_in_stock()) instead of tracked quantity, so products with stock management disabled are no longer reported out of stock
+* Fix customer.list missing phone: read the billing phone from user meta for WP_User customers
+* Normalize exported phone numbers to digits only (strip +, -, ., spaces, parentheses and any other characters)
+
 = 3.7.20 =
 * OAuth wizard: show success messages after connecting (credentials saved, integration setup completed, remarketing JavaScript updated)
 * Fix "Cannot modify header information" warning and missing redirect on sites without WooCommerce (guard redirect with headers_sent(); add a "Back to Settings" button)

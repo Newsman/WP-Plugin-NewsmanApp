@@ -350,7 +350,7 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 			'image_url'      => $image_url,
 			'category'       => $category,
 			'subcategories'  => $subcategories,
-			'in_stock'       => $quantity > 0 ? '1' : '0',
+			'in_stock'       => $product->is_in_stock() ? '1' : '0',
 			'stock_quantity' => $quantity,
 			'sku'            => $product->get_sku(),
 		);
