@@ -31,6 +31,15 @@ $this->process_forms();
 				?>
 				<div class="error"><p><strong><?php echo esc_html( $this->form_error_message ); ?></strong></p></div>
 			<?php } ?>
+			<?php
+			if ( ! empty( $this->form_success_messages ) ) {
+				foreach ( $this->form_success_messages as $newsman_success_message ) {
+					?>
+					<div class="updated"><p><strong><?php echo esc_html( $newsman_success_message ); ?></strong></p></div>
+					<?php
+				}
+			}
+			?>
 			<div style="font-size: 16px;">
 				&nbsp;<?php echo esc_html__( 'Site ', 'newsman' ); ?><strong><?php echo esc_html( get_bloginfo( 'name' ) ); ?></strong><?php echo ' (ID: <strong>' . esc_html( get_current_blog_id() ) . '</strong>)'; ?>
 			</div>
@@ -77,7 +86,7 @@ $this->process_forms();
 							<a style="background: #ad0100" href="<?php echo esc_url( $this->get_oauth_url() ); ?>"
 								class="button button-primary"><?php echo esc_html__( 'Login with NewsMAN', 'newsman' ); ?></a>
 							<a href="<?php echo esc_url( admin_url( 'admin.php?page=NewsmanSettings' ) ); ?>"
-								class="button"><?php echo esc_html__( 'Cancel', 'newsman' ); ?></a>
+								class="button"><?php echo ! empty( $this->form_success_messages ) ? esc_html__( 'Back to Settings', 'newsman' ) : esc_html__( 'Cancel', 'newsman' ); ?></a>
 						</div>
 					</form>
 					<?php // List step 2. ?>

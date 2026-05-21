@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-13T13:03:48+00:00\n"
+"POT-Creation-Date: 2026-05-21T10:52:34+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -92,17 +92,29 @@ msgstr "Skicka SMS med FAN Courier AWB"
 msgid "Send SMS with SamedayCourier AWB"
 msgstr "Skicka SMS med SamedayCourier AWB"
 
-#: includes/admin/settings/class-oauth.php:119
+#: includes/admin/settings/class-oauth.php:127
 msgid "Access is denied"
 msgstr "Åtkomst nekad"
 
-#: includes/admin/settings/class-oauth.php:122
+#: includes/admin/settings/class-oauth.php:130
 msgid "There are no lists in your NewsMAN account"
 msgstr "Det finns inga listor i ditt NewsMAN-konto"
 
-#: includes/admin/settings/class-oauth.php:226
+#: includes/admin/settings/class-oauth.php:230
+msgid "Credentials were saved successfully."
+msgstr "Inloggningsuppgifterna har sparats."
+
+#: includes/admin/settings/class-oauth.php:236
 msgid "Could not save integration setup. Please try again."
 msgstr "Kunde inte spara integrationsinställningen. Försök igen."
+
+#: includes/admin/settings/class-oauth.php:260
+msgid "Integration setup completed successfully."
+msgstr "Integrationskonfigurationen har slutförts."
+
+#: includes/admin/settings/class-oauth.php:273
+msgid "Remarketing JavaScript was updated successfully."
+msgstr "Remarketing-JavaScript har uppdaterats."
 
 #: includes/admin/settings/class-remarketing.php:90
 #: includes/admin/settings/class-settings.php:102
@@ -646,22 +658,22 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Skicka dessa fält till Newsman som prenumerantegenskaper"
 
 #: includes/contactform7/class-formpanel.php:458
-#: includes/wpforms/class-formpanel.php:448
+#: includes/wpforms/class-formpanel.php:456
 msgid "used as email"
 msgstr "används som e-post"
 
 #: includes/contactform7/class-formpanel.php:460
-#: includes/wpforms/class-formpanel.php:450
+#: includes/wpforms/class-formpanel.php:458
 msgid "used as firstname"
 msgstr "används som förnamn"
 
 #: includes/contactform7/class-formpanel.php:462
-#: includes/wpforms/class-formpanel.php:452
+#: includes/wpforms/class-formpanel.php:460
 msgid "used as lastname"
 msgstr "används som efternamn"
 
 #: includes/contactform7/class-formpanel.php:464
-#: includes/wpforms/class-formpanel.php:454
+#: includes/wpforms/class-formpanel.php:462
 msgid "used as phone"
 msgstr "används som telefon"
 
@@ -1082,7 +1094,7 @@ msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportera %1$s %2$d, %3$d, blogg-ID %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-users.php:165
+#: includes/export/retriever/class-users.php:172
 #, php-format
 msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exporterat %1$s %2$d, %3$d, blogg-ID %4$s"
@@ -1239,7 +1251,7 @@ msgstr "Uppdatera inställningar"
 #. translators: %s: Gravity Forms field id.
 #. translators: %s: WPForms field id.
 #: includes/gravityforms/class-formpanel.php:580
-#: includes/wpforms/class-formpanel.php:581
+#: includes/wpforms/class-formpanel.php:643
 #, php-format
 msgid "Field #%s"
 msgstr "Fält #%s"
@@ -1526,7 +1538,7 @@ msgstr ""
 "Valfritt. Segment är listspecifika — endast segment som tillhör den valda "
 "listan visas. När du byter lista uppdateras denna rullgardin."
 
-#: includes/wpforms/class-formpanel.php:460
+#: includes/wpforms/class-formpanel.php:468
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
@@ -1554,56 +1566,60 @@ msgstr "Newsman: WPForms-formuläret har inget konfigurerat e-postfält."
 msgid "Newsman: WPForms email field is empty."
 msgstr "Newsman: WPForms-formulärets e-postfält är tomt."
 
-#: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
+#: src/backend-oauth.php:44 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Webbplats "
 
-#: src/backend-oauth.php:38
+#: src/backend-oauth.php:47
 msgid "NewsMAN plugin for Wordpress-Woocommerce"
 msgstr "NewsMAN-tillägg för WordPress-WooCommerce"
 
-#: src/backend-oauth.php:47
+#: src/backend-oauth.php:56
 msgid "Connect your site with NewsMAN for:"
 msgstr "Anslut din webbplats med NewsMAN för:"
 
-#: src/backend-oauth.php:52
+#: src/backend-oauth.php:61
 msgid "Subscribers Sync"
 msgstr "Prenumerantsynkronisering"
 
-#: src/backend-oauth.php:57
+#: src/backend-oauth.php:66
 msgid "Ecommerce Remarketing"
 msgstr "E-handelsremarketing"
 
-#: src/backend-oauth.php:62
+#: src/backend-oauth.php:71
 msgid "Create and manage forms"
 msgstr "Skapa och hantera formulär"
 
-#: src/backend-oauth.php:67
+#: src/backend-oauth.php:76
 msgid "Create and manage popups"
 msgstr "Skapa och hantera popup-fönster"
 
-#: src/backend-oauth.php:72
+#: src/backend-oauth.php:81
 msgid "Connect your forms to automation"
 msgstr "Anslut dina formulär till automatisering"
 
-#: src/backend-oauth.php:78
+#: src/backend-oauth.php:87
 msgid "Login with NewsMAN"
 msgstr "Logga in med NewsMAN"
 
-#: src/backend-oauth.php:80 src/backend-oauth.php:111
+#: src/backend-oauth.php:89
+msgid "Back to Settings"
+msgstr "Tillbaka till Inställningar"
+
+#: src/backend-oauth.php:89 src/backend-oauth.php:120
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: src/backend-oauth.php:92
+#: src/backend-oauth.php:101
 msgid "Select list:"
 msgstr "Välj lista:"
 
-#: src/backend-oauth.php:94 src/backend-sms.php:122 src/backend-sync.php:63
+#: src/backend-oauth.php:103 src/backend-sms.php:122 src/backend-sync.php:63
 #: src/backend-sync.php:104
 msgid "-- select list --"
 msgstr "-- välj lista --"
 
-#: src/backend-oauth.php:109
+#: src/backend-oauth.php:118
 msgid "Save"
 msgstr "Spara"
 
@@ -2011,9 +2027,8 @@ msgstr ""
 "posten plus de markerade fältvärdena till den valda Newsman-listan. "
 "Inaktivera för att ta bort alla Newsman-redigerarkontroller och "
 "inlämningshantering för Contact Form 7. Obs: Contact Form 7 lagrar inte "
-"själv formulärinskick i WordPress — installera tilläggspluginet Flamingo "
-"för att spara inskick och aktivera API v1 prenumerantexport från CF7-"
-"formulär."
+"själv formulärinskick i WordPress — installera tilläggspluginet Flamingo för "
+"att spara inskick och aktivera API v1 prenumerantexport från CF7-formulär."
 
 #: src/backend-settings.php:423
 msgid ""

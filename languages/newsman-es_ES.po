@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-13T13:03:48+00:00\n"
+"POT-Creation-Date: 2026-05-21T10:52:34+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -96,19 +96,31 @@ msgstr "Enviar SMS con FAN Courier AWB"
 msgid "Send SMS with SamedayCourier AWB"
 msgstr "Enviar SMS con SamedayCourier AWB"
 
-#: includes/admin/settings/class-oauth.php:119
+#: includes/admin/settings/class-oauth.php:127
 msgid "Access is denied"
 msgstr "Acceso denegado"
 
-#: includes/admin/settings/class-oauth.php:122
+#: includes/admin/settings/class-oauth.php:130
 msgid "There are no lists in your NewsMAN account"
 msgstr "No hay listas en su cuenta NewsMAN"
 
-#: includes/admin/settings/class-oauth.php:226
+#: includes/admin/settings/class-oauth.php:230
+msgid "Credentials were saved successfully."
+msgstr "Las credenciales se guardaron correctamente."
+
+#: includes/admin/settings/class-oauth.php:236
 msgid "Could not save integration setup. Please try again."
 msgstr ""
 "No se pudo guardar la configuración de integración. Por favor, inténtelo de "
 "nuevo."
+
+#: includes/admin/settings/class-oauth.php:260
+msgid "Integration setup completed successfully."
+msgstr "La configuración de la integración se completó correctamente."
+
+#: includes/admin/settings/class-oauth.php:273
+msgid "Remarketing JavaScript was updated successfully."
+msgstr "El JavaScript de remarketing se actualizó correctamente."
 
 #: includes/admin/settings/class-remarketing.php:90
 #: includes/admin/settings/class-settings.php:102
@@ -664,22 +676,22 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Enviar estos campos a Newsman como propiedades del suscriptor"
 
 #: includes/contactform7/class-formpanel.php:458
-#: includes/wpforms/class-formpanel.php:448
+#: includes/wpforms/class-formpanel.php:456
 msgid "used as email"
 msgstr "usado como email"
 
 #: includes/contactform7/class-formpanel.php:460
-#: includes/wpforms/class-formpanel.php:450
+#: includes/wpforms/class-formpanel.php:458
 msgid "used as firstname"
 msgstr "usado como nombre"
 
 #: includes/contactform7/class-formpanel.php:462
-#: includes/wpforms/class-formpanel.php:452
+#: includes/wpforms/class-formpanel.php:460
 msgid "used as lastname"
 msgstr "usado como apellido"
 
 #: includes/contactform7/class-formpanel.php:464
-#: includes/wpforms/class-formpanel.php:454
+#: includes/wpforms/class-formpanel.php:462
 msgid "used as phone"
 msgstr "usado como teléfono"
 
@@ -1109,7 +1121,7 @@ msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportar %1$s %2$d, %3$d, blog ID %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-users.php:165
+#: includes/export/retriever/class-users.php:172
 #, php-format
 msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportado %1$s %2$d, %3$d, blog ID %4$s"
@@ -1270,7 +1282,7 @@ msgstr "Actualizar ajustes"
 #. translators: %s: Gravity Forms field id.
 #. translators: %s: WPForms field id.
 #: includes/gravityforms/class-formpanel.php:580
-#: includes/wpforms/class-formpanel.php:581
+#: includes/wpforms/class-formpanel.php:643
 #, php-format
 msgid "Field #%s"
 msgstr "Campo #%s"
@@ -1566,7 +1578,7 @@ msgstr ""
 "lossegmentos que pertenecen a la lista seleccionada. Al cambiar la lista se "
 "actualiza este desplegable."
 
-#: includes/wpforms/class-formpanel.php:460
+#: includes/wpforms/class-formpanel.php:468
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
@@ -1595,56 +1607,60 @@ msgstr "Newsman: el formulario WPForms no tiene un campo de email configurado."
 msgid "Newsman: WPForms email field is empty."
 msgstr "Newsman: el campo de email del formulario WPForms está vacío."
 
-#: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
+#: src/backend-oauth.php:44 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Sitio "
 
-#: src/backend-oauth.php:38
+#: src/backend-oauth.php:47
 msgid "NewsMAN plugin for Wordpress-Woocommerce"
 msgstr "Plugin NewsMAN para WordPress-WooCommerce"
 
-#: src/backend-oauth.php:47
+#: src/backend-oauth.php:56
 msgid "Connect your site with NewsMAN for:"
 msgstr "Conecte su sitio con NewsMAN para:"
 
-#: src/backend-oauth.php:52
+#: src/backend-oauth.php:61
 msgid "Subscribers Sync"
 msgstr "Sincronización de suscriptores"
 
-#: src/backend-oauth.php:57
+#: src/backend-oauth.php:66
 msgid "Ecommerce Remarketing"
 msgstr "Remarketing de comercio electrónico"
 
-#: src/backend-oauth.php:62
+#: src/backend-oauth.php:71
 msgid "Create and manage forms"
 msgstr "Crear y gestionar formularios"
 
-#: src/backend-oauth.php:67
+#: src/backend-oauth.php:76
 msgid "Create and manage popups"
 msgstr "Crear y gestionar popups"
 
-#: src/backend-oauth.php:72
+#: src/backend-oauth.php:81
 msgid "Connect your forms to automation"
 msgstr "Conecte sus formularios a la automatización"
 
-#: src/backend-oauth.php:78
+#: src/backend-oauth.php:87
 msgid "Login with NewsMAN"
 msgstr "Iniciar sesión con NewsMAN"
 
-#: src/backend-oauth.php:80 src/backend-oauth.php:111
+#: src/backend-oauth.php:89
+msgid "Back to Settings"
+msgstr "Volver a Ajustes"
+
+#: src/backend-oauth.php:89 src/backend-oauth.php:120
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/backend-oauth.php:92
+#: src/backend-oauth.php:101
 msgid "Select list:"
 msgstr "Seleccionar lista:"
 
-#: src/backend-oauth.php:94 src/backend-sms.php:122 src/backend-sync.php:63
+#: src/backend-oauth.php:103 src/backend-sms.php:122 src/backend-sync.php:63
 #: src/backend-sync.php:104
 msgid "-- select list --"
 msgstr "-- seleccionar lista --"
 
-#: src/backend-oauth.php:109
+#: src/backend-oauth.php:118
 msgid "Save"
 msgstr "Guardar"
 
@@ -2069,8 +2085,8 @@ msgstr ""
 "todos los controles del editor de Newsman y el procesamiento de envíos para "
 "Contact Form 7. Nota: Contact Form 7 no almacena por sí mismo los envíos de "
 "formulario en WordPress — instala el plugin complementario Flamingo para "
-"conservar los envíos y habilitar la exportación de suscriptores de la API "
-"v1 desde los formularios de CF7."
+"conservar los envíos y habilitar la exportación de suscriptores de la API v1 "
+"desde los formularios de CF7."
 
 #: src/backend-settings.php:423
 msgid ""

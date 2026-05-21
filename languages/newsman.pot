@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the NewsmanApp for WordPress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp for WordPress 3.7.18\n"
+"Project-Id-Version: NewsmanApp for WordPress 3.7.19\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-13T13:03:48+00:00\n"
+"POT-Creation-Date: 2026-05-21T10:52:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -87,16 +87,28 @@ msgstr ""
 msgid "Send SMS with SamedayCourier AWB"
 msgstr ""
 
-#: includes/admin/settings/class-oauth.php:119
+#: includes/admin/settings/class-oauth.php:127
 msgid "Access is denied"
 msgstr ""
 
-#: includes/admin/settings/class-oauth.php:122
+#: includes/admin/settings/class-oauth.php:130
 msgid "There are no lists in your NewsMAN account"
 msgstr ""
 
-#: includes/admin/settings/class-oauth.php:226
+#: includes/admin/settings/class-oauth.php:230
+msgid "Credentials were saved successfully."
+msgstr ""
+
+#: includes/admin/settings/class-oauth.php:236
 msgid "Could not save integration setup. Please try again."
+msgstr ""
+
+#: includes/admin/settings/class-oauth.php:260
+msgid "Integration setup completed successfully."
+msgstr ""
+
+#: includes/admin/settings/class-oauth.php:273
+msgid "Remarketing JavaScript was updated successfully."
 msgstr ""
 
 #: includes/admin/settings/class-remarketing.php:90
@@ -590,22 +602,22 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:458
-#: includes/wpforms/class-formpanel.php:448
+#: includes/wpforms/class-formpanel.php:456
 msgid "used as email"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:460
-#: includes/wpforms/class-formpanel.php:450
+#: includes/wpforms/class-formpanel.php:458
 msgid "used as firstname"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:462
-#: includes/wpforms/class-formpanel.php:452
+#: includes/wpforms/class-formpanel.php:460
 msgid "used as lastname"
 msgstr ""
 
 #: includes/contactform7/class-formpanel.php:464
-#: includes/wpforms/class-formpanel.php:454
+#: includes/wpforms/class-formpanel.php:462
 msgid "used as phone"
 msgstr ""
 
@@ -961,7 +973,7 @@ msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
 msgstr ""
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-users.php:165
+#: includes/export/retriever/class-users.php:172
 #, php-format
 msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
 msgstr ""
@@ -1075,7 +1087,7 @@ msgstr ""
 #. translators: %s: Gravity Forms field id.
 #. translators: %s: WPForms field id.
 #: includes/gravityforms/class-formpanel.php:580
-#: includes/wpforms/class-formpanel.php:581
+#: includes/wpforms/class-formpanel.php:643
 #, php-format
 msgid "Field #%s"
 msgstr ""
@@ -1343,7 +1355,7 @@ msgstr ""
 msgid "Optional. Segments are list-scoped — only segments belonging to the selected list are shown. Switching the list refreshes this dropdown."
 msgstr ""
 
-#: includes/wpforms/class-formpanel.php:460
+#: includes/wpforms/class-formpanel.php:468
 msgid "Each checked field is sent to Newsman as a subscriber property keyed by the field label (or ID when no label is set)."
 msgstr ""
 
@@ -1363,61 +1375,65 @@ msgstr ""
 msgid "Newsman: WPForms email field is empty."
 msgstr ""
 
-#: src/backend-oauth.php:35
+#: src/backend-oauth.php:44
 #: src/backend-settings.php:92
 #: src/backend.php:64
 msgid "Site "
 msgstr ""
 
-#: src/backend-oauth.php:38
+#: src/backend-oauth.php:47
 msgid "NewsMAN plugin for Wordpress-Woocommerce"
 msgstr ""
 
-#: src/backend-oauth.php:47
+#: src/backend-oauth.php:56
 msgid "Connect your site with NewsMAN for:"
 msgstr ""
 
-#: src/backend-oauth.php:52
+#: src/backend-oauth.php:61
 msgid "Subscribers Sync"
 msgstr ""
 
-#: src/backend-oauth.php:57
+#: src/backend-oauth.php:66
 msgid "Ecommerce Remarketing"
 msgstr ""
 
-#: src/backend-oauth.php:62
+#: src/backend-oauth.php:71
 msgid "Create and manage forms"
 msgstr ""
 
-#: src/backend-oauth.php:67
+#: src/backend-oauth.php:76
 msgid "Create and manage popups"
 msgstr ""
 
-#: src/backend-oauth.php:72
+#: src/backend-oauth.php:81
 msgid "Connect your forms to automation"
 msgstr ""
 
-#: src/backend-oauth.php:78
+#: src/backend-oauth.php:87
 msgid "Login with NewsMAN"
 msgstr ""
 
-#: src/backend-oauth.php:80
-#: src/backend-oauth.php:111
+#: src/backend-oauth.php:89
+msgid "Back to Settings"
+msgstr ""
+
+#: src/backend-oauth.php:89
+#: src/backend-oauth.php:120
 msgid "Cancel"
 msgstr ""
 
-#: src/backend-oauth.php:92
+#: src/backend-oauth.php:101
 msgid "Select list:"
 msgstr ""
 
-#: src/backend-oauth.php:94
+#: src/backend-oauth.php:103
 #: src/backend-sms.php:122
 #: src/backend-sync.php:63
 #: src/backend-sync.php:104
 msgid "-- select list --"
 msgstr ""
 
-#: src/backend-oauth.php:109
+#: src/backend-oauth.php:118
 msgid "Save"
 msgstr ""
 

@@ -60,6 +60,13 @@ class Oauth extends Settings {
 	public $form_error_message = '';
 
 	/**
+	 * Success messages
+	 *
+	 * @var array
+	 */
+	public $form_success_messages = array();
+
+	/**
 	 * Lists in API response
 	 *
 	 * @var array
@@ -88,10 +95,11 @@ class Oauth extends Settings {
 	 * @return void
 	 */
 	public function process_forms() {
-		$this->form_error_message = '';
-		$this->response_lists     = array();
-		$this->step               = 1;
-		$this->view_state         = array();
+		$this->form_error_message    = '';
+		$this->form_success_messages = array();
+		$this->response_lists        = array();
+		$this->step                  = 1;
+		$this->view_state            = array();
 
 		// Bypass the Lists / Segments / SMS Lists transient caches for the
 		// entire OAuth request. The OAuth flow may receive new credentials
@@ -219,6 +227,8 @@ class Oauth extends Settings {
 		update_option( 'newsman_apikey', esc_html( $creds->newsman_apikey ), \Newsman\Config::AUTOLOAD_OPTIONS );
 		update_option( 'newsman_list', esc_html( $list_id ), \Newsman\Config::AUTOLOAD_OPTIONS );
 
+		$this->form_success_messages[] = esc_html__( 'Credentials were saved successfully.', 'newsman' );
+
 		$authenticate_token = $this->ensure_authenticate_token();
 
 		$integration_result = $this->save_list_integration_setup( $list_id, get_site_url() . '/?newsman_api=v1', $authenticate_token );
@@ -247,6 +257,8 @@ class Oauth extends Settings {
 			return;
 		}
 
+		$this->form_success_messages[] = esc_html__( 'Integration setup completed successfully.', 'newsman' );
+
 		$settings = $this->get_remarketing_settings( $list_id, $creds->newsman_userid, $creds->newsman_apikey );
 		if ( ! empty( $settings ) && is_array( $settings ) ) {
 			$remarketing_id = $settings['site_id'] . '-' . $settings['list_id'] . '-' . $settings['form_id'] .
@@ -257,70 +269,14 @@ class Oauth extends Settings {
 			if ( ! empty( $settings['javascript'] ) ) {
 				$newsman_options = new \Newsman\Options();
 				$newsman_options->update_option( 'newsman_scriptjs', $settings['javascript'] );
+
+				$this->form_success_messages[] = esc_html__( 'Remarketing JavaScript was updated successfully.', 'newsman' );
 			}
 		}
 
-		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		// Set feed.
-		// @deprecated.
-		// $url = get_site_url() . '/?newsman=products.json&nzmhash=' . $creds->newsman_apikey;
-		//
-		// try {
-		// $exists = new WooCommerceExist();
-		// if ( $exists->exist() ) {
-		// $result = $this->set_feed_on_list(
-		// $list_id,
-		// $url,
-		// get_site_url(),
-		// 'NewsMAN',
-		// true,
-		// );
-		//
-		// if ( is_array( $result ) && ! empty( $result['feed_id'] ) ) {
-		// $auth_name  = $this->generate_random_header_name();
-		// $auth_value = $this->generate_random_password();
-		// @deprecated.
-		// $result     = $this->update_feed_authorize(
-		// $list_id,
-		// $result['feed_id'],
-		// $auth_name,
-		// $auth_value
-		// );
-		// if ( false !== $result ) {
-		// $this->update_export_authorize_header( $auth_name, $auth_value );
-		// }
-		// set_transient(
-		// 'newsman_feed_message_' . get_current_user_id(),
-		// array(
-		// 'status'  => 'updated',
-		// 'message' => esc_html__( 'Products feed installed in Newsman.', 'newsman' ),
-		// ),
-		// 60
-		// );
-		// } else {
-		// set_transient(
-		// 'newsman_feed_message_' . get_current_user_id(),
-		// array(
-		// 'status'  => 'notice-warning',
-		// 'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
-		// ),
-		// 60
-		// );
-		// }
-		// }
-		// } catch ( \Exception $e ) {
-		// $this->logger->log_exception( $e );
-		// set_transient(
-		// 'newsman_feed_message_' . get_current_user_id(),
-		// array(
-		// 'status'  => 'notice-warning',
-		// 'message' => esc_html__( 'Products feed could not be installed. It may already exist in Newsman.', 'newsman' ),
-		// ),
-		// 60
-		// );
-		// }.
-
-		$this->is_oauth( true );
+		if ( ! headers_sent() ) {
+			$this->is_oauth( true );
+		}
 	}
 
 	/**

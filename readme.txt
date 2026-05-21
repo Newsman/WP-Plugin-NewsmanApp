@@ -111,6 +111,12 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 
 == Changelog ==
 
+= 3.7.20 =
+* OAuth wizard: show success messages after connecting (credentials saved, integration setup completed, remarketing JavaScript updated)
+* Fix "Cannot modify header information" warning and missing redirect on sites without WooCommerce (guard redirect with headers_sent(); add a "Back to Settings" button)
+* Remove deprecated commented-out product feed code from the OAuth flow
+* Update translations (de, es, fr, it, nl, ro, sv)
+
 = 3.7.19 =
 * Bump bundled JS/CSS asset cache-bust versions (NEWSMAN_JS_SCRIPT_VERSION, NEWSMAN_CSS_SCRIPT_VERSION) so browsers pick up the latest tracker/admin assets
 

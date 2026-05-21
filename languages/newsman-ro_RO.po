@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-13T13:03:48+00:00\n"
+"POT-Creation-Date: 2026-05-21T10:52:34+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -93,18 +93,30 @@ msgstr "Trimite SMS cu FAN Courier AWB"
 msgid "Send SMS with SamedayCourier AWB"
 msgstr "Trimite SMS cu Sameday Courier AWB"
 
-#: includes/admin/settings/class-oauth.php:119
+#: includes/admin/settings/class-oauth.php:127
 msgid "Access is denied"
 msgstr "Accesul este refuzat"
 
-#: includes/admin/settings/class-oauth.php:122
+#: includes/admin/settings/class-oauth.php:130
 msgid "There are no lists in your NewsMAN account"
 msgstr "Nu există liste în contul dvs. NewsMAN"
 
-#: includes/admin/settings/class-oauth.php:226
+#: includes/admin/settings/class-oauth.php:230
+msgid "Credentials were saved successfully."
+msgstr "Datele de autentificare au fost salvate cu succes."
+
+#: includes/admin/settings/class-oauth.php:236
 msgid "Could not save integration setup. Please try again."
 msgstr ""
 "Nu s-a putut salva configurarea integrării. Vă rugăm să încercați din nou."
+
+#: includes/admin/settings/class-oauth.php:260
+msgid "Integration setup completed successfully."
+msgstr "Configurarea integrării a fost finalizată cu succes."
+
+#: includes/admin/settings/class-oauth.php:273
+msgid "Remarketing JavaScript was updated successfully."
+msgstr "JavaScript-ul de remarketing a fost actualizat cu succes."
 
 #: includes/admin/settings/class-remarketing.php:90
 #: includes/admin/settings/class-settings.php:102
@@ -656,22 +668,22 @@ msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Trimite aceste campuri la Newsman ca proprietati de abonat"
 
 #: includes/contactform7/class-formpanel.php:458
-#: includes/wpforms/class-formpanel.php:448
+#: includes/wpforms/class-formpanel.php:456
 msgid "used as email"
 msgstr "folosit ca email"
 
 #: includes/contactform7/class-formpanel.php:460
-#: includes/wpforms/class-formpanel.php:450
+#: includes/wpforms/class-formpanel.php:458
 msgid "used as firstname"
 msgstr "folosit ca prenume"
 
 #: includes/contactform7/class-formpanel.php:462
-#: includes/wpforms/class-formpanel.php:452
+#: includes/wpforms/class-formpanel.php:460
 msgid "used as lastname"
 msgstr "folosit ca nume"
 
 #: includes/contactform7/class-formpanel.php:464
-#: includes/wpforms/class-formpanel.php:454
+#: includes/wpforms/class-formpanel.php:462
 msgid "used as phone"
 msgstr "folosit ca telefon"
 
@@ -1095,7 +1107,7 @@ msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Încercare trimitere %1$s %2$d, %3$d, ID blog %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-users.php:165
+#: includes/export/retriever/class-users.php:172
 #, php-format
 msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportat %1$s %2$d, %3$d, ID blog %4$s"
@@ -1253,7 +1265,7 @@ msgstr "Actualizează setările"
 #. translators: %s: Gravity Forms field id.
 #. translators: %s: WPForms field id.
 #: includes/gravityforms/class-formpanel.php:580
-#: includes/wpforms/class-formpanel.php:581
+#: includes/wpforms/class-formpanel.php:643
 #, php-format
 msgid "Field #%s"
 msgstr "Camp #%s"
@@ -1544,7 +1556,7 @@ msgstr ""
 "aparțin listei selectate sunt afișate. Schimbarea listei reactualizează "
 "acest dropdown."
 
-#: includes/wpforms/class-formpanel.php:460
+#: includes/wpforms/class-formpanel.php:468
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
@@ -1573,56 +1585,60 @@ msgstr "Newsman: formularul WPForms nu are configurat un camp de email."
 msgid "Newsman: WPForms email field is empty."
 msgstr "Newsman: campul de email al formularului WPForms este gol."
 
-#: src/backend-oauth.php:35 src/backend-settings.php:92 src/backend.php:64
+#: src/backend-oauth.php:44 src/backend-settings.php:92 src/backend.php:64
 msgid "Site "
 msgstr "Site "
 
-#: src/backend-oauth.php:38
+#: src/backend-oauth.php:47
 msgid "NewsMAN plugin for Wordpress-Woocommerce"
 msgstr "NewsMAN plugin pentru Wordpress-Woocommerce"
 
-#: src/backend-oauth.php:47
+#: src/backend-oauth.php:56
 msgid "Connect your site with NewsMAN for:"
 msgstr "Conectează-ți site-ul cu NewsMAN pentru:"
 
-#: src/backend-oauth.php:52
+#: src/backend-oauth.php:61
 msgid "Subscribers Sync"
 msgstr "Sincronizarea abonaților"
 
-#: src/backend-oauth.php:57
+#: src/backend-oauth.php:66
 msgid "Ecommerce Remarketing"
 msgstr "Ecommerce Remarketing"
 
-#: src/backend-oauth.php:62
+#: src/backend-oauth.php:71
 msgid "Create and manage forms"
 msgstr "Creați și gestionați formulare"
 
-#: src/backend-oauth.php:67
+#: src/backend-oauth.php:76
 msgid "Create and manage popups"
 msgstr "Creați și gestionați ferestre pop-up"
 
-#: src/backend-oauth.php:72
+#: src/backend-oauth.php:81
 msgid "Connect your forms to automation"
 msgstr "Conectați formularele la automatizare"
 
-#: src/backend-oauth.php:78
+#: src/backend-oauth.php:87
 msgid "Login with NewsMAN"
 msgstr "Autentificare cu NewsMAN"
 
-#: src/backend-oauth.php:80 src/backend-oauth.php:111
+#: src/backend-oauth.php:89
+msgid "Back to Settings"
+msgstr "Înapoi la Setări"
+
+#: src/backend-oauth.php:89 src/backend-oauth.php:120
 msgid "Cancel"
 msgstr "Anulează"
 
-#: src/backend-oauth.php:92
+#: src/backend-oauth.php:101
 msgid "Select list:"
 msgstr "Selectați lista:"
 
-#: src/backend-oauth.php:94 src/backend-sms.php:122 src/backend-sync.php:63
+#: src/backend-oauth.php:103 src/backend-sms.php:122 src/backend-sync.php:63
 #: src/backend-sync.php:104
 msgid "-- select list --"
 msgstr "-- selectați o listă --"
 
-#: src/backend-oauth.php:109
+#: src/backend-oauth.php:118
 msgid "Save"
 msgstr "Salvează"
 
