@@ -24,7 +24,7 @@ $site_url   = get_site_url();
 $cart_param = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
 ?>
 <script<?php esc_js( esc_html( $this->get_script_tag_additional_attributes() ) ); ?>>
-var ajaxurl = "<?php echo esc_url( rtrim( $site_url, '/' ) . '/' ); ?>" + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
+const newsmanCartAjaxUrl = "<?php echo esc_url( rtrim( $site_url, '/' ) . '/' ); ?>" + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
 var isProd = true;
 let lastCart = sessionStorage.getItem('lastCart');
 if (lastCart === null) {
@@ -102,14 +102,14 @@ function NewsmanAutoEvents() {
 	if (bufferedXHR || firstLoad) {
 		paramChar = '?t=';
 		
-		if (ajaxurl.indexOf('?') >= 0) {
+		if (newsmanCartAjaxUrl.indexOf('?') >= 0) {
 			paramChar = '&t=';
 		}
 		
 		timestamp = paramChar + Date.now() + timestampGenerator(999, 999999999);
 		
 		try {
-			xhr.open('GET', ajaxurl + timestamp, true);
+			xhr.open('GET', newsmanCartAjaxUrl + timestamp, true);
 		} catch (ex) {
 			NewsmanDebugLog('newsman remarketing: malformed XHR url');
 			isError = true;
