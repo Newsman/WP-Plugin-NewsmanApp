@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.23
+Stable tag: 3.7.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,10 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.24 =
+* Cart tracking script: renamed the inline `ajaxurl` JS variable to `newsmanCartAjaxUrl` (block-scoped `const`) to avoid collision with the global `ajaxurl` defined by WordPress and other plugins. When caching/optimization plugins (e.g. LiteSpeed Cache) combine or defer inline JS, the unprefixed name was being overridden, causing the cart poller to fire `GET /wp-admin/admin-ajax.php?t=...` with no `action` parameter and receive HTTP 400.
+* Cart tracking script: prefixed all remaining unprefixed global variables with `nzm` (`nzmisProd`, `nzmlastCart`, `nzmfirstLoad`, `nzmbufferedXHR`, `nzmisError`, `nzmstartTime`, `nzmendTime`, etc.) to harden against future collisions with other plugins or themes. The `'lastCart'` sessionStorage key is preserved so previously cached carts remain valid across upgrade.
 
 = 3.7.23 =
 * Sync page: the segment dropdown now updates instantly when you change the list, with no page reload, using the cached per-list segment map (same behavior as the form-builder integrations)

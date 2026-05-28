@@ -25,26 +25,26 @@ $cart_param = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
 ?>
 <script<?php esc_js( esc_html( $this->get_script_tag_additional_attributes() ) ); ?>>
 const newsmanCartAjaxUrl = "<?php echo esc_url( rtrim( $site_url, '/' ) . '/' ); ?>" + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
-var isProd = true;
-let lastCart = sessionStorage.getItem('lastCart');
-if (lastCart === null) {
-	lastCart = {};
+var nzmisProd = true;
+let nzmlastCart = sessionStorage.getItem('lastCart');
+if (nzmlastCart === null) {
+	nzmlastCart = {};
 }
-var lastCartFlag = false;
-var firstLoad = true;
-var bufferedXHR = false;
-var unlockClearCart = true;
-var isError = false;
-let secondsAllow = 5;
-let msRunAutoEvents = 5000;
-let msClick = new Date();
-var documentComparer = document.location.hostname;
-var documentUrl = document.URL;
-var sameOrigin = (documentUrl.indexOf(documentComparer) !== -1);
-let startTime, endTime;
+var nzmlastCartFlag = false;
+var nzmfirstLoad = true;
+var nzmbufferedXHR = false;
+var nzmunlockClearCart = true;
+var nzmisError = false;
+let nzmsecondsAllow = 5;
+let nzmmsRunAutoEvents = 5000;
+let nzmmsClick = new Date();
+var nzmdocumentComparer = document.location.hostname;
+var nzmdocumentUrl = document.URL;
+var nzmsameOrigin = (nzmdocumentUrl.indexOf(nzmdocumentComparer) !== -1);
+let nzmstartTime, nzmendTime;
 
 function startTimePassed() {
-	startTime = new Date();
+	nzmstartTime = new Date();
 }
 
 function endTimePassed() {
@@ -52,16 +52,16 @@ function endTimePassed() {
 		timeDiff,
 		seconds;
 	
-	endTime = new Date();
-	timeDiff = endTime - startTime;
+	nzmendTime = new Date();
+	timeDiff = nzmendTime - nzmstartTime;
 	timeDiff /= 1000;
 	
-	if (firstLoad) {
+	if (nzmfirstLoad) {
 		flag = true;
 	}
 
 	seconds = Math.round(timeDiff);
-	if (seconds >= secondsAllow) {
+	if (seconds >= nzmsecondsAllow) {
 		flag = true;
 	}
 
@@ -70,9 +70,9 @@ function endTimePassed() {
 
 startTimePassed();
 
-if (sameOrigin) {
+if (nzmsameOrigin) {
 	NewsmanAutoEvents();
-	setInterval(NewsmanAutoEvents, msRunAutoEvents);
+	setInterval(NewsmanAutoEvents, nzmmsRunAutoEvents);
 	detectClicks();
 	detectXHR();
 	detectFetch();
@@ -89,17 +89,17 @@ function NewsmanAutoEvents() {
 		timestamp;
 	
 	if (!endTimePassed()) {
-		NewsmanDebugLog('newsman remarketing: execution stopped at the beginning, ' + secondsAllow + ' seconds did not pass between requests');
+		NewsmanDebugLog('newsman remarketing: execution stopped at the beginning, ' + nzmsecondsAllow + ' seconds did not pass between requests');
 		return;
 	}
 	
-	if (isError && isProd === true) {
-		console.log('newsman remarketing: an error occurred, set isProd = false in console, script execution stopped;');
+	if (nzmisError && nzmisProd === true) {
+		console.log('newsman remarketing: an error occurred, set nzmisProd = false in console, script execution stopped;');
 		return;
 	}
 	
 	let xhr = new XMLHttpRequest()
-	if (bufferedXHR || firstLoad) {
+	if (nzmbufferedXHR || nzmfirstLoad) {
 		paramChar = '?t=';
 		
 		if (newsmanCartAjaxUrl.indexOf('?') >= 0) {
@@ -112,7 +112,7 @@ function NewsmanAutoEvents() {
 			xhr.open('GET', newsmanCartAjaxUrl + timestamp, true);
 		} catch (ex) {
 			NewsmanDebugLog('newsman remarketing: malformed XHR url');
-			isError = true;
+			nzmisError = true;
 		}
 		
 		startTimePassed();
@@ -123,23 +123,23 @@ function NewsmanAutoEvents() {
 					var response = JSON.parse(xhr.responseText);
 				} catch (error) {
 					NewsmanDebugLog('newsman remarketing: error occurred json parsing response');
-					isError = true;
+					nzmisError = true;
 					return;
 				}
 				
 				//check for engine name
-				lastCart = JSON.parse(sessionStorage.getItem('lastCart'));
-				if (lastCart === null) {
-					lastCart = {};
-					NewsmanDebugLog('newsman remarketing: lastCart === null');
+				nzmlastCart = JSON.parse(sessionStorage.getItem('lastCart'));
+				if (nzmlastCart === null) {
+					nzmlastCart = {};
+					NewsmanDebugLog('newsman remarketing: nzmlastCart === null');
 				}
 				
 				//check cache
-				if ((typeof lastCart !== 'undefined') && lastCart != null && lastCart.length > 0 && (typeof response !== 'undefined') && response != null && response.length > 0) {
+				if ((typeof nzmlastCart !== 'undefined') && nzmlastCart != null && nzmlastCart.length > 0 && (typeof response !== 'undefined') && response != null && response.length > 0) {
 					var objComparer = response;
 					var missingProp = false;
 					
-					lastCart.forEach(e=>{
+					nzmlastCart.forEach(e=>{
 							if (!e.hasOwnProperty('name')) {
 								missingProp = true;
 							}
@@ -152,18 +152,18 @@ function NewsmanAutoEvents() {
 						});
 					}
 					
-					if (JSON.stringify(lastCart) === JSON.stringify(objComparer)) {
+					if (JSON.stringify(nzmlastCart) === JSON.stringify(objComparer)) {
 						NewsmanDebugLog('newsman remarketing: cache loaded, cart is unchanged');
-						lastCartFlag = true;
+						nzmlastCartFlag = true;
 					} else {
-						lastCartFlag = false;
+						nzmlastCartFlag = false;
 						NewsmanDebugLog('newsman remarketing: cache loaded, cart is changed');
 					}
 				}
 				
-				if (response.length > 0 && lastCartFlag == false) {
+				if (response.length > 0 && nzmlastCartFlag == false) {
 					nzmAddToCart(response);
-				} else if (!response.length && lastCart.length > 0 && unlockClearCart) {
+				} else if (!response.length && nzmlastCart.length > 0 && nzmunlockClearCart) {
 					//send only when on last request, products existed
 					nzmClearCart();
 					NewsmanDebugLog('newsman remarketing: clear cart sent');
@@ -171,18 +171,18 @@ function NewsmanAutoEvents() {
 					NewsmanDebugLog('newsman remarketing: request not sent');
 				}
 				
-				firstLoad = false;
-				bufferedXHR = false;
+				nzmfirstLoad = false;
+				nzmbufferedXHR = false;
 			} else {
 				NewsmanDebugLog('newsman remarketing: response http status code is not 200');
-				isError = true;
+				nzmisError = true;
 			}
 		}
 		try {
 			xhr.send(null);
 		} catch (ex) {
 			NewsmanDebugLog('newsman remarketing: error on xhr send');
-			isError = true;
+			nzmisError = true;
 		}
 	} else {
 		NewsmanDebugLog('newsman remarketing: !buffered xhr || first load');
@@ -192,7 +192,7 @@ function nzmClearCart() {
 	_nzm.run('ec:setAction', 'clear_cart');
 	_nzm.run('send', 'event', 'detail view', 'click', 'clearCart');
 	sessionStorage.setItem('lastCart', JSON.stringify([]));
-	unlockClearCart = false;
+	nzmunlockClearCart = false;
 }
 function nzmAddToCart(response) {
 	_nzm.run('ec:setAction', 'clear_cart');
@@ -220,7 +220,7 @@ function detailviewEvent(response) {
 		_nzm.run('ec:setAction', 'add');
 		_nzm.run('send', 'event', 'UX', 'click', 'add to cart');
 		sessionStorage.setItem('lastCart', JSON.stringify(products));
-		unlockClearCart = true;
+		nzmunlockClearCart = true;
 
 		NewsmanDebugLog('newsman remarketing: cart sent');
 	});
@@ -228,7 +228,7 @@ function detailviewEvent(response) {
 
 function detectClicks() {
 	window.addEventListener('click', function() {
-		msClick = new Date();
+		nzmmsClick = new Date();
 	}, false);
 }
 
@@ -245,7 +245,7 @@ function detectXHR() {
 				return;
 			}
 			var msClickPassed = new Date();
-			var timeDiff = msClickPassed.getTime() - msClick.getTime();
+			var timeDiff = msClickPassed.getTime() - nzmmsClick.getTime();
 			if (timeDiff > 5000) {
 				validate = false;
 			} else {
@@ -263,7 +263,7 @@ function detectXHR() {
 				}
 
 				if (validate) {
-					bufferedXHR = true;
+					nzmbufferedXHR = true;
 					NewsmanDebugLog('newsman remarketing: ajax request fired and caught from same domain, NewsmanAutoEvents called');
 					NewsmanAutoEvents();
 				}
@@ -296,7 +296,7 @@ function detectFetch() {
 			var timeValidate = false;
 
 			var msClickPassed = new Date();
-			var timeDiff = msClickPassed.getTime() - msClick.getTime();
+			var timeDiff = msClickPassed.getTime() - nzmmsClick.getTime();
 			if (timeDiff > 5000) {
 				validate = false;
 			} else {
@@ -313,7 +313,7 @@ function detectFetch() {
 				}
 
 				if (validate) {
-					bufferedXHR = true;
+					nzmbufferedXHR = true;
 					NewsmanDebugLog('newsman remarketing: fetch fired and caught from same domain, NewsmanAutoEvents called');
 					NewsmanAutoEvents();
 				}
@@ -324,7 +324,7 @@ function detectFetch() {
 	};
 }
 function NewsmanDebugLog($message) {
-	if ((typeof isProd !== 'undefined') && isProd === true) {
+	if ((typeof nzmisProd !== 'undefined') && nzmisProd === true) {
 		return;
 	}
 	console.log($message);
