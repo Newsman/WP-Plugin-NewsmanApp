@@ -103,7 +103,8 @@ class IdentifySubscriber extends AbstractAction {
 	].join(',');
 
 	function getEmail(input) {
-		return String(input && input.value || '').trim().toLowerCase();
+		var value = input ? input.value : '';
+		return String(value).trim().toLowerCase();
 	}
 
 	function isEmail(email) {
