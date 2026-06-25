@@ -90,9 +90,11 @@ class IdentifySubscriber extends AbstractAction {
 	protected function get_checkout_guest_identify_js() {
 		return <<<'JS'
 (function() {
-	var lastIdentifiedEmail = '';
-	var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}(\.[0-9]{1,3}){3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	var selector = [
+	var boundAttribute = 'data-nzm-checkout-identify';
+	var lastEmail = '';
+	var maxAttempts = 20;
+	var retryDelay = 250;
+	var emailSelector = [
 		'input[type="email"]',
 		'input[name="email"]',
 		'input[name="billing_email"]',
@@ -101,67 +103,63 @@ class IdentifySubscriber extends AbstractAction {
 		'input[autocomplete="email"]'
 	].join(',');
 
-	function normalizeEmail(value) {
-		return String(value || '').trim().toLowerCase();
+	function getEmail(input) {
+		return String(input && input.value || '').trim().toLowerCase();
 	}
 
-	function rememberEmail(email) {
+	function isEmail(email) {
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+	}
+
+	function identifyEmail(email, attempt) {
+		if (!email || email === lastEmail || !isEmail(email)) {
+			return;
+		}
+
+		attempt = attempt || 0;
 		try {
 			window.sessionStorage.setItem('nzm_identify', JSON.stringify({ email: email }));
 		} catch (error) {}
-	}
 
-	function identifyFromInput(input, attempt) {
-		if (!input) {
-			return;
-		}
-
-		var email = normalizeEmail(input.value);
-		if (!email || email === lastIdentifiedEmail || !emailRegex.test(email)) {
-			return;
-		}
-
-		rememberEmail(email);
-		attempt = attempt || 0;
 		if (!window._nzm || typeof window._nzm.identify !== 'function') {
-			if (attempt < 20) {
+			if (attempt < maxAttempts) {
 				window.setTimeout(function() {
-					identifyFromInput(input, attempt + 1);
-				}, 250);
+					identifyEmail(email, attempt + 1);
+				}, retryDelay);
 			}
 			return;
 		}
 
-		lastIdentifiedEmail = email;
+		lastEmail = email;
 		window._nzm.identify({ email: email });
 	}
 
 	function bindInput(input) {
-		if (!input || input.getAttribute('data-nzm-checkout-identify') === '1') {
+		if (!input || input.getAttribute(boundAttribute) === '1') {
 			return;
 		}
 
-		input.setAttribute('data-nzm-checkout-identify', '1');
-		input.addEventListener('change', function(event) {
-			identifyFromInput(event.currentTarget);
+		input.setAttribute(boundAttribute, '1');
+		input.addEventListener('change', function() {
+			identifyEmail(getEmail(input));
 		});
-		input.addEventListener('focusout', function(event) {
-			identifyFromInput(event.currentTarget);
+		input.addEventListener('focusout', function() {
+			identifyEmail(getEmail(input));
 		});
-		identifyFromInput(input);
+		identifyEmail(getEmail(input));
 	}
 
-	function bindCheckoutEmailInputs() {
-		var inputs = document.querySelectorAll(selector);
+	function bindEmailInputs() {
+		var inputs = document.querySelectorAll(emailSelector);
 		for (var i = 0; i < inputs.length; i++) {
 			bindInput(inputs[i]);
 		}
 	}
 
-	bindCheckoutEmailInputs();
+	bindEmailInputs();
 
 	if ('MutationObserver' in window) {
-		var observer = new MutationObserver(bindCheckoutEmailInputs);
+		var observer = new MutationObserver(bindEmailInputs);
 		observer.observe(document.body || document.documentElement, {
 			childList: true,
 			subtree: true
