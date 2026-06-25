@@ -92,7 +92,7 @@ class IdentifySubscriber extends AbstractAction {
 (function() {
 	var boundAttribute = 'data-nzm-checkout-identify';
 	var lastEmail = '';
-	var maxAttempts = 20;
+	var maxAttempts = 10;
 	var retryDelay = 250;
 	var emailSelector = [
 		'input[type="email"]',
