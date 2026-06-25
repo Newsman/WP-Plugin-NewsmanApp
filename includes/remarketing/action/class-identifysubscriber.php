@@ -90,7 +90,6 @@ class IdentifySubscriber extends AbstractAction {
 	protected function get_checkout_guest_identify_js() {
 		return <<<'JS'
 (function() {
-	var boundAttribute = 'data-nzm-checkout-identify';
 	var lastEmail = '';
 	var maxAttempts = 10;
 	var retryDelay = 250;
@@ -135,11 +134,11 @@ class IdentifySubscriber extends AbstractAction {
 	}
 
 	function bindInput(input) {
-		if (!input || input.getAttribute(boundAttribute) === '1') {
+		if (!input || input.getAttribute('data-nzm-checkout-identify') === '1') {
 			return;
 		}
 
-		input.setAttribute(boundAttribute, '1');
+		input.setAttribute('data-nzm-checkout-identify', '1');
 		input.addEventListener('change', function() {
 			identifyEmail(getEmail(input));
 		});
