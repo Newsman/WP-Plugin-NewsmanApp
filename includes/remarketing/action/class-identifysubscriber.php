@@ -42,6 +42,10 @@ class IdentifySubscriber extends AbstractAction {
 				'last_name: "' . esc_attr( esc_html( $current_user->user_lastname ) ) . '" });';
 		}
 
+		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+			$js .= $this->get_checkout_guest_identify_js();
+		}
+
 		return apply_filters(
 			'newsman_remarketing_action_identify_subscriber_js',
 			$js,
@@ -59,5 +63,77 @@ class IdentifySubscriber extends AbstractAction {
 	 */
 	public function is_tracking_allowed() {
 		return $this->remarketing_config->is_tracking_allowed();
+	}
+
+	/**
+	 * Identify guest checkout visitors when they enter an email address.
+	 *
+	 * @return string
+	 */
+	protected function get_checkout_guest_identify_js() {
+		return <<<'JS'
+(function() {
+	var lastIdentifiedEmail = '';
+	var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}(\.[0-9]{1,3}){3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	var selector = [
+		'input[type="email"]',
+		'input[name="email"]',
+		'input[name="billing_email"]',
+		'#email',
+		'#billing_email',
+		'input[autocomplete="email"]'
+	].join(',');
+
+	function normalizeEmail(value) {
+		return String(value || '').trim().toLowerCase();
+	}
+
+	function identifyFromInput(input) {
+		if (!input || !window._nzm || typeof window._nzm.identify !== 'function') {
+			return;
+		}
+
+		var email = normalizeEmail(input.value);
+		if (!email || email === lastIdentifiedEmail || !emailRegex.test(email)) {
+			return;
+		}
+
+		lastIdentifiedEmail = email;
+		window._nzm.identify({ email: email });
+	}
+
+	function bindInput(input) {
+		if (!input || input.getAttribute('data-nzm-checkout-identify') === '1') {
+			return;
+		}
+
+		input.setAttribute('data-nzm-checkout-identify', '1');
+		input.addEventListener('change', function(event) {
+			identifyFromInput(event.currentTarget);
+		});
+		input.addEventListener('focusout', function(event) {
+			identifyFromInput(event.currentTarget);
+		});
+		identifyFromInput(input);
+	}
+
+	function bindCheckoutEmailInputs() {
+		var inputs = document.querySelectorAll(selector);
+		for (var i = 0; i < inputs.length; i++) {
+			bindInput(inputs[i]);
+		}
+	}
+
+	bindCheckoutEmailInputs();
+
+	if ('MutationObserver' in window) {
+		var observer = new MutationObserver(bindCheckoutEmailInputs);
+		observer.observe(document.body || document.documentElement, {
+			childList: true,
+			subtree: true
+		});
+	}
+})();
+JS;
 	}
 }
