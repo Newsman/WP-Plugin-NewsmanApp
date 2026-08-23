@@ -42,6 +42,10 @@ class IdentifySubscriber extends AbstractAction {
 				'last_name: "' . esc_attr( esc_html( $current_user->user_lastname ) ) . '" });';
 		}
 
+		if ( $this->is_checkout_context() ) {
+			$js .= $this->get_checkout_guest_identify_js();
+		}
+
 		return apply_filters(
 			'newsman_remarketing_action_identify_subscriber_js',
 			$js,
@@ -59,5 +63,109 @@ class IdentifySubscriber extends AbstractAction {
 	 */
 	public function is_tracking_allowed() {
 		return $this->remarketing_config->is_tracking_allowed();
+	}
+
+	/**
+	 * Detect checkout pages, including WooCommerce Blocks checkout pages.
+	 *
+	 * @return bool
+	 */
+	protected function is_checkout_context() {
+		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+			return true;
+		}
+
+		if ( function_exists( 'has_block' ) && has_block( 'woocommerce/checkout' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Identify guest checkout visitors when they enter an email address.
+	 *
+	 * @return string
+	 */
+	protected function get_checkout_guest_identify_js() {
+		return <<<'JS'
+(function() {
+	var lastEmail = '';
+	var maxAttempts = 10;
+	var retryDelay = 250;
+	var emailSelector = [
+		'input[type="email"]',
+		'input[name="email"]',
+		'input[name="billing_email"]',
+		'#email',
+		'#billing_email',
+		'input[autocomplete="email"]'
+	].join(',');
+
+	function getEmail(input) {
+		var value = input ? input.value : '';
+		return String(value).trim().toLowerCase();
+	}
+
+	function isEmail(email) {
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+	}
+
+	function identifyEmail(email, attempt) {
+		if (!email || email === lastEmail || !isEmail(email)) {
+			return;
+		}
+
+		attempt = attempt || 0;
+		try {
+			window.sessionStorage.setItem('nzm_identify', JSON.stringify({ email: email }));
+		} catch (error) {}
+
+		if (!window._nzm || typeof window._nzm.identify !== 'function') {
+			if (attempt < maxAttempts) {
+				window.setTimeout(function() {
+					identifyEmail(email, attempt + 1);
+				}, retryDelay);
+			}
+			return;
+		}
+
+		lastEmail = email;
+		window._nzm.identify({ email: email });
+	}
+
+	function bindInput(input) {
+		if (!input || input.getAttribute('data-nzm-checkout-identify') === '1') {
+			return;
+		}
+
+		input.setAttribute('data-nzm-checkout-identify', '1');
+		input.addEventListener('change', function() {
+			identifyEmail(getEmail(input));
+		});
+		input.addEventListener('focusout', function() {
+			identifyEmail(getEmail(input));
+		});
+		identifyEmail(getEmail(input));
+	}
+
+	function bindEmailInputs() {
+		var inputs = document.querySelectorAll(emailSelector);
+		for (var i = 0; i < inputs.length; i++) {
+			bindInput(inputs[i]);
+		}
+	}
+
+	bindEmailInputs();
+
+	if ('MutationObserver' in window) {
+		var observer = new MutationObserver(bindEmailInputs);
+		observer.observe(document.body || document.documentElement, {
+			childList: true,
+			subtree: true
+		});
+	}
+})();
+JS;
 	}
 }
