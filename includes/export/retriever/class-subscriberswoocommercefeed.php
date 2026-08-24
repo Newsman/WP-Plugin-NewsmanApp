@@ -70,7 +70,10 @@ class SubscribersWoocommerceFeed extends AbstractRetriever implements RetrieverI
 			$args['orderby'] = $processed_params['sort'];
 			$args['order']   = $processed_params['order'];
 		} else {
-			$args['orderby'] = 'date_created_gmt';
+			// Order by the unique order ID so LIMIT pages stay stable between
+			// requests; date_created is not unique, so rows with the same date
+			// can swap pages. DESC keeps the newest-order-wins deduplication.
+			$args['orderby'] = 'id';
 			$args['order']   = 'DESC';
 		}
 

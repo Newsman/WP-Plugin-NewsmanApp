@@ -47,12 +47,14 @@ class SubscribersWoocommerce extends CronSubscribers {
 			}
 		}
 
+		// Unique-key ascending order keeps LIMIT pages stable between requests
+		// and makes the cronlast window ($count - $limit) select the newest rows.
 		$args = array(
 			'status'  => 'completed',
 			'offset'  => $start,
 			'limit'   => $limit,
-			'orderby' => 'date_created_gmt',
-			'order'   => 'DESC',
+			'orderby' => 'id',
+			'order'   => 'ASC',
 		);
 		if ( ! empty( $date_created ) ) {
 			$date_created        .= ' 00:00:00';

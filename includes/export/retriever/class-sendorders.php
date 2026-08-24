@@ -212,12 +212,17 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\OrderUtil' ) &&
 			\Automattic\WooCommerce\Utilities\OrderUtil::custom_orders_table_usage_is_enabled() ) {
+			// Unique-key ascending order keeps LIMIT pages stable between
+			// requests and makes the cronlast window ($count - $limit) select
+			// the newest orders.
 			$query = new \WC_Order_Query(
 				array(
 					'limit'        => $limit,
 					'offset'       => $start,
 					'status'       => $filtered_statuses,
 					'date_created' => '>=' . $date_limit,
+					'orderby'      => 'id',
+					'order'        => 'ASC',
 				)
 			);
 			$query = apply_filters(
@@ -231,11 +236,14 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			);
 			return $query->get_orders();
 		} else {
+			// Same deterministic order as the custom-orders-table branch.
 			$args = array(
 				'limit'        => $limit,
 				'offset'       => $start,
 				'status'       => $filtered_statuses,
 				'date_created' => '>=' . $date_limit,
+				'orderby'      => 'id',
+				'order'        => 'ASC',
 			);
 			$args = apply_filters(
 				'newsman_export_retriever_send_orders_process_args_fetch',

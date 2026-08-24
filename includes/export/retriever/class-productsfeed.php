@@ -301,6 +301,15 @@ class ProductsFeed extends AbstractRetriever implements RetrieverInterface {
 	}
 
 	/**
+	 * Get the sort field used to keep paginated exports deterministic
+	 *
+	 * @return string
+	 */
+	public function get_default_sort_field() {
+		return 'id';
+	}
+
+	/**
 	 * Process product
 	 *
 	 * @param \WC_Product $product Product instance.

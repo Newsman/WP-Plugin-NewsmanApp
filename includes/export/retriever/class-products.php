@@ -98,11 +98,15 @@ class Products extends AbstractRetriever implements RetrieverInterface {
 			)
 		);
 
+		// Unique-key order keeps LIMIT pages stable between requests; the
+		// WooCommerce default (non-unique date) lets rows swap pages.
 		$args     = array(
 			'limit'        => $limit,
 			'offset'       => $start,
 			'status'       => 'publish',
 			'stock_status' => 'instock',
+			'orderby'      => 'id',
+			'order'        => 'ASC',
 		);
 		$args     = apply_filters(
 			'newsman_export_retriever_products_process_fetch',

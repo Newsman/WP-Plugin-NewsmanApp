@@ -243,7 +243,9 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 			}
 		}
 
-		$order_clause = 'ORDER BY created_at DESC';
+		// The unique id tiebreaker keeps LIMIT pages stable between requests
+		// when many rows share the same aggregated date.
+		$order_clause = 'ORDER BY created_at DESC, id DESC';
 		if ( isset( $processed['sort'] ) ) {
 			$order_dir   = ( 'DESC' === $processed['order'] ) ? 'DESC' : 'ASC';
 			$sort_column = (string) $processed['sort'];
@@ -409,9 +411,9 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 		$is_form        = $is_legacy_form || $is_atomic_form;
 
 		if ( $is_form && $id === $form_id ) {
-			$settings   = isset( $node['settings'] ) && is_array( $node['settings'] ) ? $node['settings'] : array();
-			$form_kind  = $is_legacy_form ? 'form' : 'e-form';
-			$found      = array(
+			$settings  = isset( $node['settings'] ) && is_array( $node['settings'] ) ? $node['settings'] : array();
+			$form_kind = $is_legacy_form ? 'form' : 'e-form';
+			$found     = array(
 				'widget_type' => $form_kind,
 				'flags'       => array(
 					'enable'          => self::resolve_flag( $settings, 'newsman_enable' ),

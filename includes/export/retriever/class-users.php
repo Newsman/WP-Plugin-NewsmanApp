@@ -264,6 +264,15 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 	}
 
 	/**
+	 * Get the sort field used to keep paginated exports deterministic
+	 *
+	 * @return string
+	 */
+	public function get_default_sort_field() {
+		return 'ID';
+	}
+
+	/**
 	 * Process customer
 	 *
 	 * @param \WP_User|\WC_Customer $customer Customer instance.

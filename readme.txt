@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.24
+Stable tag: 3.7.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,11 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.25 =
+* Exports: paginated exports (products feed, orders, customers, subscribers and the form-plugin subscriber sources) now use a deterministic unique-key sort order. Without it, MySQL gives no stable row order between two pages of the same export, so pages could overlap and skip rows and part of the catalog never reached NewsMAN.
+* Exports: the send-orders cron "last entities" window now returns the newest orders, as intended, instead of the oldest.
+* Remarketing: guest checkout email is now identified for remarketing on both the classic and the Blocks checkout.
 
 = 3.7.24 =
 * Cart tracking script: renamed the inline `ajaxurl` JS variable to `newsmanCartAjaxUrl` (block-scoped `const`) to avoid collision with the global `ajaxurl` defined by WordPress and other plugins. When caching/optimization plugins (e.g. LiteSpeed Cache) combine or defer inline JS, the unprefixed name was being overridden, causing the cart poller to fire `GET /wp-admin/admin-ajax.php?t=...` with no `action` parameter and receive HTTP 400.

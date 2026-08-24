@@ -120,8 +120,19 @@ class AbstractRetriever {
 			$params['order'] = 'DESC';
 		}
 		if ( ! $sort_found ) {
-			unset( $params['sort'] );
-			unset( $params['order'] );
+			// Without an explicit sort the underlying queries give no stable row
+			// order between two pages of the same export (or order by a non-unique
+			// date column). Paginated exports then repeat some rows and skip
+			// others, so part of the catalog never reaches Newsman. Fall back to
+			// the deterministic sort field of the retriever when it defines one.
+			$default_sort = $this->get_default_sort_field();
+			if ( ! empty( $default_sort ) ) {
+				$params['sort']  = $default_sort;
+				$params['order'] = 'ASC';
+			} else {
+				unset( $params['sort'] );
+				unset( $params['order'] );
+			}
 		}
 
 		if ( ! isset( $data['default_page_size'] ) ) {
@@ -213,6 +224,18 @@ class AbstractRetriever {
 	 */
 	public function get_where_parameters_mapping() {
 		return array();
+	}
+
+	/**
+	 * Get the sort field used to keep paginated exports deterministic
+	 *
+	 * Returns an empty string when the retriever applies its own ordering or
+	 * when it is not paginated.
+	 *
+	 * @return string
+	 */
+	public function get_default_sort_field() {
+		return '';
 	}
 
 	/**

@@ -248,6 +248,15 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 	}
 
 	/**
+	 * Get the sort field used to keep paginated exports deterministic
+	 *
+	 * @return string
+	 */
+	public function get_default_sort_field() {
+		return 'id';
+	}
+
+	/**
 	 * Process order
 	 *
 	 * @param \WC_Order $order Order instance.

@@ -257,7 +257,9 @@ class SubscribersContactForm7 extends AbstractRetriever implements RetrieverInte
 			}
 		}
 
-		$order_clause = 'ORDER BY post_date DESC';
+		// The unique ID tiebreaker keeps LIMIT pages stable between requests
+		// when many rows share the same aggregated date.
+		$order_clause = 'ORDER BY post_date DESC, ID DESC';
 		if ( isset( $processed['sort'] ) ) {
 			$order_dir   = ( 'DESC' === $processed['order'] ) ? 'DESC' : 'ASC';
 			$sort_column = (string) $processed['sort'];
