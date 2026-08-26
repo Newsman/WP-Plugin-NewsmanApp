@@ -265,6 +265,9 @@ class SubscribersContactForm7 extends AbstractRetriever implements RetrieverInte
 			$sort_column = (string) $processed['sort'];
 			if ( in_array( $sort_column, array( 'post_date', 'email', 'ID' ), true ) ) {
 				$order_clause = 'ORDER BY ' . $sort_column . ' ' . $order_dir;
+				if ( 'ID' !== $sort_column ) {
+					$order_clause .= ', ID ' . $order_dir;
+				}
 			}
 		}
 

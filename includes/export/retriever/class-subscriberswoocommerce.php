@@ -53,7 +53,7 @@ class SubscribersWoocommerce extends CronSubscribers {
 			'status'  => 'completed',
 			'offset'  => $start,
 			'limit'   => $limit,
-			'orderby' => 'id',
+			'orderby' => 'ID',
 			'order'   => 'ASC',
 		);
 		if ( ! empty( $date_created ) ) {

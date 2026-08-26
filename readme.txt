@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.25
+Stable tag: 3.7.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,11 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.26 =
+* Exports: fixed sort fields being silently dropped by WordPress. The product export default sort and the explicit `product_id`, `created_at` and `modified_at` sorts now map to orderby keys WP_Query and both WooCommerce order stores actually accept ('ID', 'date', 'modified'); previously the invalid keys were discarded without an error and rows fell back to the non-unique post date, so small-page exports could repeat and skip products.
+* Exports: explicit sorts on non-unique columns (dates, name) now append the unique ID as a tie-breaker, in the WooCommerce-backed exports and in the form-plugin subscriber sources, so paginated exports stay stable under any allowed sort.
+* Exports: sorting orders and WooCommerce-buyer subscribers by email is no longer accepted (API v1 now returns error 1008 instead of silently ignoring it) — neither WooCommerce order store can order by the billing email. Filtering by email is unaffected.
 
 = 3.7.25 =
 * Exports: paginated exports (products feed, orders, customers, subscribers and the form-plugin subscriber sources) now use a deterministic unique-key sort order. Without it, MySQL gives no stable row order between two pages of the same export, so pages could overlap and skip rows and part of the catalog never reached NewsMAN.

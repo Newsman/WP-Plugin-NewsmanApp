@@ -251,6 +251,9 @@ class SubscribersElementorPro extends AbstractRetriever implements RetrieverInte
 			$sort_column = (string) $processed['sort'];
 			if ( in_array( $sort_column, array( 'created_at', 'email', 'id' ), true ) ) {
 				$order_clause = 'ORDER BY ' . $sort_column . ' ' . $order_dir;
+				if ( 'id' !== $sort_column ) {
+					$order_clause .= ', id ' . $order_dir;
+				}
 			}
 		}
 

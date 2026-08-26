@@ -97,10 +97,7 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 			// phpcs:enable Squiz.PHP.CommentedOutCode.Found
 		);
 
-		if ( isset( $processed_params['sort'] ) ) {
-			$args['orderby'] = $processed_params['sort'];
-			$args['order']   = $processed_params['order'];
-		}
+		$args = $this->apply_sort_args( $args, $processed_params );
 
 		foreach ( $processed_params['filters'] as $filter ) {
 			$field    = $filter['field'];
@@ -239,11 +236,16 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 	 * @return array
 	 */
 	public function get_allowed_sort_fields() {
+		// Values must be orderby keys that both order data stores accept: the
+		// orders-table query maps 'ID'/'date'/'modified' to real columns and
+		// the legacy posts store hands them to WP_Query, whose case-sensitive
+		// allowed list drops anything else ('id', 'date_created', ...) silently.
+		// billing_email is not an accepted orderby key in either store, so an
+		// email sort cannot be offered here.
 		return array(
-			'order_id'    => 'id',
-			'created_at'  => 'date_created',
-			'modified_at' => 'date_modified',
-			'email'       => 'billing_email',
+			'order_id'    => 'ID',
+			'created_at'  => 'date',
+			'modified_at' => 'modified',
 		);
 	}
 
@@ -253,7 +255,7 @@ class Orders extends AbstractRetriever implements RetrieverInterface {
 	 * @return string
 	 */
 	public function get_default_sort_field() {
-		return 'id';
+		return 'ID';
 	}
 
 	/**

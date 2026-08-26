@@ -85,10 +85,7 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 			'number' => $processed_params['limit'],
 		);
 
-		if ( isset( $processed_params['sort'] ) ) {
-			$args['orderby'] = $processed_params['sort'];
-			$args['order']   = $processed_params['order'];
-		}
+		$args = $this->apply_sort_args( $args, $processed_params );
 
 		$meta_query = array();
 		$date_query = array();

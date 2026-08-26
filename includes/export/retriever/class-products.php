@@ -105,7 +105,7 @@ class Products extends AbstractRetriever implements RetrieverInterface {
 			'offset'       => $start,
 			'status'       => 'publish',
 			'stock_status' => 'instock',
-			'orderby'      => 'id',
+			'orderby'      => 'ID',
 			'order'        => 'ASC',
 		);
 		$args     = apply_filters(

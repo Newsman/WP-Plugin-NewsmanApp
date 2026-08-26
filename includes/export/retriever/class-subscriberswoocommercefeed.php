@@ -67,13 +67,12 @@ class SubscribersWoocommerceFeed extends AbstractRetriever implements RetrieverI
 		);
 
 		if ( isset( $processed_params['sort'] ) ) {
-			$args['orderby'] = $processed_params['sort'];
-			$args['order']   = $processed_params['order'];
+			$args = $this->apply_sort_args( $args, $processed_params );
 		} else {
 			// Order by the unique order ID so LIMIT pages stay stable between
 			// requests; date_created is not unique, so rows with the same date
 			// can swap pages. DESC keeps the newest-order-wins deduplication.
-			$args['orderby'] = 'id';
+			$args['orderby'] = 'ID';
 			$args['order']   = 'DESC';
 		}
 
@@ -180,10 +179,13 @@ class SubscribersWoocommerceFeed extends AbstractRetriever implements RetrieverI
 	 * @return array
 	 */
 	public function get_allowed_sort_fields() {
+		// Values must be orderby keys that both order data stores accept; see
+		// \Newsman\Export\Retriever\Orders::get_allowed_sort_fields().
+		// billing_email is not an accepted orderby key in either store, so the
+		// email sort other subscriber sources offer cannot be supported here.
 		return array(
-			'created_at'  => 'date_created',
-			'modified_at' => 'date_modified',
-			'email'       => 'billing_email',
+			'created_at'  => 'date',
+			'modified_at' => 'modified',
 		);
 	}
 

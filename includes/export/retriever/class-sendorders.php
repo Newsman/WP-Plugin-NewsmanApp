@@ -221,7 +221,7 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 					'offset'       => $start,
 					'status'       => $filtered_statuses,
 					'date_created' => '>=' . $date_limit,
-					'orderby'      => 'id',
+					'orderby'      => 'ID',
 					'order'        => 'ASC',
 				)
 			);
@@ -242,7 +242,7 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 				'offset'       => $start,
 				'status'       => $filtered_statuses,
 				'date_created' => '>=' . $date_limit,
-				'orderby'      => 'id',
+				'orderby'      => 'ID',
 				'order'        => 'ASC',
 			);
 			$args = apply_filters(

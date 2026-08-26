@@ -248,6 +248,38 @@ class AbstractRetriever {
 	}
 
 	/**
+	 * Apply the processed sort parameters to a WP/WC query args array.
+	 *
+	 * Sort field names must be valid orderby keys for the underlying query
+	 * class; invalid keys are dropped silently (WP_Query even rejects 'id'
+	 * because its allowed list only contains 'ID'). Non-unique sort columns
+	 * get the unique ID column appended as a tie-breaker, otherwise rows
+	 * sharing the sort value can swap pages between two requests of the same
+	 * paginated export.
+	 *
+	 * @param array $args Query args.
+	 * @param array $processed_params Processed list parameters.
+	 * @return array
+	 */
+	protected function apply_sort_args( $args, $processed_params ) {
+		if ( ! isset( $processed_params['sort'] ) ) {
+			return $args;
+		}
+
+		if ( 'ID' === $processed_params['sort'] ) {
+			$args['orderby'] = 'ID';
+		} else {
+			$args['orderby'] = array(
+				$processed_params['sort'] => $processed_params['order'],
+				'ID'                      => $processed_params['order'],
+			);
+		}
+		$args['order'] = $processed_params['order'];
+
+		return $args;
+	}
+
+	/**
 	 * Get SQL conditions expression definition
 	 *
 	 * @return array
