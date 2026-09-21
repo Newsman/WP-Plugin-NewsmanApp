@@ -57,17 +57,26 @@ class FormProcessor {
 			return;
 		}
 
+		// Contact Form 7's own Flamingo module skips storing a submission in both of these
+		// cases, and pushing a subscriber to Newsman is storage in a third-party system:
+		// demo mode means the submission is not a real one, and `do_not_store: on` is an
+		// explicit privacy instruction from the site owner.
+		$should_process = ! ( method_exists( $contact_form, 'in_demo_mode' ) && $contact_form->in_demo_mode() )
+			&& ! ( method_exists( $submission, 'get_meta' ) && $submission->get_meta( 'do_not_store' ) );
+
 		/**
 		 * Filter whether to process this Newsman-enabled CF7 submission.
 		 *
-		 * Return false to skip Newsman processing (e.g. honeypot/spam, conditional logic).
-		 * The form's mail and other actions still run.
+		 * Return false to skip Newsman processing (e.g. honeypot/spam, conditional logic),
+		 * or true to process a submission Newsman would otherwise skip. Defaults to false
+		 * when the form is in demo mode or carries the `do_not_store: on` additional
+		 * setting, true otherwise. The form's mail and other actions always still run.
 		 *
-		 * @param bool   $should       Default true.
+		 * @param bool   $should       Whether to process; see above for the default.
 		 * @param object $contact_form CF7 contact form.
 		 * @param object $submission   `WPCF7_Submission` instance.
 		 */
-		if ( ! apply_filters( 'newsman_cf7_should_process', true, $contact_form, $submission ) ) {
+		if ( ! apply_filters( 'newsman_cf7_should_process', $should_process, $contact_form, $submission ) ) {
 			return;
 		}
 
@@ -134,6 +143,14 @@ class FormProcessor {
 		if ( '' !== $lastname_field ) {
 			$lastname = trim( (string) self::flatten_value( $submission->get_posted_data( $lastname_field ) ) );
 		}
+
+		// One field mapped to both Firstname and Lastname can only be a full-name field, so
+		// sending it as both would store the name twice ("Ion Popescu Ion Popescu"). Split
+		// it on whitespace instead: the last word is the lastname, the rest the firstname.
+		if ( '' !== $firstname_field && $firstname_field === $lastname_field ) {
+			list( $firstname, $lastname ) = self::split_full_name( $firstname );
+		}
+
 		$phone = '';
 		if ( '' !== $phone_field ) {
 			$phone = trim( (string) self::flatten_value( $submission->get_posted_data( $phone_field ) ) );
@@ -153,6 +170,12 @@ class FormProcessor {
 				continue;
 			}
 			if ( '' !== $phone_field && $field_name === $phone_field ) {
+				continue;
+			}
+			// Tag types that opt out of storage ([quiz], CAPTCHA responses, ...) must not
+			// leave the site as subscriber properties — same filtering CF7 applies before
+			// handing a submission to Flamingo.
+			if ( self::is_do_not_store_field( $contact_form, $field_name ) ) {
 				continue;
 			}
 			$value = $submission->get_posted_data( $field_name );
@@ -220,6 +243,64 @@ class FormProcessor {
 			 */
 			do_action( 'newsman_cf7_process_failed', $e, $list_id, $email, $properties, $contact_form, $submission );
 		}
+	}
+
+	/**
+	 * Split a full name into a firstname and a lastname.
+	 *
+	 * The last whitespace-separated word becomes the lastname and everything before it the
+	 * firstname, so "Ion Mihai Popescu" yields "Ion Mihai" + "Popescu". A value with no
+	 * space is kept as the firstname: people routinely enter only a given name, and an
+	 * empty firstname would break `{{firstname}}` personalisation in campaigns.
+	 *
+	 * @param string $name Full name as entered in the form.
+	 * @return array{0:string,1:string} `[ firstname, lastname ]`.
+	 */
+	protected static function split_full_name( $name ) {
+		// Collapse every run of whitespace - including the non-breaking spaces that ride
+		// along with copy-pasted values - so the word split is reliable. A malformed UTF-8
+		// value makes preg_replace() return null; keep the raw value in that case.
+		$normalized = preg_replace( '/[\s\x{00A0}]+/u', ' ', (string) $name );
+		$name       = trim( null === $normalized ? (string) $name : $normalized );
+
+		if ( '' === $name ) {
+			return array( '', '' );
+		}
+
+		$parts = explode( ' ', $name );
+		if ( count( $parts ) < 2 ) {
+			return array( $name, '' );
+		}
+
+		$lastname = (string) array_pop( $parts );
+
+		return array( implode( ' ', $parts ), $lastname );
+	}
+
+	/**
+	 * Whether a form-tag is flagged `do-not-store` by Contact Form 7.
+	 *
+	 * Mirrors the per-field filtering CF7's Flamingo module applies before persisting a
+	 * submission: tag types such as `[quiz]` and CAPTCHA responses declare the
+	 * `do-not-store` feature and must never be persisted anywhere.
+	 *
+	 * @param object $contact_form CF7 contact form.
+	 * @param string $field_name   Form-tag name.
+	 * @return bool
+	 */
+	protected static function is_do_not_store_field( $contact_form, $field_name ) {
+		if ( ! method_exists( $contact_form, 'scan_form_tags' ) ) {
+			return false;
+		}
+
+		$tags = $contact_form->scan_form_tags(
+			array(
+				'name'    => $field_name,
+				'feature' => 'do-not-store',
+			)
+		);
+
+		return ! empty( $tags );
 	}
 
 	/**

@@ -431,6 +431,8 @@ In WP admin, deschideti **Contact > Contact Forms** si dati click pe orice formu
 
 - **Lastname field** - Optional. La fel ca Firstname, dar pentru atributul lastname (nume).
 
+> **Acelasi camp pentru ambele:** cand acelasi form-tag este selectat si la **Firstname field** si la **Lastname field** - cazul obisnuit pentru un formular cu un singur camp "Nume complet" - valoarea este impartita in loc sa fie trimisa de doua ori. Ultimul cuvant devine lastname, iar tot ce este inainte devine firstname, deci "Ion Mihai Popescu" este salvat ca firstname "Ion Mihai" si lastname "Popescu". O valoare fara spatiu ramane ca firstname.
+
 - **Phone field** - Optional. Alegeti care form-tag detine numarul de telefon al abonatului. Cand este setat, valoarea campului este trimisa ca proprietate `phone` a abonatului.
 
 - **Send as properties** - O lista de checkbox-uri cu toate form-tag-urile din template. Fiecare camp bifat este trimis catre Newsman ca proprietate de abonat avand ca cheie numele form-tag-ului. Campurile Email/Firstname/Lastname/Phone selectate sunt afisate dar dezactivate — nu pot fi si proprietati, deoarece sunt deja folosite prin canalele dedicate. Implicit: fiecare tag non-sistem cu exceptia celor patru campuri rezervate este bifat.

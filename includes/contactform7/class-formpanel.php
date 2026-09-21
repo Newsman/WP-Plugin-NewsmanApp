@@ -440,9 +440,13 @@ class FormPanel {
 											$is_lastname_field  = ( '' !== $prop['lastname_field'] && $choice['name'] === $prop['lastname_field'] );
 											$is_phone_field     = ( '' !== $prop['phone_field'] && $choice['name'] === $prop['phone_field'] );
 											$is_reserved        = ( $is_email_field || $is_firstname_field || $is_lastname_field || $is_phone_field );
-											$default_on         = empty( $prop['send_fields'] )
-												? ! $is_reserved
-												: isset( $send_fields_set[ $choice['name'] ] );
+											// Once the panel has been saved the stored selection is authoritative,
+											// including an empty one; only a form that was never configured falls
+											// back to pre-checking every non-reserved field.
+											$is_configured = ! empty( $prop['send_fields_configured'] ) || ! empty( $prop['send_fields'] );
+											$default_on    = $is_configured
+												? isset( $send_fields_set[ $choice['name'] ] )
+												: ! $is_reserved;
 											?>
 											<li>
 												<label>
@@ -542,16 +546,17 @@ class FormPanel {
 		}
 
 		$prop = array(
-			'enable'          => ! empty( $posted['enable'] ),
-			'newsletter_form' => ! empty( $posted['newsletter_form'] ),
-			'list_id'         => $list_id,
-			'segment_id'      => $segment_id,
-			'optin_mode'      => $optin_mode,
-			'email_field'     => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
-			'firstname_field' => isset( $posted['firstname_field'] ) ? sanitize_text_field( (string) $posted['firstname_field'] ) : '',
-			'lastname_field'  => isset( $posted['lastname_field'] ) ? sanitize_text_field( (string) $posted['lastname_field'] ) : '',
-			'phone_field'     => isset( $posted['phone_field'] ) ? sanitize_text_field( (string) $posted['phone_field'] ) : '',
-			'send_fields'     => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
+			'enable'                 => ! empty( $posted['enable'] ),
+			'newsletter_form'        => ! empty( $posted['newsletter_form'] ),
+			'list_id'                => $list_id,
+			'segment_id'             => $segment_id,
+			'optin_mode'             => $optin_mode,
+			'email_field'            => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
+			'firstname_field'        => isset( $posted['firstname_field'] ) ? sanitize_text_field( (string) $posted['firstname_field'] ) : '',
+			'lastname_field'         => isset( $posted['lastname_field'] ) ? sanitize_text_field( (string) $posted['lastname_field'] ) : '',
+			'phone_field'            => isset( $posted['phone_field'] ) ? sanitize_text_field( (string) $posted['phone_field'] ) : '',
+			'send_fields'            => array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $send_fields_raw ) ) ) ),
+			'send_fields_configured' => true,
 		);
 
 		/**
@@ -676,16 +681,19 @@ class FormPanel {
 	 */
 	public static function defaults() {
 		return array(
-			'enable'          => false,
-			'newsletter_form' => false,
-			'list_id'         => '',
-			'segment_id'      => '',
-			'optin_mode'      => 'single',
-			'email_field'     => '',
-			'firstname_field' => '',
-			'lastname_field'  => '',
-			'phone_field'     => '',
-			'send_fields'     => array(),
+			'enable'                 => false,
+			'newsletter_form'        => false,
+			'list_id'                => '',
+			'segment_id'             => '',
+			'optin_mode'             => 'single',
+			'email_field'            => '',
+			'firstname_field'        => '',
+			'lastname_field'         => '',
+			'phone_field'            => '',
+			'send_fields'            => array(),
+			// Distinguishes "never configured" (pre-check sensible defaults in the panel)
+			// from "explicitly saved with nothing selected" (send no properties at all).
+			'send_fields_configured' => false,
 		);
 	}
 

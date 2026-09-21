@@ -23,9 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Subscriber retriever backed by Contact Form 7 submissions persisted by Flamingo.
  *
  * Reads from the `flamingo_inbound` CPT scoped by the `flamingo_inbound_channel`
- * taxonomy term that matches the CF7 form's slug. Per-row field values live in
- * `wp_postmeta` under `_field_<formTagName>` keys; the IP address lives inside
- * the serialized `_meta` array (`remote_ip`).
+ * taxonomy term recorded on the CF7 form (see `resolve_channel_slug()`). Per-row
+ * field values live in `wp_postmeta` under `_field_<formTagName>` keys; the IP
+ * address lives inside the serialized `_meta` array (`remote_ip`).
  *
  * Filters supported: `created_at`, `subscriber_id`(s), `email`, `firstname`, `lastname`.
  * Sorts supported: `created_at`, `email`, `subscriber_id`. `customer_id`/`modified_at`
@@ -167,7 +167,7 @@ class SubscribersContactForm7 extends AbstractRetriever implements RetrieverInte
 		}
 
 		$prop      = (array) $contact_form->prop( CF7FormPanel::PROPERTY );
-		$form_slug = get_post_field( 'post_name', $form_post_id );
+		$form_slug = self::resolve_channel_slug( $form_post_id );
 
 		$email_field     = isset( $prop['email_field'] ) ? trim( (string) $prop['email_field'] ) : '';
 		$firstname_field = isset( $prop['firstname_field'] ) ? trim( (string) $prop['firstname_field'] ) : '';
@@ -297,6 +297,36 @@ class SubscribersContactForm7 extends AbstractRetriever implements RetrieverInte
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Resolve the Flamingo channel slug for a Contact Form 7 form.
+	 *
+	 * Contact Form 7 records the channel term id on the form itself (`_flamingo` postmeta)
+	 * the first time it hands a submission to Flamingo, so that term is authoritative: it
+	 * survives both the `__trashed` suffix WordPress appends to `post_name` when the form
+	 * is moved to Trash and any `-2` suffix `wp_insert_term()` added on a slug collision.
+	 * Falls back to the form slug (trash suffix stripped) for forms whose channel was
+	 * created before the meta existed.
+	 *
+	 * @param int $form_post_id CF7 form post ID.
+	 * @return string Channel slug, or empty string when it cannot be resolved.
+	 */
+	protected static function resolve_channel_slug( $form_post_id ) {
+		$flamingo_meta = get_post_meta( (int) $form_post_id, '_flamingo', true );
+		if ( is_array( $flamingo_meta ) && ! empty( $flamingo_meta['channel'] ) ) {
+			$term = get_term( (int) $flamingo_meta['channel'], 'flamingo_inbound_channel' );
+			if ( $term instanceof \WP_Term && '' !== (string) $term->slug ) {
+				return (string) $term->slug;
+			}
+		}
+
+		$slug = (string) get_post_field( 'post_name', (int) $form_post_id );
+		if ( 'trash' === (string) get_post_field( 'post_status', (int) $form_post_id ) ) {
+			$slug = (string) preg_replace( '/__trashed$/', '', $slug );
+		}
+
+		return $slug;
 	}
 
 	/**

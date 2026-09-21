@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.26
+Stable tag: 3.7.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,12 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.27 =
+* Fix the Contact Form 7 subscriber export returning no rows when the source form is in the Trash: the Flamingo channel is now resolved from the form's own channel term instead of its `post_name`, which WordPress renames with a `__trashed` suffix. The export returned an empty list rather than an error, so the shop silently looked like it had no subscribers.
+* Fix doubled names on Contact Form 7 submissions: when the same form field is selected as both **Firstname field** and **Lastname field** (a form with a single "Full name" field), the value is now split on whitespace - the last word becomes the lastname and everything before it the firstname - instead of being sent as both. A value with no space is kept as the firstname.
+* Skip Newsman processing for Contact Form 7 submissions made in demo mode or on forms carrying the `do_not_store: on` additional setting, and exclude form-tags flagged `do-not-store` from the subscriber properties - the same rules Contact Form 7 applies before handing a submission to Flamingo.
+* Fix the Contact Form 7 "Send as properties" selection not persisting when every field is unchecked; the fields were silently re-enabled on the next save.
 
 = 3.7.26 =
 * Exports: fixed sort fields being silently dropped by WordPress. The product export default sort and the explicit `product_id`, `created_at` and `modified_at` sorts now map to orderby keys WP_Query and both WooCommerce order stores actually accept ('ID', 'date', 'modified'); previously the invalid keys were discarded without an error and rows fell back to the non-unique post date, so small-page exports could repeat and skip products.

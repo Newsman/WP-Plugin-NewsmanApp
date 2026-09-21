@@ -420,6 +420,8 @@ In the WP admin, open **Contact > Contact Forms** and click any form to edit it.
 
 - **Lastname field** - Optional. Same as Firstname, but for the lastname attribute.
 
+> **Picking one field for both:** when the same form-tag is selected for **Firstname field** and **Lastname field** - the usual case for a form with a single "Full name" field - the value is split rather than sent twice. The last word becomes the lastname and everything before it the firstname, so "Ion Mihai Popescu" is stored as firstname "Ion Mihai" and lastname "Popescu". A value with no space is kept as the firstname.
+
 - **Phone field** - Optional. Pick which form-tag holds the subscriber's phone. When set, the field value is sent as the subscriber's `phone` property.
 
 - **Send as properties** - A checkbox list of every form-tag in the template. Each checked field is sent to Newsman as a subscriber property keyed by the form-tag name. The selected Email/Firstname/Lastname/Phone fields are shown but disabled — they cannot also be properties because they are already used through their dedicated channels. Defaults: every non-system tag except the four reserved fields is checked.
