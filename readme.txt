@@ -3,7 +3,7 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
-Tested up to: 7.1.2
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 3.7.28
 License: GPLv2 or later
@@ -113,7 +113,7 @@ Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Sm
 == Changelog ==
 
 = 3.7.28 =
-* Declare compatibility with WordPress 7.1.2.
+* Declare compatibility with WordPress 7.1.
 
 = 3.7.27 =
 * Fix the Contact Form 7 subscriber export returning no rows when the source form is in the Trash: the Flamingo channel is now resolved from the form's own channel term instead of its `post_name`, which WordPress renames with a `__trashed` suffix. The export returned an empty list rather than an error, so the shop silently looked like it had no subscribers.
