@@ -3,9 +3,9 @@ Contributors: newsmanapp
 Donate link: 
 Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
-Tested up to: 7.0
+Tested up to: 7.1.2
 Requires PHP: 7.4
-Stable tag: 3.7.27
+Stable tag: 3.7.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,9 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.28 =
+* Declare compatibility with WordPress 7.1.2.
 
 = 3.7.27 =
 * Fix the Contact Form 7 subscriber export returning no rows when the source form is in the Trash: the Flamingo channel is now resolved from the form's own channel term instead of its `post_name`, which WordPress renames with a `__trashed` suffix. The export returned an empty list rather than an error, so the shop silently looked like it had no subscribers.
