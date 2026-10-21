@@ -43,7 +43,7 @@ class Purchase extends AbstractAction {
 		}
 
 		$order = wc_get_order( $order_id );
-		if ( ! $order ) {
+		if ( ! $order || ! $this->can_view_order( $order ) ) {
 			return '';
 		}
 
@@ -64,14 +64,37 @@ class Purchase extends AbstractAction {
 		$currency_code = version_compare( WC_VERSION, '3.0', '<' ) ? $order->get_order_currency() :
 			$order->get_currency();
 
-		$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $order->get_billing_email() ) ) . '", ';
-		if ( $this->remarketing_config->is_send_telephone() && ! empty( $order->get_billing_phone() ) ) {
-			$js .= 'phone: "' . esc_attr( esc_html( $this->telephone->clean( $order->get_billing_phone() ) ) ) . '", ';
+		$order_number = (string) $order->get_order_number();
+
+		$js  = "(function() {\n";
+		$js .= $this->get_delivery_guard_js( $order_number );
+
+		if ( '' !== (string) $order->get_billing_email() ) {
+			$js .= 'var nzmIdentity = { email: "' . esc_attr( esc_html( $order->get_billing_email() ) ) . '", ';
+			if ( $this->remarketing_config->is_send_telephone() && ! empty( $order->get_billing_phone() ) ) {
+				$js .= 'phone: "' . esc_attr( esc_html( $this->telephone->clean( $order->get_billing_phone() ) ) ) . '", ';
+			}
+			$js .= 'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
+				'last_name: "' . esc_attr( esc_html( $order->get_billing_last_name() ) ) . '" };';
+		} else {
+			$js .= 'var nzmIdentity = null;';
 		}
-		$js .= 'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
-			'last_name: "' . esc_attr( esc_html( $order->get_billing_last_name() ) ) . '" });';
 
 		$js .= " _nzm.run( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";
+
+		$page_view = new \Newsman\Remarketing\Action\PageView();
+		$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
+		$page_view_js = $page_view->get_js();
+
+		$js .= '
+		var nzmPurchaseQueued = false;
+		function nzmSendPurchase() {
+			if (nzmPurchaseQueued) {
+				return;
+			}
+			nzmPurchaseQueued = true;
+			try { nzmWatchDelivery(0); } catch (e) {}
+		';
 
 		// Add order items.
 		if ( $order->get_items() ) {
@@ -87,24 +110,36 @@ class Purchase extends AbstractAction {
 		}
 
 		$js .= "
-		var orderV = localStorage.getItem('" . esc_js( $order->get_order_number() ) . "');
-		var orderN = '" . esc_js( $order->get_order_number() ) . "';
-		localStorage.setItem(orderN, 'true');
-		if (typeof orderV === 'undefined' || (typeof orderV !== 'undefined' && (orderV === null || orderV === ''))) {
 			_nzm.run( 'ec:setAction', 'purchase', {
-				'id': '" . esc_js( $order->get_order_number() ) . "',
+				'id': '" . esc_js( $order_number ) . "',
 				'affiliation': '" . esc_js( get_bloginfo( 'name' ) ) . "',
 				'revenue': '" . esc_js( $order->get_total() ) . "',
 				'tax': '" . esc_js( $order->get_total_tax() ) . "',
 				'shipping': '" . esc_js( $shipping_total ) . "',
 				'currency': '" . esc_js( $currency_code ) . "'
 			} );
+			" . $page_view_js . '
 		}
-		";
-
-		$page_view = new \Newsman\Remarketing\Action\PageView();
-		$page_view->set_data( array( \Newsman\Remarketing\Action\PageView::MARK_PAGE_VIEW_SENT_FLAG => true ) );
-		$js .= $page_view->get_js();
+		if (nzmAlreadySent) {
+			if (nzmIdentity) {
+				_nzm.identify(nzmIdentity);
+			}
+			' . $page_view_js . '
+			return;
+		}
+		// The tracker drops a purchase from a visitor without a tracking id, so a
+		// visitor not identified yet sends it once identify has stored the id.
+		if (!nzmIdentity) {
+			nzmSendPurchase();
+		} else if (/(?:^|;\\s*)_nzm_id_[^=]*=[^;]/.test(document.cookie)) {
+			_nzm.identify(nzmIdentity);
+			nzmSendPurchase();
+		} else {
+			_nzm.identify(nzmIdentity, undefined, nzmSendPurchase);
+			setTimeout(nzmSendPurchase, 5000);
+		}
+		})();
+		';
 
 		return apply_filters(
 			'newsman_remarketing_action_purchase_js',
@@ -113,6 +148,209 @@ class Purchase extends AbstractAction {
 				'order' => $order,
 			)
 		);
+	}
+
+	/**
+	 * Can the current visitor see this order on the order received page.
+	 * Same rules as WooCommerce: the order key from the URL must match and an
+	 * order placed from a customer account needs that customer logged in.
+	 *
+	 * @param \WC_Order $order Order.
+	 * @return bool
+	 */
+	protected function can_view_order( $order ) {
+		if ( ! $order instanceof \WC_Order ) {
+			return false;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- The order key is compared with hash_equals(), a nonce cannot apply to links emailed to the customer.
+		$order_key = ( empty( $_GET['key'] ) || ! is_string( $_GET['key'] ) ) ? '' : sanitize_text_field( wp_unslash( $_GET['key'] ) );
+		$order_key = apply_filters( 'woocommerce_thankyou_order_key', $order_key );
+
+		if ( ! is_string( $order_key ) || '' === $order_key || ! hash_equals( (string) $order->get_order_key(), $order_key ) ) {
+			return false;
+		}
+
+		$order_customer_id = (int) $order->get_customer_id();
+		if ( $order_customer_id ) {
+			$verify_known_shoppers = apply_filters( 'woocommerce_order_received_verify_known_shoppers', true );
+			$can_view              = ! $verify_known_shoppers || get_current_user_id() === $order_customer_id;
+		} else {
+			$can_view = ! $this->guest_should_verify_email( $order );
+		}
+
+		return (bool) apply_filters( 'newsman_remarketing_action_purchase_can_view_order', $can_view, array( 'order' => $order ) );
+	}
+
+	/**
+	 * A guest order is shown without asking for the billing email while it is new
+	 * (grace period) or when this visitor's session or posted email matches it.
+	 *
+	 * @param \WC_Order $order Order.
+	 * @return bool
+	 */
+	protected function guest_should_verify_email( $order ) {
+		$billing_email = (string) $order->get_billing_email();
+		if ( '' === $billing_email ) {
+			return false;
+		}
+
+		$grace_period = (int) apply_filters( 'woocommerce_order_email_verification_grace_period', 10 * MINUTE_IN_SECONDS, $order, 'order-received' );
+		$date_created = $order->get_date_created();
+		if ( $date_created instanceof \WC_DateTime && time() - $date_created->getTimestamp() <= $grace_period ) {
+			return false;
+		}
+
+		$session = function_exists( 'WC' ) ? WC()->session : null;
+		if ( $session instanceof \WC_Session ) {
+			if ( (int) $order->get_id() === (int) $session->get( 'store_api_draft_order' ) ) {
+				return false;
+			}
+			$customer = $session->get( 'customer' );
+			if ( is_array( $customer ) && ! empty( $customer['email'] ) && 0 === strcasecmp( $customer['email'], $billing_email ) ) {
+				return false;
+			}
+		}
+
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- The nonce is verified right here.
+		if ( isset( $_POST['email'] ) ) {
+			$nonce = '';
+			if ( isset( $_POST['check_submission'] ) ) {
+				$nonce = sanitize_key( wp_unslash( $_POST['check_submission'] ) );
+			} elseif ( isset( $_POST['_wpnonce'] ) ) {
+				$nonce = sanitize_key( wp_unslash( $_POST['_wpnonce'] ) );
+			}
+			$supplied_email = sanitize_email( wp_unslash( $_POST['email'] ) );
+			if ( '' !== $nonce && ( wp_verify_nonce( $nonce, 'wc_verify_email' ) || wp_verify_nonce( $nonce, 'wc_create_account' ) ) &&
+				'' !== $supplied_email && 0 === strcasecmp( $supplied_email, $billing_email )
+			) {
+				return false;
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+		// phpcs:ignore WordPress.WP.Capabilities.Unknown -- WooCommerce capability.
+		if ( current_user_can( 'read_private_shop_orders' ) ) {
+			return false;
+		}
+
+		return (bool) apply_filters( 'woocommerce_order_email_verification_required', true, $order, 'order-received' );
+	}
+
+	/**
+	 * Remembers in localStorage the orders whose purchase Newsman received, so a
+	 * reload of the order received page does not send the purchase again.
+	 *
+	 * An order counts as received only after the tracker confirmed a purchase
+	 * (_nzm.onPurchase, called on an OK response) while the request for this
+	 * order, issued on this page, is no longer waiting in the tracker's
+	 * nzm_retry queue. Anything less (tracker blocked, request failed, consent
+	 * denied, storage unavailable) leaves the order unmarked and the purchase is
+	 * sent again on the next view.
+	 *
+	 * @param string $order_number Order number sent as the purchase id.
+	 * @return string
+	 */
+	protected function get_delivery_guard_js( $order_number ) {
+		$js = <<<'JS'
+var nzmOrderId = '__ORDER_ID__';
+var nzmSentKey = 'newsman_purchases_sent';
+function nzmSentOrders() {
+	try {
+		var sent = JSON.parse(window.localStorage.getItem(nzmSentKey) || '{}');
+		return sent && typeof sent === 'object' ? sent : {};
+	} catch (e) {
+		return {};
+	}
+}
+function nzmIsOrderPurchase(url) {
+	var u = String(url);
+	for (var i = 0; i < 3; i++) {
+		try {
+			var decoded = decodeURIComponent(u);
+			if (decoded === u) {
+				break;
+			}
+			u = decoded;
+		} catch (e) {
+			break;
+		}
+	}
+	var id = nzmOrderId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	return u.indexOf('p[pa]=purchase') !== -1 && new RegExp('[?&]p\\[ti\\]=' + id + '(&|$)').test(u);
+}
+function nzmPurchaseDelivered() {
+	var requests = window._nzm && window._nzm.stats && window._nzm.stats.requests;
+	var issued = false;
+	for (var i = 0; requests && i < requests.length; i++) {
+		if (nzmIsOrderPurchase(requests[i])) {
+			issued = true;
+		}
+	}
+	if (!issued) {
+		return false;
+	}
+	var pending = JSON.parse(window.localStorage.getItem('nzm_retry') || '[]');
+	if (!Array.isArray(pending)) {
+		return false;
+	}
+	for (var j = 0; j < pending.length; j++) {
+		if (!pending[j] || typeof pending[j].url !== 'string' || nzmIsOrderPurchase(pending[j].url)) {
+			return false;
+		}
+	}
+	return true;
+}
+function nzmMarkSent() {
+	try {
+		if (!nzmPurchaseDelivered()) {
+			return;
+		}
+		var sent = nzmSentOrders();
+		var ids = [];
+		sent[nzmOrderId] = Date.now();
+		for (var id in sent) {
+			if (Object.prototype.hasOwnProperty.call(sent, id)) {
+				ids.push(id);
+			}
+		}
+		ids.sort(function (a, b) { return sent[b] - sent[a]; });
+		for (var k = 50; k < ids.length; k++) {
+			delete sent[ids[k]];
+		}
+		window.localStorage.setItem(nzmSentKey, JSON.stringify(sent));
+	} catch (e) {}
+}
+function nzmWatchDelivery(attempt) {
+	var nzm = window._nzm;
+	// Until t.js loads _nzm is the stub array, which the tracker then replaces.
+	if (!nzm || Array.isArray(nzm)) {
+		if (attempt < 600) {
+			setTimeout(function () { nzmWatchDelivery(attempt + 1); }, 100);
+		}
+		return;
+	}
+	var previous = nzm.onPurchase;
+	nzm.onPurchase = function () {
+		nzmMarkSent();
+		if (typeof previous === 'function') {
+			return previous.apply(this, arguments);
+		}
+	};
+}
+// Orders viewed before this guard existed were flagged under their bare number.
+function nzmLegacySent() {
+	try {
+		return !!window.localStorage.getItem(nzmOrderId);
+	} catch (e) {
+		return false;
+	}
+}
+var nzmAlreadySent = !!nzmSentOrders()[nzmOrderId] || nzmLegacySent();
+
+JS;
+
+		return str_replace( '__ORDER_ID__', esc_js( $order_number ), $js );
 	}
 
 	/**

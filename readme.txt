@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.28
+Stable tag: 3.7.29
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,11 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.29 =
+* Fix the order received page exposing an order's email, phone, name and products in the page source (remarketing purchase script) to visitors who are not allowed to see that order. The script is now printed only when WooCommerce itself shows the order: the order key in the URL must match, an order placed from a customer account needs that customer logged in, and a guest order past WooCommerce's email verification grace period needs the visitor's own session or the confirmed billing email. New filter `newsman_remarketing_action_purchase_can_view_order`.
+* Fix purchases lost on the order received page for visitors the Newsman tracker had not identified yet (the tracker drops a purchase without a tracking id): the visitor is now identified first and the purchase is sent once identify has completed.
+* Fix the order received page reload guard: an order is remembered as sent (localStorage `newsman_purchases_sent`) only after Newsman confirmed it received the purchase, so a failed, blocked or dropped purchase is sent again on the next view instead of being lost. A reload of a delivered order still identifies the customer and sends the page view, but not the purchase again.
 
 = 3.7.28 =
 * Declare compatibility with WordPress 7.1.
