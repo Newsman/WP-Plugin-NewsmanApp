@@ -1,3 +1,9 @@
 /composer.lock
 /vendor
 /docs
+/tests/wordpress
+/tests/tmp
+/phpunit.xml
+/.phpcs.xml
+/.phpunit.result.cache
+/.claude

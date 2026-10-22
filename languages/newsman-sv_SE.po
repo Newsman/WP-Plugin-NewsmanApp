@@ -19,7 +19,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: newsmanapp.php
 msgid "NewsmanApp"
-msgstr ""
+msgstr "NewsmanApp"
 
 #. Plugin URI of the plugin
 #: newsmanapp.php
@@ -209,7 +209,7 @@ msgstr "Ett fel har inträffat."
 
 #: includes/admin/settings/class-sms.php:209
 msgid "Invalid Credentials or no SMS list present"
-msgstr ""
+msgstr "Ogiltiga inloggningsuppgifter eller ingen SMS-lista finns"
 
 #: includes/admin/settings/class-sms.php:248
 #: includes/admin/settings/class-sms.php:268
@@ -1629,7 +1629,7 @@ msgstr "Spara"
 
 #: src/backend-remarketing.php:63
 msgid "Invalid credentials!"
-msgstr ""
+msgstr "Ogiltiga inloggningsuppgifter!"
 
 #: src/backend-remarketing.php:68 src/backend-settings.php:310
 #: src/backend-sms.php:273 src/backend-sms.php:300 src/backend-sms.php:327
@@ -2425,11 +2425,11 @@ msgstr "Välj ett segment av prenumeranter."
 
 #: src/backend-sync.php:100
 msgid "The segment list updates automatically when you change the list above."
-msgstr ""
+msgstr "Segmentlistan uppdateras automatiskt när du ändrar listan ovan."
 
 #: src/backend-sync.php:101
 msgid "Please save the segment after the list ID was changed."
-msgstr ""
+msgstr "Spara segmentet efter att list-ID har ändrats."
 
 #: src/backend-sync.php:106
 msgid "Select an SMS list"

@@ -43,6 +43,7 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 	 * @param null|int $blog_id WP blog ID.
 	 * @return array
 	 * @throws \Exception On errors.
+	 * @throws \Newsman\Export\V1\ApiV1Exception On a date filter operator that cannot be applied in API v1 context.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
 		if ( empty( $data['wp_newsman_internal_role'] ) ) {
@@ -96,11 +97,15 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 			$value    = $filter['value'];
 
 			if ( 'user_registered' === $field ) {
-				$date_query[] = array(
-					'column'  => 'user_registered',
-					'value'   => $value,
-					'compare' => $operator,
-				);
+				$clause = $this->build_date_query_clause( 'user_registered', $filter['operator'], $value );
+				if ( null === $clause ) {
+					if ( isset( $data['_v1_filter_fields'] ) ) {
+						// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+						throw new \Newsman\Export\V1\ApiV1Exception( 1007, 'Invalid filter operator for created_at: ' . $filter['operator'], 400 );
+					}
+					continue;
+				}
+				$date_query[] = $clause;
 			} elseif ( 'ID' === $field ) {
 				if ( 'in' === $filter['operator'] ) {
 					$args['include'] = (array) $value;
@@ -200,6 +205,52 @@ class Users extends AbstractRetriever implements RetrieverInterface {
 		}
 
 		return parent::process_list_parameters( $data, $blog_id );
+	}
+
+	/**
+	 * Build a WP_Date_Query clause for a date filter.
+	 *
+	 * WP_Date_Query knows no generic value/compare pair; a range is expressed
+	 * with after/before plus inclusive. Date-only values are expanded by
+	 * WordPress to the start of the day for "after" and to the end of the day
+	 * for "before", so "to 2024-02-28" covers the whole of that day and
+	 * "eq 2024-02-28" covers exactly that day.
+	 *
+	 * @param string $column   Date column name.
+	 * @param string $operator Filter operator (from, to, gt, lt, gteq, lteq, eq).
+	 * @param string $value    Date value.
+	 * @return array|null Clause, or null when the operator cannot be applied to a date.
+	 */
+	protected function build_date_query_clause( $column, $operator, $value ) {
+		$clause = array( 'column' => $column );
+		switch ( $operator ) {
+			case 'from':
+			case 'gteq':
+				$clause['after']     = $value;
+				$clause['inclusive'] = true;
+				break;
+			case 'gt':
+				$clause['after']     = $value;
+				$clause['inclusive'] = false;
+				break;
+			case 'to':
+			case 'lteq':
+				$clause['before']    = $value;
+				$clause['inclusive'] = true;
+				break;
+			case 'lt':
+				$clause['before']    = $value;
+				$clause['inclusive'] = false;
+				break;
+			case 'eq':
+				$clause['after']     = $value;
+				$clause['before']    = $value;
+				$clause['inclusive'] = true;
+				break;
+			default:
+				return null;
+		}
+		return $clause;
 	}
 
 	/**

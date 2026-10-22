@@ -165,6 +165,7 @@ class SmsLists_Transient {
 	 *
 	 * @param int      $blog_id WP blog ID.
 	 * @param int|null $user_id Optional. When set, deletes only this user's entry.
+	 * @param bool     $fresh_only Optional. When true, only the transient is dropped and the stale fallback option is kept.
 	 * @return void
 	 */
 	public static function invalidate( $blog_id, $user_id = null, $fresh_only = false ) {

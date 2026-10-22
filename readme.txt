@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.29
+Stable tag: 3.7.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,12 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.30 =
+* Fix the `created_at` filter being ignored on the exports built from WordPress users (customer export and the WordPress users subscriber export): the date condition was handed to WP_User_Query in a form it does not understand, so a filtered export returned every user. The from/to/gt/lt/gteq/lteq/eq operators now apply, and an operator that cannot be applied to a date returns API v1 error 1007.
+* Add an automated test suite (PHPUnit on the WordPress test library, with WooCommerce when installed) covering the API v1 payload parser, export authentication, list parameters, users/customers/orders/product feed exports, and a GitHub Actions workflow running PHP lint on 7.4-8.4, the WordPress coding standards and the tests. See tests/README.md.
+* Complete the German, Spanish, French, Italian, Dutch and Swedish translations.
+* Fix a fatal error on PHP 7.4 when the account subscribe form handles a "too many requests" answer from Newsman: the API error class lived in a namespace segment named `Abstract`, a reserved word before PHP 8.0.
 
 = 3.7.29 =
 * Fix the order received page exposing an order's email, phone, name and products in the page source (remarketing purchase script) to visitors who are not allowed to see that order. The script is now printed only when WooCommerce itself shows the order: the order key in the URL must match, an order placed from a customer account needs that customer logged in, and a guest order past WooCommerce's email verification grace period needs the visitor's own session or the confirmed billing email. New filter `newsman_remarketing_action_purchase_can_view_order`.

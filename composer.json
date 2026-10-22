@@ -4,8 +4,9 @@
 	"license": "GPL-2.0-or-later",
 	"type": "wordpress-plugin",
 	"extra": {
-    	"installer-name": "newsmanapp"
-  	},
+		"installer-name": "newsmanapp",
+		"wordpress-install-dir": "tests/wordpress"
+	},
 	"authors": [
 		{
 			"name": "Newsman",
@@ -37,13 +38,24 @@
 		"composer/installers": "^1.0 || ^2.0",
 		"greenlion/php-sql-parser": "^4.0"
 	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+		"phpunit/phpunit": "^9.6",
+		"roots/wordpress": "^7.1",
+		"wp-coding-standards/wpcs": "^3.4",
+		"wp-phpunit/wp-phpunit": "^7.1",
+		"yoast/phpunit-polyfills": "^3.1"
+	},
 	"autoload": {
 		"classmap": [
 			"includes"
 		],
 		"psr-4": {
 			"Newsman\\": ""
-		}
+		},
+		"exclude-from-classmap": [
+			"/tests/"
+		]
 	},
 	"config": {
 		"platform": {
@@ -58,5 +70,11 @@
 		"preferred-install": "dist",
 		"prepend-autoloader": false,
 		"sort-packages": true
+	},
+	"scripts": {
+		"lint": "find . -path ./vendor -prune -o -path ./tests/wordpress -prune -o -path ./tests/tmp -prune -o -name '*.php' -print0 | xargs -0 -n1 -P4 php -l",
+		"phpcs": "phpcs",
+		"phpcbf": "phpcbf",
+		"test": "phpunit"
 	}
 }

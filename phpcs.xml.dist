@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="NewsmanApp">
+	<description>WordPress Coding Standards for the NewsmanApp plugin.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/tests/wordpress/*</exclude-pattern>
+	<exclude-pattern>*/tests/tmp/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+	<arg name="parallel" value="4"/>
+
+	<rule ref="WordPress"/>
+
+	<!-- Test files follow the PHPUnit naming convention (FooTest.php). -->
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+</ruleset>

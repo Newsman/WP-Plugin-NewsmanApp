@@ -9,7 +9,7 @@
  * @package NewsmanApp for WordPress
  */
 
-namespace Newsman\Api\Error\Abstract;
+namespace Newsman\Api\Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * API client error abstract
  *
- * @class \Newsman\Api\Error\Abstract\Error
+ * @class \Newsman\Api\Error\AbstractError
  */
-abstract class Error {
+abstract class AbstractError {
 }

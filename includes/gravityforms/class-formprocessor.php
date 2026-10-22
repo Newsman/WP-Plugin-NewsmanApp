@@ -229,11 +229,11 @@ class FormProcessor {
 	 * @return string
 	 */
 	protected static function property_key( $form, $field_id ) {
-		$label    = '';
-		$top_id   = (string) ( (int) $field_id ); // 1.3 -> '1', 2 -> '2'
-		$fields   = isset( $form['fields'] ) && is_array( $form['fields'] ) ? $form['fields'] : array();
-		$parent   = null;
-		$sub_id   = (string) $field_id;
+		$label  = '';
+		$top_id = (string) ( (int) $field_id ); // Keeps only the integer part of a dotted sub-input id.
+		$fields = isset( $form['fields'] ) && is_array( $form['fields'] ) ? $form['fields'] : array();
+		$parent = null;
+		$sub_id = (string) $field_id;
 		foreach ( $fields as $f ) {
 			$f = (array) $f;
 			if ( isset( $f['id'] ) && (string) $f['id'] === $top_id ) {

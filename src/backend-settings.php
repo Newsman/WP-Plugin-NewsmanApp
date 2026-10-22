@@ -467,8 +467,8 @@ $form_values = $this->get_form_values();
 						</tr>
 						<?php
 						global $wpdb;
-						$wpforms_export_on    = ( ! empty( $form_values['newsman_wpforms_export_subscribers'] ) && 'on' === $form_values['newsman_wpforms_export_subscribers'] );
-						$wpforms_forms        = $this->get_wpforms_newsletter_forms();
+						$wpforms_export_on = ( ! empty( $form_values['newsman_wpforms_export_subscribers'] ) && 'on' === $form_values['newsman_wpforms_export_subscribers'] );
+						$wpforms_forms     = $this->get_wpforms_newsletter_forms();
 						// WPForms Lite does not create the entries tables; only Pro does. We still
 						// render the row (per the chosen UX) but flag the empty-state.
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange

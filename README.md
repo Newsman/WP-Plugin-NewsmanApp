@@ -46,6 +46,18 @@ composer dump-autoload -o
 
 - If selected modal window -> Activate for newsletter subscription -> it will automatically be displayed on the website.
 
+# Development
+
+Automated tests (PHPUnit on the WordPress test library, with optional WooCommerce) and the coding
+standards check are described in [tests/README.md](tests/README.md). They run in GitHub Actions on every
+push and pull request.
+
+```bash
+composer install
+vendor/bin/phpunit
+vendor/bin/phpcs
+```
+
 # License
 
 This code is released under [GPLv2 license](https://github.com/Newsman/WP-Plugin-NewsmanApp/blob/master/LICENSE) by [NewsmanApp - Smart Email Service Provider](https://www.newsman.com).

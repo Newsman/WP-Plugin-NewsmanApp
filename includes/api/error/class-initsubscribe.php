@@ -11,8 +11,6 @@
 
 namespace Newsman\Api\Error;
 
-use Newsman\Api\Error\Abstract\Error;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -23,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://kb.newsman.com/api/1.2/subscriber.initSubscribe
  * @class \Newsman\Api\Error\InitSubscribe
  */
-abstract class InitSubscribe extends Error {
+abstract class InitSubscribe extends AbstractError {
 	/**
 	 * Too many requests for this subscriber. Can only send once per 10 minutes
 	 */

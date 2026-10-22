@@ -50,7 +50,7 @@ class FormPanel {
 		'html',
 		'captcha',
 		'fileupload',
-		'password', // sensitive; exclude by default
+		'password', // Sensitive, excluded by default.
 		'creditcard',
 		'product',
 		'total',
