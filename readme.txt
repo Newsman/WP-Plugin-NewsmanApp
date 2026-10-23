@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.30
+Stable tag: 3.7.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,10 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.31 =
+* Reduce the requests made by the remarketing cart tracker when Theme Cart Compatibility is enabled: the Newsman cart endpoint (`?newsman_cart=getCart.json`) was requested on every page view, bypassing the page cache. It is now requested only when the WooCommerce cart cookies (`woocommerce_items_in_cart`, `woocommerce_cart_hash`) show that the cart may have changed, so visitors with an empty cart cause no extra request and an unchanged cart is not requested again on the next page. Cart changes made with AJAX are still always checked. With WooCommerce older than 3.2, without the cart hash cookie, or when the cart cookies are disabled or HttpOnly, the previous behaviour is kept. New filter `newsman_remarketing_cart_cookie_gate`.
+* Fix a cart change made while a cart tracker request was in progress (e.g. removing a product) being reported only on the next page view.
 
 = 3.7.30 =
 * Fix the `created_at` filter being ignored on the exports built from WordPress users (customer export and the WordPress users subscriber export): the date condition was handed to WP_User_Query in a form it does not understand, so a filtered export returned every user. The from/to/gt/lt/gteq/lteq/eq operators now apply, and an operator that cannot be applied to a date returns API v1 error 1007.

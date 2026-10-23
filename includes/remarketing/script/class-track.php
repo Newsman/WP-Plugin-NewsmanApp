@@ -230,7 +230,37 @@ class Track {
 	 * @return bool
 	 */
 	public function is_woo_commerce_exist() {
-		$exist = new \Newsman\Util\WooCommerceExist();
-		return $exist->exist();
+		return $this->get_woo_commerce_exist()->exist();
+	}
+
+	/**
+	 * Get WooCommerce exist utility
+	 *
+	 * @return \Newsman\Util\WooCommerceExist
+	 */
+	protected function get_woo_commerce_exist() {
+		return new \Newsman\Util\WooCommerceExist();
+	}
+
+	/**
+	 * Whether the cart tracker may skip getCart.json requests based on the WooCommerce
+	 * woocommerce_items_in_cart and woocommerce_cart_hash cookies.
+	 * WooCommerce sets them on add to cart, before the response is sent, only since 3.2.
+	 * They must also be set and readable by JavaScript (not HttpOnly).
+	 *
+	 * @return bool
+	 */
+	public function is_cart_cookie_gate_enabled() {
+		$exist   = $this->get_woo_commerce_exist();
+		$enabled = $exist->exist() && ! $exist->is_wc_before( '3.2.0' );
+		if ( $enabled ) {
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WooCommerce core filter.
+			$enabled = (bool) apply_filters( 'woocommerce_set_cookie_enabled', true, 'woocommerce_items_in_cart', '1', 0, false );
+		}
+		if ( $enabled ) {
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WooCommerce core filter.
+			$enabled = ! apply_filters( 'woocommerce_cookie_httponly', false, 'woocommerce_items_in_cart', '1', 0, false );
+		}
+		return (bool) apply_filters( 'newsman_remarketing_cart_cookie_gate', $enabled );
 	}
 }
