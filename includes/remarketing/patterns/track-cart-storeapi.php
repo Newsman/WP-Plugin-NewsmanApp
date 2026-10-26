@@ -7,6 +7,10 @@
  * returned cart into the Newsman remarketing `_nzm` cart by clearing it and
  * re-adding every product from the response.
  *
+ * Classic themes change the cart through wc-ajax and the cart page form, so
+ * the WooCommerce jQuery cart events and a changed cart cookie on page load
+ * request the Newsman cart endpoint once and replay it when it changed.
+ *
  * @package NewsmanApp for WordPress
  */
 
@@ -25,8 +29,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! $this->is_woo_commerce_exist() ) {
 	return '';
 }
-$site_url   = get_site_url();
-$cart_param = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
+$site_url    = get_site_url();
+$cart_param  = \Newsman\Remarketing\Cart\Handler\CartAjax::CART_PARAMETER;
+$cookie_gate = $this->is_cart_cookie_gate_enabled();
 ?>
 <script<?php esc_js( esc_html( $this->get_script_tag_additional_attributes() ) ); ?>>
 var isProd = true;
@@ -34,6 +39,12 @@ var NZM_STORE_BATCH_PATH = '/wc/store/v1/batch';
 var NZM_STORE_ADD_ITEM_PATH = '/wc/store/v1/cart/add-item';
 var NZM_CART_AJAX_URL = '<?php echo esc_url( rtrim( $site_url, '/' ) . '/' ); ?>' + '?newsman_cart=<?php echo esc_html( $cart_param ); ?>';
 var NZM_SESSION_SYNC_COOKIE = 'nzm_cart_sync';
+var NZM_CLASSIC_CART_EVENTS = 'added_to_cart removed_from_cart updated_wc_div wc_cart_emptied';
+var nzmCartCookieGate = <?php echo $cookie_gate ? 'true' : 'false'; ?>;
+var nzmClassicEventsHooked = false;
+var nzmCartRequestTimer = null;
+var nzmCartRequestRunning = false;
+var nzmCartRequestPending = false;
 
 function NewsmanDebugLog(message) {
 	if ((typeof isProd !== 'undefined') && isProd === true) {
@@ -148,26 +159,62 @@ function nzmSetSessionCookie(name, value) {
 	document.cookie = name + '=' + value + '; path=/; SameSite=Lax';
 }
 
-// Once per browser session, clear the Newsman remarketing cart and replay
-// the current WooCommerce cart into it. Runs when no nzm_cart_sync cookie
-// is present; ON mode has no equivalent because track-cart.php's
-// firstLoad=true branch in NewsmanAutoEvents already polls getCart.json on
-// every page. The cookie is set unconditionally after the XHR resolves —
-// including on failure — so a broken endpoint cannot cause a re-request on
-// every navigation.
-function nzmSessionBootstrap() {
-	if (nzmGetCookie(NZM_SESSION_SYNC_COOKIE)) {
-		NewsmanDebugLog('newsman remarketing: session sync cookie present, bootstrap skipped');
-		return;
+// Cart state from the WooCommerce cookies: 'empty', 'h:<cart hash>', or
+// 'unknown' when the cart has items but there is no cart hash cookie.
+function nzmCartCookieToken() {
+	var items = nzmGetCookie('woocommerce_items_in_cart');
+	if (!items || items === '0') {
+		return 'empty';
 	}
+	var hash = nzmGetCookie('woocommerce_cart_hash');
+	if (!hash || hash === '0') {
+		return 'unknown';
+	}
+	return 'h:' + hash;
+}
 
+// Products as sorted "id:quantity" pairs, or null when unknown.
+function nzmCartSignature(products) {
+	if (!Array.isArray(products)) {
+		return null;
+	}
+	var pairs = [];
+	for (var i = 0; i < products.length; i++) {
+		pairs.push(String(products[i].id) + ':' + String(products[i].quantity));
+	}
+	return pairs.sort().join(',');
+}
+
+function nzmLastCartSignature() {
+	try {
+		return nzmCartSignature(JSON.parse(sessionStorage.getItem('lastCart')));
+	} catch (e) {
+		return null;
+	}
+}
+
+// Request the Newsman cart endpoint and replay the cart. With onlyChanged the
+// cart is replayed only when it differs from the last one sent. The sync
+// cookie is set unconditionally after the XHR resolves, including on failure,
+// so a broken endpoint cannot cause a re-request on every navigation. It holds
+// the cart cookie state seen before the request when the cookies are readable.
+function nzmRequestCart(onlyChanged, done) {
 	var url = NZM_CART_AJAX_URL;
 	var sep = url.indexOf('?') >= 0 ? '&t=' : '?t=';
 	url = url + sep + Date.now();
 
+	var token = nzmCartCookieGate ? nzmCartCookieToken() : '1';
 	var xhr = new XMLHttpRequest();
+	var finished = false;
 	var markDone = function () {
-		nzmSetSessionCookie(NZM_SESSION_SYNC_COOKIE, '1');
+		if (finished) {
+			return;
+		}
+		finished = true;
+		nzmSetSessionCookie(NZM_SESSION_SYNC_COOKIE, token);
+		if (typeof done === 'function') {
+			done();
+		}
 	};
 
 	try {
@@ -184,6 +231,15 @@ function nzmSessionBootstrap() {
 			}
 			var parsed;
 			try { parsed = JSON.parse(xhr.responseText); } catch (e) { parsed = null; }
+			if (onlyChanged) {
+				if (!Array.isArray(parsed)) {
+					return;
+				}
+				if (nzmCartSignature(parsed) === nzmLastCartSignature()) {
+					NewsmanDebugLog('newsman remarketing: cart is unchanged');
+					return;
+				}
+			}
 			if (Array.isArray(parsed) && parsed.length > 0) {
 				nzmStoreApiDispatch(parsed);
 			} else {
@@ -201,6 +257,74 @@ function nzmSessionBootstrap() {
 		xhr.send(null);
 	} catch (e) {
 		markDone();
+	}
+}
+
+// Once per browser session, clear the Newsman remarketing cart and replay
+// the current WooCommerce cart into it. Runs when no nzm_cart_sync cookie
+// is present; ON mode has no equivalent because track-cart.php's
+// firstLoad=true branch in NewsmanAutoEvents already polls getCart.json on
+// every page. Later page loads request the cart again only when the
+// WooCommerce cart cookies changed since the last request, e.g. after a
+// classic add to cart form or a cart page update.
+function nzmSessionBootstrap() {
+	var synced = nzmGetCookie(NZM_SESSION_SYNC_COOKIE);
+	if (!synced) {
+		nzmRequestCart(false);
+		return;
+	}
+	if (!nzmCartCookieGate) {
+		NewsmanDebugLog('newsman remarketing: session sync cookie present, bootstrap skipped');
+		return;
+	}
+	var token = nzmCartCookieToken();
+	if (token === 'unknown' || token === synced) {
+		NewsmanDebugLog('newsman remarketing: cart cookies unchanged, request not sent');
+		return;
+	}
+	nzmRequestCart(true);
+}
+
+// One cart request for a burst of classic cart events, and one more when an
+// event arrives while a request is in flight.
+function nzmScheduleCartRequest() {
+	if (nzmCartRequestTimer) {
+		clearTimeout(nzmCartRequestTimer);
+	}
+	nzmCartRequestTimer = setTimeout(function () {
+		nzmCartRequestTimer = null;
+		if (nzmCartRequestRunning) {
+			nzmCartRequestPending = true;
+			return;
+		}
+		nzmCartRequestRunning = true;
+		nzmRequestCart(true, function () {
+			nzmCartRequestRunning = false;
+			if (nzmCartRequestPending) {
+				nzmCartRequestPending = false;
+				nzmScheduleCartRequest();
+			}
+		});
+	}, 300);
+}
+
+// WooCommerce classic scripts (wc-ajax add to cart and mini cart remove, cart
+// page updates) trigger jQuery events only, so they are hooked through jQuery
+// once it is loaded.
+function nzmHookClassicCartEvents() {
+	var attach = function () {
+		if (nzmClassicEventsHooked || !window.jQuery || !document.body) {
+			return;
+		}
+		nzmClassicEventsHooked = true;
+		window.jQuery(document.body).on(NZM_CLASSIC_CART_EVENTS, function () {
+			nzmScheduleCartRequest();
+		});
+	};
+	attach();
+	if (!nzmClassicEventsHooked) {
+		document.addEventListener('DOMContentLoaded', attach);
+		window.addEventListener('load', attach);
 	}
 }
 
@@ -228,6 +352,9 @@ function nzmHandleStoreApiResponse(url, requestBody, responseText) {
 	}
 
 	nzmStoreApiDispatch(nzmProductsFromCart(cart));
+	if (nzmCartCookieGate && nzmGetCookie(NZM_SESSION_SYNC_COOKIE)) {
+		nzmSetSessionCookie(NZM_SESSION_SYNC_COOKIE, nzmCartCookieToken());
+	}
 }
 
 function nzmHookFetch() {
@@ -300,6 +427,7 @@ if (sameOrigin) {
 	nzmHookFetch();
 	nzmHookXHR();
 	nzmSessionBootstrap();
+	nzmHookClassicCartEvents();
 }
 
 <?php

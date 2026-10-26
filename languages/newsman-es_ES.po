@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-21T15:49:05+00:00\n"
+"POT-Creation-Date: 2026-10-26T19:13:58+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -533,7 +533,7 @@ msgstr "Segmento Newsman"
 #: includes/contactform7/class-formpanel.php:355
 #: includes/contactform7/class-formpanel.php:381
 #: includes/contactform7/class-formpanel.php:407
-#: includes/contactform7/class-formpanel.php:611
+#: includes/contactform7/class-formpanel.php:616
 #: includes/elementor/class-atomicformcontrols.php:534
 #: includes/elementor/class-formcontrols.php:160
 #: includes/elementor/class-formcontrols.php:526
@@ -679,27 +679,27 @@ msgstr "Añade primero un campo a la plantilla del formulario."
 msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Enviar estos campos a Newsman como propiedades del suscriptor"
 
-#: includes/contactform7/class-formpanel.php:458
+#: includes/contactform7/class-formpanel.php:462
 #: includes/wpforms/class-formpanel.php:456
 msgid "used as email"
 msgstr "usado como email"
 
-#: includes/contactform7/class-formpanel.php:460
+#: includes/contactform7/class-formpanel.php:464
 #: includes/wpforms/class-formpanel.php:458
 msgid "used as firstname"
 msgstr "usado como nombre"
 
-#: includes/contactform7/class-formpanel.php:462
+#: includes/contactform7/class-formpanel.php:466
 #: includes/wpforms/class-formpanel.php:460
 msgid "used as lastname"
 msgstr "usado como apellido"
 
-#: includes/contactform7/class-formpanel.php:464
+#: includes/contactform7/class-formpanel.php:468
 #: includes/wpforms/class-formpanel.php:462
 msgid "used as phone"
 msgstr "usado como teléfono"
 
-#: includes/contactform7/class-formpanel.php:471
+#: includes/contactform7/class-formpanel.php:475
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
@@ -707,7 +707,7 @@ msgstr ""
 "Cada campo marcado se envía a Newsman como propiedad del suscriptor con la "
 "clave igual al nombre del form-tag."
 
-#: includes/contactform7/class-formprocessor.php:83
+#: includes/contactform7/class-formprocessor.php:92
 msgid ""
 "Newsman: CF7 form is marked as newsletter form but no list is configured in "
 "Newsman - Sync."
@@ -715,16 +715,16 @@ msgstr ""
 "Newsman: el formulario CF7 está marcado como formulario de boletín pero no "
 "hay ninguna lista configurada en Newsman - Sync."
 
-#: includes/contactform7/class-formprocessor.php:90
+#: includes/contactform7/class-formprocessor.php:99
 msgid "Newsman: CF7 form is enabled but no list is selected."
 msgstr ""
 "Newsman: el formulario CF7 está activado pero no hay lista seleccionada."
 
-#: includes/contactform7/class-formprocessor.php:100
+#: includes/contactform7/class-formprocessor.php:109
 msgid "Newsman: CF7 form has no email field configured."
 msgstr "Newsman: el formulario CF7 no tiene un campo de email configurado."
 
-#: includes/contactform7/class-formprocessor.php:117
+#: includes/contactform7/class-formprocessor.php:126
 msgid "Newsman: CF7 email field is empty."
 msgstr "Newsman: el campo de email del formulario CF7 está vacío."
 
@@ -1013,7 +1013,7 @@ msgid "Export orders %1$d, %2$d, blog ID %3$s"
 msgstr "Exportar pedidos %1$d, %2$d, blog ID %3$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-orders.php:187
+#: includes/export/retriever/class-orders.php:184
 #, php-format
 msgid "Exported orders %1$d, %2$d, blog ID %3$s"
 msgstr "Pedidos exportados %1$d, %2$d, blog ID %3$s"
@@ -1046,8 +1046,8 @@ msgid "Export products %1$d, %2$d, blog ID %3$s"
 msgstr "Exportar productos %1$d, %2$d, blog ID %3$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-products.php:136
-#: includes/export/retriever/class-productsfeed.php:186
+#: includes/export/retriever/class-products.php:140
+#: includes/export/retriever/class-productsfeed.php:183
 #, php-format
 msgid "Exported products %1$d, %2$d, blog ID %3$s"
 msgstr "Productos exportados %1$d, %2$d, blog ID %3$s"
@@ -1101,7 +1101,7 @@ msgid "Export WooCommerce subscribers %1$d, %2$d, blog ID %3$s"
 msgstr "Exportar suscriptores de WooCommerce %1$d, %2$d, blog ID %3$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-subscriberswoocommercefeed.php:138
+#: includes/export/retriever/class-subscriberswoocommercefeed.php:140
 #, php-format
 msgid "Exported WooCommerce subscribers %1$d, %2$d, blog ID %3$s"
 msgstr "Suscriptores de WooCommerce exportados %1$d, %2$d, blog ID %3$s"
@@ -1113,19 +1113,19 @@ msgid "subscriber.unsubscribe: %1$s, blog %2$d"
 msgstr "subscriber.unsubscribe: %1$s, blog %2$d"
 
 #. translators: 1: User role
-#: includes/export/retriever/class-users.php:57
+#: includes/export/retriever/class-users.php:58
 #, php-format
 msgid "wp_newsman_internal_role %s is not allowed!"
 msgstr "wp_newsman_internal_role %s no está permitido!"
 
 #. translators: 1: User role, 2: Batch start, 3: Batch end, 4: WP blog ID
-#: includes/export/retriever/class-users.php:74
+#: includes/export/retriever/class-users.php:75
 #, php-format
 msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportar %1$s %2$d, %3$d, blog ID %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-users.php:173
+#: includes/export/retriever/class-users.php:175
 #, php-format
 msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportado %1$s %2$d, %3$d, blog ID %4$s"
@@ -1727,6 +1727,18 @@ msgstr ""
 "sondeo). Si desactiva esta opción, use la herramienta «Check installation» "
 "del Remarketing de newsman.app para verificar que los eventos del carrito se "
 "detectan en su tema."
+
+#: src/backend-remarketing.php:112
+msgid ""
+"When disabled, classic theme cart changes (AJAX add to cart buttons, mini "
+"cart remove, cart page updates and add to cart forms) are also detected, "
+"with one Newsman cart endpoint request per change."
+msgstr ""
+"Cuando está desactivada, también se detectan los cambios del carrito en "
+"temas clásicos (botones AJAX de añadir al carrito, eliminación desde el "
+"minicarrito, actualizaciones en la página del carrito y formularios de "
+"añadir al carrito), con una sola petición al endpoint del carrito de Newsman "
+"por cada cambio."
 
 #: src/backend-remarketing.php:118
 msgid "Export WordPress Subscribers"
@@ -2490,7 +2502,9 @@ msgstr "Seleccione un segmento de suscriptores."
 
 #: src/backend-sync.php:100
 msgid "The segment list updates automatically when you change the list above."
-msgstr "La lista de segmentos se actualiza automáticamente cuando cambia la lista de arriba."
+msgstr ""
+"La lista de segmentos se actualiza automáticamente cuando cambia la lista de "
+"arriba."
 
 #: src/backend-sync.php:101
 msgid "Please save the segment after the list ID was changed."

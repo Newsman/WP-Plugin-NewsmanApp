@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-05-21T15:49:05+00:00\n"
+"POT-Creation-Date: 2026-10-26T19:13:58+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -525,7 +525,7 @@ msgstr "Segment Newsman"
 #: includes/contactform7/class-formpanel.php:355
 #: includes/contactform7/class-formpanel.php:381
 #: includes/contactform7/class-formpanel.php:407
-#: includes/contactform7/class-formpanel.php:611
+#: includes/contactform7/class-formpanel.php:616
 #: includes/elementor/class-atomicformcontrols.php:534
 #: includes/elementor/class-formcontrols.php:160
 #: includes/elementor/class-formcontrols.php:526
@@ -671,27 +671,27 @@ msgstr "Adaugati mai intai un camp in sablonul formularului."
 msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Trimite aceste campuri la Newsman ca proprietati de abonat"
 
-#: includes/contactform7/class-formpanel.php:458
+#: includes/contactform7/class-formpanel.php:462
 #: includes/wpforms/class-formpanel.php:456
 msgid "used as email"
 msgstr "folosit ca email"
 
-#: includes/contactform7/class-formpanel.php:460
+#: includes/contactform7/class-formpanel.php:464
 #: includes/wpforms/class-formpanel.php:458
 msgid "used as firstname"
 msgstr "folosit ca prenume"
 
-#: includes/contactform7/class-formpanel.php:462
+#: includes/contactform7/class-formpanel.php:466
 #: includes/wpforms/class-formpanel.php:460
 msgid "used as lastname"
 msgstr "folosit ca nume"
 
-#: includes/contactform7/class-formpanel.php:464
+#: includes/contactform7/class-formpanel.php:468
 #: includes/wpforms/class-formpanel.php:462
 msgid "used as phone"
 msgstr "folosit ca telefon"
 
-#: includes/contactform7/class-formpanel.php:471
+#: includes/contactform7/class-formpanel.php:475
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
@@ -699,7 +699,7 @@ msgstr ""
 "Fiecare camp bifat este trimis la Newsman ca proprietate de abonat, avand ca "
 "cheie numele form-tag-ului."
 
-#: includes/contactform7/class-formprocessor.php:83
+#: includes/contactform7/class-formprocessor.php:92
 msgid ""
 "Newsman: CF7 form is marked as newsletter form but no list is configured in "
 "Newsman - Sync."
@@ -707,16 +707,16 @@ msgstr ""
 "Newsman: formularul CF7 este marcat ca formular newsletter, dar nicio listă "
 "nu este configurată în Newsman - Sync."
 
-#: includes/contactform7/class-formprocessor.php:90
+#: includes/contactform7/class-formprocessor.php:99
 msgid "Newsman: CF7 form is enabled but no list is selected."
 msgstr ""
 "Newsman: formularul CF7 este activat, dar nu este selectata nicio lista."
 
-#: includes/contactform7/class-formprocessor.php:100
+#: includes/contactform7/class-formprocessor.php:109
 msgid "Newsman: CF7 form has no email field configured."
 msgstr "Newsman: formularul CF7 nu are configurat un camp de email."
 
-#: includes/contactform7/class-formprocessor.php:117
+#: includes/contactform7/class-formprocessor.php:126
 msgid "Newsman: CF7 email field is empty."
 msgstr "Newsman: campul de email al formularului CF7 este gol."
 
@@ -999,7 +999,7 @@ msgid "Export orders %1$d, %2$d, blog ID %3$s"
 msgstr "Încercare de trimitere comenzi multiple %1$d, %2$d, ID blog %3$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-orders.php:187
+#: includes/export/retriever/class-orders.php:184
 #, php-format
 msgid "Exported orders %1$d, %2$d, blog ID %3$s"
 msgstr "Comenzi trimise %1$d, %2$d, ID blog %3$s"
@@ -1032,8 +1032,8 @@ msgid "Export products %1$d, %2$d, blog ID %3$s"
 msgstr "Încercare de trimitere produse %1$d, %2$d, ID blog %3$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-products.php:136
-#: includes/export/retriever/class-productsfeed.php:186
+#: includes/export/retriever/class-products.php:140
+#: includes/export/retriever/class-productsfeed.php:183
 #, php-format
 msgid "Exported products %1$d, %2$d, blog ID %3$s"
 msgstr "Produse trimise %1$d, %2$d, ID blog %3$s"
@@ -1087,7 +1087,7 @@ msgid "Export WooCommerce subscribers %1$d, %2$d, blog ID %3$s"
 msgstr "Export abonați WooCommerce %1$d, %2$d, ID blog %3$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-subscriberswoocommercefeed.php:138
+#: includes/export/retriever/class-subscriberswoocommercefeed.php:140
 #, php-format
 msgid "Exported WooCommerce subscribers %1$d, %2$d, blog ID %3$s"
 msgstr "Abonați WooCommerce exportați %1$d, %2$d, ID blog %3$s"
@@ -1099,19 +1099,19 @@ msgid "subscriber.unsubscribe: %1$s, blog %2$d"
 msgstr "subscriber.unsubscribe: %1$s, blog %2$d"
 
 #. translators: 1: User role
-#: includes/export/retriever/class-users.php:57
+#: includes/export/retriever/class-users.php:58
 #, php-format
 msgid "wp_newsman_internal_role %s is not allowed!"
 msgstr "wp_newsman_internal_role %s nu este permis!"
 
 #. translators: 1: User role, 2: Batch start, 3: Batch end, 4: WP blog ID
-#: includes/export/retriever/class-users.php:74
+#: includes/export/retriever/class-users.php:75
 #, php-format
 msgid "Export %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Încercare trimitere %1$s %2$d, %3$d, ID blog %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID
-#: includes/export/retriever/class-users.php:173
+#: includes/export/retriever/class-users.php:175
 #, php-format
 msgid "Exported %1$s %2$d, %3$d, blog ID %4$s"
 msgstr "Exportat %1$s %2$d, %3$d, ID blog %4$s"
@@ -1704,6 +1704,17 @@ msgstr ""
 "item si /wc/store/v1/batch), fara polling. Daca dezactivati aceasta optiune, "
 "folositi instrumentul „Check installation\" din Remarketing in newsman.app "
 "pentru a verifica daca evenimentele de cos sunt detectate pe tema dvs."
+
+#: src/backend-remarketing.php:112
+msgid ""
+"When disabled, classic theme cart changes (AJAX add to cart buttons, mini "
+"cart remove, cart page updates and add to cart forms) are also detected, "
+"with one Newsman cart endpoint request per change."
+msgstr ""
+"Cand este dezactivata, sunt detectate si schimbarile de cos din temele "
+"clasice (butoane de adaugare in cos prin AJAX, stergere din mini cos, "
+"actualizari in pagina de cos si formulare de adaugare in cos), cu o singura "
+"cerere catre endpoint-ul de cos Newsman pentru fiecare schimbare."
 
 #: src/backend-remarketing.php:118
 msgid "Export WordPress Subscribers"
@@ -2469,7 +2480,8 @@ msgstr "Selectați un segment de abonați."
 
 #: src/backend-sync.php:100
 msgid "The segment list updates automatically when you change the list above."
-msgstr "Lista de segmente se actualizează automat când schimbați lista de mai sus."
+msgstr ""
+"Lista de segmente se actualizează automat când schimbați lista de mai sus."
 
 #: src/backend-sync.php:101
 msgid "Please save the segment after the list ID was changed."

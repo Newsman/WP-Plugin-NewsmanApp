@@ -109,7 +109,7 @@ $form_values = $this->get_form_values();
 						<td>
 							<input name="newsman_remarketingthemecartcompatibility" type="checkbox"
 								id="newsman_remarketingthemecartcompatibility" <?php echo ( ! empty( $form_values['newsman_remarketingthemecartcompatibility'] ) && 'on' === $form_values['newsman_remarketingthemecartcompatibility'] ) ? 'checked' : ''; ?>/>
-							<p class="description"><?php echo esc_html__( 'Enable for the most reliable detection of cart changes on any theme (background polling plus AJAX/fetch interception against the Newsman cart endpoint). Disable for a lighter mechanism that reads cart data directly from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/batch) responses (no polling). If you disable this option, use the newsman.app Remarketing Check installation tool to verify cart events are detected on your theme.', 'newsman' ); ?></p>
+							<p class="description"><?php echo esc_html__( 'Enable for the most reliable detection of cart changes on any theme (background polling plus AJAX/fetch interception against the Newsman cart endpoint). Disable for a lighter mechanism that reads cart data directly from the WooCommerce Store API (/wc/store/v1/cart/add-item and /wc/store/v1/batch) responses (no polling). If you disable this option, use the newsman.app Remarketing Check installation tool to verify cart events are detected on your theme.', 'newsman' ) . ' ' . esc_html__( 'When disabled, classic theme cart changes (AJAX add to cart buttons, mini cart remove, cart page updates and add to cart forms) are also detected, with one Newsman cart endpoint request per change.', 'newsman' ); ?></p>
 						</td>
 					</tr>
 					<?php if ( $this->is_action_scheduler_exists() ) : ?>

@@ -115,6 +115,27 @@ class TrackCartScriptTest extends NewsmanTestCase {
 	}
 
 	/**
+	 * Theme Cart Compatibility OFF renders the Store API listener, which also
+	 * follows the classic WooCommerce cart events and the cart cookies.
+	 */
+	public function test_store_api_cart_script_follows_classic_cart_events() {
+		$this->require_woocommerce();
+		update_option( self::THEME_CART_OPTION, 'off' );
+
+		$script = ( new Track() )->include_script_cart();
+		$this->assertStringContainsString( 'nzm_cart_sync', $script );
+		$this->assertStringContainsString( '/wc/store/v1/cart/add-item', $script );
+		$this->assertStringContainsString( "'added_to_cart removed_from_cart updated_wc_div wc_cart_emptied'", $script );
+		$this->assertStringContainsString( 'window.jQuery(document.body).on(NZM_CLASSIC_CART_EVENTS', $script );
+		$this->assertStringContainsString( 'var nzmCartCookieGate = true;', $script );
+		$this->assertStringContainsString( "nzmGetCookie('woocommerce_cart_hash')", $script );
+		$this->assertStringNotContainsString( 'setInterval(NewsmanAutoEvents', $script );
+
+		add_filter( 'newsman_remarketing_cart_cookie_gate', '__return_false' );
+		$this->assertStringContainsString( 'var nzmCartCookieGate = false;', $this->render_cart_script( new Track(), 'track-cart-storeapi.php' ) );
+	}
+
+	/**
 	 * Render track-cart.php as Track::include_script_cart() does. That method uses
 	 * include_once, so it renders the pattern only once per PHP process.
 	 *
@@ -122,24 +143,23 @@ class TrackCartScriptTest extends NewsmanTestCase {
 	 * @return string
 	 */
 	protected function render_classic_cart_script( Track $track ) {
-		$path   = dirname( __DIR__, 2 ) . '/includes/remarketing/patterns/track-cart.php';
+		return $this->render_cart_script( $track, 'track-cart.php' );
+	}
+
+	/**
+	 * Render a cart pattern in the Track scope.
+	 *
+	 * @param Track  $track   Track instance used as $this in the pattern.
+	 * @param string $pattern Pattern file name.
+	 * @return string
+	 */
+	protected function render_cart_script( Track $track, $pattern ) {
+		$path   = dirname( __DIR__, 2 ) . '/includes/remarketing/patterns/' . $pattern;
 		$render = function () use ( $path ) {
 			ob_start();
 			include $path;
 			return ob_get_clean();
 		};
 		return \Closure::bind( $render, $track, Track::class )();
-	}
-
-	/**
-	 * Theme Cart Compatibility OFF renders the Store API listener, which has no gate.
-	 */
-	public function test_store_api_cart_script_has_no_gate() {
-		$this->require_woocommerce();
-		update_option( self::THEME_CART_OPTION, 'off' );
-
-		$script = ( new Track() )->include_script_cart();
-		$this->assertStringContainsString( 'nzm_cart_sync', $script );
-		$this->assertStringNotContainsString( 'nzmCartCookieGate', $script );
 	}
 }

@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.32
+Stable tag: 3.7.33
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,9 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.33 =
+* Theme Cart Compatibility disabled: classic theme cart changes are now detected as well. The WooCommerce AJAX add to cart buttons, the mini cart remove link and the cart page updates request the Newsman cart endpoint once per change, and a page load after a classic add to cart form or a cart page form requests it once when the WooCommerce cart cookies changed. The cart is sent to Newsman only when it changed. The Store API detection is unchanged.
 
 = 3.7.32 =
 * Security: fix a stored cross-site scripting vulnerability in the remarketing purchase script on the order received page (CVE-2026-115821). The billing email, phone and names were written into the inline script with HTML escaping only, so a crafted billing name entered at checkout could run script for anyone opening that page. The values are now JSON encoded. The same fix applies to the identify script of logged-in users.
