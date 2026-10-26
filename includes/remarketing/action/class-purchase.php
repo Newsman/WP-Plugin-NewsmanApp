@@ -68,17 +68,7 @@ class Purchase extends AbstractAction {
 
 		$js  = "(function() {\n";
 		$js .= $this->get_delivery_guard_js( $order_number );
-
-		if ( '' !== (string) $order->get_billing_email() ) {
-			$js .= 'var nzmIdentity = { email: "' . esc_attr( esc_html( $order->get_billing_email() ) ) . '", ';
-			if ( $this->remarketing_config->is_send_telephone() && ! empty( $order->get_billing_phone() ) ) {
-				$js .= 'phone: "' . esc_attr( esc_html( $this->telephone->clean( $order->get_billing_phone() ) ) ) . '", ';
-			}
-			$js .= 'first_name: "' . esc_attr( esc_html( $order->get_billing_first_name() ) ) . '", ' .
-				'last_name: "' . esc_attr( esc_html( $order->get_billing_last_name() ) ) . '" };';
-		} else {
-			$js .= 'var nzmIdentity = null;';
-		}
+		$js .= $this->get_identity_js( $order );
 
 		$js .= " _nzm.run( 'set', 'currencyCode', '" . esc_js( $currency_code ) . "' );";
 
@@ -148,6 +138,27 @@ class Purchase extends AbstractAction {
 				'order' => $order,
 			)
 		);
+	}
+
+	/**
+	 * Get the nzmIdentity variable JS with the order billing details.
+	 *
+	 * @param \WC_Order $order Order.
+	 * @return string
+	 */
+	public function get_identity_js( $order ) {
+		if ( '' === (string) $order->get_billing_email() ) {
+			return 'var nzmIdentity = null;';
+		}
+
+		$identity = array( 'email' => (string) $order->get_billing_email() );
+		if ( $this->remarketing_config->is_send_telephone() && ! empty( $order->get_billing_phone() ) ) {
+			$identity['phone'] = (string) $this->telephone->clean( $order->get_billing_phone() );
+		}
+		$identity['first_name'] = (string) $order->get_billing_first_name();
+		$identity['last_name']  = (string) $order->get_billing_last_name();
+
+		return 'var nzmIdentity = ' . wp_json_encode( $identity, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ';';
 	}
 
 	/**

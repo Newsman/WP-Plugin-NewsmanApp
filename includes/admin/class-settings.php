@@ -670,13 +670,14 @@ class Settings {
 	/**
 	 * Validate current nonce on page
 	 *
-	 * @param array $post_parameters List of not empty POST parameters that triggers the nonce validation.
+	 * @param array $request_parameters Names of the GET or POST parameters that trigger the nonce validation.
 	 * @return bool
 	 */
-	public function validate_nonce( $post_parameters = array() ) {
+	public function validate_nonce( $request_parameters = array() ) {
 		$has_parameters = false;
-		foreach ( $post_parameters as $key => $value ) {
-			if ( isset( $_POST[ $key ] ) ) {
+		foreach ( $request_parameters as $name ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_REQUEST[ $name ] ) ) {
 				$has_parameters = true;
 				break;
 			}

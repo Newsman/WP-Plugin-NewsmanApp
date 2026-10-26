@@ -37,9 +37,13 @@ class IdentifySubscriber extends AbstractAction {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
 
-			$js = '_nzm.identify({ email: "' . esc_attr( esc_html( $current_user->user_email ) ) . '", ' .
-				'first_name: "' . esc_attr( esc_html( $current_user->user_firstname ) ) . '", ' .
-				'last_name: "' . esc_attr( esc_html( $current_user->user_lastname ) ) . '" });';
+			$identify = array(
+				'email'      => (string) $current_user->user_email,
+				'first_name' => (string) $current_user->user_firstname,
+				'last_name'  => (string) $current_user->user_lastname,
+			);
+
+			$js = '_nzm.identify(' . wp_json_encode( $identify, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ) . ');';
 		}
 
 		if ( $this->is_checkout_context() ) {

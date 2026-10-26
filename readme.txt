@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.31
+Stable tag: 3.7.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,11 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.32 =
+* Security: fix a stored cross-site scripting vulnerability in the remarketing purchase script on the order received page (CVE-2026-115821). The billing email, phone and names were written into the inline script with HTML escaping only, so a crafted billing name entered at checkout could run script for anyone opening that page. The values are now JSON encoded. The same fix applies to the identify script of logged-in users.
+* Security: fix the nonce check of the Newsman settings pages (Settings, Sync, Remarketing, SMS, OAuth), which was skipped when the request carried no nonce at all, allowing cross-site request forgery of the plugin settings.
+* Billing and account names are sent to Newsman as typed (e.g. O'Brien), no longer HTML encoded (O&#039;Brien).
 
 = 3.7.31 =
 * Reduce the requests made by the remarketing cart tracker when Theme Cart Compatibility is enabled: the Newsman cart endpoint (`?newsman_cart=getCart.json`) was requested on every page view, bypassing the page cache. It is now requested only when the WooCommerce cart cookies (`woocommerce_items_in_cart`, `woocommerce_cart_hash`) show that the cart may have changed, so visitors with an empty cart cause no extra request and an unchanged cart is not requested again on the next page. Cart changes made with AJAX are still always checked. With WooCommerce older than 3.2, without the cart hash cookie, or when the cart cookies are disabled or HttpOnly, the previous behaviour is kept. New filter `newsman_remarketing_cart_cookie_gate`.
