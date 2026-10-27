@@ -668,13 +668,15 @@ class Settings {
 	}
 
 	/**
-	 * Validate current nonce on page
+	 * Validate current nonce on page.
+	 * Every POST needs the nonce, so a field the page reads outside the listed
+	 * parameters (a second submit button) cannot be forged either.
 	 *
 	 * @param array $request_parameters Names of the GET or POST parameters that trigger the nonce validation.
 	 * @return bool
 	 */
 	public function validate_nonce( $request_parameters = array() ) {
-		$has_parameters = false;
+		$has_parameters = isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) );
 		foreach ( $request_parameters as $name ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if ( isset( $_REQUEST[ $name ] ) ) {

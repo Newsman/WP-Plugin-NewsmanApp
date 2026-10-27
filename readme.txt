@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.33
+Stable tag: 3.7.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -111,6 +111,14 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.34 =
+* Security: every POST to the Newsman settings pages now needs the nonce. A cross-site request carrying only the Sync page "Refresh lists & segments cache" button, without the form field, ran the refresh (Newsman API calls) without one.
+* Security: the OAuth page checks the `manage_options` capability before saving the Newsman credentials, like the other settings pages.
+* Security: the export API key and authenticate token are compared in constant time. A key sent as a JSON array or number through API v1 is rejected with error 1001 instead of a server error.
+* Fix the OAuth page not showing the error returned by Newsman ("Access is denied", "There are no lists in your NewsMAN account").
+* Remove the `?newsman=count.json` export, which was never implemented and only returned an error.
+* Add tests for the order received purchase script (shown only to visitors WooCommerce shows the order to, sent once and not lost, run against a fake Newsman tracker in Node.js), the settings pages nonce and capability checks and the OAuth error messages.
 
 = 3.7.33 =
 * Theme Cart Compatibility disabled: classic theme cart changes are now detected as well. The WooCommerce AJAX add to cart buttons, the mini cart remove link and the cart page updates request the Newsman cart endpoint once per change, and a page load after a classic add to cart form or a cart page form requests it once when the WooCommerce cart cookies changed. The cart is sent to Newsman only when it changed. The Store API detection is unchanged.

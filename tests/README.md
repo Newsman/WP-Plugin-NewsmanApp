@@ -56,6 +56,7 @@ on `localhost` and can be overridden with the environment variables
 | `tests/bin/install-woocommerce.sh` | Downloads or copies WooCommerce into the test wp-content |
 | `tests/phpunit/NewsmanTestCase.php` | Base class: API gate helpers, user factory, pagination walker |
 | `tests/phpunit/*Test.php` | The tests |
+| `tests/js/purchase-guard-harness.js` | Runs the purchase script against a fake Newsman tracker (used by `PurchaseScriptTest`) |
 | `tests/wordpress/` | WordPress core installed by Composer (git-ignored) |
 | `tests/tmp/` | Test wp-content directory (git-ignored) |
 
@@ -67,6 +68,11 @@ on `localhost` and can be overridden with the environment variables
 - `UsersExportTest` - users and WordPress subscribers export against the database: fields, default order, complete pagination, sorts, filters
 - `ProcessorTest` - authentication gate, retriever dispatch, API v1 round trip, `Config::is_enabled_with_api()`
 - `WooCommerceExportTest` - orders, customers and product feed exports (skipped without WooCommerce)
+- `IdentityScriptTest` - billing and user names stay data in the inline identify scripts
+- `TrackCartScriptTest` - cart tracking script and its cart cookie gate
+- `PurchaseScriptTest` - order received purchase script: printed only to a visitor WooCommerce shows the order to, and run in Node.js against a fake tracker so the purchase is neither lost nor sent again on a reload (the Node.js part is skipped without `node`; set `NODE_BINARY` for another path)
+- `AdminSecurityTest` - nonce on every POST to the settings pages, OAuth forms need `manage_options`
+- `OauthTest` - the error Newsman redirects back with (`access_denied`, `missing_lists`) is shown on the OAuth page
 
 ## Continuous integration
 

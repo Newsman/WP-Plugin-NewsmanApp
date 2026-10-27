@@ -75,6 +75,48 @@ class AuthenticatorTest extends NewsmanTestCase {
 	}
 
 	/**
+	 * API v1 JSON params can carry the key as an array or a number: rejected as
+	 * an invalid key, never a TypeError from hash_equals().
+	 */
+	public function test_non_string_keys_are_rejected() {
+		$this->enable_api( '12345' );
+		update_option( 'newsman_authenticate_token', 'auth-token-xyz' );
+		update_option( 'newsman_export_authorize_header_name', 'X-Newsman-Auth' );
+		update_option( 'newsman_export_authorize_header_key', 'alt-key-123' );
+		$auth = new Authenticator();
+
+		foreach ( array( array( '12345' ), array( 'auth-token-xyz' ), 12345, 12345.0, true ) as $candidate ) {
+			try {
+				$auth->authenticate( $candidate );
+				$this->fail( 'Key ' . wp_json_encode( $candidate ) . ' must be rejected.' );
+			} catch ( \OutOfBoundsException $e ) {
+				$this->assertStringContainsString( 'Invalid API key', $e->getMessage() );
+			}
+		}
+
+		$this->assertTrue( $auth->authenticate( '12345' ) );
+	}
+
+	/**
+	 * A non-string key in the API v1 params ends as an authentication error.
+	 */
+	public function test_api_v1_params_array_key_is_rejected() {
+		$this->enable_api();
+
+		$parsed = ( new \Newsman\Export\V1\PayloadParser() )->parse(
+			wp_json_encode(
+				array(
+					'method' => 'integration.version',
+					'params' => array( Authenticator::API_KEY_PARAM => array( self::API_KEY ) ),
+				)
+			)
+		);
+
+		$this->expectException( \OutOfBoundsException::class );
+		( new \Newsman\Export\Retriever\Processor() )->process( $parsed['code'], get_current_blog_id(), $parsed['data'] );
+	}
+
+	/**
 	 * Comparison is exact: prefixes and case variants are rejected.
 	 */
 	public function test_key_comparison_is_exact() {

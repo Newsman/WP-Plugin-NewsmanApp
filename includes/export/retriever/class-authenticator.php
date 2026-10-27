@@ -71,13 +71,13 @@ class Authenticator {
 		}
 
 		$is_authenticated = false;
-		if ( $config_api_key === $api_key ) {
+		if ( $this->is_same_key( $config_api_key, $api_key ) ) {
 			$is_authenticated = true;
 		}
-		if ( $is_alternate_with_token && ( $config_auth_token === $api_key ) ) {
+		if ( $is_alternate_with_token && $this->is_same_key( $config_auth_token, $api_key ) ) {
 			$is_authenticated = true;
 		}
-		if ( $is_alternate && ( $alternate_key === $api_key ) ) {
+		if ( $is_alternate && $this->is_same_key( $alternate_key, $api_key ) ) {
 			$is_authenticated = true;
 		}
 
@@ -89,5 +89,21 @@ class Authenticator {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Compare the configured key with the request key in constant time.
+	 * Only two non-empty strings can match: a key sent as an array or a number
+	 * through the API v1 JSON params is rejected, as an empty configured key is.
+	 *
+	 * @param mixed $known_key   Configured key.
+	 * @param mixed $request_key Key sent with the request.
+	 * @return bool
+	 */
+	protected function is_same_key( $known_key, $request_key ) {
+		if ( ! is_string( $known_key ) || '' === $known_key || ! is_string( $request_key ) ) {
+			return false;
+		}
+		return hash_equals( $known_key, $request_key );
 	}
 }

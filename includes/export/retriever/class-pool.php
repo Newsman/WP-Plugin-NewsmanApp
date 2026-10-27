@@ -135,11 +135,6 @@ class Pool {
 			'only_woocommerce' => true,
 			'has_filters'      => true,
 		),
-		'count'                        => array(
-			'code'             => 'count',
-			'class'            => '\Newsman\Export\Retriever\Count',
-			'only_woocommerce' => false,
-		),
 		'coupons'                      => array(
 			'code'             => 'coupons',
 			'class'            => '\Newsman\Export\Retriever\Coupons',

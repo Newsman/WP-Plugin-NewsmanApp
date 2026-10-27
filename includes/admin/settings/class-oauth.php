@@ -95,6 +95,10 @@ class Oauth extends Settings {
 	 * @return void
 	 */
 	public function process_forms() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized user', 'newsman' ) );
+		}
+
 		$this->form_error_message    = '';
 		$this->form_success_messages = array();
 		$this->response_lists        = array();
@@ -122,7 +126,8 @@ class Oauth extends Settings {
 	public function process_form_oauth_step_one() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['error'] ) && ! empty( $_GET['error'] ) ) {
-			switch ( $this->form_error_message ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			switch ( sanitize_text_field( wp_unslash( $_GET['error'] ) ) ) {
 				case 'access_denied':
 					$this->form_error_message = esc_html__( 'Access is denied', 'newsman' );
 					break;
