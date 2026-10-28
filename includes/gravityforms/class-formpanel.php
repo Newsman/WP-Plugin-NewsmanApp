@@ -199,6 +199,7 @@ class FormPanel {
 			'list'            => '<h6>' . esc_html__( 'Newsman list', 'newsman' ) . '</h6>' . esc_html__( 'List for this campaign-specific form. Ignored when "Newsletter form" is on (the Sync section list is used instead).', 'newsman' ) . ' ' . esc_html__( 'Do not pick the same list as the one configured in Newsman - Sync unless you intend submissions to land in your global newsletter list. To send to that list, turn on "Newsletter form" instead.', 'newsman' ),
 			'segment'         => '<h6>' . esc_html__( 'Newsman segment', 'newsman' ) . '</h6>' . esc_html__( 'Optional. Segments are list-scoped — only segments that belong to the selected list are kept. If they do not match, the segment is dropped at submit time.', 'newsman' ),
 			'optin_mode'      => '<h6>' . esc_html__( 'Opt-in mode', 'newsman' ) . '</h6>' . esc_html__( 'Single opt-in subscribes the user immediately. Double opt-in sends a confirmation email; the subscription is only completed once the user clicks the link.', 'newsman' ),
+			'confirmation'    => '<h6>' . esc_html__( 'Confirmation email Form ID', 'newsman' ) . '</h6>' . esc_html__( 'Optional. The Newsman form whose confirmation email is sent. When empty, a newsletter form uses the Confirmation email Form ID from NewsMAN > Settings and other forms use the Newsman default confirmation email.', 'newsman' ),
 			'email_field'     => '<h6>' . esc_html__( 'Email field', 'newsman' ) . '</h6>' . esc_html__( 'The selected field provides the subscriber email. Any field type may be used.', 'newsman' ),
 			'firstname_field' => '<h6>' . esc_html__( 'Firstname field', 'newsman' ) . '</h6>' . esc_html__( 'Optional. For Name fields, pick the sub-input corresponding to the First Name (e.g. 1.3).', 'newsman' ),
 			'lastname_field'  => '<h6>' . esc_html__( 'Lastname field', 'newsman' ) . '</h6>' . esc_html__( 'Optional. For Name fields, pick the sub-input corresponding to the Last Name (e.g. 1.6).', 'newsman' ),
@@ -256,6 +257,12 @@ class FormPanel {
 										<option value="single" <?php selected( 'single', (string) $prop['newsman_optin_mode'] ); ?>><?php echo esc_html__( 'Single opt-in', 'newsman' ); ?></option>
 										<option value="double" <?php selected( 'double', (string) $prop['newsman_optin_mode'] ); ?>><?php echo esc_html__( 'Double opt-in', 'newsman' ); ?></option>
 									</select>
+								</td>
+							</tr>
+							<tr class="newsman-gf-confirmation-row">
+								<th scope="row"><label for="newsman_confirmation_form_id"><?php echo esc_html__( 'Confirmation email Form ID', 'newsman' ); ?> <?php gform_tooltip( $tt['confirmation'] ); ?></label></th>
+								<td>
+									<input type="text" class="regular-text" name="newsman_confirmation_form_id" id="newsman_confirmation_form_id" value="<?php echo esc_attr( (string) $prop['newsman_confirmation_form_id'] ); ?>" />
 								</td>
 							</tr>
 						</tbody>
@@ -398,6 +405,17 @@ class FormPanel {
 				applyVisibility();
 			}
 
+			// The confirmation email form ID only applies to double opt-in.
+			var optin = document.getElementById('newsman_optin_mode');
+			function applyConfirmationVisibility() {
+				var row = document.querySelector('tr.newsman-gf-confirmation-row');
+				if (row && optin) row.style.display = 'double' === optin.value ? '' : 'none';
+			}
+			if (optin) {
+				optin.addEventListener('change', applyConfirmationVisibility);
+				applyConfirmationVisibility();
+			}
+
 			// Rebuild segment options on list change from the inline JSON map.
 			var listEl = document.getElementById('newsman_list_id');
 			var segEl  = document.getElementById('newsman_segment_id');
@@ -445,16 +463,17 @@ class FormPanel {
 		}
 
 		return array(
-			'newsman_enable'          => isset( $form['newsman_enable'] ) ? (string) $form['newsman_enable'] : '',
-			'newsman_newsletter_form' => isset( $form['newsman_newsletter_form'] ) ? (string) $form['newsman_newsletter_form'] : '',
-			'newsman_list_id'         => isset( $form['newsman_list_id'] ) ? (string) $form['newsman_list_id'] : '',
-			'newsman_segment_id'      => isset( $form['newsman_segment_id'] ) ? (string) $form['newsman_segment_id'] : '',
-			'newsman_optin_mode'      => $optin_mode,
-			'newsman_email_field'     => isset( $form['newsman_email_field'] ) ? (string) $form['newsman_email_field'] : '',
-			'newsman_firstname_field' => isset( $form['newsman_firstname_field'] ) ? (string) $form['newsman_firstname_field'] : '',
-			'newsman_lastname_field'  => isset( $form['newsman_lastname_field'] ) ? (string) $form['newsman_lastname_field'] : '',
-			'newsman_phone_field'     => isset( $form['newsman_phone_field'] ) ? (string) $form['newsman_phone_field'] : '',
-			'newsman_send_fields'     => isset( $form['newsman_send_fields'] ) && is_array( $form['newsman_send_fields'] )
+			'newsman_enable'               => isset( $form['newsman_enable'] ) ? (string) $form['newsman_enable'] : '',
+			'newsman_newsletter_form'      => isset( $form['newsman_newsletter_form'] ) ? (string) $form['newsman_newsletter_form'] : '',
+			'newsman_list_id'              => isset( $form['newsman_list_id'] ) ? (string) $form['newsman_list_id'] : '',
+			'newsman_segment_id'           => isset( $form['newsman_segment_id'] ) ? (string) $form['newsman_segment_id'] : '',
+			'newsman_optin_mode'           => $optin_mode,
+			'newsman_confirmation_form_id' => isset( $form['newsman_confirmation_form_id'] ) ? (string) $form['newsman_confirmation_form_id'] : '',
+			'newsman_email_field'          => isset( $form['newsman_email_field'] ) ? (string) $form['newsman_email_field'] : '',
+			'newsman_firstname_field'      => isset( $form['newsman_firstname_field'] ) ? (string) $form['newsman_firstname_field'] : '',
+			'newsman_lastname_field'       => isset( $form['newsman_lastname_field'] ) ? (string) $form['newsman_lastname_field'] : '',
+			'newsman_phone_field'          => isset( $form['newsman_phone_field'] ) ? (string) $form['newsman_phone_field'] : '',
+			'newsman_send_fields'          => isset( $form['newsman_send_fields'] ) && is_array( $form['newsman_send_fields'] )
 				? $form['newsman_send_fields']
 				: array(),
 		);
@@ -540,16 +559,17 @@ class FormPanel {
 	protected static function apply_post_to_form( $form ) {
 		$post = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce is checked in the caller.
 
-		$form['newsman_enable']          = ! empty( $post['newsman_enable'] ) ? '1' : '';
-		$form['newsman_newsletter_form'] = ! empty( $post['newsman_newsletter_form'] ) ? '1' : '';
-		$form['newsman_list_id']         = isset( $post['newsman_list_id'] ) ? sanitize_text_field( wp_unslash( $post['newsman_list_id'] ) ) : '';
-		$form['newsman_segment_id']      = isset( $post['newsman_segment_id'] ) ? sanitize_text_field( wp_unslash( $post['newsman_segment_id'] ) ) : '';
-		$optin                           = isset( $post['newsman_optin_mode'] ) ? sanitize_text_field( wp_unslash( $post['newsman_optin_mode'] ) ) : 'single';
-		$form['newsman_optin_mode']      = ( 'double' === $optin ) ? 'double' : 'single';
-		$form['newsman_email_field']     = isset( $post['newsman_email_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_email_field'] ) ) : '';
-		$form['newsman_firstname_field'] = isset( $post['newsman_firstname_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_firstname_field'] ) ) : '';
-		$form['newsman_lastname_field']  = isset( $post['newsman_lastname_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_lastname_field'] ) ) : '';
-		$form['newsman_phone_field']     = isset( $post['newsman_phone_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_phone_field'] ) ) : '';
+		$form['newsman_enable']               = ! empty( $post['newsman_enable'] ) ? '1' : '';
+		$form['newsman_newsletter_form']      = ! empty( $post['newsman_newsletter_form'] ) ? '1' : '';
+		$form['newsman_list_id']              = isset( $post['newsman_list_id'] ) ? sanitize_text_field( wp_unslash( $post['newsman_list_id'] ) ) : '';
+		$form['newsman_segment_id']           = isset( $post['newsman_segment_id'] ) ? sanitize_text_field( wp_unslash( $post['newsman_segment_id'] ) ) : '';
+		$optin                                = isset( $post['newsman_optin_mode'] ) ? sanitize_text_field( wp_unslash( $post['newsman_optin_mode'] ) ) : 'single';
+		$form['newsman_optin_mode']           = ( 'double' === $optin ) ? 'double' : 'single';
+		$form['newsman_confirmation_form_id'] = isset( $post['newsman_confirmation_form_id'] ) ? sanitize_text_field( wp_unslash( $post['newsman_confirmation_form_id'] ) ) : '';
+		$form['newsman_email_field']          = isset( $post['newsman_email_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_email_field'] ) ) : '';
+		$form['newsman_firstname_field']      = isset( $post['newsman_firstname_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_firstname_field'] ) ) : '';
+		$form['newsman_lastname_field']       = isset( $post['newsman_lastname_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_lastname_field'] ) ) : '';
+		$form['newsman_phone_field']          = isset( $post['newsman_phone_field'] ) ? sanitize_text_field( wp_unslash( $post['newsman_phone_field'] ) ) : '';
 
 		$send_fields = array();
 		if ( isset( $post['newsman_send_fields'] ) && is_array( $post['newsman_send_fields'] ) ) {

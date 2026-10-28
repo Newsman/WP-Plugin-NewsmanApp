@@ -160,6 +160,8 @@ class FormProcessor {
 		$properties = apply_filters( 'newsman_gravity_forms_properties', $properties, $entry, $form, $email );
 
 		$optin_mode = isset( $prop['newsman_optin_mode'] ) && 'double' === $prop['newsman_optin_mode'] ? 'double' : 'single';
+		$form_id    = isset( $prop['newsman_confirmation_form_id'] ) ? (string) $prop['newsman_confirmation_form_id'] : '';
+		$form_id    = SubscribeHelper::get_confirmation_form_id( $form_id, $is_newsletter_form, get_current_blog_id() );
 
 		try {
 			SubscribeHelper::subscribe_with_props(
@@ -171,7 +173,9 @@ class FormProcessor {
 				$optin_mode,
 				$firstname,
 				$lastname,
-				$segment_id
+				$segment_id,
+				$form_id,
+				$is_newsletter_form
 			);
 
 			/**

@@ -326,6 +326,29 @@ class FormPanel {
 			)
 		);
 
+		wpforms_panel_field(
+			'text',
+			'settings',
+			'newsman_confirmation_form_id',
+			$form_data,
+			esc_html__( 'Confirmation email Form ID', 'newsman' ),
+			array(
+				'tooltip' => esc_html__( 'Optional. The Newsman form whose confirmation email is sent. When empty, a newsletter form uses the Confirmation email Form ID from NewsMAN > Settings and other forms use the Newsman default confirmation email.', 'newsman' ),
+			)
+		);
+
+		// The confirmation email form ID only applies to double opt-in.
+		echo '<script>(function($){' .
+			'function toggleConfirmationForm(){' .
+			'  var double = "double" === $("#wpforms-panel-field-settings-newsman_optin_mode").val();' .
+			'  $("#wpforms-panel-field-settings-newsman_confirmation_form_id-wrap").toggle( double );' .
+			'}' .
+			'$(function(){' .
+			'  $(document).on("change", "#wpforms-panel-field-settings-newsman_optin_mode", toggleConfirmationForm);' .
+			'  toggleConfirmationForm();' .
+			'});' .
+			'})(jQuery);</script>';
+
 		if ( empty( $choices ) ) {
 			echo '<p class="newsman-empty-fields"><em>';
 			echo esc_html__( 'Add a field to the form to enable Newsman.', 'newsman' );
@@ -491,30 +514,32 @@ class FormPanel {
 
 		return wp_parse_args(
 			array(
-				'newsman_enable'          => isset( $settings['newsman_enable'] ) ? $settings['newsman_enable'] : '',
-				'newsman_newsletter_form' => isset( $settings['newsman_newsletter_form'] ) ? $settings['newsman_newsletter_form'] : '',
-				'newsman_list_id'         => isset( $settings['newsman_list_id'] ) ? $settings['newsman_list_id'] : '',
-				'newsman_segment_id'      => isset( $settings['newsman_segment_id'] ) ? $settings['newsman_segment_id'] : '',
-				'newsman_optin_mode'      => $optin_mode,
-				'newsman_email_field'     => isset( $settings['newsman_email_field'] ) ? $settings['newsman_email_field'] : '',
-				'newsman_firstname_field' => isset( $settings['newsman_firstname_field'] ) ? $settings['newsman_firstname_field'] : '',
-				'newsman_lastname_field'  => isset( $settings['newsman_lastname_field'] ) ? $settings['newsman_lastname_field'] : '',
-				'newsman_phone_field'     => isset( $settings['newsman_phone_field'] ) ? $settings['newsman_phone_field'] : '',
-				'newsman_send_fields'     => isset( $settings['newsman_send_fields'] ) && is_array( $settings['newsman_send_fields'] )
+				'newsman_enable'               => isset( $settings['newsman_enable'] ) ? $settings['newsman_enable'] : '',
+				'newsman_newsletter_form'      => isset( $settings['newsman_newsletter_form'] ) ? $settings['newsman_newsletter_form'] : '',
+				'newsman_list_id'              => isset( $settings['newsman_list_id'] ) ? $settings['newsman_list_id'] : '',
+				'newsman_segment_id'           => isset( $settings['newsman_segment_id'] ) ? $settings['newsman_segment_id'] : '',
+				'newsman_optin_mode'           => $optin_mode,
+				'newsman_confirmation_form_id' => isset( $settings['newsman_confirmation_form_id'] ) ? sanitize_text_field( (string) $settings['newsman_confirmation_form_id'] ) : '',
+				'newsman_email_field'          => isset( $settings['newsman_email_field'] ) ? $settings['newsman_email_field'] : '',
+				'newsman_firstname_field'      => isset( $settings['newsman_firstname_field'] ) ? $settings['newsman_firstname_field'] : '',
+				'newsman_lastname_field'       => isset( $settings['newsman_lastname_field'] ) ? $settings['newsman_lastname_field'] : '',
+				'newsman_phone_field'          => isset( $settings['newsman_phone_field'] ) ? $settings['newsman_phone_field'] : '',
+				'newsman_send_fields'          => isset( $settings['newsman_send_fields'] ) && is_array( $settings['newsman_send_fields'] )
 					? $settings['newsman_send_fields']
 					: array(),
 			),
 			array(
-				'newsman_enable'          => '',
-				'newsman_newsletter_form' => '',
-				'newsman_list_id'         => '',
-				'newsman_segment_id'      => '',
-				'newsman_optin_mode'      => 'single',
-				'newsman_email_field'     => '',
-				'newsman_firstname_field' => '',
-				'newsman_lastname_field'  => '',
-				'newsman_phone_field'     => '',
-				'newsman_send_fields'     => array(),
+				'newsman_enable'               => '',
+				'newsman_newsletter_form'      => '',
+				'newsman_list_id'              => '',
+				'newsman_segment_id'           => '',
+				'newsman_optin_mode'           => 'single',
+				'newsman_confirmation_form_id' => '',
+				'newsman_email_field'          => '',
+				'newsman_firstname_field'      => '',
+				'newsman_lastname_field'       => '',
+				'newsman_phone_field'          => '',
+				'newsman_send_fields'          => array(),
 			)
 		);
 	}

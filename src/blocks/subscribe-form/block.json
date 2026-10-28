@@ -1,0 +1,110 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "newsman/subscribe-form",
+	"title": "NewsMAN Subscribe Form",
+	"category": "widgets",
+	"icon": "email-alt",
+	"description": "Newsletter subscription form that adds subscribers to a NewsMAN list.",
+	"keywords": [ "newsman", "newsletter", "subscribe", "email", "form" ],
+	"textdomain": "newsman",
+	"attributes": {
+		"listId": {
+			"type": "string",
+			"default": ""
+		},
+		"segmentId": {
+			"type": "string",
+			"default": ""
+		},
+		"confirmationFormId": {
+			"type": "string",
+			"default": ""
+		},
+		"showHeading": {
+			"type": "boolean",
+			"default": true
+		},
+		"showFirstname": {
+			"type": "boolean",
+			"default": true
+		},
+		"requireFirstname": {
+			"type": "boolean",
+			"default": false
+		},
+		"showLastname": {
+			"type": "boolean",
+			"default": true
+		},
+		"requireLastname": {
+			"type": "boolean",
+			"default": false
+		},
+		"showPhone": {
+			"type": "boolean",
+			"default": false
+		},
+		"requirePhone": {
+			"type": "boolean",
+			"default": false
+		},
+		"showConsent": {
+			"type": "boolean",
+			"default": true
+		},
+		"headingText": {
+			"type": "string",
+			"default": ""
+		},
+		"emailLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"firstnameLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"lastnameLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"phoneLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"consentText": {
+			"type": "string",
+			"default": ""
+		},
+		"buttonText": {
+			"type": "string",
+			"default": ""
+		},
+		"successMessage": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"style": "file:./style.css"
+}

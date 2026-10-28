@@ -11,6 +11,7 @@ This guide walks you through every setting in the Newsman plugin so you can conn
 - [Sync Page](#sync-page)
 - [Remarketing Page](#remarketing-page)
 - [SMS Page (WooCommerce only)](#sms-page-woocommerce-only)
+- [Subscription Form Blocks (Block Editor)](#subscription-form-blocks-block-editor)
 - [Elementor Forms (Elementor Pro)](#elementor-forms-elementor-pro)
 - [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
 - [Contact Form 7](#contact-form-7)
@@ -83,7 +84,7 @@ Go to **NewsMAN > Settings** to configure the plugin behavior.
   - **Opt-in** - The subscriber is added immediately.
   - **Double Opt-in** - The subscriber receives a confirmation email first and must click a link to confirm. This is recommended for GDPR compliance.
 
-- **Confirmation email Form ID** - If you chose Double Opt-in above, enter the Form ID from your Newsman account. This tells Newsman which confirmation email template to send. You can find this ID in your Newsman dashboard under Forms.
+- **Confirmation email Form ID** - If you chose Double Opt-in above, enter the Form ID from your Newsman account. This tells Newsman which confirmation email template to send. You can find this ID in your Newsman dashboard under Forms. It is used by the checkout checkbox, the My Account newsletter page, the **NewsMAN Subscribe Form** block and the integration forms marked as **Newsletter form** (a block or a form can set its own ID instead). Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID, so no confirmation email is sent.
 
 ### Checkout Options (WooCommerce only)
 
@@ -273,6 +274,49 @@ At the bottom of the SMS page, you'll find a test form. Enter a phone number and
 
 ---
 
+## Subscription Form Blocks (Block Editor)
+
+The plugin adds two blocks to the WordPress block editor (Gutenberg). Find them in the block inserter under **Widgets**, or search for "NewsMAN". They work in posts, pages, the Site Editor (templates and template parts) and the block-based Widgets screen, with or without WooCommerce.
+
+> The blocks need WordPress 5.9 or newer, and the plugin must be connected to Newsman. Until it is connected, the blocks show nothing on the site.
+
+### NewsMAN Subscribe Form
+
+A newsletter form rendered by WordPress. Submissions are sent straight to Newsman.
+
+Block settings (right sidebar):
+
+- **NewsMAN list**
+  - **List** - **Default list from NewsMAN Sync** (the default) sends the subscribers to the list and segment selected on the **Sync** page. If you change the Sync list later, the forms follow it. Pick a list to send this form's subscribers there instead.
+  - **Segment** - Shown when a list is picked and the list has segments. Optional.
+  - The opt-in type is not set per form. The form uses **Newsletter Opt-in type** from the **Settings** page; with **Double Opt-in**, the confirmation email uses the **Confirmation email Form ID** from the same page.
+  - **Confirmation email Form ID** - Shown when **Newsletter Opt-in type** is **Double Opt-in**. Optional: the Newsman form whose confirmation email this block sends. Leave empty to use the one from **Settings**.
+- **Fields** - Email is always shown and required. **Show first name**, **Show last name** and **Show phone** add those fields, each with its own **Required** switch. **Show consent checkbox** adds a checkbox the visitor must tick to subscribe (on by default). **Show heading** shows a heading above the form.
+- **Texts** - Heading, field labels, consent text, button text and success message. Leave a text empty to use the default, which is translated into the site language. The default consent text links to the privacy policy page set in **Settings > Privacy**. The consent text may contain links, bold and italic.
+- **Styles** tab - Color, typography and spacing, like other blocks. The inputs and the button use the theme's styles.
+
+What happens on submission:
+
+1. The form is sent in the background and the success message or the error is shown under the button, without leaving the page. Without JavaScript the form still works: the page reloads and shows the message.
+2. First name and last name are sent as the subscriber's name in Newsman; the phone is saved as the `phone` subscriber property.
+3. If the email is already on the list, its properties are updated (and its name, when the subscription is confirmed). An address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox: right away with Opt-in, or with a new confirmation email with Double Opt-in.
+4. Errors from Newsman are written to the WooCommerce log under the Newsman source (sites without WooCommerce have no log destination); the visitor sees a generic "try again later" message.
+
+Spam protection: the form has a hidden field that only bots fill in (those submissions are ignored), and each visitor IP address can send the form at most 5 times in 10 minutes. The form does not use a WordPress nonce, so it keeps working on cached pages (LiteSpeed Cache, WP Rocket and similar). The list, segment and field settings are signed in the page, so a visitor cannot change them.
+
+For developers: the filter `newsman_subscribe_form_block_properties` changes the subscriber properties; `newsman_subscribe_form_block_rate_limit` and `newsman_subscribe_form_block_rate_limit_window` change the limit (a limit of 0 turns it off); the actions `newsman_subscribe_form_block_processed` and `newsman_subscribe_form_block_process_failed` run after each submission.
+
+### NewsMAN Embedded Form
+
+Shows a form you designed in your Newsman account, the same as the `[newsman_subscribe_widget formid="..."]` shortcode.
+
+1. In your [Newsman account](https://newsman.app), select the list, then go to **Settings > Subscription forms > Create/Edit form > Embedded form** and copy the form ID from the shortcode.
+2. Add the **NewsMAN Embedded Form** block and paste the ID into **Form ID**.
+
+The form is loaded from Newsman, so the editor shows a placeholder and the form appears on the published page. Pasting the shortcode into the editor turns it into this block, and a Shortcode block that holds it can be changed into this block with **Transform**.
+
+---
+
 ## Elementor Forms (Elementor Pro)
 
 If your site uses Elementor Pro's Form widget, the plugin can subscribe submissions to a Newsman list and send any other field values as subscriber properties. This applies to every place the Form widget is used, including forms placed inside Elementor popups.
@@ -294,6 +338,8 @@ Open any page in the Elementor editor and select a Form widget. In the **Content
 - **Newsman Segment** - Visible under the same conditions as **Newsman List**. Optional. Lets you assign new subscribers to a segment of the selected list. The dropdown is list-scoped — only segments that belong to the picked **Newsman List** are shown, and changing the list clears any segment that no longer matches. Cross-list segments are dropped at submission time as a safety net.
 
 - **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
+
+- **Confirmation email Form ID** - Shown when **Opt-in mode** is **Double opt-in**. Optional: the Newsman form whose confirmation email is sent. When empty, a **Newsletter form** uses the **Confirmation email Form ID** from **NewsMAN > Settings**, and other forms send none, so Newsman uses its default confirmation email. Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID.
 
 ### Per-field Settings
 
@@ -318,6 +364,8 @@ When a visitor submits the form:
 1. If **Send to Newsman** is off, nothing happens.
 2. If on, the plugin reads the email field and the per-field property values, then subscribes (or refreshes) the email to the selected list. The subscriber's properties in Newsman are updated with the field values.
 3. If the Newsman API rejects the request (missing email, invalid list, expired credentials), the form does not show its success state - the visitor sees an inline error message and Elementor's built-in actions (such as redirect or confirmation email) do not run. The technical error is also written to the WooCommerce log if logging is enabled.
+
+Emails already on the list: with **Newsletter form** on, an address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox (right away with Opt-in, or with a new confirmation email with Double Opt-in). With **Newsletter form** off (for example a form for a service or an offer), the plugin only updates the properties of an existing subscriber and never subscribes again someone who unsubscribed.
 
 ### Limitations
 
@@ -357,6 +405,8 @@ Open a page with an Atomic Form on the canvas. Click the form container (the par
 
 - **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
+- **Confirmation email Form ID** - Shown when **Opt-in mode** is **Double opt-in**. Optional: the Newsman form whose confirmation email is sent. When empty, a **Newsletter form** uses the **Confirmation email Form ID** from **NewsMAN > Settings**, and other forms send none, so Newsman uses its default confirmation email. Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID.
+
 ### Per-input settings
 
 Click any **Input**, **Textarea**, or **Checkbox** widget inside the form. The editor panel for that widget gets a **Newsman** section with:
@@ -375,6 +425,8 @@ When a visitor submits the form:
 
 1. If **Send to Newsman** is off on the form, nothing happens.
 2. If on, the plugin reads the form's saved settings, identifies the email input by the **Use as Newsman email** marker, builds a properties map from the inputs marked **Send to Newsman**, and subscribes the email to the chosen Newsman list with those properties.
+
+Emails already on the list: with **Newsletter form** on, an address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox (right away with Opt-in, or with a new confirmation email with Double Opt-in). With **Newsletter form** off (for example a form for a service or an offer), the plugin only updates the properties of an existing subscriber and never subscribes again someone who unsubscribed.
 
 ### Limitation: errors are not surfaced inline (v1)
 
@@ -414,6 +466,8 @@ In the WP admin, open **Contact > Contact Forms** and click any form to edit it.
 
 - **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
+- **Confirmation email Form ID** - Shown when **Opt-in mode** is **Double opt-in**. Optional: the Newsman form whose confirmation email is sent. When empty, a **Newsletter form** uses the **Confirmation email Form ID** from **NewsMAN > Settings**, and other forms send none, so Newsman uses its default confirmation email. Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID.
+
 - **Email field** - Pick which form-tag holds the subscriber's email address. **Any** field type can be used here (text, tel, url, email, number, ...), not just `[email]` tags - this is useful for forms that collect the email through a custom-validated text field. The default selection is the first `[email]` form-tag in the form template; if there is no email tag, the first available field is selected. The dropdown also lists each tag's basetype next to its name to make picking easier.
 
 - **Firstname field** - Optional. Pick which form-tag holds the subscriber's firstname. When set, the field is sent through Newsman's dedicated firstname channel instead of as a generic property. Leave on "— none —" to skip.
@@ -435,6 +489,8 @@ When a visitor submits the form successfully:
 1. If **Send to Newsman** is off, nothing happens.
 2. If on, the plugin reads the email from the configured email field, builds a property map from the checked fields (multi-value fields like checkboxes are JSON-encoded), and subscribes (or refreshes) the email to the chosen Newsman list with those properties.
 3. The form's normal flow (mail send, confirmation message, redirect) is unaffected. A Newsman API failure is logged but does **not** block the form's mail or change what the visitor sees - the form still shows its success state.
+
+Emails already on the list: with **Newsletter form** on, an address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox (right away with Opt-in, or with a new confirmation email with Double Opt-in). With **Newsletter form** off (for example a form for a service or an offer), the plugin only updates the properties of an existing subscriber and never subscribes again someone who unsubscribed.
 
 ### Limitation: errors are not surfaced inline (v1)
 
@@ -470,6 +526,8 @@ In the WP admin, open **WPForms > All Forms** and click **Edit** on any form. In
 
 - **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
+- **Confirmation email Form ID** - Shown when **Opt-in mode** is **Double opt-in**. Optional: the Newsman form whose confirmation email is sent. When empty, a **Newsletter form** uses the **Confirmation email Form ID** from **NewsMAN > Settings**, and other forms send none, so Newsman uses its default confirmation email. Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID.
+
 - **Email field** - Pick which form field holds the subscriber's email address. **Any** field type can be used here (text, tel, url, number, email, hidden, ...), not just the dedicated **Email** field type - useful when the form collects email through a custom-validated text field. The dropdown lists each field's label followed by its type to make picking easier.
 
 - **Firstname field** - Optional. Pick which form field holds the subscriber's firstname. When set, the field is sent through Newsman's dedicated firstname channel instead of as a generic property. Leave on "— none —" to skip.
@@ -489,6 +547,8 @@ When a visitor submits the form successfully:
 1. If **Send to Newsman** is off, nothing happens.
 2. If on, the plugin reads the email from the configured email field, builds a property map from the checked fields (multi-value fields like checkbox groups are JSON-encoded), and subscribes (or refreshes) the email to the chosen Newsman list with those properties.
 3. The form's normal flow (entry storage, notification emails, confirmation page) is unaffected. A Newsman API failure is logged but does **not** block WPForms' processing - the visitor still sees the success state.
+
+Emails already on the list: with **Newsletter form** on, an address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox (right away with Opt-in, or with a new confirmation email with Double Opt-in). With **Newsletter form** off (for example a form for a service or an offer), the plugin only updates the properties of an existing subscriber and never subscribes again someone who unsubscribed.
 
 ### Limitation: errors are not surfaced inline (v1)
 
@@ -524,6 +584,8 @@ In the WP admin, open **Forms > Forms** and click any form. In the Form Settings
 
 - **Opt-in mode** - Defaults to **Single opt-in**. With single opt-in, a new submission is added to the list immediately. With **Double opt-in**, the plugin asks Newsman to send a confirmation email to the address; the subscriber is only added to the list once they click the link in that email. Existing subscribers always have their property values refreshed regardless of the mode.
 
+- **Confirmation email Form ID** - Shown when **Opt-in mode** is **Double opt-in**. Optional: the Newsman form whose confirmation email is sent. When empty, a **Newsletter form** uses the **Confirmation email Form ID** from **NewsMAN > Settings**, and other forms send none, so Newsman uses its default confirmation email. Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID.
+
 - **Email field** - Pick which form field holds the subscriber's email address. **Any** field type can be used here (text, tel, url, number, email, hidden, ...), not just the dedicated **Email** field type — useful when the form collects email through a custom-validated text field. The dropdown lists each field's label followed by its id and type to make picking easier.
 
 - **Firstname field** - Optional. Pick which form field holds the subscriber's firstname. When set, the field is sent through Newsman's dedicated firstname channel instead of as a generic property. For compound fields (Gravity Forms **Name**, **Address**), each sub-input appears as its own option with the dotted id Gravity uses for storage (e.g. `1.3` for the First Name sub-input of a Name field with id `1`). Leave on "— none —" to skip.
@@ -543,6 +605,8 @@ When a visitor submits the form successfully:
 1. If **Send to Newsman** is off, nothing happens.
 2. If on, the plugin reads the email from the configured email field, builds a property map from the checked fields (multi-value fields like checkboxes are JSON-encoded), and subscribes (or refreshes) the email to the chosen Newsman list with those properties.
 3. The form's normal flow (entry storage, notifications, confirmations) is unaffected. A Newsman API failure is logged but does **not** block Gravity Forms' processing — the visitor still sees the success state.
+
+Emails already on the list: with **Newsletter form** on, an address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox (right away with Opt-in, or with a new confirmation email with Double Opt-in). With **Newsletter form** off (for example a form for a service or an offer), the plugin only updates the properties of an existing subscriber and never subscribes again someone who unsubscribed.
 
 ### Limitation: errors are not surfaced inline (v1)
 

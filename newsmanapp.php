@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 3.7.34
+ * Version: 3.7.35
  * Author: Newsman
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSMAN_VERSION', '3.7.34' );
+define( 'NEWSMAN_VERSION', '3.7.35' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'NEWSMAN_JS_SCRIPT_VERSION', '20260521000000' );
@@ -202,6 +202,13 @@ class WP_Newsman {
 	 */
 	public function init_widgets() {
 		add_shortcode( 'newsman_subscribe_widget', array( \Newsman\Form\Widget::init(), 'generate' ) );
+
+		// Blocks registered from block.json need WordPress 5.9 (viewScript).
+		if ( function_exists( 'register_block_type' ) && version_compare( get_bloginfo( 'version' ), '5.9', '>=' ) ) {
+			( new \Newsman\Form\Block\SubscribeForm() )->init_hooks();
+			( new \Newsman\Form\Block\EmbeddedForm() )->init_hooks();
+		}
+		( new \Newsman\Form\Block\SubscribeProcessor() )->init_hooks();
 	}
 
 	/**

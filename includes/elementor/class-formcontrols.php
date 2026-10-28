@@ -220,6 +220,31 @@ class FormControls {
 		}
 
 		/**
+		 * Filter the args passed to `add_control()` for the form-level `newsman_confirmation_form_id` TEXT.
+		 *
+		 * @param array  $args    Control args.
+		 * @param object $element Elementor element.
+		 */
+		$confirmation_args = apply_filters(
+			'newsman_form_confirmation_form_id_control_args',
+			array(
+				'label'       => esc_html__( 'Confirmation email Form ID', 'newsman' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => '',
+				'label_block' => true,
+				'condition'   => array(
+					'newsman_enable'     => 'yes',
+					'newsman_optin_mode' => 'double',
+				),
+				'description' => esc_html__( 'Optional. The Newsman form whose confirmation email is sent. When empty, a newsletter form uses the Confirmation email Form ID from NewsMAN > Settings and other forms use the Newsman default confirmation email.', 'newsman' ),
+			),
+			$element
+		);
+		if ( is_array( $confirmation_args ) ) {
+			$element->add_control( 'newsman_confirmation_form_id', $confirmation_args );
+		}
+
+		/**
 		 * Fires inside the Newsman section between the built-in controls and `end_controls_section()`.
 		 *
 		 * Use this to append additional form-level Newsman controls (e.g. a property-mapping

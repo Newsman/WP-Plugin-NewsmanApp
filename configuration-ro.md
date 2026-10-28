@@ -11,6 +11,7 @@ Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea cone
 - [Pagina Sync](#pagina-sync)
 - [Pagina Remarketing](#pagina-remarketing)
 - [Pagina SMS (doar WooCommerce)](#pagina-sms-doar-woocommerce)
+- [Blocuri pentru formulare de abonare (editorul de blocuri)](#blocuri-pentru-formulare-de-abonare-editorul-de-blocuri)
 - [Formulare Elementor (Elementor Pro)](#formulare-elementor-elementor-pro)
 - [Atomic Forms (Elementor 4.x, experimental)](#atomic-forms-elementor-4x-experimental)
 - [Contact Form 7](#contact-form-7)
@@ -92,7 +93,7 @@ Accesati **NewsMAN > Settings** pentru a configura comportamentul plugin-ului.
   - **Opt-in** - Abonatul este adaugat imediat.
   - **Double Opt-in** - Abonatul primeste mai intai un email de confirmare si trebuie sa faca click pe un link pentru a confirma. Aceasta optiune este recomandata pentru conformitatea GDPR.
 
-- **Confirmation email Form ID** - Daca ati ales Double Opt-in mai sus, introduceti Form ID-ul din contul dvs. Newsman. Acesta spune Newsman ce sablon de email de confirmare sa trimita. Puteti gasi acest ID in dashboard-ul Newsman la sectiunea Forms.
+- **Confirmation email Form ID** - Daca ati ales Double Opt-in mai sus, introduceti Form ID-ul din contul dvs. Newsman. Acesta spune Newsman ce sablon de email de confirmare sa trimita. Puteti gasi acest ID in dashboard-ul Newsman la sectiunea Forms. Este folosit de bifa din checkout, de pagina de newsletter din Contul Meu, de blocul **NewsMAN Subscribe Form** si de formularele din integrari marcate ca **Newsletter form** (un bloc sau un formular isi poate seta propriul ID). Folositi doar un ID care exista in contul dvs. Newsman: Newsman respinge o abonare cu un form ID necunoscut, deci nu se trimite niciun email de confirmare.
 
 ### Optiuni Checkout (doar WooCommerce)
 
@@ -284,6 +285,49 @@ In partea de jos a paginii SMS, veti gasi un formular de test. Introduceti un nu
 
 ---
 
+## Blocuri pentru formulare de abonare (editorul de blocuri)
+
+Plugin-ul adauga doua blocuri in editorul de blocuri WordPress (Gutenberg). Le gasiti in lista de blocuri la **Widgets** sau cautand "NewsMAN". Functioneaza in articole, pagini, Site Editor (template-uri si parti de template) si in ecranul Widgets bazat pe blocuri, cu sau fara WooCommerce.
+
+> Blocurile necesita WordPress 5.9 sau mai nou, iar plugin-ul trebuie sa fie conectat la Newsman. Pana la conectare, blocurile nu afiseaza nimic pe site.
+
+### NewsMAN Subscribe Form
+
+Un formular de newsletter afisat de WordPress. Inscrierile sunt trimise direct in Newsman.
+
+Setarile blocului (bara laterala din dreapta):
+
+- **NewsMAN list**
+  - **List** - **Default list from NewsMAN Sync** (implicit) trimite abonatii in lista si segmentul selectate in pagina **Sync**. Daca schimbati ulterior lista din Sync, formularele o urmeaza. Alegeti o lista pentru a trimite abonatii acestui formular in ea.
+  - **Segment** - Apare cand este aleasa o lista care are segmente. Optional.
+  - Tipul de inscriere nu se seteaza pe formular. Formularul foloseste **Newsletter Opt-in type** din pagina **Settings**; la **Double Opt-in**, emailul de confirmare foloseste **Confirmation email Form ID** din aceeasi pagina.
+  - **Confirmation email Form ID** - Apare cand **Newsletter Opt-in type** este **Double Opt-in**. Optional: formularul Newsman al carui email de confirmare il trimite acest bloc. Lasati gol pentru a folosi ID-ul din **Settings**.
+- **Fields** - Emailul este afisat mereu si este obligatoriu. **Show first name**, **Show last name** si **Show phone** adauga aceste campuri, fiecare cu propriul comutator **Required**. **Show consent checkbox** adauga o casuta pe care vizitatorul trebuie sa o bifeze pentru a se abona (activa implicit). **Show heading** afiseaza un titlu deasupra formularului.
+- **Texts** - Titlul, etichetele campurilor, textul de consimtamant, textul butonului si mesajul de succes. Lasati un text gol pentru a folosi textul implicit, tradus in limba site-ului. Textul de consimtamant implicit are link catre pagina de politica de confidentialitate setata in **Settings > Privacy**. Textul de consimtamant poate contine linkuri, text ingrosat si cursiv.
+- Tab-ul **Styles** - Culori, tipografie si spatiere, ca la celelalte blocuri. Campurile si butonul folosesc stilurile temei.
+
+Ce se intampla la trimitere:
+
+1. Formularul este trimis in fundal, iar mesajul de succes sau eroarea apare sub buton, fara a parasi pagina. Fara JavaScript formularul functioneaza in continuare: pagina se reincarca si afiseaza mesajul.
+2. Prenumele si numele sunt trimise ca numele abonatului in Newsman; telefonul este salvat in proprietatea `phone` a abonatului.
+3. Daca emailul exista deja in lista, proprietatile lui sunt actualizate (si numele, daca abonarea este confirmata). O adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout: imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in.
+4. Erorile de la Newsman sunt scrise in logul WooCommerce, sursa Newsman (site-urile fara WooCommerce nu au unde sa scrie logul); vizitatorul vede un mesaj general de tipul "incercati din nou mai tarziu".
+
+Protectie anti-spam: formularul are un camp ascuns pe care doar boti il completeaza (aceste trimiteri sunt ignorate), iar fiecare adresa IP de vizitator poate trimite formularul de cel mult 5 ori in 10 minute. Formularul nu foloseste un nonce WordPress, deci functioneaza si pe pagini puse in cache (LiteSpeed Cache, WP Rocket si altele). Setarile de lista, segment si campuri sunt semnate in pagina, deci un vizitator nu le poate modifica.
+
+Pentru dezvoltatori: filtrul `newsman_subscribe_form_block_properties` modifica proprietatile abonatului; `newsman_subscribe_form_block_rate_limit` si `newsman_subscribe_form_block_rate_limit_window` modifica limita (limita 0 o dezactiveaza); actiunile `newsman_subscribe_form_block_processed` si `newsman_subscribe_form_block_process_failed` ruleaza dupa fiecare trimitere.
+
+### NewsMAN Embedded Form
+
+Afiseaza un formular creat in contul dvs. Newsman, la fel ca shortcode-ul `[newsman_subscribe_widget formid="..."]`.
+
+1. In [contul Newsman](https://newsman.app), selectati lista, apoi mergeti la **Settings > Subscription forms > Create/Edit form > Embedded form** si copiati ID-ul formularului din shortcode.
+2. Adaugati blocul **NewsMAN Embedded Form** si lipiti ID-ul in **Form ID**.
+
+Formularul este incarcat din Newsman, asa ca editorul afiseaza un inlocuitor, iar formularul apare pe pagina publicata. Daca lipiti shortcode-ul in editor, acesta devine automat acest bloc, iar un bloc Shortcode care il contine poate fi schimbat in acest bloc cu **Transform**.
+
+---
+
 ## Formulare Elementor (Elementor Pro)
 
 Daca site-ul foloseste widget-ul Form din Elementor Pro, plugin-ul poate abona trimiterile catre o lista Newsman si poate trimite valorile celorlalte campuri ca proprietati de abonat. Functionalitatea se aplica oriunde este folosit widget-ul Form, inclusiv in formularele plasate in popup-uri Elementor.
@@ -305,6 +349,8 @@ Deschideti orice pagina in editorul Elementor si selectati un widget Form. In ta
 - **Newsman Segment** - Vizibil in aceleasi conditii ca **Newsman List**. Optional. Permite atribuirea abonatilor noi la un segment al listei selectate. Dropdown-ul este restrans la lista — doar segmentele care apartin **Newsman List**-ului ales sunt afisate, iar schimbarea listei sterge orice segment care nu mai corespunde. Segmentele care nu apartin listei salvate sunt eliminate la trimitere ca masura de siguranta.
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
+
+- **Confirmation email Form ID** - Apare cand **Opt-in mode** este **Double opt-in**. Optional: formularul Newsman al carui email de confirmare este trimis. Daca este gol, un **Newsletter form** foloseste **Confirmation email Form ID** din **NewsMAN > Settings**, iar celelalte formulare nu trimit niciun ID, deci Newsman foloseste emailul de confirmare implicit. Folositi doar un ID care exista in contul dvs. Newsman: Newsman respinge o abonare cu un form ID necunoscut.
 
 ### Setari per Camp
 
@@ -329,6 +375,8 @@ Cand un vizitator trimite formularul:
 1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
 2. Daca este activat, plugin-ul citeste campul de email si valorile proprietatilor per camp, apoi aboneaza (sau reactualizeaza) emailul in lista selectata. Proprietatile abonatului in Newsman sunt actualizate cu valorile campurilor.
 3. Daca API-ul Newsman respinge cererea (email lipsa, lista invalida, credentiale expirate), formularul nu afiseaza starea de succes - vizitatorul vede un mesaj de eroare in pagina, iar actiunile native Elementor (de exemplu redirect sau email de confirmare) nu se executa. Eroarea tehnica este de asemenea scrisa in logurile WooCommerce daca logarea este activata.
+
+Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout (imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in). Cu **Newsletter form** dezactivat (de exemplu un formular pentru un serviciu sau o oferta), plugin-ul doar actualizeaza proprietatile unui abonat existent si nu aboneaza din nou pe cineva care s-a dezabonat.
 
 ### Limitari
 
@@ -368,6 +416,8 @@ Deschideti o pagina care contine un Atomic Form. Faceti click pe containerul for
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
+- **Confirmation email Form ID** - Apare cand **Opt-in mode** este **Double opt-in**. Optional: formularul Newsman al carui email de confirmare este trimis. Daca este gol, un **Newsletter form** foloseste **Confirmation email Form ID** din **NewsMAN > Settings**, iar celelalte formulare nu trimit niciun ID, deci Newsman foloseste emailul de confirmare implicit. Folositi doar un ID care exista in contul dvs. Newsman: Newsman respinge o abonare cu un form ID necunoscut.
+
 ### Setari per Input
 
 Faceti click pe orice widget **Input**, **Textarea** sau **Checkbox** din interiorul formularului. Panoul editorului pentru acel widget primeste o sectiune **Newsman** cu:
@@ -386,6 +436,8 @@ Cand un vizitator trimite formularul:
 
 1. Daca **Send to Newsman** este dezactivat la nivel de formular, nu se intampla nimic.
 2. Daca este activat, plugin-ul citeste setarile salvate ale formularului, identifica input-ul de email dupa marcajul **Use as Newsman email**, construieste o harta de proprietati din input-urile marcate **Send to Newsman** si aboneaza emailul in lista aleasa cu acele proprietati.
+
+Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout (imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in). Cu **Newsletter form** dezactivat (de exemplu un formular pentru un serviciu sau o oferta), plugin-ul doar actualizeaza proprietatile unui abonat existent si nu aboneaza din nou pe cineva care s-a dezabonat.
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 
@@ -425,6 +477,8 @@ In WP admin, deschideti **Contact > Contact Forms** si dati click pe orice formu
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
+- **Confirmation email Form ID** - Apare cand **Opt-in mode** este **Double opt-in**. Optional: formularul Newsman al carui email de confirmare este trimis. Daca este gol, un **Newsletter form** foloseste **Confirmation email Form ID** din **NewsMAN > Settings**, iar celelalte formulare nu trimit niciun ID, deci Newsman foloseste emailul de confirmare implicit. Folositi doar un ID care exista in contul dvs. Newsman: Newsman respinge o abonare cu un form ID necunoscut.
+
 - **Email field** - Alegeti care form-tag detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, email, number, ...), nu doar tag-urile `[email]` - util pentru formulare care colecteaza emailul printr-un camp text cu validare proprie. Selectia implicita este primul form-tag `[email]` din template; daca nu exista un tag email, este selectat primul camp disponibil. Dropdown-ul afiseaza si basetype-ul fiecarui tag langa nume pentru a usura selectia.
 
 - **Firstname field** - Optional. Alegeti care form-tag detine prenumele abonatului. Cand este setat, campul este trimis prin canalul dedicat firstname al Newsman in loc de proprietate generica. Lasati pe "— none —" pentru a sari peste.
@@ -446,6 +500,8 @@ Cand un vizitator trimite formularul cu succes:
 1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
 2. Daca este activat, plugin-ul citeste emailul din campul email configurat, construieste o harta de proprietati din campurile bifate (campurile cu valori multiple precum checkbox-urile sunt codate ca JSON) si aboneaza (sau reimprospateaza) emailul in lista Newsman aleasa cu acele proprietati.
 3. Fluxul normal al formularului (trimitere mail, mesaj de confirmare, redirect) nu este afectat. O eroare de la API-ul Newsman este inregistrata in log dar **nu** blocheaza mail-ul formularului si nu schimba ce vede vizitatorul - formularul afiseaza in continuare starea de succes.
+
+Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout (imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in). Cu **Newsletter form** dezactivat (de exemplu un formular pentru un serviciu sau o oferta), plugin-ul doar actualizeaza proprietatile unui abonat existent si nu aboneaza din nou pe cineva care s-a dezabonat.
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 
@@ -481,6 +537,8 @@ In WP admin, deschideti **WPForms > All Forms** si dati click pe **Edit** pentru
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
+- **Confirmation email Form ID** - Apare cand **Opt-in mode** este **Double opt-in**. Optional: formularul Newsman al carui email de confirmare este trimis. Daca este gol, un **Newsletter form** foloseste **Confirmation email Form ID** din **NewsMAN > Settings**, iar celelalte formulare nu trimit niciun ID, deci Newsman foloseste emailul de confirmare implicit. Folositi doar un ID care exista in contul dvs. Newsman: Newsman respinge o abonare cu un form ID necunoscut.
+
 - **Email field** - Alegeti care camp din formular detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, number, email, hidden, ...), nu doar tipul dedicat **Email** - util cand formularul colecteaza emailul printr-un camp text cu validare proprie. Dropdown-ul afiseaza eticheta fiecarui camp urmata de tipul lui pentru a usura selectia.
 
 - **Firstname field** - Optional. Alegeti care camp din formular detine prenumele abonatului. Cand este setat, campul este trimis prin canalul dedicat firstname al Newsman in loc de proprietate generica. Lasati pe "— none —" pentru a sari peste.
@@ -500,6 +558,8 @@ Cand un vizitator trimite formularul cu succes:
 1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
 2. Daca este activat, plugin-ul citeste emailul din campul email configurat, construieste o harta de proprietati din campurile bifate (campurile cu valori multiple precum grupurile de checkbox-uri sunt codate ca JSON) si aboneaza (sau reimprospateaza) emailul in lista Newsman aleasa cu acele proprietati.
 3. Fluxul normal al formularului (stocare entry, email-uri de notificare, pagina de confirmare) nu este afectat. O eroare de la API-ul Newsman este inregistrata in log dar **nu** blocheaza procesarea WPForms - vizitatorul vede in continuare starea de succes.
+
+Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout (imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in). Cu **Newsletter form** dezactivat (de exemplu un formular pentru un serviciu sau o oferta), plugin-ul doar actualizeaza proprietatile unui abonat existent si nu aboneaza din nou pe cineva care s-a dezabonat.
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 
@@ -535,6 +595,8 @@ In WP admin, deschideti **Forms > Forms** si dati click pe orice formular. In ba
 
 - **Opt-in mode** - Implicit este **Single opt-in**. La single opt-in, o trimitere noua este adaugata imediat in lista. La **Double opt-in**, plugin-ul ii cere Newsman sa trimita un email de confirmare adresei; abonatul este adaugat in lista doar dupa ce face click pe link-ul din acel email. Abonatii deja existenti au intotdeauna proprietatile reactualizate, indiferent de modul ales.
 
+- **Confirmation email Form ID** - Apare cand **Opt-in mode** este **Double opt-in**. Optional: formularul Newsman al carui email de confirmare este trimis. Daca este gol, un **Newsletter form** foloseste **Confirmation email Form ID** din **NewsMAN > Settings**, iar celelalte formulare nu trimit niciun ID, deci Newsman foloseste emailul de confirmare implicit. Folositi doar un ID care exista in contul dvs. Newsman: Newsman respinge o abonare cu un form ID necunoscut.
+
 - **Email field** - Alegeti care camp din formular detine adresa de email a abonatului. **Orice** tip de camp poate fi folosit aici (text, tel, url, number, email, hidden, ...), nu doar tipul dedicat **Email** — util cand formularul colecteaza emailul printr-un camp text cu validare proprie. Dropdown-ul afiseaza eticheta fiecarui camp urmata de id-ul si tipul lui pentru a usura selectia.
 
 - **Firstname field** - Optional. Alegeti care camp din formular detine prenumele abonatului. Cand este setat, campul este trimis prin canalul dedicat firstname al Newsman in loc de proprietate generica. Pentru campuri compuse (Gravity Forms **Name**, **Address**), fiecare sub-input apare ca optiune separata cu id-ul punctat folosit de Gravity pentru stocare (de ex. `1.3` pentru sub-input-ul First Name al unui camp Name cu id `1`). Lasati pe "— none —" pentru a sari peste.
@@ -554,6 +616,8 @@ Cand un vizitator trimite formularul cu succes:
 1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
 2. Daca este activat, plugin-ul citeste emailul din campul email configurat, construieste o harta de proprietati din campurile bifate (campurile cu valori multiple precum checkbox-urile sunt codate ca JSON) si aboneaza (sau reimprospateaza) emailul in lista Newsman aleasa cu acele proprietati.
 3. Fluxul normal al formularului (stocare entry, notificari, confirmari) nu este afectat. O eroare de la API-ul Newsman este inregistrata in log dar **nu** blocheaza procesarea Gravity Forms — vizitatorul vede in continuare starea de succes.
+
+Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout (imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in). Cu **Newsletter form** dezactivat (de exemplu un formular pentru un serviciu sau o oferta), plugin-ul doar actualizeaza proprietatile unui abonat existent si nu aboneaza din nou pe cineva care s-a dezabonat.
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 

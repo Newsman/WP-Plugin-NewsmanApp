@@ -85,7 +85,8 @@ class FormProcessor {
 
 		// Newsletter-form mode: override list_id and segment_id from the Newsman - Sync config.
 		// Campaign-form mode: use the per-form list_id and segment_id.
-		if ( ! empty( $prop['newsletter_form'] ) ) {
+		$is_newsletter_form = ! empty( $prop['newsletter_form'] );
+		if ( $is_newsletter_form ) {
 			$list_id    = trim( (string) $config->get_list_id( get_current_blog_id() ) );
 			$segment_id = trim( (string) $config->get_segment_id( get_current_blog_id() ) );
 			if ( '' === $list_id ) {
@@ -200,6 +201,8 @@ class FormProcessor {
 		$properties = apply_filters( 'newsman_cf7_properties', $properties, $contact_form, $submission, $email );
 
 		$optin_mode = isset( $prop['optin_mode'] ) && 'double' === $prop['optin_mode'] ? 'double' : 'single';
+		$form_id    = isset( $prop['confirmation_form_id'] ) ? (string) $prop['confirmation_form_id'] : '';
+		$form_id    = SubscribeHelper::get_confirmation_form_id( $form_id, $is_newsletter_form, get_current_blog_id() );
 
 		try {
 			SubscribeHelper::subscribe_with_props(
@@ -211,7 +214,9 @@ class FormProcessor {
 				$optin_mode,
 				$firstname,
 				$lastname,
-				$segment_id
+				$segment_id,
+				$form_id,
+				$is_newsletter_form
 			);
 
 			/**

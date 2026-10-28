@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.34
+Stable tag: 3.7.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -92,6 +92,8 @@ Widget configuration:
 
 - If selected modal window -> Activate for newsletter subscription -> it will automatically be displayed on the website.
 
+- In the block editor, add the NewsMAN Embedded Form block and paste the form ID (a pasted `newsman_subscribe_widget` shortcode becomes this block), or add the NewsMAN Subscribe Form block for a newsletter form rendered by WordPress.
+
 NewsMAN Remarketing
 
 You must be logged out of admin to be able to test Remarketing (forms, events).
@@ -111,6 +113,14 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.35 =
+* Add the NewsMAN Subscribe Form block for the block editor: a newsletter form rendered by WordPress, with the list and segment (default: the Sync list and segment), first name, last name, phone and consent fields that can each be turned on or off, editable texts and an optional Confirmation email Form ID. The opt-in type comes from Settings. Works without WooCommerce, on cached pages (signed form settings, honeypot field and a per-IP limit instead of a nonce) and without JavaScript.
+* Add the NewsMAN Embedded Form block, which shows a form created in the NewsMAN account like the `[newsman_subscribe_widget]` shortcode. A pasted shortcode becomes this block.
+* Newsletter subscriptions now subscribe again an email that unsubscribed or never confirmed Double Opt-in, like the checkout and My Account: the Subscribe Form block and the Elementor, Contact Form 7, WPForms and Gravity Forms forms marked as "Newsletter form". Other forms only update an existing subscriber, as before.
+* Add an optional "Confirmation email Form ID" to each Elementor (Form widget and Atomic Forms), Contact Form 7, WPForms and Gravity Forms form, shown for Double opt-in. When empty, newsletter forms use the Confirmation email Form ID from Settings and other forms send none.
+* My Account: the newsletter subscription with Double Opt-in now sends the Confirmation email Form ID and the Sync segment, like the checkout.
+* Translations of the new texts in all languages; tests for the blocks, the shared subscribe helper and the confirmation email Form ID.
 
 = 3.7.34 =
 * Security: every POST to the Newsman settings pages now needs the nonce. A cross-site request carrying only the Sync page "Refresh lists & segments cache" button, without the form field, ran the refresh (Newsman API calls) without one.

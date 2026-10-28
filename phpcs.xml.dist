@@ -16,8 +16,9 @@
 
 	<rule ref="WordPress"/>
 
-	<!-- Test files follow the PHPUnit naming convention (FooTest.php). -->
+	<!-- Test files follow the PHPUnit naming convention (FooTest.php); block asset files must be named <script>.asset.php. -->
 	<rule ref="WordPress.Files.FileName">
 		<exclude-pattern>*/tests/*</exclude-pattern>
+		<exclude-pattern>*/src/blocks/*.asset.php</exclude-pattern>
 	</rule>
 </ruleset>

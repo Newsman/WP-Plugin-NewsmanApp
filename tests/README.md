@@ -73,6 +73,9 @@ on `localhost` and can be overridden with the environment variables
 - `PurchaseScriptTest` - order received purchase script: printed only to a visitor WooCommerce shows the order to, and run in Node.js against a fake tracker so the purchase is neither lost nor sent again on a reload (the Node.js part is skipped without `node`; set `NODE_BINARY` for another path)
 - `AdminSecurityTest` - nonce on every POST to the settings pages, OAuth forms need `manage_options`
 - `OauthTest` - the error Newsman redirects back with (`access_denied`, `missing_lists`) is shown on the OAuth page
+- `SubscribeFormBlockTest` - subscribe form and embedded form blocks: registration, rendered fields, consent text filtering, signed settings, the submit handler (validation, honeypot, rate limit, Sync or block list and segment, double opt-in `initSubscribe` with the confirmation form ID through a faked Newsman API, API failure) and the result after a submit without JavaScript
+- `SubscribeHelperTest` - shared subscribe helper against a faked Newsman API: newsletter subscriptions subscribe again unsubscribed and pending emails (`saveSubscribe` / `initSubscribe`, then `updateProps`), other forms only refresh them, confirmed subscribers and new emails as before, failure handling and the `newsman_subscribe_newsletter` filter
+- `ConfirmationFormIdTest` - double opt-in confirmation email form ID for every subscribe path against a faked Newsman API: the ID set on the form wins, an empty ID means the Settings value for newsletter forms and none for other forms (Gravity Forms, WPForms, Contact Form 7, Elementor Form widget, subscribe form block), and My Account sends the Settings ID and the Sync segment like the checkout
 
 ## Continuous integration
 

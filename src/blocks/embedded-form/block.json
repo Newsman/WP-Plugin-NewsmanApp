@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "newsman/embedded-form",
+	"title": "NewsMAN Embedded Form",
+	"category": "widgets",
+	"icon": "feedback",
+	"description": "Shows a subscription form created in your NewsMAN account.",
+	"keywords": [ "newsman", "newsletter", "subscribe", "embed", "form" ],
+	"textdomain": "newsman",
+	"attributes": {
+		"formId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true
+		}
+	},
+	"editorScript": "file:./index.js"
+}

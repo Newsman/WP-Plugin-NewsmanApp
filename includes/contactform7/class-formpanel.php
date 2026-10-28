@@ -317,6 +317,18 @@ class FormPanel {
 							</p>
 						</td>
 					</tr>
+					<tr class="newsman-confirmation-form-row">
+						<th scope="row">
+							<label for="wpcf7-newsman-confirmation-form-id"><?php esc_html_e( 'Confirmation email Form ID', 'newsman' ); ?></label>
+						</th>
+						<td>
+							<input type="text" class="regular-text" name="wpcf7-newsman[confirmation_form_id]" id="wpcf7-newsman-confirmation-form-id"
+								value="<?php echo esc_attr( (string) $prop['confirmation_form_id'] ); ?>"/>
+							<p class="description">
+								<?php esc_html_e( 'Optional. The Newsman form whose confirmation email is sent. When empty, a newsletter form uses the Confirmation email Form ID from NewsMAN > Settings and other forms use the Newsman default confirmation email.', 'newsman' ); ?>
+							</p>
+						</td>
+					</tr>
 					<tr>
 						<th scope="row">
 							<label for="wpcf7-newsman-email-field"><?php esc_html_e( 'Email field', 'newsman' ); ?></label>
@@ -551,6 +563,7 @@ class FormPanel {
 			'list_id'                => $list_id,
 			'segment_id'             => $segment_id,
 			'optin_mode'             => $optin_mode,
+			'confirmation_form_id'   => isset( $posted['confirmation_form_id'] ) ? sanitize_text_field( (string) $posted['confirmation_form_id'] ) : '',
 			'email_field'            => isset( $posted['email_field'] ) ? sanitize_text_field( (string) $posted['email_field'] ) : '',
 			'firstname_field'        => isset( $posted['firstname_field'] ) ? sanitize_text_field( (string) $posted['firstname_field'] ) : '',
 			'lastname_field'         => isset( $posted['lastname_field'] ) ? sanitize_text_field( (string) $posted['lastname_field'] ) : '',
@@ -626,6 +639,16 @@ class FormPanel {
 				var newsEl    = document.getElementById('wpcf7-newsman-newsletter-form');
 				var listRow   = document.querySelector('.newsman-list-row');
 				var segRow    = document.querySelector('.newsman-segment-row');
+				var optinEl   = document.getElementById('wpcf7-newsman-optin-mode');
+				var confRow   = document.querySelector('.newsman-confirmation-form-row');
+
+				// The confirmation email form ID only applies to double opt-in.
+				function toggleConfirmationForm() {
+					if ( confRow && optinEl ) { confRow.style.display = 'double' === optinEl.value ? '' : 'none'; }
+				}
+				if ( optinEl ) { optinEl.addEventListener('change', toggleConfirmationForm); }
+				toggleConfirmationForm();
+
 				if ( ! segRow ) { return; }
 
 				// Saved segment id at panel load — used to re-select it if it
@@ -686,6 +709,7 @@ class FormPanel {
 			'list_id'                => '',
 			'segment_id'             => '',
 			'optin_mode'             => 'single',
+			'confirmation_form_id'   => '',
 			'email_field'            => '',
 			'firstname_field'        => '',
 			'lastname_field'         => '',

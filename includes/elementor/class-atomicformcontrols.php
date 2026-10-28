@@ -120,12 +120,41 @@ class AtomicFormControls {
 				->get();
 		}
 
-		$list_prop    = $string::make()->default( '' );
-		$segment_prop = $string::make()->default( '' );
-		$optin_prop   = $string::make()->default( 'single' );
+		// The confirmation email form ID only matters with double opt-in.
+		$confirmation_dependencies = null;
+		if ( class_exists( '\Elementor\Modules\AtomicWidgets\PropDependencies\Manager' ) ) {
+			$dep_manager = '\Elementor\Modules\AtomicWidgets\PropDependencies\Manager';
+
+			$confirmation_dependencies = $dep_manager::make( $dep_manager::RELATION_AND )
+				->where(
+					array(
+						'operator' => 'eq',
+						'path'     => array( 'newsman_enable' ),
+						'value'    => true,
+						'effect'   => 'hide',
+					)
+				)
+				->where(
+					array(
+						'operator' => 'eq',
+						'path'     => array( 'newsman_optin_mode' ),
+						'value'    => 'double',
+						'effect'   => 'hide',
+					)
+				)
+				->get();
+		}
+
+		$list_prop         = $string::make()->default( '' );
+		$segment_prop      = $string::make()->default( '' );
+		$optin_prop        = $string::make()->default( 'single' );
+		$confirmation_prop = $string::make()->default( '' );
 		if ( null !== $list_segment_dependencies ) {
 			$list_prop    = $list_prop->set_dependencies( $list_segment_dependencies );
 			$segment_prop = $segment_prop->set_dependencies( $list_segment_dependencies );
+		}
+		if ( null !== $confirmation_dependencies ) {
+			$confirmation_prop = $confirmation_prop->set_dependencies( $confirmation_dependencies );
 		}
 
 		/**
@@ -140,16 +169,17 @@ class AtomicFormControls {
 		$newsman_props = apply_filters(
 			'newsman_atomic_form_props',
 			array(
-				'newsman_enable'          => $boolean::make()->default( false ),
-				'newsman_newsletter_form' => $boolean::make()->default( false ),
-				'newsman_list_id'         => $list_prop,
-				'newsman_segment_id'      => $segment_prop,
-				'newsman_optin_mode'      => $optin_prop,
-				'newsman_send_field'      => $boolean::make()->default( true ),
-				'newsman_is_email'        => $boolean::make()->default( false ),
-				'newsman_is_firstname'    => $boolean::make()->default( false ),
-				'newsman_is_lastname'     => $boolean::make()->default( false ),
-				'newsman_is_phone'        => $boolean::make()->default( false ),
+				'newsman_enable'               => $boolean::make()->default( false ),
+				'newsman_newsletter_form'      => $boolean::make()->default( false ),
+				'newsman_list_id'              => $list_prop,
+				'newsman_segment_id'           => $segment_prop,
+				'newsman_optin_mode'           => $optin_prop,
+				'newsman_confirmation_form_id' => $confirmation_prop,
+				'newsman_send_field'           => $boolean::make()->default( true ),
+				'newsman_is_email'             => $boolean::make()->default( false ),
+				'newsman_is_firstname'         => $boolean::make()->default( false ),
+				'newsman_is_lastname'          => $boolean::make()->default( false ),
+				'newsman_is_phone'             => $boolean::make()->default( false ),
 			),
 			$schema
 		);
@@ -340,6 +370,22 @@ class AtomicFormControls {
 		 */
 		$optin_control = apply_filters( 'newsman_atomic_form_optin_mode_control', $optin_control, $optin_options );
 
+		$items = array( $enable_control, $newsletter_form_control, $list_control, $segment_control, $optin_control );
+
+		if ( class_exists( '\Elementor\Modules\AtomicWidgets\Controls\Types\Text_Control' ) ) {
+			$text_class           = '\Elementor\Modules\AtomicWidgets\Controls\Types\Text_Control';
+			$confirmation_control = $text_class::bind_to( 'newsman_confirmation_form_id' )
+				->set_label( esc_html__( 'Confirmation email Form ID', 'newsman' ) )
+				->set_description( esc_html__( 'Optional. The Newsman form whose confirmation email is sent. When empty, a newsletter form uses the Confirmation email Form ID from NewsMAN > Settings and other forms use the Newsman default confirmation email.', 'newsman' ) );
+
+			/**
+			 * Filter the form-level Newsman confirmation email form ID Text_Control.
+			 *
+			 * @param object $confirmation_control Text_Control bound to `newsman_confirmation_form_id`.
+			 */
+			$items[] = apply_filters( 'newsman_atomic_form_confirmation_form_id_control', $confirmation_control );
+		}
+
 		/**
 		 * Filter the array of items composing the form-level Newsman section.
 		 *
@@ -347,18 +393,10 @@ class AtomicFormControls {
 		 *
 		 * @param array $items Controls to be passed to `Section::set_items()`.
 		 */
-		$items = apply_filters(
-			'newsman_atomic_form_section_items',
-			array(
-				$enable_control,
-				$newsletter_form_control,
-				$list_control,
-				$segment_control,
-				$optin_control,
-			)
-		);
+		$default_items = $items;
+		$items         = apply_filters( 'newsman_atomic_form_section_items', $default_items );
 		if ( ! is_array( $items ) ) {
-			$items = array( $enable_control, $newsletter_form_control, $list_control, $segment_control, $optin_control );
+			$items = $default_items;
 		}
 
 		$section = $section_class::make()

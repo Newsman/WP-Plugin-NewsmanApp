@@ -188,6 +188,18 @@ class Processor {
 					}
 				}
 
+				// Same options as the checkout checkbox; initSubscribe (double opt-in) takes them inline,
+				// single opt-in adds the Sync segment in the scheduler.
+				$segment_id = $this->config->get_segment_id();
+				if ( ! empty( $segment_id ) ) {
+					$options['segments'] = array( $segment_id );
+				}
+
+				$form_id = $this->config->get_newsman_form_id();
+				if ( ! empty( $form_id ) ) {
+					$options['form_id'] = $form_id;
+				}
+
 				$filter     = apply_filters(
 					'newsman_account_subscribe_newsletter_process_params',
 					array(

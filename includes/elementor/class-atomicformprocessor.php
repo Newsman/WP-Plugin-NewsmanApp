@@ -198,6 +198,8 @@ class AtomicFormProcessor {
 
 			$optin_mode = (string) $this->resolve_atomic_value( $widget_settings['newsman_optin_mode'] ?? 'single' );
 			$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
+			$form_id    = sanitize_text_field( (string) $this->resolve_atomic_value( $widget_settings['newsman_confirmation_form_id'] ?? '' ) );
+			$form_id    = SubscribeHelper::get_confirmation_form_id( $form_id, $is_newsletter_form, get_current_blog_id() );
 
 			SubscribeHelper::subscribe_with_props(
 				get_current_blog_id(),
@@ -208,7 +210,9 @@ class AtomicFormProcessor {
 				$optin_mode,
 				$firstname,
 				$lastname,
-				$segment_id
+				$segment_id,
+				$form_id,
+				$is_newsletter_form
 			);
 
 			/**

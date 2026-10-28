@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-10-26T19:13:58+00:00\n"
+"POT-Creation-Date: 2026-10-28T19:40:26+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -38,13 +38,13 @@ msgstr ""
 #. Author of the plugin
 #: newsmanapp.php includes/contactform7/class-formpanel.php:99
 #: includes/contactform7/class-formpanel.php:199
-#: includes/elementor/class-atomicformcontrols.php:365
-#: includes/elementor/class-atomicformcontrols.php:467
+#: includes/elementor/class-atomicformcontrols.php:403
+#: includes/elementor/class-atomicformcontrols.php:505
 #: includes/elementor/class-formcontrols.php:58
 #: includes/elementor/class-formcontrols.php:65
 #: includes/gravityforms/class-formpanel.php:92
 #: includes/gravityforms/class-formpanel.php:136
-#: includes/gravityforms/class-formpanel.php:215
+#: includes/gravityforms/class-formpanel.php:216
 #: includes/wpforms/class-formpanel.php:111
 #: includes/wpforms/class-formpanel.php:206
 msgid "Newsman"
@@ -92,36 +92,37 @@ msgstr "Skicka SMS med FAN Courier AWB"
 msgid "Send SMS with SamedayCourier AWB"
 msgstr "Skicka SMS med SamedayCourier AWB"
 
-#: includes/admin/settings/class-oauth.php:127
-msgid "Access is denied"
-msgstr "Åtkomst nekad"
-
-#: includes/admin/settings/class-oauth.php:130
-msgid "There are no lists in your NewsMAN account"
-msgstr "Det finns inga listor i ditt NewsMAN-konto"
-
-#: includes/admin/settings/class-oauth.php:230
-msgid "Credentials were saved successfully."
-msgstr "Inloggningsuppgifterna har sparats."
-
-#: includes/admin/settings/class-oauth.php:236
-msgid "Could not save integration setup. Please try again."
-msgstr "Kunde inte spara integrationsinställningen. Försök igen."
-
-#: includes/admin/settings/class-oauth.php:260
-msgid "Integration setup completed successfully."
-msgstr "Integrationskonfigurationen har slutförts."
-
-#: includes/admin/settings/class-oauth.php:273
-msgid "Remarketing JavaScript was updated successfully."
-msgstr "Remarketing-JavaScript har uppdaterats."
-
+#: includes/admin/settings/class-oauth.php:99
 #: includes/admin/settings/class-remarketing.php:90
 #: includes/admin/settings/class-settings.php:102
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:105
 msgid "Unauthorized user"
 msgstr "Obehörig användare"
+
+#: includes/admin/settings/class-oauth.php:132
+msgid "Access is denied"
+msgstr "Åtkomst nekad"
+
+#: includes/admin/settings/class-oauth.php:135
+msgid "There are no lists in your NewsMAN account"
+msgstr "Det finns inga listor i ditt NewsMAN-konto"
+
+#: includes/admin/settings/class-oauth.php:235
+msgid "Credentials were saved successfully."
+msgstr "Inloggningsuppgifterna har sparats."
+
+#: includes/admin/settings/class-oauth.php:241
+msgid "Could not save integration setup. Please try again."
+msgstr "Kunde inte spara integrationsinställningen. Försök igen."
+
+#: includes/admin/settings/class-oauth.php:265
+msgid "Integration setup completed successfully."
+msgstr "Integrationskonfigurationen har slutförts."
+
+#: includes/admin/settings/class-oauth.php:278
+msgid "Remarketing JavaScript was updated successfully."
+msgstr "Remarketing-JavaScript har uppdaterats."
 
 #: includes/admin/settings/class-remarketing.php:110
 #: includes/admin/settings/class-settings.php:167
@@ -420,12 +421,12 @@ msgstr ""
 "prenumerantegenskaper."
 
 #: includes/contactform7/class-formpanel.php:208
-#: includes/elementor/class-atomicformcontrols.php:273
-#: includes/elementor/class-atomicformcontrols.php:392
+#: includes/elementor/class-atomicformcontrols.php:303
+#: includes/elementor/class-atomicformcontrols.php:430
 #: includes/elementor/class-formcontrols.php:81
-#: includes/elementor/class-formcontrols.php:279
+#: includes/elementor/class-formcontrols.php:304
 #: includes/gravityforms/class-formpanel.php:197
-#: includes/gravityforms/class-formpanel.php:221
+#: includes/gravityforms/class-formpanel.php:222
 #: includes/wpforms/class-formpanel.php:214
 msgid "Send to Newsman"
 msgstr "Skicka till Newsman"
@@ -441,10 +442,10 @@ msgstr ""
 "valda Newsman-listan."
 
 #: includes/contactform7/class-formpanel.php:225
-#: includes/elementor/class-atomicformcontrols.php:283
+#: includes/elementor/class-atomicformcontrols.php:313
 #: includes/elementor/class-formcontrols.php:104
 #: includes/gravityforms/class-formpanel.php:198
-#: includes/gravityforms/class-formpanel.php:227
+#: includes/gravityforms/class-formpanel.php:228
 #: includes/wpforms/class-formpanel.php:225
 msgid "Newsletter form"
 msgstr "Nyhetsbrevsformulär"
@@ -461,7 +462,7 @@ msgstr ""
 
 #: includes/contactform7/class-formpanel.php:242
 #: includes/gravityforms/class-formpanel.php:199
-#: includes/gravityforms/class-formpanel.php:233
+#: includes/gravityforms/class-formpanel.php:234
 #: includes/wpforms/class-formpanel.php:245
 msgid "Newsman list"
 msgstr "Newsman-lista"
@@ -492,7 +493,7 @@ msgstr ""
 "„Nyhetsbrevsformulär” är på (Sync-listan används istället)."
 
 #: includes/contactform7/class-formpanel.php:260
-#: includes/elementor/class-atomicformcontrols.php:296
+#: includes/elementor/class-atomicformcontrols.php:326
 #: includes/elementor/class-formcontrols.php:147
 #: includes/gravityforms/class-formpanel.php:199
 #: includes/wpforms/class-formpanel.php:248
@@ -507,25 +508,25 @@ msgstr ""
 
 #: includes/contactform7/class-formpanel.php:278
 #: includes/gravityforms/class-formpanel.php:200
-#: includes/gravityforms/class-formpanel.php:243
+#: includes/gravityforms/class-formpanel.php:244
 #: includes/wpforms/class-formpanel.php:270
 msgid "Newsman segment"
 msgstr "Newsman-segment"
 
 #: includes/contactform7/class-formpanel.php:282
-#: includes/contactform7/class-formpanel.php:355
-#: includes/contactform7/class-formpanel.php:381
-#: includes/contactform7/class-formpanel.php:407
-#: includes/contactform7/class-formpanel.php:616
-#: includes/elementor/class-atomicformcontrols.php:534
+#: includes/contactform7/class-formpanel.php:367
+#: includes/contactform7/class-formpanel.php:393
+#: includes/contactform7/class-formpanel.php:419
+#: includes/contactform7/class-formpanel.php:629
+#: includes/elementor/class-atomicformcontrols.php:572
 #: includes/elementor/class-formcontrols.php:160
-#: includes/elementor/class-formcontrols.php:526
+#: includes/elementor/class-formcontrols.php:551
 #: includes/gravityforms/class-formpanel.php:184
-#: includes/gravityforms/class-formpanel.php:281
-#: includes/gravityforms/class-formpanel.php:381
+#: includes/gravityforms/class-formpanel.php:288
+#: includes/gravityforms/class-formpanel.php:388
 #: includes/wpforms/class-formpanel.php:258
 #: includes/wpforms/class-formpanel.php:277
-#: includes/wpforms/class-formpanel.php:369
+#: includes/wpforms/class-formpanel.php:392
 msgid "— none —"
 msgstr "— inget —"
 
@@ -538,26 +539,26 @@ msgstr ""
 "listan ovan visas. När du byter lista uppdateras denna rullgardin."
 
 #: includes/contactform7/class-formpanel.php:304
-#: includes/elementor/class-atomicformcontrols.php:332
+#: includes/elementor/class-atomicformcontrols.php:362
 #: includes/elementor/class-formcontrols.php:203
 #: includes/gravityforms/class-formpanel.php:201
-#: includes/gravityforms/class-formpanel.php:253
+#: includes/gravityforms/class-formpanel.php:254
 #: includes/wpforms/class-formpanel.php:318
 msgid "Opt-in mode"
 msgstr "Opt-in-läge"
 
 #: includes/contactform7/class-formpanel.php:309
-#: includes/elementor/class-atomicformcontrols.php:323
+#: includes/elementor/class-atomicformcontrols.php:353
 #: includes/elementor/class-formcontrols.php:206
-#: includes/gravityforms/class-formpanel.php:256
+#: includes/gravityforms/class-formpanel.php:257
 #: includes/wpforms/class-formpanel.php:321
 msgid "Single opt-in"
 msgstr "Enkel opt-in"
 
 #: includes/contactform7/class-formpanel.php:312
-#: includes/elementor/class-atomicformcontrols.php:327
+#: includes/elementor/class-atomicformcontrols.php:357
 #: includes/elementor/class-formcontrols.php:207
-#: includes/gravityforms/class-formpanel.php:257
+#: includes/gravityforms/class-formpanel.php:258
 #: includes/wpforms/class-formpanel.php:322
 msgid "Double opt-in"
 msgstr "Dubbel opt-in"
@@ -576,21 +577,45 @@ msgstr ""
 "länken."
 
 #: includes/contactform7/class-formpanel.php:322
+#: includes/elementor/class-atomicformcontrols.php:378
+#: includes/elementor/class-formcontrols.php:231
 #: includes/gravityforms/class-formpanel.php:202
-#: includes/gravityforms/class-formpanel.php:303
-#: includes/wpforms/class-formpanel.php:361
+#: includes/gravityforms/class-formpanel.php:263
+#: includes/wpforms/class-formpanel.php:334
+#: src/blocks/subscribe-form/index.js:219
+msgid "Confirmation email Form ID"
+msgstr "Bekräftelsemejl Formulär-ID"
+
+#: includes/contactform7/class-formpanel.php:328
+#: includes/elementor/class-atomicformcontrols.php:379
+#: includes/elementor/class-formcontrols.php:239
+#: includes/gravityforms/class-formpanel.php:202
+#: includes/wpforms/class-formpanel.php:336
+msgid ""
+"Optional. The Newsman form whose confirmation email is sent. When empty, a "
+"newsletter form uses the Confirmation email Form ID from NewsMAN > Settings "
+"and other forms use the Newsman default confirmation email."
+msgstr ""
+"Valfritt. Det Newsman-formulär vars bekräftelsemejl skickas. Om tomt "
+"använder ett nyhetsbrevsformulär Bekräftelsemejl Formulär-ID från NewsMAN > "
+"Inställningar och andra formulär använder Newsmans standardbekräftelsemejl."
+
+#: includes/contactform7/class-formpanel.php:334
+#: includes/gravityforms/class-formpanel.php:203
+#: includes/gravityforms/class-formpanel.php:310
+#: includes/wpforms/class-formpanel.php:384
 msgid "Email field"
 msgstr "E-postfält"
 
-#: includes/contactform7/class-formpanel.php:327
-#: includes/contactform7/class-formpanel.php:350
-#: includes/contactform7/class-formpanel.php:376
-#: includes/contactform7/class-formpanel.php:402
+#: includes/contactform7/class-formpanel.php:339
+#: includes/contactform7/class-formpanel.php:362
+#: includes/contactform7/class-formpanel.php:388
+#: includes/contactform7/class-formpanel.php:414
 msgid "Add a field to the form template to enable Newsman."
 msgstr "Lägg till ett fält i formulärmallen för att aktivera Newsman."
 
-#: includes/contactform7/class-formpanel.php:338
-#: includes/wpforms/class-formpanel.php:364
+#: includes/contactform7/class-formpanel.php:350
+#: includes/wpforms/class-formpanel.php:387
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used "
 "(text, tel, url, email, …)."
@@ -598,15 +623,15 @@ msgstr ""
 "Det valda fältet anger prenumerantens e-post. Vilken fälttyp som helst kan "
 "användas (text, tel, url, email, …)."
 
-#: includes/contactform7/class-formpanel.php:345
-#: includes/gravityforms/class-formpanel.php:203
-#: includes/gravityforms/class-formpanel.php:313
-#: includes/wpforms/class-formpanel.php:379
+#: includes/contactform7/class-formpanel.php:357
+#: includes/gravityforms/class-formpanel.php:204
+#: includes/gravityforms/class-formpanel.php:320
+#: includes/wpforms/class-formpanel.php:402
 msgid "Firstname field"
 msgstr "Förnamn-fält"
 
-#: includes/contactform7/class-formpanel.php:364
-#: includes/wpforms/class-formpanel.php:382
+#: includes/contactform7/class-formpanel.php:376
+#: includes/wpforms/class-formpanel.php:405
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's firstname "
 "instead of being included in the subscriber properties."
@@ -614,15 +639,15 @@ msgstr ""
 "Valfritt. När det är inställt skickas fältvärdet som prenumerantens förnamn "
 "istället för att inkluderas i prenumerantens egenskaper."
 
-#: includes/contactform7/class-formpanel.php:371
-#: includes/gravityforms/class-formpanel.php:204
-#: includes/gravityforms/class-formpanel.php:323
-#: includes/wpforms/class-formpanel.php:391
+#: includes/contactform7/class-formpanel.php:383
+#: includes/gravityforms/class-formpanel.php:205
+#: includes/gravityforms/class-formpanel.php:330
+#: includes/wpforms/class-formpanel.php:414
 msgid "Lastname field"
 msgstr "Efternamn-fält"
 
-#: includes/contactform7/class-formpanel.php:390
-#: includes/wpforms/class-formpanel.php:394
+#: includes/contactform7/class-formpanel.php:402
+#: includes/wpforms/class-formpanel.php:417
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's lastname "
 "instead of being included in the subscriber properties."
@@ -630,15 +655,15 @@ msgstr ""
 "Valfritt. När det är inställt skickas fältvärdet som prenumerantens "
 "efternamn istället för att inkluderas i prenumerantens egenskaper."
 
-#: includes/contactform7/class-formpanel.php:397
-#: includes/gravityforms/class-formpanel.php:205
-#: includes/gravityforms/class-formpanel.php:333
-#: includes/wpforms/class-formpanel.php:403
+#: includes/contactform7/class-formpanel.php:409
+#: includes/gravityforms/class-formpanel.php:206
+#: includes/gravityforms/class-formpanel.php:340
+#: includes/wpforms/class-formpanel.php:426
 msgid "Phone field"
 msgstr "Telefonfält"
 
-#: includes/contactform7/class-formpanel.php:416
-#: includes/wpforms/class-formpanel.php:406
+#: includes/contactform7/class-formpanel.php:428
+#: includes/wpforms/class-formpanel.php:429
 msgid ""
 "Optional. When set, the field value is sent as the subscriber's phone under "
 "the `phone` property key."
@@ -646,42 +671,42 @@ msgstr ""
 "Valfritt. När det är inställt skickas fältvärdet som prenumerantens telefon "
 "under egenskapsnyckeln `phone`."
 
-#: includes/contactform7/class-formpanel.php:423
-#: includes/gravityforms/class-formpanel.php:206
-#: includes/gravityforms/class-formpanel.php:349
-#: includes/wpforms/class-formpanel.php:423
+#: includes/contactform7/class-formpanel.php:435
+#: includes/gravityforms/class-formpanel.php:207
+#: includes/gravityforms/class-formpanel.php:356
+#: includes/wpforms/class-formpanel.php:446
 msgid "Send as properties"
 msgstr "Skicka som egenskaper"
 
-#: includes/contactform7/class-formpanel.php:428
+#: includes/contactform7/class-formpanel.php:440
 msgid "Add a field to the form template first."
 msgstr "Lägg först till ett fält i formulärmallen."
 
-#: includes/contactform7/class-formpanel.php:433
+#: includes/contactform7/class-formpanel.php:445
 msgid "Send these fields to Newsman as subscriber properties"
 msgstr "Skicka dessa fält till Newsman som prenumerantegenskaper"
 
-#: includes/contactform7/class-formpanel.php:462
-#: includes/wpforms/class-formpanel.php:456
+#: includes/contactform7/class-formpanel.php:474
+#: includes/wpforms/class-formpanel.php:479
 msgid "used as email"
 msgstr "används som e-post"
 
-#: includes/contactform7/class-formpanel.php:464
-#: includes/wpforms/class-formpanel.php:458
+#: includes/contactform7/class-formpanel.php:476
+#: includes/wpforms/class-formpanel.php:481
 msgid "used as firstname"
 msgstr "används som förnamn"
 
-#: includes/contactform7/class-formpanel.php:466
-#: includes/wpforms/class-formpanel.php:460
+#: includes/contactform7/class-formpanel.php:478
+#: includes/wpforms/class-formpanel.php:483
 msgid "used as lastname"
 msgstr "används som efternamn"
 
-#: includes/contactform7/class-formpanel.php:468
-#: includes/wpforms/class-formpanel.php:462
+#: includes/contactform7/class-formpanel.php:480
+#: includes/wpforms/class-formpanel.php:485
 msgid "used as phone"
 msgstr "används som telefon"
 
-#: includes/contactform7/class-formpanel.php:475
+#: includes/contactform7/class-formpanel.php:487
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by its "
 "form-tag name."
@@ -689,7 +714,7 @@ msgstr ""
 "Varje kryssat fält skickas till Newsman som en prenumerantegenskap med form-"
 "tag-namnet som nyckel."
 
-#: includes/contactform7/class-formprocessor.php:92
+#: includes/contactform7/class-formprocessor.php:93
 msgid ""
 "Newsman: CF7 form is marked as newsletter form but no list is configured in "
 "Newsman - Sync."
@@ -697,19 +722,19 @@ msgstr ""
 "Newsman: CF7-formuläret är markerat som nyhetsbrevsformulär men ingen lista "
 "är konfigurerad i Newsman - Sync."
 
-#: includes/contactform7/class-formprocessor.php:99
+#: includes/contactform7/class-formprocessor.php:100
 msgid "Newsman: CF7 form is enabled but no list is selected."
 msgstr "Newsman: CF7-formuläret är aktiverat men ingen lista är vald."
 
-#: includes/contactform7/class-formprocessor.php:109
+#: includes/contactform7/class-formprocessor.php:110
 msgid "Newsman: CF7 form has no email field configured."
 msgstr "Newsman: CF7-formuläret har inget konfigurerat e-postfält."
 
-#: includes/contactform7/class-formprocessor.php:126
+#: includes/contactform7/class-formprocessor.php:127
 msgid "Newsman: CF7 email field is empty."
 msgstr "Newsman: CF7-formulärets e-postfält är tomt."
 
-#: includes/elementor/class-atomicformcontrols.php:284
+#: includes/elementor/class-atomicformcontrols.php:314
 msgid ""
 "When on, the form uses the list and segment configured in Newsman - Sync; "
 "the per-form Newsman List and Newsman Segment values below are stored but "
@@ -719,12 +744,12 @@ msgstr ""
 "- Sync; värdena Newsman-lista och Newsman-segment per formulär nedan sparas "
 "men ignoreras."
 
-#: includes/elementor/class-atomicformcontrols.php:295
+#: includes/elementor/class-atomicformcontrols.php:325
 #: includes/elementor/class-formcontrols.php:127
 msgid "Newsman List"
 msgstr "Newsman-lista"
 
-#: includes/elementor/class-atomicformcontrols.php:296
+#: includes/elementor/class-atomicformcontrols.php:326
 #: includes/gravityforms/class-formpanel.php:199
 msgid ""
 "List for this campaign-specific form. Ignored when \"Newsletter form\" is on "
@@ -733,12 +758,12 @@ msgstr ""
 "Lista för detta kampanjspecifika formulär. Ignoreras när "
 "„Nyhetsbrevsformulär” är på (listan från Sync-sektionen används istället)."
 
-#: includes/elementor/class-atomicformcontrols.php:309
+#: includes/elementor/class-atomicformcontrols.php:339
 #: includes/elementor/class-formcontrols.php:165
 msgid "Newsman Segment"
 msgstr "Newsman-segment"
 
-#: includes/elementor/class-atomicformcontrols.php:310
+#: includes/elementor/class-atomicformcontrols.php:340
 msgid ""
 "Optional. Segments are list-scoped — each option is labeled \"List name — "
 "Segment name\". If the selected segment does not belong to the saved list, "
@@ -748,27 +773,27 @@ msgstr ""
 "Segmentnamn”. Om det valda segmentet inte tillhör den sparade listan "
 "ignoreras det vid inskickning."
 
-#: includes/elementor/class-atomicformcontrols.php:407
-#: includes/elementor/class-formcontrols.php:305
+#: includes/elementor/class-atomicformcontrols.php:445
+#: includes/elementor/class-formcontrols.php:330
 msgid "Use as Newsman email"
 msgstr "Använd som Newsman-e-post"
 
-#: includes/elementor/class-atomicformcontrols.php:419
-#: includes/elementor/class-formcontrols.php:340
+#: includes/elementor/class-atomicformcontrols.php:457
+#: includes/elementor/class-formcontrols.php:365
 msgid "Use as Newsman firstname"
 msgstr "Använd som Newsman-förnamn"
 
-#: includes/elementor/class-atomicformcontrols.php:431
-#: includes/elementor/class-formcontrols.php:375
+#: includes/elementor/class-atomicformcontrols.php:469
+#: includes/elementor/class-formcontrols.php:400
 msgid "Use as Newsman lastname"
 msgstr "Använd som Newsman-efternamn"
 
-#: includes/elementor/class-atomicformcontrols.php:443
-#: includes/elementor/class-formcontrols.php:410
+#: includes/elementor/class-atomicformcontrols.php:481
+#: includes/elementor/class-formcontrols.php:435
 msgid "Use as Newsman phone"
 msgstr "Använd som Newsman-telefon"
 
-#: includes/elementor/class-atomicformcontrols.php:491
+#: includes/elementor/class-atomicformcontrols.php:529
 msgid "-- select a list --"
 msgstr "-- välj en lista --"
 
@@ -794,13 +819,13 @@ msgstr "Newsman: e-postfältet i Atomic Form är tomt."
 
 #: includes/elementor/class-formcontrols.php:83
 #: includes/elementor/class-formcontrols.php:106
-#: includes/elementor/class-formcontrols.php:281
+#: includes/elementor/class-formcontrols.php:306
 msgid "On"
 msgstr "På"
 
 #: includes/elementor/class-formcontrols.php:84
 #: includes/elementor/class-formcontrols.php:107
-#: includes/elementor/class-formcontrols.php:282
+#: includes/elementor/class-formcontrols.php:307
 msgid "Off"
 msgstr "Av"
 
@@ -838,7 +863,7 @@ msgstr ""
 "Valfritt. Endast segment som tillhör listan ovan visas. Att byta lista "
 "rensar segment som inte längre matchar."
 
-#: includes/elementor/class-formcontrols.php:285
+#: includes/elementor/class-formcontrols.php:310
 msgid ""
 "Push this field's value as a subscriber property to Newsman (using the "
 "field's ID as the property key)."
@@ -846,28 +871,28 @@ msgstr ""
 "Skickar fältets värde som prenumerantegenskap till Newsman (fältets ID "
 "används som egenskapens nyckel)."
 
-#: includes/elementor/class-formcontrols.php:307
-#: includes/elementor/class-formcontrols.php:342
-#: includes/elementor/class-formcontrols.php:377
-#: includes/elementor/class-formcontrols.php:412
+#: includes/elementor/class-formcontrols.php:332
+#: includes/elementor/class-formcontrols.php:367
+#: includes/elementor/class-formcontrols.php:402
+#: includes/elementor/class-formcontrols.php:437
 msgid "Yes"
 msgstr "Ja"
 
-#: includes/elementor/class-formcontrols.php:308
-#: includes/elementor/class-formcontrols.php:343
-#: includes/elementor/class-formcontrols.php:378
-#: includes/elementor/class-formcontrols.php:413
+#: includes/elementor/class-formcontrols.php:333
+#: includes/elementor/class-formcontrols.php:368
+#: includes/elementor/class-formcontrols.php:403
+#: includes/elementor/class-formcontrols.php:438
 msgid "No"
 msgstr "Nej"
 
-#: includes/elementor/class-formcontrols.php:311
+#: includes/elementor/class-formcontrols.php:336
 msgid ""
 "Mark this field as the email used to subscribe the user to the Newsman list."
 msgstr ""
 "Markera detta fält som e-postadressen som används för att prenumerera "
 "användaren på Newsman-listan."
 
-#: includes/elementor/class-formcontrols.php:346
+#: includes/elementor/class-formcontrols.php:371
 msgid ""
 "Mark this field as the subscriber's firstname. The value is sent via context "
 "instead of being included in the subscriber properties."
@@ -875,7 +900,7 @@ msgstr ""
 "Markera detta fält som prenumerantens förnamn. Värdet skickas via context "
 "istället för att inkluderas i prenumerantens egenskaper."
 
-#: includes/elementor/class-formcontrols.php:381
+#: includes/elementor/class-formcontrols.php:406
 msgid ""
 "Mark this field as the subscriber's lastname. The value is sent via context "
 "instead of being included in the subscriber properties."
@@ -883,7 +908,7 @@ msgstr ""
 "Markera detta fält som prenumerantens efternamn. Värdet skickas via context "
 "istället för att inkluderas i prenumerantens egenskaper."
 
-#: includes/elementor/class-formcontrols.php:416
+#: includes/elementor/class-formcontrols.php:441
 msgid ""
 "Mark this field as the subscriber's phone. The value is pushed to Newsman "
 "under the `phone` property key."
@@ -907,7 +932,7 @@ msgstr "Newsman: inget fält är markerat som e-postfält."
 msgid "Newsman: email field is empty."
 msgstr "Newsman: e-postfältet är tomt."
 
-#: includes/elementor/class-formprocessor.php:248
+#: includes/elementor/class-formprocessor.php:252
 msgid "Newsman subscription failed."
 msgstr "Newsman-prenumerationen misslyckades."
 
@@ -1115,16 +1140,16 @@ msgstr "Du har redan prenumererat på vårt nyhetsbrev!"
 msgid "You have already unsubscribed from our newsletter!"
 msgstr "Du har redan avprenumererat från vårt nyhetsbrev!"
 
-#: includes/form/account/class-processor.php:215
+#: includes/form/account/class-processor.php:227
 msgid "A subscription confirmation email will be sent to you shortly."
 msgstr ""
 "Ett bekräftelsemeddelande för prenumerationen skickas till dig inom kort."
 
-#: includes/form/account/class-processor.php:222
+#: includes/form/account/class-processor.php:234
 msgid "You have successfully subscribed to our newsletter!"
 msgstr "Du har framgångsrikt prenumererat på vårt nyhetsbrev!"
 
-#: includes/form/account/class-processor.php:227
+#: includes/form/account/class-processor.php:239
 msgid ""
 "The subscription process usually takes less than a minute. After that the "
 "status of your subscription will be shown here. Thank you!"
@@ -1132,7 +1157,7 @@ msgstr ""
 "Prenumerationsprocessen tar vanligtvis mindre än en minut. Därefter visas "
 "statusen för din prenumeration här. Tack!"
 
-#: includes/form/account/class-processor.php:252
+#: includes/form/account/class-processor.php:264
 msgid ""
 "You have unsubscribed from our newsletter! An unsubscription confirmation "
 "email will be sent to you shortly."
@@ -1140,11 +1165,11 @@ msgstr ""
 "Du har avprenumererat från vårt nyhetsbrev! Ett bekräftelsemeddelande för "
 "avprenumerationen skickas till dig inom kort."
 
-#: includes/form/account/class-processor.php:259
+#: includes/form/account/class-processor.php:271
 msgid "You have unsubscribed from our newsletter!"
 msgstr "Du har avprenumererat från vårt nyhetsbrev!"
 
-#: includes/form/account/class-processor.php:264
+#: includes/form/account/class-processor.php:276
 msgid ""
 "The unsubscription process usually takes less than a minute. After that the "
 "status of your subscription will be shown here. Thank you!"
@@ -1152,17 +1177,83 @@ msgstr ""
 "Avprenumerationsprocessen tar vanligtvis mindre än en minut. Därefter visas "
 "statusen för din prenumeration här. Tack!"
 
-#: includes/form/account/class-processor.php:278
+#: includes/form/account/class-processor.php:290
 msgid "There was an error subscribing to the newsletter. Please try again."
 msgstr "Ett fel uppstod vid prenumeration på nyhetsbrevet. Försök igen."
+
+#. translators: %s: Privacy policy page URL
+#: includes/form/block/class-subscribeform.php:201
+#, php-format
+msgid ""
+"I agree to receive the newsletter and I accept the <a href=\"%s\">privacy "
+"policy</a>."
+msgstr ""
+"Jag vill få nyhetsbrevet och godkänner <a href=\"%s\">integritetspolicyn</a>."
+
+#: includes/form/block/class-subscribeform.php:205
+msgid "I agree to receive the newsletter."
+msgstr "Jag vill få nyhetsbrevet."
+
+#: includes/form/block/class-subscribeform.php:211
+msgid "Subscribe to our newsletter"
+msgstr "Prenumerera på vårt nyhetsbrev"
+
+#: includes/form/block/class-subscribeform.php:212
+msgid "Email"
+msgstr "E-post"
+
+#: includes/form/block/class-subscribeform.php:213
+msgid "First name"
+msgstr "Förnamn"
+
+#: includes/form/block/class-subscribeform.php:214
+msgid "Last name"
+msgstr "Efternamn"
+
+#: includes/form/block/class-subscribeform.php:215 src/backend-sms.php:373
+msgid "Phone"
+msgstr "Telefon"
+
+#: includes/form/block/class-subscribeform.php:217
+#: includes/form/patterns/account/subscribe.php:38
+msgid "Subscribe"
+msgstr "Prenumerera"
+
+#: includes/form/block/class-subscribeprocessor.php:303
+msgid "Thank you! Please check your inbox to confirm your subscription."
+msgstr "Tack! Kontrollera din inkorg för att bekräfta din prenumeration."
+
+#: includes/form/block/class-subscribeprocessor.php:304
+msgid "Thank you for subscribing!"
+msgstr "Tack för din prenumeration!"
+
+#: includes/form/block/class-subscribeprocessor.php:306
+msgid "Please enter a valid email address."
+msgstr "Ange en giltig e-postadress."
+
+#: includes/form/block/class-subscribeprocessor.php:308
+msgid "Please enter a valid phone number."
+msgstr "Ange ett giltigt telefonnummer."
+
+#: includes/form/block/class-subscribeprocessor.php:310
+msgid "Please fill in all required fields."
+msgstr "Fyll i alla obligatoriska fält."
+
+#: includes/form/block/class-subscribeprocessor.php:312
+msgid "Please accept the terms to subscribe."
+msgstr "Godkänn villkoren för att prenumerera."
+
+#: includes/form/block/class-subscribeprocessor.php:314
+msgid "Too many attempts. Please try again later."
+msgstr "För många försök. Försök igen senare."
+
+#: includes/form/block/class-subscribeprocessor.php:316
+msgid "The subscription could not be completed. Please try again later."
+msgstr "Prenumerationen kunde inte slutföras. Försök igen senare."
 
 #: includes/form/checkout/class-checkbox.php:173
 msgid "Send Order Status SMS"
 msgstr "Skicka SMS om beställningsstatus"
-
-#: includes/form/patterns/account/subscribe.php:38
-msgid "Subscribe"
-msgstr "Prenumerera"
 
 #: includes/gravityforms/class-formpanel.php:127
 msgid "Gravity Forms is not loaded."
@@ -1197,14 +1288,14 @@ msgstr ""
 "Valfritt. Segment är listspecifika — endast segment som tillhör den valda "
 "listan behålls. Om de inte matchar tas segmentet bort vid inlämning."
 
-#: includes/gravityforms/class-formpanel.php:202
+#: includes/gravityforms/class-formpanel.php:203
 msgid ""
 "The selected field provides the subscriber email. Any field type may be used."
 msgstr ""
 "Det valda fältet ger prenumerantens e-post. Vilken som helst fälttyp kan "
 "användas."
 
-#: includes/gravityforms/class-formpanel.php:203
+#: includes/gravityforms/class-formpanel.php:204
 msgid ""
 "Optional. For Name fields, pick the sub-input corresponding to the First "
 "Name (e.g. 1.3)."
@@ -1212,7 +1303,7 @@ msgstr ""
 "Valfritt. För Name-fält, välj underinmatningen som motsvarar förnamnet (t."
 "ex. 1.3)."
 
-#: includes/gravityforms/class-formpanel.php:204
+#: includes/gravityforms/class-formpanel.php:205
 msgid ""
 "Optional. For Name fields, pick the sub-input corresponding to the Last Name "
 "(e.g. 1.6)."
@@ -1220,7 +1311,7 @@ msgstr ""
 "Valfritt. För Name-fält, välj underinmatningen som motsvarar efternamnet(t."
 "ex. 1.6)."
 
-#: includes/gravityforms/class-formpanel.php:205
+#: includes/gravityforms/class-formpanel.php:206
 msgid ""
 "Optional. When set, the field value is sent as the subscriber phone under "
 "the `phone` property key."
@@ -1228,7 +1319,7 @@ msgstr ""
 "Valfritt. När det är inställt skickas fältvärdet som prenumerantens telefon "
 "under egenskapsnyckeln `phone`."
 
-#: includes/gravityforms/class-formpanel.php:206
+#: includes/gravityforms/class-formpanel.php:207
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label sanitized to lowercase snake_case (or by the field id when no "
@@ -1238,24 +1329,24 @@ msgstr ""
 "fältets etikett normaliserad till snake_case som nyckel (eller fältets idnär "
 "ingen etikett är inställd)."
 
-#: includes/gravityforms/class-formpanel.php:269
-#: includes/gravityforms/class-formpanel.php:297
+#: includes/gravityforms/class-formpanel.php:276
+#: includes/gravityforms/class-formpanel.php:304
 msgid "Field mapping"
 msgstr "Fältmappning"
 
-#: includes/gravityforms/class-formpanel.php:272
-#: includes/wpforms/class-formpanel.php:331
+#: includes/gravityforms/class-formpanel.php:279
+#: includes/wpforms/class-formpanel.php:354
 msgid "Add a field to the form to enable Newsman."
 msgstr "Lägg till ett fält i formuläret för att aktivera Newsman."
 
-#: includes/gravityforms/class-formpanel.php:375
+#: includes/gravityforms/class-formpanel.php:382
 msgid "Update Settings"
 msgstr "Uppdatera inställningar"
 
 #. translators: %s: Gravity Forms field id.
 #. translators: %s: WPForms field id.
-#: includes/gravityforms/class-formpanel.php:580
-#: includes/wpforms/class-formpanel.php:643
+#: includes/gravityforms/class-formpanel.php:600
+#: includes/wpforms/class-formpanel.php:668
 #, php-format
 msgid "Field #%s"
 msgstr "Fält #%s"
@@ -1510,14 +1601,14 @@ msgid "Updated subscriber properties for %s"
 msgstr "Prenumerantegenskaper uppdaterade för %s"
 
 #. translators: 1: Email, 2: error message.
-#: includes/subscribe/class-helper.php:409
+#: includes/subscribe/class-helper.php:538
 #, php-format
 msgid "Newsman: GetByEmail did not return %1$s, will saveSubscribe (%2$s)."
 msgstr ""
 "Newsman: GetByEmail returnerade inte %1$s, saveSubscribe används (%2$s)."
 
 #. translators: surfaced to the user when subscriber.initSubscribe returns API error 128.
-#: includes/subscribe/class-helper.php:570
+#: includes/subscribe/class-helper.php:703
 msgid ""
 "Too many requests for this subscriber. Can only send once per 10 minutes"
 msgstr ""
@@ -1542,7 +1633,7 @@ msgstr ""
 "Valfritt. Segment är listspecifika — endast segment som tillhör den valda "
 "listan visas. När du byter lista uppdateras denna rullgardin."
 
-#: includes/wpforms/class-formpanel.php:468
+#: includes/wpforms/class-formpanel.php:491
 msgid ""
 "Each checked field is sent to Newsman as a subscriber property keyed by the "
 "field label (or ID when no label is set)."
@@ -2402,10 +2493,6 @@ msgstr "Ex.:"
 msgid "SMS send test"
 msgstr "SMS-skicktest"
 
-#: src/backend-sms.php:373
-msgid "Phone"
-msgstr "Telefon"
-
 #: src/backend-sms.php:381
 msgid "Test message"
 msgstr "Testmeddelande"
@@ -2562,6 +2649,232 @@ msgstr "Konfigurationsguide (engelska)"
 #: src/backend.php:132
 msgid "Ghid de configurare (Romana)"
 msgstr "Konfigurationsguide (rumänska)"
+
+#: src/blocks/embedded-form/index.js:20
+msgid ""
+"In your NewsMAN account: select the list, then Settings > Subscription forms "
+"> Create/Edit form > Embedded form. Copy the form ID from the shortcode."
+msgstr ""
+"I ditt NewsMAN-konto: välj listan, sedan Inställningar > "
+"Prenumerationsformulär > Skapa/Redigera formulär > Inbäddat formulär. "
+"Kopiera formulär-ID:t från shortcoden."
+
+#: src/blocks/embedded-form/index.js:27
+msgid "Form ID"
+msgstr "Formulär-ID"
+
+#: src/blocks/embedded-form/index.js:45
+msgid "NewsMAN form"
+msgstr "NewsMAN-formulär"
+
+#: src/blocks/embedded-form/index.js:54 src/blocks/embedded-form/index.js:64
+msgid "NewsMAN Embedded Form"
+msgstr "Inbäddat NewsMAN-formulär"
+
+#: src/blocks/embedded-form/index.js:65
+msgid "The form is loaded from NewsMAN and shown on the published page."
+msgstr "Formuläret laddas från NewsMAN och visas på den publicerade sidan."
+
+#. translators: %s: NewsMAN list name
+#: src/blocks/subscribe-form/index.js:53
+msgid "Default list from NewsMAN Sync (%s)"
+msgstr "Standardlista från NewsMAN > Synkronisering (%s)"
+
+#: src/blocks/subscribe-form/index.js:56
+msgid "Default list from NewsMAN Sync"
+msgstr "Standardlista från NewsMAN > Synkronisering"
+
+#: src/blocks/subscribe-form/index.js:64
+msgid "No segment"
+msgstr "Inget segment"
+
+#: src/blocks/subscribe-form/index.js:177
+msgid "Required"
+msgstr "Obligatoriskt"
+
+#: src/blocks/subscribe-form/index.js:190
+msgid "List"
+msgstr "Lista"
+
+#: src/blocks/subscribe-form/index.js:204
+msgid "Segment"
+msgstr "Segment"
+
+#: src/blocks/subscribe-form/index.js:220
+msgid ""
+"Optional. Leave empty to use the Confirmation email Form ID from NewsMAN > "
+"Settings."
+msgstr ""
+"Valfritt. Lämna tomt för att använda Bekräftelsemejl Formulär-ID från "
+"NewsMAN > Inställningar."
+
+#: src/blocks/subscribe-form/index.js:236
+msgid "Subscribers go to the list and segment selected in NewsMAN > Sync."
+msgstr ""
+"Prenumeranter läggs till i listan och segmentet som valts i NewsMAN > "
+"Synkronisering."
+
+#: src/blocks/subscribe-form/index.js:239
+msgid ""
+"Opt-in type from NewsMAN > Settings: Double Opt-in (a confirmation email is "
+"sent)."
+msgstr ""
+"Opt-in-typ från NewsMAN > Inställningar: Dubbel opt-in (ett bekräftelsemejl "
+"skickas)."
+
+#: src/blocks/subscribe-form/index.js:240
+msgid "Opt-in type from NewsMAN > Settings: Opt-in (subscribed right away)."
+msgstr "Opt-in-typ från NewsMAN > Inställningar: Opt-in (prenumererar direkt)."
+
+#: src/blocks/subscribe-form/index.js:245
+msgid "The email field is always shown and required."
+msgstr "E-postfältet visas alltid och är obligatoriskt."
+
+#: src/blocks/subscribe-form/index.js:246
+msgid "Show first name"
+msgstr "Visa förnamn"
+
+#: src/blocks/subscribe-form/index.js:247
+msgid "Show last name"
+msgstr "Visa efternamn"
+
+#: src/blocks/subscribe-form/index.js:248
+msgid "Show phone"
+msgstr "Visa telefon"
+
+#: src/blocks/subscribe-form/index.js:253
+msgid "Show consent checkbox"
+msgstr "Visa kryssruta för samtycke"
+
+#: src/blocks/subscribe-form/index.js:254
+msgid "A required checkbox. Subscribers must check it to subscribe."
+msgstr ""
+"En obligatorisk kryssruta. Prenumeranter måste kryssa i den för att "
+"prenumerera."
+
+#: src/blocks/subscribe-form/index.js:256
+msgid "Show heading"
+msgstr "Visa rubrik"
+
+#: src/blocks/subscribe-form/index.js:261
+msgid "Heading"
+msgstr "Rubrik"
+
+#: src/blocks/subscribe-form/index.js:263
+msgid "Email label"
+msgstr "Etikett för e-post"
+
+#: src/blocks/subscribe-form/index.js:265
+msgid "First name label"
+msgstr "Etikett för förnamn"
+
+#: src/blocks/subscribe-form/index.js:268
+msgid "Last name label"
+msgstr "Etikett för efternamn"
+
+#: src/blocks/subscribe-form/index.js:271
+msgid "Phone label"
+msgstr "Etikett för telefon"
+
+#: src/blocks/subscribe-form/index.js:277
+msgid "Consent text"
+msgstr "Samtyckestext"
+
+#: src/blocks/subscribe-form/index.js:278
+msgid ""
+"Leave empty to use the default text with a link to the privacy policy page. "
+"Links, bold and italic are allowed."
+msgstr ""
+"Lämna tomt för att använda standardtexten med en länk till sidan med "
+"integritetspolicyn. Länkar, fetstil och kursiv är tillåtna."
+
+#: src/blocks/subscribe-form/index.js:288
+msgid "Button text"
+msgstr "Knapptext"
+
+#: src/blocks/subscribe-form/index.js:289
+msgid "Success message"
+msgstr "Bekräftelsemeddelande"
+
+#: src/blocks/subscribe-form/index.js:294
+msgid "NewsMAN list"
+msgstr "NewsMAN-lista"
+
+#: src/blocks/subscribe-form/index.js:295
+msgid "Fields"
+msgstr "Fält"
+
+#: src/blocks/subscribe-form/index.js:296
+msgid "Texts"
+msgstr "Texter"
+
+#: src/blocks/subscribe-form/index.js:305
+msgid "NewsMAN Subscribe Form"
+msgstr "NewsMAN-prenumerationsformulär"
+
+#: src/blocks/subscribe-form/index.js:306
+msgid ""
+"Connect the NewsMAN plugin to your NewsMAN account to use this form. The "
+"form is not shown on the site until then."
+msgstr ""
+"Anslut NewsMAN-pluginet till ditt NewsMAN-konto för att använda formuläret. "
+"Tills dess visas formuläret inte på webbplatsen."
+
+#: src/blocks/subscribe-form/index.js:308
+msgid "Open NewsMAN settings"
+msgstr "Öppna NewsMAN-inställningar"
+
+#: src/blocks/embedded-form/block.json
+msgctxt "block title"
+msgid "NewsMAN Embedded Form"
+msgstr "Inbäddat NewsMAN-formulär"
+
+#: src/blocks/embedded-form/block.json
+msgctxt "block description"
+msgid "Shows a subscription form created in your NewsMAN account."
+msgstr "Visar ett prenumerationsformulär som skapats i ditt NewsMAN-konto."
+
+#: src/blocks/embedded-form/block.json src/blocks/subscribe-form/block.json
+msgctxt "block keyword"
+msgid "newsman"
+msgstr "newsman"
+
+#: src/blocks/embedded-form/block.json src/blocks/subscribe-form/block.json
+msgctxt "block keyword"
+msgid "newsletter"
+msgstr "nyhetsbrev"
+
+#: src/blocks/embedded-form/block.json src/blocks/subscribe-form/block.json
+msgctxt "block keyword"
+msgid "subscribe"
+msgstr "prenumerera"
+
+#: src/blocks/embedded-form/block.json
+msgctxt "block keyword"
+msgid "embed"
+msgstr "bädda in"
+
+#: src/blocks/embedded-form/block.json src/blocks/subscribe-form/block.json
+msgctxt "block keyword"
+msgid "form"
+msgstr "formulär"
+
+#: src/blocks/subscribe-form/block.json
+msgctxt "block title"
+msgid "NewsMAN Subscribe Form"
+msgstr "NewsMAN-prenumerationsformulär"
+
+#: src/blocks/subscribe-form/block.json
+msgctxt "block description"
+msgid "Newsletter subscription form that adds subscribers to a NewsMAN list."
+msgstr ""
+"Prenumerationsformulär för nyhetsbrev som lägger till prenumeranter i en "
+"NewsMAN-lista."
+
+#: src/blocks/subscribe-form/block.json
+msgctxt "block keyword"
+msgid "email"
+msgstr "e-post"
 
 #~ msgid ""
 #~ "The dropdown has the updated segments as options after the new list was "

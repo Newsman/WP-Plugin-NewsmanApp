@@ -11,6 +11,7 @@
 
 namespace Newsman\Subscribe;
 
+use Newsman\Config;
 use Newsman\Logger;
 use Newsman\Service\Context\GetByEmail as GetByEmailContext;
 use Newsman\Service\Context\InitSubscribeEmail as InitSubscribeEmailContext;
@@ -45,9 +46,42 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   3. If not found (or the lookup fails) -> call `subscriber.saveSubscribe` with props
  *      inline (which DOES persist props on first creation).
  *
+ * Newsletter subscriptions (the subscribe form block, integration forms marked as
+ * "Newsletter form") subscribe again an email that unsubscribed or never confirmed
+ * double opt-in, like the checkout and My Account checkboxes. Other forms only refresh
+ * an existing subscriber and never subscribe again someone who unsubscribed.
+ *
  * @class \Newsman\Subscribe\Helper
  */
 class Helper {
+	/**
+	 * Confirmation email form ID for a double opt-in subscribe.
+	 *
+	 * The ID set on the form wins. When it is empty, newsletter subscriptions use the
+	 * Confirmation email Form ID from NewsMAN > Settings (like the checkout checkbox);
+	 * other forms send none, so Newsman uses its default confirmation email.
+	 *
+	 * @param string   $form_id    Form ID set on the form or block; may be empty.
+	 * @param bool     $newsletter Whether this is a newsletter subscription.
+	 * @param null|int $blog_id    WP blog ID.
+	 * @return string
+	 */
+	public static function get_confirmation_form_id( $form_id, $newsletter, $blog_id = null ) {
+		$form_id = trim( (string) $form_id );
+		if ( '' === $form_id && $newsletter ) {
+			$form_id = trim( (string) Config::init()->get_newsman_form_id( $blog_id ) );
+		}
+
+		/**
+		 * Filter the confirmation email form ID sent with a double opt-in subscribe.
+		 *
+		 * @param string   $form_id    Resolved form ID; empty sends none.
+		 * @param bool     $newsletter Whether this is a newsletter subscription.
+		 * @param null|int $blog_id    WP blog ID.
+		 */
+		return (string) apply_filters( 'newsman_subscribe_confirmation_form_id', $form_id, $newsletter, $blog_id );
+	}
+
 	/**
 	 * Subscribe an email to a Newsman list with subscriber properties.
 	 *
@@ -71,10 +105,15 @@ class Helper {
 	 *                           subscriber refresh) the API does not accept a segments
 	 *                           parameter — we follow up with a separate `segment.addSubscriber`
 	 *                           call. Empty string = skip segment handling entirely.
+	 * @param string $form_id    Optional Newsman form ID of the double opt-in confirmation email,
+	 *                           passed as `options.form_id` to initSubscribe. Empty string = omit.
+	 * @param bool   $newsletter Whether this is a newsletter subscription. When true, an email
+	 *                           found as unsubscribed or pending goes through saveSubscribe /
+	 *                           initSubscribe again instead of only a props refresh.
 	 * @return void
 	 * @throws \Exception When SubscribeEmail, InitSubscribeEmail, or UpdateProps fail.
 	 */
-	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '', $optin_mode = 'single', $firstname = '', $lastname = '', $segment_id = '' ) {
+	public static function subscribe_with_props( $blog_id, $list_id, $email, $properties, $ip = '', $optin_mode = 'single', $firstname = '', $lastname = '', $segment_id = '', $form_id = '', $newsletter = false ) {
 		$optin_mode = ( 'double' === $optin_mode ) ? 'double' : 'single';
 
 		/**
@@ -160,6 +199,19 @@ class Helper {
 		$segment_id = (string) apply_filters( 'newsman_subscribe_segment_id', (string) $segment_id, $blog_id, $list_id, $email, $properties, $ip );
 
 		/**
+		 * Filter whether the subscribe is a newsletter subscription, which subscribes again
+		 * an email found as unsubscribed or pending.
+		 *
+		 * @param bool   $newsletter Whether this is a newsletter subscription.
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 */
+		$newsletter = (bool) apply_filters( 'newsman_subscribe_newsletter', (bool) $newsletter, $blog_id, $list_id, $email, $properties, $ip );
+
+		/**
 		 * Filter whether to perform the subscribe at all.
 		 *
 		 * Return false to short-circuit and skip every API call.
@@ -192,6 +244,12 @@ class Helper {
 			$subscriber_id = $lookup['id'];
 			$status        = $lookup['status'];
 
+			$not_subscribed = in_array( $status, array( SubscriberStatus::UNSUBSCRIBED, SubscriberStatus::PENDING ), true );
+			if ( $newsletter && $not_subscribed ) {
+				self::resubscribe( $blog_id, $list_id, $email, $properties, $ip, $optin_mode, $firstname, $lastname, $segment_id, $form_id, $subscriber_id, $status );
+				return;
+			}
+
 			// subscriber.update refreshes firstname/lastname (and email/ip). Only run it
 			// when (a) we actually have a firstname or lastname to set, and (b) the row
 			// is fully confirmed — touching a pending double-optin row could flip it.
@@ -216,7 +274,7 @@ class Helper {
 					 * Fires when a Newsman subscribe attempt fails.
 					 *
 					 * Stage values: 'lookup' (swallowed), 'update_subscriber' (rethrown),
-					 * 'update_props' (rethrown), 'save_subscribe' (rethrown),
+					 * 'update_props' (rethrown, swallowed after a newsletter re-subscribe), 'save_subscribe' (rethrown),
 					 * 'init_subscribe' (rethrown), 'segment_add' (swallowed).
 					 *
 					 * @param \Exception $e          Caught exception.
@@ -255,7 +313,7 @@ class Helper {
 
 		if ( 'double' === $optin_mode ) {
 			try {
-				self::save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname, $lastname, $segment_id );
+				self::save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname, $lastname, $segment_id, $form_id );
 			} catch ( \Exception $e ) {
 				do_action( 'newsman_subscribe_failed', $e, 'init_subscribe', $blog_id, $list_id, $email, $properties, $ip );
 				throw $e;
@@ -298,6 +356,77 @@ class Helper {
 		 * @param string $ip         Client IP.
 		 */
 		do_action( 'newsman_subscribed', $blog_id, $list_id, $email, $properties, $ip );
+	}
+
+	/**
+	 * Subscribe again a newsletter subscriber found as unsubscribed or pending.
+	 *
+	 * Same calls as for a new subscriber (saveSubscribe subscribes at once, initSubscribe
+	 * sends the confirmation email again), then updateProps so the properties reach the
+	 * existing row, then the segment for single opt-in (initSubscribe takes it inline).
+	 *
+	 * @param int        $blog_id       WP blog ID.
+	 * @param string     $list_id       Newsman list ID.
+	 * @param string     $email         Subscriber email.
+	 * @param array      $properties    Subscriber properties.
+	 * @param string     $ip            Client IP.
+	 * @param string     $optin_mode    `'single'` or `'double'`.
+	 * @param string     $firstname     Subscriber firstname.
+	 * @param string     $lastname      Subscriber lastname.
+	 * @param string     $segment_id    Newsman segment ID; empty skips.
+	 * @param string     $form_id       Confirmation email form ID; empty skips.
+	 * @param int|string $subscriber_id Subscriber id from GetByEmail.
+	 * @param string     $status        Status found by GetByEmail.
+	 * @return void
+	 * @throws \Exception When saveSubscribe or initSubscribe fail.
+	 */
+	protected static function resubscribe( $blog_id, $list_id, $email, $properties, $ip, $optin_mode, $firstname, $lastname, $segment_id, $form_id, $subscriber_id, $status ) {
+		if ( 'double' === $optin_mode ) {
+			try {
+				self::save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname, $lastname, $segment_id, $form_id );
+			} catch ( \Exception $e ) {
+				/** This action is documented in self::subscribe_with_props(). */
+				do_action( 'newsman_subscribe_failed', $e, 'init_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+				throw $e;
+			}
+		} else {
+			try {
+				self::save_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname, $lastname );
+			} catch ( \Exception $e ) {
+				/** This action is documented in self::subscribe_with_props(). */
+				do_action( 'newsman_subscribe_failed', $e, 'save_subscribe', $blog_id, $list_id, $email, $properties, $ip );
+				throw $e;
+			}
+		}
+
+		// The subscribe already went through; a props failure must not report it as failed.
+		if ( ! empty( $properties ) ) {
+			try {
+				self::update_props( $blog_id, $list_id, $email, $subscriber_id, $properties );
+			} catch ( \Exception $e ) {
+				Logger::init()->log_exception( $e );
+				/** This action is documented in self::subscribe_with_props(). */
+				do_action( 'newsman_subscribe_failed', $e, 'update_props', $blog_id, $list_id, $email, $properties, $ip );
+			}
+		}
+
+		if ( 'single' === $optin_mode && '' !== $segment_id ) {
+			self::add_to_segment_best_effort( $blog_id, $segment_id, $subscriber_id, $email, $properties, $ip );
+		}
+
+		/**
+		 * Fires after a newsletter subscriber found as unsubscribed or pending was subscribed
+		 * again (single opt-in) or sent the confirmation email again (double opt-in).
+		 *
+		 * @param int    $blog_id    Current WP blog ID.
+		 * @param string $list_id    Newsman list ID.
+		 * @param string $email      Subscriber email.
+		 * @param array  $properties Subscriber properties.
+		 * @param string $ip         Client IP.
+		 * @param string $status     Status before: 'unsubscribed' or 'pending'.
+		 * @param string $optin_mode `'single'` or `'double'`.
+		 */
+		do_action( 'newsman_resubscribed', $blog_id, $list_id, $email, $properties, $ip, $status, $optin_mode );
 	}
 
 	/**
@@ -486,10 +615,11 @@ class Helper {
 	 * @param string $lastname   Subscriber lastname; empty string skips the setter.
 	 * @param string $segment_id Newsman segment ID; empty skips. Passed via `options.segments=[id]`
 	 *                           as documented in https://kb.newsman.com/api/1.2/subscriber.initSubscribe.
+	 * @param string $form_id    Newsman confirmation email form ID; empty skips. Passed via `options.form_id`.
 	 * @return void
 	 * @throws \Exception On API error (e.g. 128 too-many-requests).
 	 */
-	protected static function save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname = '', $lastname = '', $segment_id = '' ) {
+	protected static function save_init_subscribe( $blog_id, $list_id, $email, $properties, $ip, $firstname = '', $lastname = '', $segment_id = '', $form_id = '' ) {
 		$context = new InitSubscribeEmailContext();
 		$context->set_blog_id( $blog_id )
 			->set_list_id( $list_id )
@@ -503,12 +633,15 @@ class Helper {
 		if ( '' !== $lastname ) {
 			$context->set_lastname( $lastname );
 		}
+		$options = array();
 		if ( '' !== $segment_id ) {
-			$context->set_options(
-				array(
-					'segments' => array( (int) $segment_id ),
-				)
-			);
+			$options['segments'] = array( (int) $segment_id );
+		}
+		if ( '' !== (string) $form_id ) {
+			$options['form_id'] = (string) $form_id;
+		}
+		if ( ! empty( $options ) ) {
+			$context->set_options( $options );
 		}
 
 		$service = new InitSubscribeEmail();

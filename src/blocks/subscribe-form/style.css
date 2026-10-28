@@ -1,0 +1,76 @@
+/**
+ * NewsMAN Subscribe Form block - front end and editor styles.
+ * Every selector is wrapped in :where() (zero specificity), so theme styles win.
+ */
+:where(.nzm-subscribe-form) :where(.nzm-subscribe-form__form) {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75em;
+}
+
+:where(.nzm-subscribe-form) :where(.nzm-subscribe-form__heading) {
+	margin-top: 0;
+}
+
+:where(.nzm-subscribe-form) :where(.nzm-subscribe-form__field, .nzm-subscribe-form__actions) {
+	margin: 0;
+}
+
+:where(.nzm-subscribe-form__field) label {
+	display: block;
+	margin-bottom: 0.25em;
+}
+
+:where(.nzm-subscribe-form__field) :where(input[type="email"], input[type="text"], input[type="tel"]) {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	padding: 0.5em 0.75em;
+	font: inherit;
+}
+
+:where(.nzm-subscribe-form__field--consent) label {
+	display: flex;
+	gap: 0.5em;
+	align-items: flex-start;
+	margin-bottom: 0;
+}
+
+:where(.nzm-subscribe-form__field--consent) input {
+	flex: none;
+	margin-top: 0.3em;
+}
+
+:where(.nzm-subscribe-form__required) {
+	color: #b32d2e;
+}
+
+.nzm-subscribe-form .nzm-subscribe-form__hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+:where(.nzm-subscribe-form__form.is-submitting) .nzm-subscribe-form__button {
+	opacity: 0.6;
+	cursor: wait;
+}
+
+:where(.nzm-subscribe-form__message) {
+	padding: 0.5em 0.75em;
+	border-left: 4px solid currentColor;
+}
+
+.nzm-subscribe-form .nzm-subscribe-form__message[hidden] {
+	display: none;
+}
+
+:where(.nzm-subscribe-form__message.is-success) {
+	border-left-color: #00a32a;
+}
+
+:where(.nzm-subscribe-form__message.is-error) {
+	border-left-color: #d63638;
+}
