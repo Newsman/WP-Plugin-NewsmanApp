@@ -102,7 +102,24 @@ class Processor {
 		// $retriever->set_request_apy_key( $api_key );
 		// }.
 
-		return $retriever->process( $data, $blog_id );
+		$result = $retriever->process( $data, $blog_id );
+		$this->record_last_run( $code, $blog_id );
+		return $result;
+	}
+
+	/**
+	 * Remember when NewsMAN last read this type of data. Never breaks the export.
+	 *
+	 * @param string   $code    Retriever code.
+	 * @param null|int $blog_id WP blog ID.
+	 * @return void
+	 */
+	protected function record_last_run( $code, $blog_id ) {
+		try {
+			( new \Newsman\Export\LastRun() )->record( $code, $blog_id );
+		} catch ( \Exception $e ) {
+			$this->logger->log_exception( $e );
+		}
 	}
 
 	/**

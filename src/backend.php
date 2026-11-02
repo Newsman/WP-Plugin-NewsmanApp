@@ -18,7 +18,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 $this->is_oauth();
-$is_valid_credentials = $this->is_valid_credentials();
+$health_checks = $this->get_health_checks();
+$health_rows   = array(
+	'credentials'      => array( __( 'API credentials', 'newsman' ), $health_checks->check_credentials() ),
+	'list'             => array( __( 'Email list', 'newsman' ), $health_checks->check_list() ),
+	'api_access'       => array( __( 'Allow API access', 'newsman' ), $health_checks->check_api_access() ),
+	'remarketing'      => array( __( 'Remarketing', 'newsman' ), $health_checks->check_remarketing() ),
+	'action_scheduler' => array( __( 'Action Scheduler', 'newsman' ), $health_checks->check_action_scheduler() ),
+	'woocommerce'      => array( __( 'WooCommerce', 'newsman' ), $health_checks->check_woocommerce() ),
+);
+$health_icons  = array(
+	'good'        => array( 'dashicons-yes-alt', __( 'OK', 'newsman' ) ),
+	'recommended' => array( 'dashicons-warning', __( 'Needs attention', 'newsman' ) ),
+	'critical'    => array( 'dashicons-dismiss', __( 'Problem', 'newsman' ) ),
+	'info'        => array( 'dashicons-info', __( 'Information', 'newsman' ) ),
+);
 ?>
 <div class="tabset-img">
 	<img alt="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" title="<?php echo esc_attr__( 'NewsMAN', 'newsman' ); ?>" src="<?php echo esc_url( NEWSMAN_PLUGIN_URL ); ?>src/img/logo.png"/>
@@ -41,17 +55,7 @@ $is_valid_credentials = $this->is_valid_credentials();
 		<section id="tabNewsman" class="tab-panel">
 			<div class="wrap">
 				<h2><?php echo esc_html__( 'NewsMAN Info', 'newsman' ); ?></h2>
-				<table class="form-table">
-					<tr>
-						<th scope="row">
-							<strong><?php echo esc_html__( 'Credentials Status', 'newsman' ); ?></strong>
-						</th>
-						<td>
-							<div class="credentials-status <?php echo esc_html( $is_valid_credentials ? 'credentials-valid' : 'credentials-invalid' ); ?>">
-								<span><?php echo $is_valid_credentials ? esc_html__( 'Valid', 'newsman' ) : esc_html__( 'Invalid', 'newsman' ); ?></span>
-							</div>
-						</td>
-					</tr>
+				<table class="form-table newsman-tbl-fixed">
 					<tr>
 						<th scope="row">
 							<strong><?php echo esc_html__( 'Newsman Plugin Version', 'newsman' ); ?></strong>
@@ -71,46 +75,61 @@ $is_valid_credentials = $this->is_valid_credentials();
 							</span>
 						</td>
 					</tr>
-					<tr>
+				</table>
+				<h3 class="nzm-health-title"><?php echo esc_html__( 'Status', 'newsman' ); ?></h3>
+				<table class="form-table newsman-tbl-fixed nzm-health">
+					<?php foreach ( $health_rows as $health_key => $health_row ) : ?>
+						<?php
+						$health_check = $health_row[1];
+						$health_icon  = isset( $health_icons[ $health_check['status'] ] ) ? $health_icons[ $health_check['status'] ] : $health_icons['info'];
+						?>
+					<tr class="nzm-health-row nzm-health-row-<?php echo esc_attr( $health_key ); ?>">
 						<th scope="row">
-							<strong><?php echo esc_html__( 'Menus', 'newsman' ); ?>:</strong>
-						</th>
-					</tr>
-					<tr>
-						<th scope="row">
-							<strong><?php echo esc_html__( 'Sync', 'newsman' ); ?></strong>
+							<strong><?php echo esc_html( $health_row[0] ); ?></strong>
 						</th>
 						<td>
-							<p><?php echo esc_html__( 'You will be able to sync your shop customers and newsletter subscribers with NewsMAN list / segments', 'newsman' ); ?></p>
+							<span class="nzm-health-status nzm-health-<?php echo esc_attr( $health_check['status'] ); ?>">
+								<span class="dashicons <?php echo esc_attr( $health_icon[0] ); ?>" aria-hidden="true"></span>
+								<span class="screen-reader-text"><?php echo esc_html( $health_icon[1] ); ?>:</span>
+								<?php echo esc_html( $health_check['value'] ); ?>
+							</span>
+							<p class="description">
+								<?php echo esc_html( $health_check['description'] ); ?>
+								<?php if ( ! empty( $health_check['action_url'] ) ) : ?>
+									<a class="nzm-link" href="<?php echo esc_url( $health_check['action_url'] ); ?>"><?php echo esc_html( $health_check['action_label'] ); ?></a>
+								<?php endif; ?>
+							</p>
 						</td>
 					</tr>
-					<tr>
+					<?php endforeach; ?>
+					<tr class="nzm-health-row nzm-health-row-exports">
 						<th scope="row">
-							<strong><?php echo esc_html__( 'Remarketing', 'newsman' ); ?></strong>
+							<strong><?php echo esc_html__( 'Last exports', 'newsman' ); ?></strong>
 						</th>
 						<td>
-							<p><?php echo esc_html__( 'Provide a valuable experience to your customer by automating communication with them. Create automatic email flows based on their actions on the site, such as product viewed, added to cart, completed order etc.', 'newsman' ); ?></p>
+							<table class="nzm-health-exports">
+								<?php foreach ( $health_checks->get_last_exports() as $health_export ) : ?>
+								<tr class="nzm-health-export-<?php echo esc_attr( $health_export['type'] ); ?>">
+									<th scope="row"><?php echo esc_html( $health_export['label'] ); ?></th>
+									<td><?php echo esc_html( $health_export['value'] ); ?></td>
+								</tr>
+								<?php endforeach; ?>
+							</table>
+							<p class="description"><?php echo esc_html__( 'When NewsMAN last read each type of data from this site.', 'newsman' ); ?></p>
 						</td>
 					</tr>
-					<?php if ( $this->is_woo_commerce_exists() ) : ?>
+					<?php if ( $this->can_view_site_health() ) : ?>
 					<tr>
 						<th scope="row">
-							<strong>SMS</strong>
+							&nbsp;
 						</th>
 						<td>
-							<p><?php echo esc_html__( 'SMS (short messages) is one of the most effective ways to get users’ attention. Create and manage campaigns or send transactional SMS directly from NewsMAN platform.', 'newsman' ); ?></p>
+							<a class="nzm-link" href="<?php echo esc_url( admin_url( 'site-health.php' ) ); ?>"><?php echo esc_html__( 'The same checks are also in Tools > Site Health.', 'newsman' ); ?></a>
 						</td>
 					</tr>
 					<?php endif; ?>
-					<tr>
-						<th scope="row">
-							<strong><?php echo esc_html__( 'Settings', 'newsman' ); ?></strong>
-						</th>
-						<td>
-							<p><?php echo esc_html__( 'In the settings page enter your API Key and User id provided by NewsMAN.', 'newsman' ); ?></p>
-							<p><?php echo esc_html__( 'After entering and saving valid credentials you will be able to select a list to which subscribers will be added', 'newsman' ); ?>.</p>
-						</td>
-					</tr>
+				</table>
+				<table class="form-table newsman-tbl-fixed">
 					<tr>
 						<th scope="row">
 							<strong><?php echo esc_html__( 'Widget', 'newsman' ); ?></strong>

@@ -203,3 +203,44 @@ span[title] {
 }
 
 /*tabs*/
+
+/* NewsMAN page status */
+.nzm-health-title {
+	margin-top: 2em;
+}
+
+.nzm-health-status {
+	font-weight: 600;
+}
+
+.nzm-health-status .dashicons {
+	vertical-align: text-bottom;
+	margin-right: 2px;
+}
+
+.nzm-health-good {
+	color: #008000;
+}
+
+.nzm-health-recommended {
+	color: #996800;
+}
+
+.nzm-health-critical {
+	color: #b72524;
+}
+
+.nzm-health-info {
+	color: #50575e;
+}
+
+.tab-panels .nzm-health-exports {
+	border-collapse: collapse;
+}
+
+.tab-panels .nzm-health-exports th,
+.tab-panels .nzm-health-exports td {
+	padding: 2px 16px 2px 0;
+	font-weight: normal;
+	width: auto !important;
+}

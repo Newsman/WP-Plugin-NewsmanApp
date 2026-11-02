@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.35
+Stable tag: 3.7.36
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,12 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.36 =
+* Add a Status section to the NewsMAN page: API credentials (checked with the NewsMAN API), the selected email list, Allow API access, remarketing, the NewsMAN background tasks in Action Scheduler (pending, past due and failed in the last 7 days, with a link to the Scheduled Actions page), WooCommerce and the last time NewsMAN read subscribers, customers, products and orders. Each row links to the page that fixes it. The plugin version, the Reconfigure with Newsman OAuth button, the Widget info and the documentation links stay; the Credentials Status row and the menu descriptions are removed.
+* Add the NewsMAN tests to Tools > Site Health > Status: connection (credentials and list, run in the background through a REST route because it calls the NewsMAN API), API access, background tasks (with Action Scheduler) and remarketing (when turned on). Add a NewsMAN section to Tools > Site Health > Info with the plugin version, list ID, settings, background task counts and last exports. The API key is never shown.
+* The plugin now records when NewsMAN last read each type of data. The dates start after the update.
+* Translations of the new texts in all languages; tests for the status checks, Site Health and the NewsMAN page.
 
 = 3.7.35 =
 * Add the NewsMAN Subscribe Form block for the block editor: a newsletter form rendered by WordPress, with the list and segment (default: the Sync list and segment), first name, last name, phone and consent fields that can each be turned on or off, editable texts and an optional Confirmation email Form ID. The opt-in type comes from Settings. Works without WooCommerce, on cached pages (signed form settings, honeypot field and a per-IP limit instead of a nonce) and without JavaScript.

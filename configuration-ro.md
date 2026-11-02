@@ -7,6 +7,7 @@ Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea cone
 - [Unde Gasiti Setarile Plugin-ului](#unde-gasiti-setarile-plugin-ului)
 - [Primii Pasi - Conectarea la Newsman](#primii-pasi---conectarea-la-newsman)
 - [Reconfigurare cu Newsman OAuth](#reconfigurare-cu-newsman-oauth)
+- [Pagina NewsMAN (Stare)](#pagina-newsman-stare)
 - [Pagina Settings](#pagina-settings)
 - [Pagina Sync](#pagina-sync)
 - [Pagina Remarketing](#pagina-remarketing)
@@ -26,7 +27,7 @@ Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea cone
 
 Dupa instalarea si activarea plugin-ului, cautati elementul de meniu **NewsMAN** in bara laterala din stanga a panoului de administrare WordPress. Facand click pe el, apar mai multe sub-pagini:
 
-- **NewsMAN** - Pagina principala
+- **NewsMAN** - Pagina principala: versiunea plugin-ului, starea conexiunii, ultimele exporturi si linkuri catre documentatie
 - **Sync** - Alegeti ce lista Newsman primeste abonatii
 - **Remarketing** - Urmariti comportamentul vizitatorilor din magazin pentru campanii personalizate
 - **SMS** - Trimiteti mesaje text clientilor cand se schimba statusul comenzii (disponibil doar daca folositi WooCommerce)
@@ -64,7 +65,32 @@ Inainte de a putea folosi orice functionalitate, trebuie sa conectati plugin-ul 
 
 ## Reconfigurare cu Newsman OAuth
 
-Daca trebuie sa reconectati plugin-ul la un alt cont Newsman, sau daca credentialele s-au schimbat, accesati **NewsMAN > Settings** si faceti click pe butonul **Reconfigure with Newsman OAuth**. Acest lucru va va ghida prin acelasi flux OAuth descris mai sus - veti fi redirectionat catre site-ul Newsman pentru a autoriza accesul, apoi inapoi in WordPress pentru a selecta lista de email. API Key, User ID si Lista vor fi actualizate cu noile credentiale.
+Daca trebuie sa reconectati plugin-ul la un alt cont Newsman, sau daca credentialele s-au schimbat, accesati **NewsMAN** sau **NewsMAN > Settings** si faceti click pe butonul **Reconfigure with Newsman OAuth**. Acest lucru va va ghida prin acelasi flux OAuth descris mai sus - veti fi redirectionat catre site-ul Newsman pentru a autoriza accesul, apoi inapoi in WordPress pentru a selecta lista de email. API Key, User ID si Lista vor fi actualizate cu noile credentiale.
+
+---
+
+## Pagina NewsMAN (Stare)
+
+Pagina principala **NewsMAN** arata versiunea plugin-ului, butonul **Reconfigure with Newsman OAuth** cu numele si ID-ul site-ului curent, o sectiune **Stare** (Status), shortcode-ul pentru widget-ul formularului de abonare NewsMAN si linkuri catre acest ghid.
+
+Sectiunea **Stare** verifica plugin-ul de fiecare data cand deschideti pagina. Fiecare rand are o stare colorata: verde inseamna ca functioneaza, portocaliu necesita atentie, rosu este o problema, iar albastru este informativ. Un link sub rand deschide pagina unde puteti rezolva problema.
+
+| Rand | Ce arata |
+|------|----------|
+| **API credentials** | Daca NewsMAN accepta API Key si User ID salvate. Plugin-ul interogheaza API-ul NewsMAN cand se deschide pagina. |
+| **Email list** | Numele si ID-ul listei selectate, plus un avertisment daca lista a fost stearsa din contul NewsMAN. |
+| **Allow API access** | Daca NewsMAN poate citi abonatii, clientii, produsele si comenzile de pe site (optiunea **Allow API access** din Settings). |
+| **Remarketing** | Daca scriptul de urmarire este pornit si are un Remarketing ID. |
+| **Action Scheduler** | Cate sarcini NewsMAN din fundal sunt in asteptare, intarziate (asteapta de peste o ora) sau au esuat in ultimele 7 zile. Sarcinile intarziate inseamna de obicei ca WP-Cron nu ruleaza. Linkul deschide **Tools > Scheduled Actions** filtrat pe sarcinile NewsMAN. |
+| **WooCommerce** | Daca WooCommerce este activ si versiunea lui. |
+| **Last exports** | Cand a citit NewsMAN ultima data fiecare tip de date: abonati, iar cu WooCommerce si clienti, produse si comenzi. Plugin-ul incepe sa inregistreze aceste date dupa actualizare, deci un tip arata "No export recorded yet" pana cand NewsMAN il citeste din nou. |
+
+### Site Health
+
+Aceleasi verificari apar si in **Tools > Site Health**:
+
+- Tab-ul **Status** listeaza testele NewsMAN: conexiunea (API credentials si lista), accesul API, sarcinile din fundal (doar cand Action Scheduler este instalat) si remarketing (doar cand remarketing este pornit). Testul de conexiune ruleaza dupa incarcarea paginii, pentru ca interogheaza API-ul NewsMAN.
+- Tab-ul **Info** are o sectiune **NewsMAN** cu versiunea plugin-ului, ID-ul listei, setarile, numarul de sarcini din fundal si ultimele exporturi. API Key nu este afisata niciodata. Folositi **Copy site info to clipboard** cand contactati suportul NewsMAN.
 
 ---
 

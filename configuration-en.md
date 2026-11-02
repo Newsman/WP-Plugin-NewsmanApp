@@ -7,6 +7,7 @@ This guide walks you through every setting in the Newsman plugin so you can conn
 - [Where to Find the Plugin Settings](#where-to-find-the-plugin-settings)
 - [Getting Started - Connecting to Newsman](#getting-started---connecting-to-newsman)
 - [Reconfigure with Newsman OAuth](#reconfigure-with-newsman-oauth)
+- [NewsMAN Page (Status)](#newsman-page-status)
 - [Settings Page](#settings-page)
 - [Sync Page](#sync-page)
 - [Remarketing Page](#remarketing-page)
@@ -26,7 +27,7 @@ This guide walks you through every setting in the Newsman plugin so you can conn
 
 After installing and activating the plugin, look for the **NewsMAN** menu item in the left sidebar of your WordPress admin panel. Clicking it reveals several sub-pages:
 
-- **NewsMAN** - The main page
+- **NewsMAN** - The main page: plugin version, connection status, last exports and documentation links
 - **Sync** - Choose which Newsman list receives your subscribers
 - **Remarketing** - Track visitor behavior on your store for targeted campaigns
 - **SMS** - Send text messages to customers when their order status changes (only available if you use WooCommerce)
@@ -60,7 +61,32 @@ Before you can use any feature, you need to connect the plugin to your Newsman a
 
 ## Reconfigure with Newsman OAuth
 
-If you need to reconnect the plugin to a different Newsman account, or if your credentials have changed, go to **NewsMAN > Settings** and click the **Reconfigure with Newsman OAuth** button. This will take you through the same OAuth flow described above - you will be redirected to the Newsman website to authorize access, then back to WordPress to select your email list. Your API Key, User ID, and List will be updated with the new credentials.
+If you need to reconnect the plugin to a different Newsman account, or if your credentials have changed, go to **NewsMAN** or **NewsMAN > Settings** and click the **Reconfigure with Newsman OAuth** button. This will take you through the same OAuth flow described above - you will be redirected to the Newsman website to authorize access, then back to WordPress to select your email list. Your API Key, User ID, and List will be updated with the new credentials.
+
+---
+
+## NewsMAN Page (Status)
+
+The main **NewsMAN** page shows the plugin version, the **Reconfigure with Newsman OAuth** button with the name and ID of the current site, a **Status** section, the shortcode for the NewsMAN subscription form widget and links to this guide.
+
+The **Status** section checks the plugin every time you open the page. Each row has a colored status: green means it works, orange needs attention, red is a problem and blue is for information. A link under the row opens the page where you can fix it.
+
+| Row | What it shows |
+|-----|---------------|
+| **API credentials** | Whether NewsMAN accepts the saved API Key and User ID. The plugin asks the NewsMAN API when the page opens. |
+| **Email list** | The name and ID of the selected list, and a warning if the list was deleted from your NewsMAN account. |
+| **Allow API access** | Whether NewsMAN may read subscribers, customers, products and orders from your site (the **Allow API access** option in Settings). |
+| **Remarketing** | Whether the tracking script is on and has a Remarketing ID. |
+| **Action Scheduler** | How many NewsMAN background tasks are pending, past due (waiting for more than one hour) or failed in the last 7 days. Past due tasks usually mean WP-Cron is not running. The link opens **Tools > Scheduled Actions** filtered on the NewsMAN tasks. |
+| **WooCommerce** | Whether WooCommerce is active, and its version. |
+| **Last exports** | When NewsMAN last read each type of data: subscribers, and with WooCommerce also customers, products and orders. The plugin starts recording these dates after the update, so a type shows "No export recorded yet" until NewsMAN reads it again. |
+
+### Site Health
+
+The same checks also appear in **Tools > Site Health**:
+
+- The **Status** tab lists the NewsMAN tests: the connection (API credentials and list), API access, background tasks (only when Action Scheduler is installed) and remarketing (only when remarketing is turned on). The connection test runs after the page loads, because it calls the NewsMAN API.
+- The **Info** tab has a **NewsMAN** section with the plugin version, list ID, settings, background task counts and last exports. The API key is never shown. Use **Copy site info to clipboard** when you contact NewsMAN support.
 
 ---
 

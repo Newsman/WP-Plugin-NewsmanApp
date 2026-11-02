@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-10-28T19:40:26+00:00\n"
+"POT-Creation-Date: 2026-11-02T13:33:57+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -326,38 +326,37 @@ msgstr "Reconfigurer avec la connexion Newsman"
 msgid "Newsman: Failed to fetch the remarketing script."
 msgstr "Newsman : Échec de la récupération du script de remarketing."
 
-#: includes/class-admin.php:193 src/backend-oauth.php:29
+#: includes/class-admin.php:193 includes/health/class-sitehealth.php:347
+#: includes/health/class-sitehealth.php:381 src/backend-oauth.php:29
 #: src/backend-remarketing.php:32 src/backend-remarketing.php:37
 #: src/backend-settings.php:32 src/backend-settings.php:37
 #: src/backend-sms.php:66 src/backend-sms.php:71 src/backend-sync.php:32
-#: src/backend-sync.php:37 src/backend.php:24 src/backend.php:29
+#: src/backend-sync.php:37 src/backend.php:38 src/backend.php:43
 msgid "NewsMAN"
 msgstr "NewsMAN"
 
 #: includes/class-admin.php:202 includes/class-admin.php:203
 #: src/backend-remarketing.php:39 src/backend-settings.php:39
-#: src/backend-sms.php:73 src/backend-sync.php:39 src/backend.php:31
-#: src/backend.php:81
+#: src/backend-sms.php:73 src/backend-sync.php:39 src/backend.php:45
 msgid "Sync"
 msgstr "Synchronisation"
 
 #: includes/class-admin.php:211 includes/class-admin.php:212
-#: src/backend-remarketing.php:41 src/backend-settings.php:41
-#: src/backend-sms.php:75 src/backend-sync.php:41 src/backend.php:33
-#: src/backend.php:89
+#: includes/health/class-sitehealth.php:279 src/backend-remarketing.php:41
+#: src/backend-settings.php:41 src/backend-sms.php:75 src/backend-sync.php:41
+#: src/backend.php:26 src/backend.php:47
 msgid "Remarketing"
 msgstr "Remarketing"
 
 #: includes/class-admin.php:221 includes/class-admin.php:222
 #: src/backend-remarketing.php:44 src/backend-settings.php:44
-#: src/backend-sms.php:78 src/backend-sync.php:44 src/backend.php:36
+#: src/backend-sms.php:78 src/backend-sync.php:44 src/backend.php:50
 msgid "SMS"
 msgstr "SMS"
 
 #: includes/class-admin.php:231 includes/class-admin.php:232
 #: src/backend-remarketing.php:47 src/backend-settings.php:47
-#: src/backend-sms.php:81 src/backend-sync.php:47 src/backend.php:39
-#: src/backend.php:107
+#: src/backend-sms.php:81 src/backend-sync.php:47 src/backend.php:53
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -843,12 +842,16 @@ msgstr "Newsman : le champ e-mail du formulaire atomique est vide."
 #: includes/elementor/class-formcontrols.php:83
 #: includes/elementor/class-formcontrols.php:106
 #: includes/elementor/class-formcontrols.php:306
+#: includes/health/class-checks.php:258 includes/health/class-checks.php:295
+#: includes/health/class-sitehealth.php:242
 msgid "On"
 msgstr "Activé"
 
 #: includes/elementor/class-formcontrols.php:84
 #: includes/elementor/class-formcontrols.php:107
 #: includes/elementor/class-formcontrols.php:307
+#: includes/health/class-checks.php:249 includes/health/class-checks.php:275
+#: includes/health/class-sitehealth.php:242
 msgid "Off"
 msgstr "Désactivé"
 
@@ -900,6 +903,7 @@ msgstr ""
 #: includes/elementor/class-formcontrols.php:367
 #: includes/elementor/class-formcontrols.php:402
 #: includes/elementor/class-formcontrols.php:437
+#: includes/health/class-sitehealth.php:236
 msgid "Yes"
 msgstr "Oui"
 
@@ -907,6 +911,7 @@ msgstr "Oui"
 #: includes/elementor/class-formcontrols.php:368
 #: includes/elementor/class-formcontrols.php:403
 #: includes/elementor/class-formcontrols.php:438
+#: includes/health/class-sitehealth.php:236
 msgid "No"
 msgstr "Non"
 
@@ -1405,6 +1410,373 @@ msgstr ""
 msgid "Newsman: Gravity Forms email field is empty."
 msgstr "Newsman : le champ e-mail de Gravity Forms est vide."
 
+#: includes/health/class-checks.php:167
+msgid "Not connected"
+msgstr "Non connecté"
+
+#: includes/health/class-checks.php:168
+msgid ""
+"The API key and User ID are not saved. Connect the plugin to your NewsMAN "
+"account."
+msgstr ""
+"La clé API et le User ID ne sont pas enregistrés. Connectez l'extension à "
+"votre compte NewsMAN."
+
+#: includes/health/class-checks.php:170
+msgid "Connect with NewsMAN"
+msgstr "Se connecter avec NewsMAN"
+
+#: includes/health/class-checks.php:177 src/backend-settings.php:85
+#: src/backend-sms.php:106
+msgid "Invalid"
+msgstr "Invalide"
+
+#: includes/health/class-checks.php:178
+msgid ""
+"NewsMAN rejected the saved API key and User ID, or the NewsMAN API could not "
+"be reached. Check the credentials in Settings or reconfigure with NewsMAN "
+"OAuth."
+msgstr ""
+"NewsMAN a refusé la clé API et le User ID enregistrés, ou l'API NewsMAN n'a "
+"pas pu être jointe. Vérifiez les identifiants dans les Paramètres ou "
+"reconfigurez avec NewsMAN OAuth."
+
+#: includes/health/class-checks.php:180 includes/health/class-checks.php:252
+msgid "Open Settings"
+msgstr "Ouvrir les Paramètres"
+
+#: includes/health/class-checks.php:186 src/backend-settings.php:85
+#: src/backend-sms.php:106
+msgid "Valid"
+msgstr "Valide"
+
+#: includes/health/class-checks.php:187
+msgid "NewsMAN accepted the saved API key and User ID."
+msgstr "NewsMAN a accepté la clé API et le User ID enregistrés."
+
+#: includes/health/class-checks.php:201
+#: includes/health/class-sitehealth.php:266
+msgid "Not selected"
+msgstr "Non sélectionnée"
+
+#: includes/health/class-checks.php:202
+msgid "Select the NewsMAN list that receives the subscribers of this site."
+msgstr "Sélectionnez la liste NewsMAN qui reçoit les abonnés de ce site."
+
+#: includes/health/class-checks.php:204 includes/health/class-checks.php:236
+msgid "Open Sync"
+msgstr "Ouvrir la Synchronisation"
+
+#. translators: %s: NewsMAN list ID
+#: includes/health/class-checks.php:213 includes/health/class-checks.php:233
+#, php-format
+msgid "ID: %s"
+msgstr "ID : %s"
+
+#: includes/health/class-checks.php:214
+msgid ""
+"The list cannot be checked until NewsMAN accepts the API key and User ID."
+msgstr ""
+"La liste ne peut pas être vérifiée tant que NewsMAN n'accepte pas la clé API "
+"et le User ID."
+
+#. translators: 1: NewsMAN list name, 2: NewsMAN list ID
+#: includes/health/class-checks.php:224
+#, php-format
+msgid "%1$s (ID: %2$s)"
+msgstr "%1$s (ID : %2$s)"
+
+#: includes/health/class-checks.php:225
+msgid "New subscribers are added to this list."
+msgstr "Les nouveaux abonnés sont ajoutés à cette liste."
+
+#: includes/health/class-checks.php:234
+msgid ""
+"The selected list is not in your NewsMAN account anymore. Select another "
+"list."
+msgstr ""
+"La liste sélectionnée n'est plus dans votre compte NewsMAN. Sélectionnez une "
+"autre liste."
+
+#: includes/health/class-checks.php:250
+msgid ""
+"Allow API access is turned off in Settings, so NewsMAN cannot read "
+"subscribers, customers, products and orders from this site."
+msgstr ""
+"Autoriser l'accès API est désactivé dans les Paramètres, donc NewsMAN ne "
+"peut pas lire les abonnés, clients, produits et commandes de ce site."
+
+#: includes/health/class-checks.php:259
+msgid ""
+"NewsMAN can read subscribers, customers, products and orders from this site."
+msgstr ""
+"NewsMAN peut lire les abonnés, clients, produits et commandes de ce site."
+
+#: includes/health/class-checks.php:270
+msgid "Open Remarketing"
+msgstr "Ouvrir le Remarketing"
+
+#: includes/health/class-checks.php:276
+msgid ""
+"Remarketing is turned off, so NewsMAN does not receive product views, cart "
+"changes and purchases from this site."
+msgstr ""
+"Le remarketing est désactivé, donc NewsMAN ne reçoit pas les vues de "
+"produits, les modifications du panier et les achats de ce site."
+
+#: includes/health/class-checks.php:286
+msgid "Remarketing ID missing"
+msgstr "ID de remarketing manquant"
+
+#: includes/health/class-checks.php:287
+msgid ""
+"Remarketing is turned on, but the Remarketing ID is empty, so the tracking "
+"script is not added to the site."
+msgstr ""
+"Le remarketing est activé, mais l'ID de remarketing est vide, donc le script "
+"de suivi n'est pas ajouté au site."
+
+#: includes/health/class-checks.php:296
+msgid ""
+"The tracking script sends product views, cart changes and purchases to "
+"NewsMAN. Administrators are not tracked."
+msgstr ""
+"Le script de suivi envoie à NewsMAN les vues de produits, les modifications "
+"du panier et les achats. Les administrateurs ne sont pas suivis."
+
+#: includes/health/class-checks.php:309
+#: includes/health/class-sitehealth.php:292
+msgid "Not active"
+msgstr "Non actif"
+
+#: includes/health/class-checks.php:310
+msgid ""
+"The checkout and My Account newsletter options, SMS, order tracking and the "
+"customer, product and order exports need WooCommerce."
+msgstr ""
+"Les options de newsletter du checkout et de Mon compte, les SMS, le suivi "
+"des commandes et les exports de clients, produits et commandes nécessitent "
+"WooCommerce."
+
+#. translators: %s: WooCommerce version
+#: includes/health/class-checks.php:317
+#, php-format
+msgid "Active, version %s"
+msgstr "Actif, version %s"
+
+#: includes/health/class-checks.php:318
+msgid "All store features of the plugin are available."
+msgstr "Toutes les fonctions boutique de l'extension sont disponibles."
+
+#: includes/health/class-checks.php:331
+msgid "Not available"
+msgstr "Non disponible"
+
+#: includes/health/class-checks.php:332
+msgid ""
+"Action Scheduler is not installed. It comes with WooCommerce and runs "
+"NewsMAN tasks in the background."
+msgstr ""
+"Action Scheduler n'est pas installé. Il est fourni avec WooCommerce et "
+"exécute les tâches NewsMAN en arrière-plan."
+
+#: includes/health/class-checks.php:340
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: includes/health/class-checks.php:341
+msgid "The NewsMAN background tasks could not be counted."
+msgstr "Les tâches NewsMAN en arrière-plan n'ont pas pu être comptées."
+
+#. translators: 1: number of pending tasks, 2: number of past due tasks, 3: number of failed tasks
+#: includes/health/class-checks.php:347
+#, php-format
+msgid "%1$d pending, %2$d past due, %3$d failed in the last 7 days"
+msgstr "%1$d en attente, %2$d en retard, %3$d en échec ces 7 derniers jours"
+
+#: includes/health/class-checks.php:357
+msgid ""
+"Some NewsMAN background tasks waited more than one hour. WP-Cron may not be "
+"running on this site."
+msgstr ""
+"Certaines tâches NewsMAN en arrière-plan ont attendu plus d'une heure. WP-"
+"Cron ne fonctionne peut-être pas sur ce site."
+
+#: includes/health/class-checks.php:359
+msgid "View past due tasks"
+msgstr "Voir les tâches en retard"
+
+#: includes/health/class-checks.php:367
+msgid ""
+"Some NewsMAN background tasks failed in the last 7 days. The task log shows "
+"the error."
+msgstr ""
+"Certaines tâches NewsMAN en arrière-plan ont échoué ces 7 derniers jours. Le "
+"journal de la tâche indique l'erreur."
+
+#: includes/health/class-checks.php:369
+msgid "View failed tasks"
+msgstr "Voir les tâches en échec"
+
+#: includes/health/class-checks.php:374
+msgid "NewsMAN background tasks run on time."
+msgstr "Les tâches NewsMAN en arrière-plan s'exécutent à temps."
+
+#: includes/health/class-checks.php:375
+msgid ""
+"Use Action Scheduler is turned off in Settings, so subscriptions are sent to "
+"NewsMAN right away."
+msgstr ""
+"Utiliser Action Scheduler est désactivé dans les Paramètres, donc les "
+"inscriptions sont envoyées à NewsMAN immédiatement."
+
+#: includes/health/class-checks.php:394
+msgid "No export recorded yet"
+msgstr "Aucun export enregistré pour l'instant"
+
+#: includes/health/class-checks.php:409
+msgid "Subscribers"
+msgstr "Abonnés"
+
+#: includes/health/class-checks.php:410
+msgid "Customers"
+msgstr "Clients"
+
+#: includes/health/class-checks.php:411
+msgid "Products"
+msgstr "Produits"
+
+#: includes/health/class-checks.php:412
+msgid "Orders"
+msgstr "Commandes"
+
+#. translators: 1: date and time, 2: elapsed time, for example "3 hours"
+#: includes/health/class-checks.php:562
+#, php-format
+msgid "%1$s (%2$s ago)"
+msgstr "%1$s (il y a %2$s)"
+
+#: includes/health/class-sitehealth.php:74
+msgid "NewsMAN connection"
+msgstr "Connexion NewsMAN"
+
+#: includes/health/class-sitehealth.php:90
+msgid "NewsMAN API access"
+msgstr "Accès API NewsMAN"
+
+#: includes/health/class-sitehealth.php:96
+msgid "NewsMAN background tasks"
+msgstr "Tâches NewsMAN en arrière-plan"
+
+#: includes/health/class-sitehealth.php:103
+msgid "NewsMAN remarketing"
+msgstr "Remarketing NewsMAN"
+
+#: includes/health/class-sitehealth.php:158
+msgid "NewsMAN rejects the saved API key and User ID"
+msgstr "NewsMAN refuse la clé API et le User ID enregistrés"
+
+#: includes/health/class-sitehealth.php:159
+msgid "The NewsMAN plugin is not connected to a NewsMAN account"
+msgstr "L'extension NewsMAN n'est connectée à aucun compte NewsMAN"
+
+#: includes/health/class-sitehealth.php:166
+msgid "The NewsMAN list selected in the plugin was not found"
+msgstr "La liste NewsMAN sélectionnée dans l'extension est introuvable"
+
+#: includes/health/class-sitehealth.php:167
+msgid "No NewsMAN list is selected"
+msgstr "Aucune liste NewsMAN n'est sélectionnée"
+
+#. translators: %s: NewsMAN list name and ID
+#: includes/health/class-sitehealth.php:173
+#, php-format
+msgid "Subscribers are added to the list %s."
+msgstr "Les abonnés sont ajoutés à la liste %s."
+
+#: includes/health/class-sitehealth.php:176
+msgid "The NewsMAN plugin is connected"
+msgstr "L'extension NewsMAN est connectée"
+
+#: includes/health/class-sitehealth.php:187
+msgid "NewsMAN can read data from this site"
+msgstr "NewsMAN peut lire les données de ce site"
+
+#: includes/health/class-sitehealth.php:188
+msgid "NewsMAN cannot read data from this site"
+msgstr "NewsMAN ne peut pas lire les données de ce site"
+
+#: includes/health/class-sitehealth.php:200
+msgid "NewsMAN background tasks need attention"
+msgstr "Les tâches NewsMAN en arrière-plan demandent votre attention"
+
+#: includes/health/class-sitehealth.php:201
+msgid "NewsMAN background tasks run on time"
+msgstr "Les tâches NewsMAN en arrière-plan s'exécutent à temps"
+
+#: includes/health/class-sitehealth.php:215
+msgid "NewsMAN remarketing is active"
+msgstr "Le remarketing NewsMAN est actif"
+
+#: includes/health/class-sitehealth.php:216
+msgid "NewsMAN remarketing is turned on without a Remarketing ID"
+msgstr "Le remarketing NewsMAN est activé sans ID de remarketing"
+
+#: includes/health/class-sitehealth.php:253
+msgid "Plugin version"
+msgstr "Version de l'extension"
+
+#: includes/health/class-sitehealth.php:259
+msgid "API key and User ID saved"
+msgstr "Clé API et User ID enregistrés"
+
+#: includes/health/class-sitehealth.php:265
+msgid "List ID"
+msgstr "ID de la liste"
+
+#: includes/health/class-sitehealth.php:272 src/backend-settings.php:107
+#: src/backend.php:25
+msgid "Allow API access"
+msgstr "Autoriser l'accès API"
+
+#: includes/health/class-sitehealth.php:285
+msgid "Remarketing ID"
+msgstr "ID de remarketing"
+
+#: includes/health/class-sitehealth.php:286
+msgid "Not set"
+msgstr "Non défini"
+
+#: includes/health/class-sitehealth.php:291 src/backend.php:28
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: includes/health/class-sitehealth.php:298
+msgid "Action Scheduler available"
+msgstr "Action Scheduler disponible"
+
+#: includes/health/class-sitehealth.php:305 src/backend-settings.php:667
+msgid "Use Action Scheduler"
+msgstr "Utiliser Action Scheduler"
+
+#: includes/health/class-sitehealth.php:314
+msgid "Pending background tasks"
+msgstr "Tâches en arrière-plan en attente"
+
+#: includes/health/class-sitehealth.php:319
+msgid "Past due background tasks"
+msgstr "Tâches en arrière-plan en retard"
+
+#: includes/health/class-sitehealth.php:324
+msgid "Failed background tasks in the last 7 days"
+msgstr "Tâches en arrière-plan en échec ces 7 derniers jours"
+
+#. translators: %s: export type, for example "Orders"
+#: includes/health/class-sitehealth.php:333
+#, php-format
+msgid "Last export: %s"
+msgstr "Dernier export : %s"
+
 #. translators: 1: Email
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
@@ -1701,7 +2073,7 @@ msgstr "Newsman : le formulaire WPForms n'a pas de champ e-mail configuré."
 msgid "Newsman: WPForms email field is empty."
 msgstr "Newsman : le champ e-mail du formulaire WPForms est vide."
 
-#: src/backend-oauth.php:50 src/backend-settings.php:98 src/backend.php:70
+#: src/backend-oauth.php:50 src/backend-settings.php:98 src/backend.php:74
 msgid "Site "
 msgstr "Site "
 
@@ -1905,29 +2277,17 @@ msgstr "CLÉ API"
 msgid "User ID"
 msgstr "ID utilisateur"
 
-#: src/backend-settings.php:81 src/backend-sms.php:102 src/backend.php:47
+#: src/backend-settings.php:81 src/backend-sms.php:102
 msgid "Credentials Status"
 msgstr "Statut des identifiants"
 
-#: src/backend-settings.php:85 src/backend-sms.php:106 src/backend.php:51
-msgid "Valid"
-msgstr "Valide"
-
-#: src/backend-settings.php:85 src/backend-sms.php:106 src/backend.php:51
-msgid "Invalid"
-msgstr "Invalide"
-
-#: src/backend-settings.php:94 src/backend.php:66
+#: src/backend-settings.php:94 src/backend.php:70
 msgid "Reconfigure with Newsman Oauth ?"
 msgstr "Reconfigurer avec Newsman Oauth ?"
 
-#: src/backend-settings.php:95 src/backend.php:67
+#: src/backend-settings.php:95 src/backend.php:71
 msgid "Reconfigure with Newsman Oauth"
 msgstr "Reconfigurer avec Newsman Oauth"
-
-#: src/backend-settings.php:107
-msgid "Allow API access"
-msgstr "Autoriser l'accès API"
 
 #: src/backend-settings.php:116
 msgid "Send User IP Address"
@@ -2376,10 +2736,6 @@ msgstr ""
 "plugins_loaded et la priorité définie dans cette configuration. La valeur "
 "par défaut est 20."
 
-#: src/backend-settings.php:667
-msgid "Use Action Scheduler"
-msgstr "Utiliser Action Scheduler"
-
 #: src/backend-settings.php:672
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
@@ -2626,67 +2982,64 @@ msgstr ""
 "de 15 minutes ; ce bouton n'est utile que lorsque vous devez "
 "voirimmédiatement les changements côté Newsman."
 
-#: src/backend.php:43
+#: src/backend.php:23
+msgid "API credentials"
+msgstr "Identifiants API"
+
+#: src/backend.php:24
+msgid "Email list"
+msgstr "Liste e-mail"
+
+#: src/backend.php:27
+msgid "Action Scheduler"
+msgstr "Action Scheduler"
+
+#: src/backend.php:31
+msgid "OK"
+msgstr "OK"
+
+#: src/backend.php:32
+msgid "Needs attention"
+msgstr "Demande votre attention"
+
+#: src/backend.php:33
+msgid "Problem"
+msgstr "Problème"
+
+#: src/backend.php:34
+msgid "Information"
+msgstr "Information"
+
+#: src/backend.php:57
 msgid "NewsMAN Info"
 msgstr "Info NewsMAN"
 
-#: src/backend.php:57
+#: src/backend.php:61
 msgid "Newsman Plugin Version"
 msgstr "Version du plugin Newsman"
 
-#: src/backend.php:76
-msgid "Menus"
-msgstr "Menus"
+#: src/backend.php:79
+msgid "Status"
+msgstr "État"
 
-#: src/backend.php:84
-msgid ""
-"You will be able to sync your shop customers and newsletter subscribers with "
-"NewsMAN list / segments"
+#: src/backend.php:107
+msgid "Last exports"
+msgstr "Derniers exports"
+
+#: src/backend.php:118
+msgid "When NewsMAN last read each type of data from this site."
 msgstr ""
-"Vous pourrez synchroniser vos clients et abonnés à la newsletter avec les "
-"listes / segments NewsMAN"
+"Quand NewsMAN a lu pour la dernière fois chaque type de données de ce site."
 
-#: src/backend.php:92
-msgid ""
-"Provide a valuable experience to your customer by automating communication "
-"with them. Create automatic email flows based on their actions on the site, "
-"such as product viewed, added to cart, completed order etc."
-msgstr ""
-"Offrez une expérience précieuse à vos clients en automatisant la "
-"communication avec eux. Créez des flux d'e-mails automatiques basés sur "
-"leurs actions sur le site, comme les produits consultés, ajoutés au panier, "
-"commandes terminées, etc."
+#: src/backend.php:127
+msgid "The same checks are also in Tools > Site Health."
+msgstr "Les mêmes vérifications figurent aussi dans Outils > Santé du site."
 
-#: src/backend.php:101
-msgid ""
-"SMS (short messages) is one of the most effective ways to get users’ "
-"attention. Create and manage campaigns or send transactional SMS directly "
-"from NewsMAN platform."
-msgstr ""
-"Le SMS (messages courts) est l'un des moyens les plus efficaces pour attirer "
-"l'attention des utilisateurs. Créez et gérez des campagnes ou envoyez des "
-"SMS transactionnels directement depuis la plateforme NewsMAN."
-
-#: src/backend.php:110
-msgid ""
-"In the settings page enter your API Key and User id provided by NewsMAN."
-msgstr ""
-"Dans la page des paramètres, entrez votre clé API et votre identifiant "
-"utilisateur fournis par NewsMAN."
-
-#: src/backend.php:111
-msgid ""
-"After entering and saving valid credentials you will be able to select a "
-"list to which subscribers will be added"
-msgstr ""
-"Après avoir saisi et enregistré des identifiants valides, vous pourrez "
-"sélectionner une liste à laquelle les abonnés seront ajoutés"
-
-#: src/backend.php:116
+#: src/backend.php:135
 msgid "Widget"
 msgstr "Widget"
 
-#: src/backend.php:119
+#: src/backend.php:138
 msgid ""
 "Transform your website visitors into subscribers and customers. Generate "
 "easy to integrate pop-ups, embedded signup forms and web layers to convert "
@@ -2696,7 +3049,7 @@ msgstr ""
 "des pop-ups, des formulaires d'inscription intégrés et des couches web "
 "faciles à intégrer pour convertir davantage."
 
-#: src/backend.php:120
+#: src/backend.php:139
 msgid ""
 "Log in to your NewsMAN account: Select List -> Settings -> Subscription "
 "forms -> Create/Edit form -> Modal window -> Activate modal window for "
@@ -2709,15 +3062,15 @@ msgstr ""
 "Sélectionner le formulaire intégré. Copiez-collez le shortcode "
 "newsman_subscribe_widget"
 
-#: src/backend.php:125
+#: src/backend.php:144
 msgid "Documentation"
 msgstr "Documentation"
 
-#: src/backend.php:129
+#: src/backend.php:148
 msgid "Configuration guide (English)"
 msgstr "Guide de configuration (anglais)"
 
-#: src/backend.php:132
+#: src/backend.php:151
 msgid "Ghid de configurare (Romana)"
 msgstr "Guide de configuration (roumain)"
 
@@ -2947,6 +3300,53 @@ msgstr ""
 msgctxt "block keyword"
 msgid "email"
 msgstr "e-mail"
+
+#, php-format
+#~ msgid "On (ID: %s)"
+#~ msgstr "Activé (ID : %s)"
+
+#~ msgid "Menus"
+#~ msgstr "Menus"
+
+#~ msgid ""
+#~ "You will be able to sync your shop customers and newsletter subscribers "
+#~ "with NewsMAN list / segments"
+#~ msgstr ""
+#~ "Vous pourrez synchroniser vos clients et abonnés à la newsletter avec les "
+#~ "listes / segments NewsMAN"
+
+#~ msgid ""
+#~ "Provide a valuable experience to your customer by automating "
+#~ "communication with them. Create automatic email flows based on their "
+#~ "actions on the site, such as product viewed, added to cart, completed "
+#~ "order etc."
+#~ msgstr ""
+#~ "Offrez une expérience précieuse à vos clients en automatisant la "
+#~ "communication avec eux. Créez des flux d'e-mails automatiques basés sur "
+#~ "leurs actions sur le site, comme les produits consultés, ajoutés au "
+#~ "panier, commandes terminées, etc."
+
+#~ msgid ""
+#~ "SMS (short messages) is one of the most effective ways to get users’ "
+#~ "attention. Create and manage campaigns or send transactional SMS directly "
+#~ "from NewsMAN platform."
+#~ msgstr ""
+#~ "Le SMS (messages courts) est l'un des moyens les plus efficaces pour "
+#~ "attirer l'attention des utilisateurs. Créez et gérez des campagnes ou "
+#~ "envoyez des SMS transactionnels directement depuis la plateforme NewsMAN."
+
+#~ msgid ""
+#~ "In the settings page enter your API Key and User id provided by NewsMAN."
+#~ msgstr ""
+#~ "Dans la page des paramètres, entrez votre clé API et votre identifiant "
+#~ "utilisateur fournis par NewsMAN."
+
+#~ msgid ""
+#~ "After entering and saving valid credentials you will be able to select a "
+#~ "list to which subscribers will be added"
+#~ msgstr ""
+#~ "Après avoir saisi et enregistré des identifiants valides, vous pourrez "
+#~ "sélectionner une liste à laquelle les abonnés seront ajoutés"
 
 #~ msgid ""
 #~ "The dropdown has the updated segments as options after the new list was "
