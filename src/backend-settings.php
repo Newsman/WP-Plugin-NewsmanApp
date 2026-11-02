@@ -615,6 +615,11 @@ $form_values = $this->get_form_values();
 										<?php echo esc_html( __( 'Debug', 'woocommerce' ) ); ?>
 									</option>
 								</select>
+								<?php if ( $this->is_woo_commerce_exists() ) : ?>
+									<p class="description"><?php echo esc_html__( 'The log is in WooCommerce > Status > Logs, source newsman.', 'newsman' ); ?></p>
+								<?php else : ?>
+									<p class="description"><?php echo esc_html__( 'Without WooCommerce, the log is written to the PHP error log of the server, or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts with [NewsMAN].', 'newsman' ); ?></p>
+								<?php endif; ?>
 							</td>
 						</tr>
 						<tr style="display: <?php echo ( ! empty( $form_values['newsman_api'] ) && 'on' === $form_values['newsman_api'] ) ? 'table-row' : 'none'; ?>;">

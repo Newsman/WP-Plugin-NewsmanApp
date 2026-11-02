@@ -175,7 +175,7 @@ Aceste setari adauga o pagina dedicata de newsletter in zona "Contul Meu" a clie
 
 Aceste setari sunt destinate utilizatorilor avansati si dezvoltatorilor. In cele mai multe cazuri, ar trebui sa le lasati la valorile implicite.
 
-- **Logging level** - Controleaza cat de mult detaliu scrie plugin-ul in fisierul de log. Valoarea implicita este **Error**, care inregistreaza doar problemele. Setati la **Debug** daca investigati o problema (dar nu uitati sa il setati inapoi dupa aceea, deoarece modul Debug creeaza fisiere de log mari). Setati la **No Logging** pentru a dezactiva complet logarea.
+- **Logging level** - Controleaza cat de mult detaliu scrie plugin-ul in fisierul de log. Valoarea implicita este **Error**, care inregistreaza doar problemele. Setati la **Debug** daca investigati o problema (dar nu uitati sa il setati inapoi dupa aceea, deoarece modul Debug creeaza fisiere de log mari). Setati la **No Logging** pentru a dezactiva complet logarea. Cu WooCommerce logul este in **WooCommerce > Status > Logs** (sursa `newsman`); fara WooCommerce este scris in logul de erori PHP (vezi [Unde sunt logurile plugin-ului?](#unde-sunt-logurile-plugin-ului)).
 
 - **API Timeout** - Cate secunde asteapta plugin-ul un raspuns de la Newsman inainte de a renunta. Valoarea implicita de 10 secunde functioneaza bine pentru majoritatea configuratiilor. Mariti-o doar daca intampinati erori de timeout pe un server lent.
 
@@ -355,7 +355,7 @@ Ce se intampla la trimitere:
 1. Formularul este trimis in fundal, iar mesajul de succes sau eroarea apare sub buton, fara a parasi pagina. Fara JavaScript formularul functioneaza in continuare: pagina se reincarca si afiseaza mesajul.
 2. Prenumele si numele sunt trimise ca numele abonatului in Newsman; telefonul este salvat in proprietatea `phone` a abonatului.
 3. Daca emailul exista deja in lista, proprietatile lui sunt actualizate (si numele, daca abonarea este confirmata). O adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout: imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in.
-4. Erorile de la Newsman sunt scrise in logul WooCommerce, sursa Newsman (site-urile fara WooCommerce nu au unde sa scrie logul); vizitatorul vede un mesaj general de tipul "incercati din nou mai tarziu".
+4. Erorile de la Newsman sunt scrise in logul WooCommerce, sursa Newsman (site-urile fara WooCommerce il scriu in logul de erori PHP); vizitatorul vede un mesaj general de tipul "incercati din nou mai tarziu".
 
 Protectie anti-spam: formularul are un camp ascuns pe care doar boti il completeaza (aceste trimiteri sunt ignorate), iar fiecare adresa IP de vizitator poate trimite formularul de cel mult 5 ori in 10 minute. Formularul nu foloseste un nonce WordPress, deci functioneaza si pe pagini puse in cache (LiteSpeed Cache, WP Rocket si altele). Setarile de lista, segment si campuri sunt semnate in pagina, deci un vizitator nu le poate modifica.
 
@@ -418,7 +418,7 @@ Cand un vizitator trimite formularul:
 
 1. Daca **Send to Newsman** este dezactivat, nu se intampla nimic.
 2. Daca este activat, plugin-ul citeste campul de email si valorile proprietatilor per camp, apoi aboneaza (sau reactualizeaza) emailul in lista selectata. Proprietatile abonatului in Newsman sunt actualizate cu valorile campurilor.
-3. Daca API-ul Newsman respinge cererea (email lipsa, lista invalida, credentiale expirate), formularul nu afiseaza starea de succes - vizitatorul vede un mesaj de eroare in pagina, iar actiunile native Elementor (de exemplu redirect sau email de confirmare) nu se executa. Eroarea tehnica este de asemenea scrisa in logurile WooCommerce daca logarea este activata.
+3. Daca API-ul Newsman respinge cererea (email lipsa, lista invalida, credentiale expirate), formularul nu afiseaza starea de succes - vizitatorul vede un mesaj de eroare in pagina, iar actiunile native Elementor (de exemplu redirect sau email de confirmare) nu se executa. Eroarea tehnica este de asemenea scrisa in logul plugin-ului (logul WooCommerce, sau logul de erori PHP fara WooCommerce) daca logarea este activata.
 
 Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care s-a dezabonat anterior sau nu a confirmat Double Opt-in este abonata din nou, la fel ca la bifa din checkout (imediat la Opt-in, sau cu un nou email de confirmare la Double Opt-in). Cu **Newsletter form** dezactivat (de exemplu un formular pentru un serviciu sau o oferta), plugin-ul doar actualizeaza proprietatile unui abonat existent si nu aboneaza din nou pe cineva care s-a dezabonat.
 
@@ -487,7 +487,7 @@ Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care 
 
 Spre deosebire de integrarea cu widget-ul Form clasic, **Atomic Forms nu permite integrarilor terte sa scrie mesaje de eroare in raspunsul formularului**. Fluxul AJAX de trimitere ruleaza propriul action runner Elementor (Email, Webhook, Collect submissions), iar lista hardcodata de actiuni Elementor blocheaza Newsman de la a se inregistra ca actiune reala. Drept urmare, ascultam in paralel cu fluxul oficial in loc sa rulam in interiorul lui.
 
-Consecinta practica: daca Newsman esueaza (email invalid, lista neconfigurata, credentiale expirate, eroare de retea), formularul **va afisa in continuare starea de succes** vizitatorului. Eroarea este inregistrata in logurile WooCommerce (cand WooCommerce este instalat) sub sursa Newsman. Instalarile WordPress simple nu au destinatie de log - verificati credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
+Consecinta practica: daca Newsman esueaza (email invalid, lista neconfigurata, credentiale expirate, eroare de retea), formularul **va afisa in continuare starea de succes** vizitatorului. Eroarea este inregistrata in logurile WooCommerce (cand WooCommerce este instalat) sub sursa Newsman. Fara WooCommerce, eroarea este scrisa in logul de erori PHP (liniile incep cu `[NewsMAN]`). Verificati si credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
 
 Asteptam ca Elementor sa extinda API-ul de extensie pentru Atomic Forms intr-o versiune viitoare; vom afisa erorile in pagina la acel moment.
 
@@ -549,7 +549,7 @@ Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care 
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 
-Contact Form 7 nu ofera infrastructura nativa pentru integrari terte care sa afiseze mesaje de eroare in raspunsul formularului. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Instalarile WordPress simple nu au destinatie de log - verificati credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
+Contact Form 7 nu ofera infrastructura nativa pentru integrari terte care sa afiseze mesaje de eroare in raspunsul formularului. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Fara WooCommerce, eroarea este scrisa in logul de erori PHP (liniile incep cu `[NewsMAN]`). Verificati si credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
 
 ### Depanare
 
@@ -607,7 +607,7 @@ Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care 
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 
-Fluxul de trimitere WPForms ruleaza propriul ciclu de raspuns succes/eroare. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Instalarile WordPress simple nu au destinatie de log - verificati credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
+Fluxul de trimitere WPForms ruleaza propriul ciclu de raspuns succes/eroare. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Fara WooCommerce, eroarea este scrisa in logul de erori PHP (liniile incep cu `[NewsMAN]`). Verificati si credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
 
 ### Depanare
 
@@ -665,7 +665,7 @@ Emailuri care exista deja in lista: cu **Newsletter form** activ, o adresa care 
 
 ### Limitare: erorile nu sunt afisate in pagina (v1)
 
-Gravity Forms ruleaza propriul ciclu de confirmari/notificari dupa ce `gform_after_submission` se declanseaza. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Instalarile WordPress simple nu au destinatie de log - verificati credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
+Gravity Forms ruleaza propriul ciclu de confirmari/notificari dupa ce `gform_after_submission` se declanseaza. Esecurile de abonare Newsman (email invalid, credentiale expirate, eroare de retea) sunt scrise in logurile WooCommerce sub sursa Newsman (cand WooCommerce este instalat). Fara WooCommerce, eroarea este scrisa in logul de erori PHP (liniile incep cu `[NewsMAN]`). Verificati si credentialele din **NewsMAN > Settings** daca trimiterile Newsman par sa se piarda silentios.
 
 ### Depanare
 
@@ -741,4 +741,8 @@ Action Scheduler este un sistem care proceseaza sarcini in fundal in loc de imed
 
 ### Unde sunt logurile plugin-ului?
 
-Plugin-ul foloseste sistemul de logare WooCommerce, deci logurile sunt disponibile doar daca WooCommerce este instalat. Le puteti gasi in **WooCommerce > Status > Logs**. Nivelul de logare este controlat din Setarile pentru Dezvoltatori ale plugin-ului. Daca intampinati probleme, setati nivelul de logare la **Debug**, reproduceti problema, apoi verificati logurile WooCommerce pentru mesaje de eroare. Pe o instalare WordPress simpla fara WooCommerce, plugin-ul nu inregistreaza loguri.
+Cu WooCommerce, plugin-ul foloseste sistemul de logare WooCommerce. Logurile sunt in **WooCommerce > Status > Logs**, sursa `newsman`.
+
+Fara WooCommerce (WordPress simplu), plugin-ul scrie in logul de erori PHP al serverului, cate o linie pe intrare, care incepe cu `[NewsMAN]` si nivelul, de exemplu `[NewsMAN] ERROR ...`. Cand `WP_DEBUG_LOG` este activat in `wp-config.php`, WordPress trimite logul de erori PHP in `wp-content/debug.log`; altfel intrebati firma de hosting unde este logul de erori PHP. Fiecare intrare are cel mult 2000 de caractere, iar cheia API NewsMAN, tokenul de autentificare si cheia de autorizare pentru export sunt inlocuite cu `****`. Dezvoltatorii pot dezactiva aceasta logare cu filtrul `newsman_logger_fallback`.
+
+Nivelul de logare este controlat din Setarile pentru Dezvoltatori ale plugin-ului si se aplica in ambele cazuri. Daca intampinati probleme, setati nivelul de logare la **Debug**, reproduceti problema, apoi verificati logurile pentru mesaje de eroare. Setati-l inapoi la **Error** dupa aceea.

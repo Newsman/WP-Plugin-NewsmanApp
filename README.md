@@ -3,8 +3,6 @@
 
 This is the easiest way to connect your Blog with Newsman.com. Generate an API KEY in your NewsmanApp account, install this plugin and you will be able to collect and sync subscribers, remarketing and forms. 
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/newsmanBr.jpg)
-
 # Installation
 
 ## Automatically

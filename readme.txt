@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.38
+Stable tag: 3.7.39
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,13 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.39 =
+* Sites without WooCommerce now have a NewsMAN log: entries are written to the PHP error log of the server (wp-content/debug.log when WP_DEBUG_LOG is enabled), one line per entry starting with [NewsMAN] and the level, at most 2000 characters. The Logging level setting applies, so by default only errors are written. Stores with WooCommerce keep using the WooCommerce logs.
+* The NewsMAN API key, authenticate token and export authorization key are replaced with **** in these lines. Developers can turn this log off with the newsman_logger_fallback filter.
+* The Logging level setting now says where the log is, with and without WooCommerce.
+* Removed a broken image from README.md.
+* Translations of the new texts in all languages; tests for the new log.
 
 = 3.7.38 =
 * The NewsMAN OAuth page now shows "The connection with NewsMAN could not be completed. Please try again." when NewsMAN returns an error code the plugin does not know; before, no message was shown. The code itself is not shown on the page, it is written to the error log.

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T21:01:38+00:00\n"
+"POT-Creation-Date: 2026-11-02T21:29:40+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -1797,7 +1797,7 @@ msgstr "WooCommerce"
 msgid "Action Scheduler available"
 msgstr "Planificatorul de acțiuni disponibil"
 
-#: includes/health/class-sitehealth.php:305 src/backend-settings.php:667
+#: includes/health/class-sitehealth.php:305 src/backend-settings.php:672
 msgid "Use Action Scheduler"
 msgstr "Utilizează Planificatorul de acțiuni"
 
@@ -2337,7 +2337,7 @@ msgstr ""
 "Selectați atributele clienților (din comenzi) pe care să le includeți în "
 "datele de remarketing."
 
-#: src/backend-remarketing.php:212 src/backend-settings.php:699
+#: src/backend-remarketing.php:212 src/backend-settings.php:704
 #: src/backend-sms.php:397 src/backend-sync.php:126
 msgid "Save Changes"
 msgstr "Salvați modificările"
@@ -2778,15 +2778,29 @@ msgstr "Nivel Jurnalizare "
 msgid "No Logging"
 msgstr "Fara Jurnalizare"
 
-#: src/backend-settings.php:622
+#: src/backend-settings.php:619
+msgid "The log is in WooCommerce > Status > Logs, source newsman."
+msgstr "Logul este în WooCommerce > Stare > Jurnale, sursa newsman."
+
+#: src/backend-settings.php:621
+msgid ""
+"Without WooCommerce, the log is written to the PHP error log of the server, "
+"or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts "
+"with [NewsMAN]."
+msgstr ""
+"Fără WooCommerce, logul este scris în logul de erori PHP al serverului sau "
+"în wp-content/debug.log când WP_DEBUG_LOG este activat. Fiecare linie începe "
+"cu [NewsMAN]."
+
+#: src/backend-settings.php:627
 msgid "API Timeout"
 msgstr "Expirare API"
 
-#: src/backend-settings.php:634
+#: src/backend-settings.php:639
 msgid "Enable Test User IP"
 msgstr "Activează adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:639
+#: src/backend-settings.php:644
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -2794,15 +2808,15 @@ msgstr ""
 "Atenție! Vă rugăm să nu utilizați această adresă IP în producție, deoarece "
 "este utilizată de endpoint-ul API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:644
+#: src/backend-settings.php:649
 msgid "Test User IP address"
 msgstr "Adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:655
+#: src/backend-settings.php:660
 msgid "Plugin Loaded Priority"
 msgstr "Prioritate încărcare plugin"
 
-#: src/backend-settings.php:661
+#: src/backend-settings.php:666
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -2811,17 +2825,17 @@ msgstr ""
 "plugins_loaded și prioritatea este setată în această configurație. Implicit "
 "este 20."
 
-#: src/backend-settings.php:672
+#: src/backend-settings.php:677
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 "Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile "
 "API-ului NewsMAN."
 
-#: src/backend-settings.php:677
+#: src/backend-settings.php:682
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Folosește Planificatorul de acțiuni pentru Abonare"
 
-#: src/backend-settings.php:682
+#: src/backend-settings.php:687
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -2829,11 +2843,11 @@ msgstr ""
 "În magazinul virtual, folosiți planificatorul de acțiuni pentru abonarea la "
 "listele de e-mail și SMS."
 
-#: src/backend-settings.php:687
+#: src/backend-settings.php:692
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
 
-#: src/backend-settings.php:692
+#: src/backend-settings.php:697
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""

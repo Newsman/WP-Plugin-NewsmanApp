@@ -164,7 +164,7 @@ These settings add a dedicated newsletter page inside the customer's "My Account
 
 These settings are intended for advanced users and developers. In most cases, you should leave them at their default values.
 
-- **Logging level** - Controls how much detail the plugin writes to its log file. The default is **Error**, which only logs problems. Set to **Debug** if you are troubleshooting an issue (but remember to set it back afterwards, as Debug mode creates large log files). Set to **No Logging** to disable logging entirely.
+- **Logging level** - Controls how much detail the plugin writes to its log file. The default is **Error**, which only logs problems. Set to **Debug** if you are troubleshooting an issue (but remember to set it back afterwards, as Debug mode creates large log files). Set to **No Logging** to disable logging entirely. With WooCommerce the log is in **WooCommerce > Status > Logs** (source `newsman`); without WooCommerce it is written to the PHP error log (see [Where are the plugin logs?](#where-are-the-plugin-logs)).
 
 - **API Timeout** - How many seconds the plugin waits for a response from Newsman before giving up. The default of 10 seconds works well for most setups. Increase this only if you experience timeout errors on a slow server.
 
@@ -344,7 +344,7 @@ What happens on submission:
 1. The form is sent in the background and the success message or the error is shown under the button, without leaving the page. Without JavaScript the form still works: the page reloads and shows the message.
 2. First name and last name are sent as the subscriber's name in Newsman; the phone is saved as the `phone` subscriber property.
 3. If the email is already on the list, its properties are updated (and its name, when the subscription is confirmed). An address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox: right away with Opt-in, or with a new confirmation email with Double Opt-in.
-4. Errors from Newsman are written to the WooCommerce log under the Newsman source (sites without WooCommerce have no log destination); the visitor sees a generic "try again later" message.
+4. Errors from Newsman are written to the WooCommerce log under the Newsman source (sites without WooCommerce write it to the PHP error log); the visitor sees a generic "try again later" message.
 
 Spam protection: the form has a hidden field that only bots fill in (those submissions are ignored), and each visitor IP address can send the form at most 5 times in 10 minutes. The form does not use a WordPress nonce, so it keeps working on cached pages (LiteSpeed Cache, WP Rocket and similar). The list, segment and field settings are signed in the page, so a visitor cannot change them.
 
@@ -407,7 +407,7 @@ When a visitor submits the form:
 
 1. If **Send to Newsman** is off, nothing happens.
 2. If on, the plugin reads the email field and the per-field property values, then subscribes (or refreshes) the email to the selected list. The subscriber's properties in Newsman are updated with the field values.
-3. If the Newsman API rejects the request (missing email, invalid list, expired credentials), the form does not show its success state - the visitor sees an inline error message and Elementor's built-in actions (such as redirect or confirmation email) do not run. The technical error is also written to the WooCommerce log if logging is enabled.
+3. If the Newsman API rejects the request (missing email, invalid list, expired credentials), the form does not show its success state - the visitor sees an inline error message and Elementor's built-in actions (such as redirect or confirmation email) do not run. The technical error is also written to the plugin log (WooCommerce log, or the PHP error log without WooCommerce) if logging is enabled.
 
 Emails already on the list: with **Newsletter form** on, an address that unsubscribed earlier, or never confirmed Double Opt-in, is subscribed again, the same as with the checkout checkbox (right away with Opt-in, or with a new confirmation email with Double Opt-in). With **Newsletter form** off (for example a form for a service or an offer), the plugin only updates the properties of an existing subscriber and never subscribes again someone who unsubscribed.
 
@@ -476,7 +476,7 @@ Emails already on the list: with **Newsletter form** on, an address that unsubsc
 
 Unlike the legacy Form widget integration, **Atomic Forms does not let third-party integrations write error messages to the form's response**. The submission ajax flow runs Elementor's own action runner (Email, Webhook, Collect submissions), and Elementor's hardcoded action whitelist blocks Newsman from registering as a real form action. We therefore listen alongside the official flow rather than inside it.
 
-The practical consequence: if Newsman fails (invalid email, no list configured, expired credentials, network error), the form will **still show its success state** to the visitor. The failure is logged to the WooCommerce logs (when WooCommerce is installed) under the Newsman source. Plain WordPress installs have no log destination - check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+The practical consequence: if Newsman fails (invalid email, no list configured, expired credentials, network error), the form will **still show its success state** to the visitor. The failure is logged to the WooCommerce logs (when WooCommerce is installed) under the Newsman source. Without WooCommerce, the failure is written to the PHP error log (lines starting with `[NewsMAN]`). Also check the **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
 
 We expect Elementor to expand the Atomic Forms extension API in a future release; we will surface inline errors at that point.
 
@@ -538,7 +538,7 @@ Emails already on the list: with **Newsletter form** on, an address that unsubsc
 
 ### Limitation: errors are not surfaced inline (v1)
 
-Contact Form 7 has no first-class plumbing for third-party integrations to surface error messages inline on the response. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Plain WordPress installs have no log destination - check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+Contact Form 7 has no first-class plumbing for third-party integrations to surface error messages inline on the response. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Without WooCommerce, the failure is written to the PHP error log (lines starting with `[NewsMAN]`). Also check the **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
 
 ### Troubleshooting
 
@@ -596,7 +596,7 @@ Emails already on the list: with **Newsletter form** on, an address that unsubsc
 
 ### Limitation: errors are not surfaced inline (v1)
 
-WPForms' submission flow runs its own success/error response cycle. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Plain WordPress installs have no log destination - check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+WPForms' submission flow runs its own success/error response cycle. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Without WooCommerce, the failure is written to the PHP error log (lines starting with `[NewsMAN]`). Also check the **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
 
 ### Troubleshooting
 
@@ -654,7 +654,7 @@ Emails already on the list: with **Newsletter form** on, an address that unsubsc
 
 ### Limitation: errors are not surfaced inline (v1)
 
-Gravity Forms runs its own confirmation/notification cycle after `gform_after_submission` fires. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Plain WordPress installs have no log destination — check **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
+Gravity Forms runs its own confirmation/notification cycle after `gform_after_submission` fires. Newsman subscribe failures (invalid email, expired credentials, network error) are written to the WooCommerce log under the Newsman source (when WooCommerce is installed). Without WooCommerce, the failure is written to the PHP error log (lines starting with `[NewsMAN]`). Also check the **NewsMAN > Settings** credentials if Newsman submissions seem to be silently missing.
 
 ### Troubleshooting
 
@@ -730,4 +730,8 @@ The Action Scheduler is a system that processes tasks in the background instead 
 
 ### Where are the plugin logs?
 
-The plugin uses the WooCommerce logging system, so logs are only available if WooCommerce is installed. You can find them in **WooCommerce > Status > Logs**. The logging level is controlled in the plugin's Developer Settings. If you're experiencing issues, set the logging level to **Debug**, reproduce the problem, and then check the WooCommerce logs for error messages. On a plain WordPress installation without WooCommerce, the plugin does not log.
+With WooCommerce, the plugin uses the WooCommerce logging system. You can find the logs in **WooCommerce > Status > Logs**, source `newsman`.
+
+Without WooCommerce (plain WordPress), the plugin writes to the PHP error log of the server, one line per entry, starting with `[NewsMAN]` and the level, for example `[NewsMAN] ERROR ...`. When `WP_DEBUG_LOG` is enabled in `wp-config.php`, WordPress sends the PHP error log to `wp-content/debug.log`; otherwise ask your hosting where the PHP error log is. Each entry is at most 2000 characters, and the NewsMAN API key, authenticate token and export authorization key are replaced with `****`. Developers can turn this off with the `newsman_logger_fallback` filter.
+
+The logging level is controlled in the plugin's Developer Settings and applies to both. If you're experiencing issues, set the logging level to **Debug**, reproduce the problem, and then check the logs for error messages. Set it back to **Error** afterwards.

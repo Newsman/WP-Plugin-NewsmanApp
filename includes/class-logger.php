@@ -16,7 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Newsman plugin WooCommerce logger
+ * Newsman plugin logger.
+ *
+ * Writes to the WooCommerce logger when WooCommerce is active. Without WooCommerce
+ * it writes one line per entry to the PHP error log (wp-content/debug.log when
+ * WP_DEBUG_LOG is enabled), with the same Logging level setting.
  *
  * @class \Newsman\Logger
  */
@@ -34,6 +38,36 @@ class Logger {
 	 * @var bool
 	 */
 	public static $is_wc_logging = false;
+
+	/**
+	 * Maximum length of an entry written to the PHP error log
+	 */
+	const FALLBACK_MAX_LENGTH = 2000;
+
+	/**
+	 * Severity of each level for the PHP error log, the same values as WC_Log_Levels.
+	 * WooCommerce classes are not used here, so the fallback works without WooCommerce.
+	 *
+	 * @var int[]
+	 */
+	protected static $fallback_severities = array(
+		'emergency' => 800,
+		'alert'     => 700,
+		'critical'  => 600,
+		'error'     => 500,
+		'warning'   => 400,
+		'notice'    => 300,
+		'info'      => 200,
+		'debug'     => 100,
+	);
+
+	/**
+	 * Whether an entry is being written to the PHP error log, to stop a loop
+	 * if a filter used while writing logs again.
+	 *
+	 * @var bool
+	 */
+	protected static $is_fallback_logging = false;
 
 	/**
 	 * Logger context defaults
@@ -78,6 +112,7 @@ class Logger {
 	public function log( $level, $message, $context = array() ) {
 		do_action( 'newsman_logger_before_log', $level, $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( $level, $message, $context );
 			return;
 		}
 
@@ -112,6 +147,7 @@ class Logger {
 	public function debug( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_debug', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'debug', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 100 ) {
@@ -134,6 +170,7 @@ class Logger {
 	public function info( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_info', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'info', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 200 ) {
@@ -156,6 +193,7 @@ class Logger {
 	public function notice( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_notice', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'notice', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 300 ) {
@@ -178,6 +216,7 @@ class Logger {
 	public function warning( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_warning', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'warning', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 400 ) {
@@ -200,6 +239,7 @@ class Logger {
 	public function error( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_error', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'error', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 500 ) {
@@ -222,6 +262,7 @@ class Logger {
 	public function critical( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_critical', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'critical', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 600 ) {
@@ -244,6 +285,7 @@ class Logger {
 	public function alert( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_alert', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'alert', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 700 ) {
@@ -266,6 +308,7 @@ class Logger {
 	public function emergency( $message, $context = array() ) {
 		do_action( 'newsman_logger_before_emergency', $message, $context );
 		if ( ! self::$is_wc_logging ) {
+			$this->fallback_log( 'emergency', $message, $context );
 			return;
 		}
 		if ( $this->config->get_log_severity() > 800 ) {
@@ -296,5 +339,134 @@ class Logger {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Write an entry to the PHP error log when the WooCommerce logger is not available.
+	 * It never throws: a failure to log is ignored.
+	 *
+	 * @param string $level Log level.
+	 * @param mixed  $message Logging message.
+	 * @param array  $context Logger context.
+	 * @return void
+	 */
+	protected function fallback_log( $level, $message, $context = array() ) {
+		if ( self::$is_fallback_logging ) {
+			return;
+		}
+		self::$is_fallback_logging = true;
+		try {
+			if ( $this->can_fallback_log( $level, $message, $context ) ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Log destination when WooCommerce is not active.
+				error_log( $this->format_fallback_entry( $level, $message, $context ) );
+			}
+		} catch ( \Throwable $e ) {
+			// Logging must never break the page.
+			unset( $e );
+		} finally {
+			self::$is_fallback_logging = false;
+		}
+	}
+
+	/**
+	 * Whether an entry goes to the PHP error log.
+	 * Only after all plugins are loaded and only when WooCommerce is not active, so
+	 * stores with WooCommerce keep logging only to the WooCommerce logger.
+	 *
+	 * @param string $level Log level.
+	 * @param mixed  $message Logging message.
+	 * @param array  $context Logger context.
+	 * @return bool
+	 */
+	protected function can_fallback_log( $level, $message, $context ) {
+		if ( ! is_string( $level ) || ! isset( self::$fallback_severities[ $level ] ) ) {
+			return false;
+		}
+		if ( ! function_exists( 'did_action' ) || ! did_action( 'plugins_loaded' ) ) {
+			return false;
+		}
+		if ( $this->has_wc_logger() ) {
+			return false;
+		}
+		if ( ! function_exists( 'error_log' ) || ! $this->config ) {
+			return false;
+		}
+		if ( $this->config->get_log_severity() > self::$fallback_severities[ $level ] ) {
+			return false;
+		}
+
+		/**
+		 * Whether to write a NewsMAN log entry to the PHP error log on sites without WooCommerce.
+		 *
+		 * @param bool   $write   Whether to write the entry. Default true.
+		 * @param string $level   Log level.
+		 * @param mixed  $message Logging message.
+		 * @param array  $context Logger context.
+		 */
+		return (bool) apply_filters( 'newsman_logger_fallback', true, $level, $message, $context );
+	}
+
+	/**
+	 * Whether the WooCommerce logger class exists.
+	 *
+	 * @return bool
+	 */
+	protected function has_wc_logger() {
+		return class_exists( '\WC_Logger' );
+	}
+
+	/**
+	 * Format one line for the PHP error log: "[NewsMAN] LEVEL message {context}".
+	 *
+	 * @param string $level Log level.
+	 * @param mixed  $message Logging message.
+	 * @param array  $context Logger context.
+	 * @return string
+	 */
+	protected function format_fallback_entry( $level, $message, $context ) {
+		if ( ! is_scalar( $message ) ) {
+			$message = function_exists( 'wp_json_encode' ) ? wp_json_encode( $message ) : '';
+		}
+		$entry = '[NewsMAN] ' . strtoupper( $level );
+		if ( function_exists( 'is_multisite' ) && is_multisite() && function_exists( 'get_current_blog_id' ) ) {
+			$entry .= ' (blog ' . get_current_blog_id() . ')';
+		}
+		$entry .= ' ' . $message;
+
+		if ( is_array( $context ) && ! empty( $context ) && function_exists( 'wp_json_encode' ) ) {
+			$json = wp_json_encode( $context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+			if ( is_string( $json ) ) {
+				$entry .= ' ' . $json;
+			}
+		}
+
+		$entry = str_replace( array( "\r\n", "\r", "\n" ), ' ', $entry );
+		$entry = $this->mask_fallback_secrets( $entry );
+		if ( strlen( $entry ) > self::FALLBACK_MAX_LENGTH ) {
+			$entry = ( function_exists( 'mb_strcut' ) ? mb_strcut( $entry, 0, self::FALLBACK_MAX_LENGTH, 'UTF-8' ) : substr( $entry, 0, self::FALLBACK_MAX_LENGTH ) ) . '...';
+		}
+		return $entry;
+	}
+
+	/**
+	 * Replace the NewsMAN API key, authenticate token and export authorization key
+	 * with **** in an entry for the PHP error log, which can be less protected
+	 * than the WooCommerce logs.
+	 *
+	 * @param string $entry Log entry.
+	 * @return string
+	 */
+	protected function mask_fallback_secrets( $entry ) {
+		$secrets = array(
+			$this->config->get_api_key(),
+			$this->config->get_authenticate_token(),
+			$this->config->get_export_authorize_header_key(),
+		);
+		foreach ( $secrets as $secret ) {
+			if ( is_string( $secret ) && strlen( $secret ) >= 6 ) {
+				$entry = str_replace( $secret, '****', $entry );
+			}
+		}
+		return $entry;
 	}
 }

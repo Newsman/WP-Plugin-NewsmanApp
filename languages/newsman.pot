@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp 3.7.37\n"
+"Project-Id-Version: NewsmanApp 3.7.38\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-02T21:01:38+00:00\n"
+"POT-Creation-Date: 2026-11-02T21:29:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -1549,7 +1549,7 @@ msgid "Action Scheduler available"
 msgstr ""
 
 #: includes/health/class-sitehealth.php:305
-#: src/backend-settings.php:667
+#: src/backend-settings.php:672
 msgid "Use Action Scheduler"
 msgstr ""
 
@@ -2031,7 +2031,7 @@ msgid "Select which customer attributes (from orders) to include in your remarke
 msgstr ""
 
 #: src/backend-remarketing.php:212
-#: src/backend-settings.php:699
+#: src/backend-settings.php:704
 #: src/backend-sms.php:397
 #: src/backend-sync.php:126
 msgid "Save Changes"
@@ -2321,47 +2321,55 @@ msgstr ""
 msgid "No Logging"
 msgstr ""
 
-#: src/backend-settings.php:622
+#: src/backend-settings.php:619
+msgid "The log is in WooCommerce > Status > Logs, source newsman."
+msgstr ""
+
+#: src/backend-settings.php:621
+msgid "Without WooCommerce, the log is written to the PHP error log of the server, or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts with [NewsMAN]."
+msgstr ""
+
+#: src/backend-settings.php:627
 msgid "API Timeout"
 msgstr ""
 
-#: src/backend-settings.php:634
+#: src/backend-settings.php:639
 msgid "Enable Test User IP"
 msgstr ""
 
-#: src/backend-settings.php:639
+#: src/backend-settings.php:644
 msgid "Warning! Please do not use this IP address in production because it is used by API endpoint subscriber.saveSubscribe."
 msgstr ""
 
-#: src/backend-settings.php:644
+#: src/backend-settings.php:649
 msgid "Test User IP address"
 msgstr ""
 
-#: src/backend-settings.php:655
+#: src/backend-settings.php:660
 msgid "Plugin Loaded Priority"
 msgstr ""
 
-#: src/backend-settings.php:661
+#: src/backend-settings.php:666
 msgid "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded and priority set in this configuration. Default is 20."
 msgstr ""
 
-#: src/backend-settings.php:672
+#: src/backend-settings.php:677
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 
-#: src/backend-settings.php:677
+#: src/backend-settings.php:682
 msgid "Use Action Scheduler for Subscribe"
 msgstr ""
 
-#: src/backend-settings.php:682
+#: src/backend-settings.php:687
 msgid "On storefront use action scheduler for subscribe to email and SMS lists actions."
 msgstr ""
 
-#: src/backend-settings.php:687
+#: src/backend-settings.php:692
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr ""
 
-#: src/backend-settings.php:692
+#: src/backend-settings.php:697
 msgid "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
 

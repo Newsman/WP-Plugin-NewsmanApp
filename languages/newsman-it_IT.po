@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T21:01:38+00:00\n"
+"POT-Creation-Date: 2026-11-02T21:29:40+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -1805,7 +1805,7 @@ msgstr "WooCommerce"
 msgid "Action Scheduler available"
 msgstr "Action Scheduler disponibile"
 
-#: includes/health/class-sitehealth.php:305 src/backend-settings.php:667
+#: includes/health/class-sitehealth.php:305 src/backend-settings.php:672
 msgid "Use Action Scheduler"
 msgstr "Usa Action Scheduler"
 
@@ -2349,7 +2349,7 @@ msgstr ""
 "Seleziona quali attributi del cliente (dagli ordini) includere nei tuoi dati "
 "di remarketing."
 
-#: src/backend-remarketing.php:212 src/backend-settings.php:699
+#: src/backend-remarketing.php:212 src/backend-settings.php:704
 #: src/backend-sms.php:397 src/backend-sync.php:126
 msgid "Save Changes"
 msgstr "Salva modifiche"
@@ -2789,15 +2789,29 @@ msgstr "Livello di registrazione"
 msgid "No Logging"
 msgstr "Nessuna registrazione"
 
-#: src/backend-settings.php:622
+#: src/backend-settings.php:619
+msgid "The log is in WooCommerce > Status > Logs, source newsman."
+msgstr "Il log si trova in WooCommerce > Stato > Log, sorgente newsman."
+
+#: src/backend-settings.php:621
+msgid ""
+"Without WooCommerce, the log is written to the PHP error log of the server, "
+"or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts "
+"with [NewsMAN]."
+msgstr ""
+"Senza WooCommerce, il log viene scritto nel log degli errori PHP del server, "
+"oppure in wp-content/debug.log quando WP_DEBUG_LOG è attivo. Ogni riga "
+"inizia con [NewsMAN]."
+
+#: src/backend-settings.php:627
 msgid "API Timeout"
 msgstr "Timeout API"
 
-#: src/backend-settings.php:634
+#: src/backend-settings.php:639
 msgid "Enable Test User IP"
 msgstr "Attiva IP utente di test"
 
-#: src/backend-settings.php:639
+#: src/backend-settings.php:644
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -2805,15 +2819,15 @@ msgstr ""
 "Attenzione! Si prega di non utilizzare questo indirizzo IP in produzione "
 "perché è utilizzato dall'endpoint API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:644
+#: src/backend-settings.php:649
 msgid "Test User IP address"
 msgstr "Indirizzo IP utente di test"
 
-#: src/backend-settings.php:655
+#: src/backend-settings.php:660
 msgid "Plugin Loaded Priority"
 msgstr "Priorità di caricamento del plugin"
 
-#: src/backend-settings.php:661
+#: src/backend-settings.php:666
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -2822,15 +2836,15 @@ msgstr ""
 "plugins_loaded e la priorità impostata in questa configurazione. Il valore "
 "predefinito è 20."
 
-#: src/backend-settings.php:672
+#: src/backend-settings.php:677
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr "Usa il plugin Action Scheduler per alcune azioni dell'API NewsMAN."
 
-#: src/backend-settings.php:677
+#: src/backend-settings.php:682
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Usa Action Scheduler per l'iscrizione"
 
-#: src/backend-settings.php:682
+#: src/backend-settings.php:687
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -2838,11 +2852,11 @@ msgstr ""
 "Nella vetrina, usa Action Scheduler per le azioni di iscrizione alle liste e-"
 "mail e SMS."
 
-#: src/backend-settings.php:687
+#: src/backend-settings.php:692
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Usa Action Scheduler per la disiscrizione"
 
-#: src/backend-settings.php:692
+#: src/backend-settings.php:697
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T21:01:38+00:00\n"
+"POT-Creation-Date: 2026-11-02T21:29:40+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -1816,7 +1816,7 @@ msgstr "WooCommerce"
 msgid "Action Scheduler available"
 msgstr "Action Scheduler disponible"
 
-#: includes/health/class-sitehealth.php:305 src/backend-settings.php:667
+#: includes/health/class-sitehealth.php:305 src/backend-settings.php:672
 msgid "Use Action Scheduler"
 msgstr "Usar Action Scheduler"
 
@@ -2362,7 +2362,7 @@ msgstr ""
 "Seleccione qué atributos del cliente (de los pedidos) incluir en sus datos "
 "de remarketing."
 
-#: src/backend-remarketing.php:212 src/backend-settings.php:699
+#: src/backend-remarketing.php:212 src/backend-settings.php:704
 #: src/backend-sms.php:397 src/backend-sync.php:126
 msgid "Save Changes"
 msgstr "Guardar cambios"
@@ -2804,15 +2804,29 @@ msgstr "Nivel de registro"
 msgid "No Logging"
 msgstr "Sin registro"
 
-#: src/backend-settings.php:622
+#: src/backend-settings.php:619
+msgid "The log is in WooCommerce > Status > Logs, source newsman."
+msgstr "El registro está en WooCommerce > Estado > Registros, fuente newsman."
+
+#: src/backend-settings.php:621
+msgid ""
+"Without WooCommerce, the log is written to the PHP error log of the server, "
+"or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts "
+"with [NewsMAN]."
+msgstr ""
+"Sin WooCommerce, el registro se escribe en el registro de errores de PHP del "
+"servidor, o en wp-content/debug.log cuando WP_DEBUG_LOG está activado. Cada "
+"línea empieza por [NewsMAN]."
+
+#: src/backend-settings.php:627
 msgid "API Timeout"
 msgstr "Tiempo de espera de la API"
 
-#: src/backend-settings.php:634
+#: src/backend-settings.php:639
 msgid "Enable Test User IP"
 msgstr "Activar IP de usuario de prueba"
 
-#: src/backend-settings.php:639
+#: src/backend-settings.php:644
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -2820,15 +2834,15 @@ msgstr ""
 "¡Advertencia! Por favor, no utilice esta dirección IP en producción porque "
 "es utilizada por el endpoint de la API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:644
+#: src/backend-settings.php:649
 msgid "Test User IP address"
 msgstr "Dirección IP del usuario de prueba"
 
-#: src/backend-settings.php:655
+#: src/backend-settings.php:660
 msgid "Plugin Loaded Priority"
 msgstr "Prioridad de carga del plugin"
 
-#: src/backend-settings.php:661
+#: src/backend-settings.php:666
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -2837,16 +2851,16 @@ msgstr ""
 "plugins_loaded y la prioridad establecida en esta configuración. El valor "
 "predeterminado es 20."
 
-#: src/backend-settings.php:672
+#: src/backend-settings.php:677
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 "Usar el plugin Action Scheduler para algunas acciones de la API de NewsMAN."
 
-#: src/backend-settings.php:677
+#: src/backend-settings.php:682
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Usar Action Scheduler para la suscripción"
 
-#: src/backend-settings.php:682
+#: src/backend-settings.php:687
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -2854,11 +2868,11 @@ msgstr ""
 "En la tienda, usar Action Scheduler para las acciones de suscripción a las "
 "listas de correo electrónico y SMS."
 
-#: src/backend-settings.php:687
+#: src/backend-settings.php:692
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Usar Action Scheduler para la cancelación de suscripción"
 
-#: src/backend-settings.php:692
+#: src/backend-settings.php:697
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""
