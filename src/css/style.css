@@ -244,3 +244,30 @@ span[title] {
 	font-weight: normal;
 	width: auto !important;
 }
+
+/* NewsMAN page remarketing storefront check */
+.nzm-remarketing-check .spinner {
+	float: none;
+	vertical-align: middle;
+	margin-top: 0;
+}
+
+.nzm-rm-check-page-title {
+	margin: 12px 0 4px;
+}
+
+.nzm-rm-check-page-title .nzm-rm-check-link {
+	margin-left: 8px;
+}
+
+.nzm-rm-check-list {
+	margin: 0 0 0 4px;
+}
+
+.nzm-rm-check-list li {
+	margin-bottom: 2px;
+}
+
+.nzm-rm-check-summary {
+	margin-top: 12px;
+}

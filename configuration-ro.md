@@ -80,10 +80,28 @@ Sectiunea **Stare** verifica plugin-ul de fiecare data cand deschideti pagina. F
 | **API credentials** | Daca NewsMAN accepta API Key si User ID salvate. Plugin-ul interogheaza API-ul NewsMAN cand se deschide pagina. |
 | **Email list** | Numele si ID-ul listei selectate, plus un avertisment daca lista a fost stearsa din contul NewsMAN. |
 | **Allow API access** | Daca NewsMAN poate citi abonatii, clientii, produsele si comenzile de pe site (optiunea **Allow API access** din Settings). |
-| **Remarketing** | Daca scriptul de urmarire este pornit si are un Remarketing ID. |
+| **Remarketing** | Daca scriptul de urmarire este pornit si are un Remarketing ID. Cand este, randul are un buton de verificare a magazinului, vezi mai jos. |
 | **Action Scheduler** | Cate sarcini NewsMAN din fundal sunt in asteptare, intarziate (asteapta de peste o ora) sau au esuat in ultimele 7 zile. Sarcinile intarziate inseamna de obicei ca WP-Cron nu ruleaza. Linkul deschide **Tools > Scheduled Actions** filtrat pe sarcinile NewsMAN. |
 | **WooCommerce** | Daca WooCommerce este activ si versiunea lui. |
 | **Last exports** | Cand a citit NewsMAN ultima data fiecare tip de date: abonati, iar cu WooCommerce si clienti, produse si comenzi. Plugin-ul incepe sa inregistreze aceste date dupa actualizare, deci un tip arata "No export recorded yet" pana cand NewsMAN il citeste din nou. |
+
+### Verificarea scripturilor de remarketing din magazin
+
+Cand remarketing este pornit, randul **Remarketing** are un buton **Check the remarketing scripts on the storefront**. Acesta descarca in fundal trei pagini din magazin si cauta scripturile NewsMAN in fiecare:
+
+| Pagina | Ce cauta |
+|--------|----------|
+| Pagina principala | Scriptul de urmarire NewsMAN si evenimentul de vizualizare a paginii. |
+| Pagina de produs (cel mai nou produs publicat) | Scriptul de urmarire si evenimentul de vizualizare a produsului. |
+| Pagina de categorie (categoria cu cele mai multe produse) | Scriptul de urmarire si evenimentul listei de produse. |
+
+Paginile de produs si de categorie se verifica doar cu WooCommerce. Paginile de cos, checkout si confirmare a comenzii nu sunt verificate.
+
+Administratorii nu primesc niciodata scripturile de remarketing in magazin, ca vizitele lor sa nu fie urmarite. De aceea butonul adauga un cod de unica folosinta la adresele paginilor. Codul functioneaza doar pentru administratorul care a apasat butonul, timp de 10 minute, pana la urmatoarea apasare. Paginile deschise cu acest cod nu sunt salvate de cache-ul de pagini. Scripturile sunt doar cautate in sursa paginii, nu sunt rulate, deci verificarea nu trimite nimic catre NewsMAN.
+
+Daca un script nu este gasit, un cache de pagini poate servi o pagina mai veche, un plugin de optimizare a scripturilor le poate muta sau combina, sau tema nu foloseste hook-urile standard WooCommerce.
+
+Aceasta verificare doar cauta scripturile in sursa paginii, ceea ce nu este suficient pentru a confirma ca urmarirea functioneaza. Cand este nevoie, verificati instalarea din contul NewsMAN: **newsman.app > Integrations > NewsMAN Remarketing >** butonul **Check installation**.
 
 ### Site Health
 

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T13:33:57+00:00\n"
+"POT-Creation-Date: 2026-11-02T16:02:47+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -353,6 +353,57 @@ msgstr "Instellingen"
 #: includes/class-admin.php:240 includes/class-admin.php:241
 msgid "Oauth"
 msgstr "Oauth"
+
+#: includes/class-admin.php:314
+msgid "Checking the storefront pages..."
+msgstr "Winkelpagina's worden gecontroleerd..."
+
+#: includes/class-admin.php:315
+msgid "found"
+msgstr "gevonden"
+
+#: includes/class-admin.php:316
+msgid "not found"
+msgstr "niet gevonden"
+
+#: includes/class-admin.php:317
+msgid "skipped"
+msgstr "overgeslagen"
+
+#: includes/class-admin.php:318
+msgid "Open page"
+msgstr "Pagina openen"
+
+#. translators: %s: HTTP status code
+#: includes/class-admin.php:320
+#, php-format
+msgid "The page answered with HTTP status %s."
+msgstr "De pagina antwoordde met HTTP-status %s."
+
+#. translators: %s: browser error message
+#: includes/class-admin.php:322
+#, php-format
+msgid "The page could not be loaded in the browser: %s"
+msgstr "De pagina kon niet in de browser worden geladen: %s"
+
+#: includes/class-admin.php:323
+msgid "The check could not start. Reload the page and try again."
+msgstr ""
+"De controle kon niet starten. Laad de pagina opnieuw en probeer het nog eens."
+
+#: includes/class-admin.php:324
+msgid "All checked NewsMAN remarketing scripts were found."
+msgstr "Alle gecontroleerde NewsMAN-remarketingscripts zijn gevonden."
+
+#: includes/class-admin.php:325
+msgid ""
+"Some NewsMAN remarketing scripts were not found. A page cache or a script "
+"optimization plugin can remove or move them, and the theme must use the "
+"standard WooCommerce hooks."
+msgstr ""
+"Sommige NewsMAN-remarketingscripts zijn niet gevonden. Een paginacache of "
+"een plugin voor scriptoptimalisatie kan ze verwijderen of verplaatsen, en "
+"het thema moet de standaard WooCommerce-hooks gebruiken."
 
 #: includes/class-webhooks.php:53
 msgid "newsman_events: invalid events format"
@@ -1770,6 +1821,48 @@ msgstr "Mislukte achtergrondtaken in de afgelopen 7 dagen"
 msgid "Last export: %s"
 msgstr "Laatste export: %s"
 
+#: includes/remarketing/class-storefrontcheck.php:148
+msgid "You are not allowed to run this check."
+msgstr "U mag deze controle niet uitvoeren."
+
+#: includes/remarketing/class-storefrontcheck.php:167
+msgid "Homepage"
+msgstr "Startpagina"
+
+#: includes/remarketing/class-storefrontcheck.php:174
+msgid "Page view event"
+msgstr "Paginaweergave-gebeurtenis"
+
+#: includes/remarketing/class-storefrontcheck.php:185
+#: includes/remarketing/class-storefrontcheck.php:188
+msgid "Product page"
+msgstr "Productpagina"
+
+#: includes/remarketing/class-storefrontcheck.php:185
+msgid "There is no published product to check."
+msgstr "Er is geen gepubliceerd product om te controleren."
+
+#: includes/remarketing/class-storefrontcheck.php:195
+msgid "Product view event"
+msgstr "Productweergave-gebeurtenis"
+
+#: includes/remarketing/class-storefrontcheck.php:204
+#: includes/remarketing/class-storefrontcheck.php:207
+msgid "Category page"
+msgstr "Categoriepagina"
+
+#: includes/remarketing/class-storefrontcheck.php:204
+msgid "There is no product category with products to check."
+msgstr "Er is geen productcategorie met producten om te controleren."
+
+#: includes/remarketing/class-storefrontcheck.php:214
+msgid "Product list event"
+msgstr "Productlijst-gebeurtenis"
+
+#: includes/remarketing/class-storefrontcheck.php:237
+msgid "NewsMAN tracking script"
+msgstr "NewsMAN-trackingscript"
+
 #. translators: 1: Email
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
@@ -3007,25 +3100,54 @@ msgstr "Newsman Plugin-versie"
 msgid "Status"
 msgstr "Status"
 
-#: src/backend.php:107
+#: src/backend.php:105
+msgid "Check the remarketing scripts on the storefront"
+msgstr "Remarketingscripts in de winkel controleren"
+
+#: src/backend.php:108
+msgid ""
+"Opens the homepage, a product page and a category page in the background and "
+"looks for the NewsMAN scripts. Administrators do not get these scripts on "
+"the storefront, so the check adds a one-time code to the page addresses. The "
+"scripts are not run and nothing is sent to NewsMAN."
+msgstr ""
+"Opent op de achtergrond de startpagina, een productpagina en een "
+"categoriepagina en zoekt naar de NewsMAN-scripts. Beheerders krijgen deze "
+"scripts niet in de winkel, daarom voegt de controle een eenmalige code toe "
+"aan de paginaadressen. De scripts worden niet uitgevoerd en er wordt niets "
+"naar NewsMAN verzonden."
+
+#: src/backend.php:112
+msgid ""
+"This check only looks for the scripts in the page source, which is not "
+"enough to confirm that tracking works. When needed, check the installation "
+"in your NewsMAN account: newsman.app > Integrations > NewsMAN Remarketing > "
+"Check installation button."
+msgstr ""
+"Deze controle zoekt de scripts alleen in de paginabron. Dat is niet genoeg "
+"om te bevestigen dat de tracking werkt. Controleer indien nodig de "
+"installatie in uw NewsMAN-account: knop newsman.app > Integrations > NewsMAN "
+"Remarketing > Check installation."
+
+#: src/backend.php:121
 msgid "Last exports"
 msgstr "Laatste exports"
 
-#: src/backend.php:118
+#: src/backend.php:132
 msgid "When NewsMAN last read each type of data from this site."
 msgstr ""
 "Wanneer NewsMAN elk type gegevens voor het laatst van deze site heeft "
 "gelezen."
 
-#: src/backend.php:127
+#: src/backend.php:141
 msgid "The same checks are also in Tools > Site Health."
 msgstr "Dezelfde controles staan ook onder Gereedschap > Sitediagnose."
 
-#: src/backend.php:135
+#: src/backend.php:149
 msgid "Widget"
 msgstr "Widget"
 
-#: src/backend.php:138
+#: src/backend.php:152
 msgid ""
 "Transform your website visitors into subscribers and customers. Generate "
 "easy to integrate pop-ups, embedded signup forms and web layers to convert "
@@ -3035,7 +3157,7 @@ msgstr ""
 "integreren pop-ups, ingebedde aanmeldformulieren en weblagen om meer te "
 "converteren."
 
-#: src/backend.php:139
+#: src/backend.php:153
 msgid ""
 "Log in to your NewsMAN account: Select List -> Settings -> Subscription "
 "forms -> Create/Edit form -> Modal window -> Activate modal window for "
@@ -3047,15 +3169,15 @@ msgstr ""
 "venster activeren voor nieuwsbriefabonnement -> Ingebed formulier "
 "selecteren. Kopieer en plak de shortcode newsman_subscribe_widget"
 
-#: src/backend.php:144
+#: src/backend.php:158
 msgid "Documentation"
 msgstr "Documentatie"
 
-#: src/backend.php:148
+#: src/backend.php:162
 msgid "Configuration guide (English)"
 msgstr "Configuratiehandleiding (Engels)"
 
-#: src/backend.php:151
+#: src/backend.php:165
 msgid "Ghid de configurare (Romana)"
 msgstr "Configuratiehandleiding (Roemeens)"
 

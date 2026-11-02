@@ -76,10 +76,28 @@ The **Status** section checks the plugin every time you open the page. Each row 
 | **API credentials** | Whether NewsMAN accepts the saved API Key and User ID. The plugin asks the NewsMAN API when the page opens. |
 | **Email list** | The name and ID of the selected list, and a warning if the list was deleted from your NewsMAN account. |
 | **Allow API access** | Whether NewsMAN may read subscribers, customers, products and orders from your site (the **Allow API access** option in Settings). |
-| **Remarketing** | Whether the tracking script is on and has a Remarketing ID. |
+| **Remarketing** | Whether the tracking script is on and has a Remarketing ID. When it is, the row has a button to check the storefront, see below. |
 | **Action Scheduler** | How many NewsMAN background tasks are pending, past due (waiting for more than one hour) or failed in the last 7 days. Past due tasks usually mean WP-Cron is not running. The link opens **Tools > Scheduled Actions** filtered on the NewsMAN tasks. |
 | **WooCommerce** | Whether WooCommerce is active, and its version. |
 | **Last exports** | When NewsMAN last read each type of data: subscribers, and with WooCommerce also customers, products and orders. The plugin starts recording these dates after the update, so a type shows "No export recorded yet" until NewsMAN reads it again. |
+
+### Checking the remarketing scripts on the storefront
+
+When remarketing is on, the **Remarketing** row has a **Check the remarketing scripts on the storefront** button. It downloads three storefront pages in the background and looks for the NewsMAN scripts in each page:
+
+| Page | What it looks for |
+|------|-------------------|
+| Homepage | The NewsMAN tracking script and the page view event. |
+| Product page (the newest published product) | The tracking script and the product view event. |
+| Category page (the category with the most products) | The tracking script and the product list event. |
+
+The product and category pages are checked only with WooCommerce. The cart, checkout and order confirmation pages are not checked.
+
+Administrators never get the remarketing scripts on the storefront, so their own visits are not tracked. The button therefore adds a one-time code to the page addresses. The code works only for the administrator who clicked, for 10 minutes, until the next click. Pages opened with it are not stored by page caches. The scripts are only searched in the page source, not run, so the check sends nothing to NewsMAN.
+
+If a script is not found, a page cache may serve an older page, a script optimization plugin may have moved or combined the scripts, or the theme may not use the standard WooCommerce hooks.
+
+This check only looks for the scripts in the page source, which is not enough to confirm that tracking works. When needed, check the installation in your NewsMAN account: **newsman.app > Integrations > NewsMAN Remarketing >** the **Check installation** button.
 
 ### Site Health
 

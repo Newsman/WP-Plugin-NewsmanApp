@@ -271,17 +271,61 @@ class Admin {
 	}
 
 	/**
-	 * Register plugin custom javascript..
+	 * Register plugin custom javascript.
 	 *
+	 * @param string $hook_suffix Current admin page hook suffix.
 	 * @return void
 	 */
-	public function register_plugin_scripts() {
+	public function register_plugin_scripts( $hook_suffix = '' ) {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion, WordPress.WP.EnqueuedResourceParameters.NotInFooter
 		wp_register_script( 'newsman_js', plugins_url( 'newsmanapp/src/js/script.js?' . NEWSMAN_JS_SCRIPT_VERSION ), array( 'jquery' ) );
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_script( 'newsman_js' );
 
 		wp_localize_script( 'newsman_js', 'NEWSMAN_URLS', array( 'admin_url' => admin_url() ) );
+
+		if ( 'toplevel_page_Newsman' === $hook_suffix ) {
+			$this->register_remarketing_check_script();
+		}
+	}
+
+	/**
+	 * Register the script of the remarketing storefront check button on the NewsMAN page.
+	 *
+	 * @return void
+	 */
+	public function register_remarketing_check_script() {
+		wp_register_script(
+			'newsman_remarketing_check',
+			plugins_url( 'newsmanapp/src/js/remarketing-check.js' ),
+			array(),
+			NEWSMAN_JS_SCRIPT_VERSION,
+			true
+		);
+		wp_enqueue_script( 'newsman_remarketing_check' );
+		wp_localize_script(
+			'newsman_remarketing_check',
+			'NEWSMAN_REMARKETING_CHECK',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'action'  => \Newsman\Remarketing\StorefrontCheck::AJAX_ACTION,
+				'nonce'   => wp_create_nonce( \Newsman\Remarketing\StorefrontCheck::NONCE_ACTION ),
+				'i18n'    => array(
+					'checking'    => __( 'Checking the storefront pages...', 'newsman' ),
+					'found'       => __( 'found', 'newsman' ),
+					'notFound'    => __( 'not found', 'newsman' ),
+					'skipped'     => __( 'skipped', 'newsman' ),
+					'openPage'    => __( 'Open page', 'newsman' ),
+					/* translators: %s: HTTP status code */
+					'httpError'   => __( 'The page answered with HTTP status %s.', 'newsman' ),
+					/* translators: %s: browser error message */
+					'loadError'   => __( 'The page could not be loaded in the browser: %s', 'newsman' ),
+					'startError'  => __( 'The check could not start. Reload the page and try again.', 'newsman' ),
+					'allFound'    => __( 'All checked NewsMAN remarketing scripts were found.', 'newsman' ),
+					'someMissing' => __( 'Some NewsMAN remarketing scripts were not found. A page cache or a script optimization plugin can remove or move them, and the theme must use the standard WooCommerce hooks.', 'newsman' ),
+				),
+			)
+		);
 	}
 
 	/**

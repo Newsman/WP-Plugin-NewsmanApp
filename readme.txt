@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.36
+Stable tag: 3.7.37
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,13 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.37 =
+* Add a "Check the remarketing scripts on the storefront" button to the Remarketing row of the NewsMAN page. It loads the homepage, the newest product page and the category page with the most products in the browser and looks for the NewsMAN tracking script and the page view, product view and product list events. Cart, checkout and order confirmation pages are not checked. The scripts are only searched in the page source, never run, so nothing is sent to NewsMAN.
+* Administrators still get no remarketing scripts on the storefront. The check adds a random one-time code to the page addresses that shows the scripts only to the administrator who started it, for 10 minutes or until the next check; those pages are not cached.
+* The tracking script is found by the site ID of the script NewsMAN provides for the list, not by the Remarketing ID setting.
+* A note under the check points to the NewsMAN installation check (newsman.app > Integrations > NewsMAN Remarketing > Check installation), because the source lookup alone does not confirm that tracking works.
+* Translations of the new texts in all languages; tests for the check, the one-time code and the lookups.
 
 = 3.7.36 =
 * Add a Status section to the NewsMAN page: API credentials (checked with the NewsMAN API), the selected email list, Allow API access, remarketing, the NewsMAN background tasks in Action Scheduler (pending, past due and failed in the last 7 days, with a link to the Scheduled Actions page), WooCommerce and the last time NewsMAN read subscribers, customers, products and orders. Each row links to the page that fixes it. The plugin version, the Reconfigure with Newsman OAuth button, the Widget info and the documentation links stay; the Credentials Status row and the menu descriptions are removed.

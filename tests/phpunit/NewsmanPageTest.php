@@ -167,4 +167,43 @@ class NewsmanPageTest extends NewsmanTestCase {
 		$html = $this->render_page();
 		$this->assertMatchesRegularExpression( '#nzm-health-row-credentials.*?nzm-health-critical.*?Invalid.*?page=NewsmanSettings#s', $html );
 	}
+
+	/**
+	 * The storefront check button shows only when remarketing is on with an ID.
+	 */
+	public function test_remarketing_check_button() {
+		$this->enable_api();
+		delete_option( 'newsman_useremarketing' );
+		$this->assertStringNotContainsString( 'id="nzm-remarketing-check"', $this->render_page(), 'Remarketing off: no button.' );
+
+		update_option( 'newsman_useremarketing', 'on' );
+		delete_option( 'newsman_remarketingid' );
+		$this->assertStringNotContainsString( 'id="nzm-remarketing-check"', $this->render_page(), 'No Remarketing ID: no button.' );
+
+		update_option( 'newsman_remarketingid', '12345-678-abcdef' );
+		$html = $this->render_page();
+		$this->assertMatchesRegularExpression( '#nzm-health-row-remarketing.*?id="nzm-remarketing-check".*?id="nzm-remarketing-check-results"#s', $html );
+		$this->assertStringContainsString( 'Check the remarketing scripts on the storefront', $html );
+		$this->assertMatchesRegularExpression(
+			'#id="nzm-remarketing-check-results".*?nzm-remarketing-check-note.*?Integrations &gt; NewsMAN Remarketing &gt; Check installation#s',
+			$html,
+			'The note to use the NewsMAN installation check ends the Remarketing row.'
+		);
+	}
+
+	/**
+	 * The check script and its settings are loaded only on the NewsMAN page.
+	 */
+	public function test_remarketing_check_script_only_on_newsman_page() {
+		$admin = \Newsman\Admin::init();
+		$admin->register_plugin_scripts( 'toplevel_page_NewsmanSettings' );
+		$this->assertFalse( wp_script_is( 'newsman_remarketing_check', 'enqueued' ) );
+
+		$admin->register_plugin_scripts( 'toplevel_page_Newsman' );
+		$this->assertTrue( wp_script_is( 'newsman_remarketing_check', 'enqueued' ) );
+		$data = wp_scripts()->get_data( 'newsman_remarketing_check', 'data' );
+		$this->assertStringContainsString( 'NEWSMAN_REMARKETING_CHECK', $data );
+		$this->assertStringContainsString( \Newsman\Remarketing\StorefrontCheck::AJAX_ACTION, $data );
+		wp_dequeue_script( 'newsman_remarketing_check' );
+	}
 }

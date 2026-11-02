@@ -99,6 +99,20 @@ $health_icons  = array(
 									<a class="nzm-link" href="<?php echo esc_url( $health_check['action_url'] ); ?>"><?php echo esc_html( $health_check['action_label'] ); ?></a>
 								<?php endif; ?>
 							</p>
+							<?php if ( 'remarketing' === $health_key && 'good' === $health_check['status'] ) : ?>
+							<div class="nzm-remarketing-check">
+								<p>
+									<button type="button" class="button" id="nzm-remarketing-check"><?php echo esc_html__( 'Check the remarketing scripts on the storefront', 'newsman' ); ?></button>
+									<span class="spinner" id="nzm-remarketing-check-spinner"></span>
+								</p>
+								<p class="description"><?php echo esc_html__( 'Opens the homepage, a product page and a category page in the background and looks for the NewsMAN scripts. Administrators do not get these scripts on the storefront, so the check adds a one-time code to the page addresses. The scripts are not run and nothing is sent to NewsMAN.', 'newsman' ); ?></p>
+								<div id="nzm-remarketing-check-results" class="nzm-remarketing-check-results" aria-live="polite"></div>
+								<p class="description nzm-remarketing-check-note">
+									<span class="dashicons dashicons-info" aria-hidden="true"></span>
+									<?php echo esc_html__( 'This check only looks for the scripts in the page source, which is not enough to confirm that tracking works. When needed, check the installation in your NewsMAN account: newsman.app > Integrations > NewsMAN Remarketing > Check installation button.', 'newsman' ); ?>
+								</p>
+							</div>
+							<?php endif; ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

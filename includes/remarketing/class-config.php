@@ -488,6 +488,10 @@ class Config {
 	 * @return bool
 	 */
 	public function is_tracking_allowed() {
+		// The storefront check from the NewsMAN admin page renders the scripts for the administrator who started it.
+		if ( StorefrontCheck::is_check_request() ) {
+			return true;
+		}
 		if ( is_admin() || current_user_can( 'manage_options' ) ) {
 			return false;
 		}

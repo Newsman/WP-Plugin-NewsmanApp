@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T13:33:57+00:00\n"
+"POT-Creation-Date: 2026-11-02T16:02:47+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -350,6 +350,56 @@ msgstr "Inställningar"
 #: includes/class-admin.php:240 includes/class-admin.php:241
 msgid "Oauth"
 msgstr "Oauth"
+
+#: includes/class-admin.php:314
+msgid "Checking the storefront pages..."
+msgstr "Butikssidorna kontrolleras..."
+
+#: includes/class-admin.php:315
+msgid "found"
+msgstr "hittades"
+
+#: includes/class-admin.php:316
+msgid "not found"
+msgstr "hittades inte"
+
+#: includes/class-admin.php:317
+msgid "skipped"
+msgstr "hoppades över"
+
+#: includes/class-admin.php:318
+msgid "Open page"
+msgstr "Öppna sidan"
+
+#. translators: %s: HTTP status code
+#: includes/class-admin.php:320
+#, php-format
+msgid "The page answered with HTTP status %s."
+msgstr "Sidan svarade med HTTP-status %s."
+
+#. translators: %s: browser error message
+#: includes/class-admin.php:322
+#, php-format
+msgid "The page could not be loaded in the browser: %s"
+msgstr "Sidan kunde inte laddas i webbläsaren: %s"
+
+#: includes/class-admin.php:323
+msgid "The check could not start. Reload the page and try again."
+msgstr "Kontrollen kunde inte starta. Ladda om sidan och försök igen."
+
+#: includes/class-admin.php:324
+msgid "All checked NewsMAN remarketing scripts were found."
+msgstr "Alla kontrollerade NewsMAN-remarketingskript hittades."
+
+#: includes/class-admin.php:325
+msgid ""
+"Some NewsMAN remarketing scripts were not found. A page cache or a script "
+"optimization plugin can remove or move them, and the theme must use the "
+"standard WooCommerce hooks."
+msgstr ""
+"Vissa NewsMAN-remarketingskript hittades inte. En sidcache eller ett tillägg "
+"för skriptoptimering kan ta bort eller flytta dem, och temat måste använda "
+"WooCommerce standardkrokar."
 
 #: includes/class-webhooks.php:53
 msgid "newsman_events: invalid events format"
@@ -1744,6 +1794,48 @@ msgstr "Misslyckade bakgrundsuppgifter de senaste 7 dagarna"
 msgid "Last export: %s"
 msgstr "Senaste export: %s"
 
+#: includes/remarketing/class-storefrontcheck.php:148
+msgid "You are not allowed to run this check."
+msgstr "Du har inte behörighet att köra den här kontrollen."
+
+#: includes/remarketing/class-storefrontcheck.php:167
+msgid "Homepage"
+msgstr "Startsida"
+
+#: includes/remarketing/class-storefrontcheck.php:174
+msgid "Page view event"
+msgstr "Sidvisningshändelse"
+
+#: includes/remarketing/class-storefrontcheck.php:185
+#: includes/remarketing/class-storefrontcheck.php:188
+msgid "Product page"
+msgstr "Produktsida"
+
+#: includes/remarketing/class-storefrontcheck.php:185
+msgid "There is no published product to check."
+msgstr "Det finns ingen publicerad produkt att kontrollera."
+
+#: includes/remarketing/class-storefrontcheck.php:195
+msgid "Product view event"
+msgstr "Produktvisningshändelse"
+
+#: includes/remarketing/class-storefrontcheck.php:204
+#: includes/remarketing/class-storefrontcheck.php:207
+msgid "Category page"
+msgstr "Kategorisida"
+
+#: includes/remarketing/class-storefrontcheck.php:204
+msgid "There is no product category with products to check."
+msgstr "Det finns ingen produktkategori med produkter att kontrollera."
+
+#: includes/remarketing/class-storefrontcheck.php:214
+msgid "Product list event"
+msgstr "Produktlistehändelse"
+
+#: includes/remarketing/class-storefrontcheck.php:237
+msgid "NewsMAN tracking script"
+msgstr "NewsMAN-spårningsskript"
+
 #. translators: 1: Email
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
@@ -2952,23 +3044,51 @@ msgstr "Newsman Plugin-version"
 msgid "Status"
 msgstr "Status"
 
-#: src/backend.php:107
+#: src/backend.php:105
+msgid "Check the remarketing scripts on the storefront"
+msgstr "Kontrollera remarketingskripten i butiken"
+
+#: src/backend.php:108
+msgid ""
+"Opens the homepage, a product page and a category page in the background and "
+"looks for the NewsMAN scripts. Administrators do not get these scripts on "
+"the storefront, so the check adds a one-time code to the page addresses. The "
+"scripts are not run and nothing is sent to NewsMAN."
+msgstr ""
+"Öppnar startsidan, en produktsida och en kategorisida i bakgrunden och letar "
+"efter NewsMAN-skripten. Administratörer får inte dessa skript i butiken, så "
+"kontrollen lägger till en engångskod i sidadresserna. Skripten körs inte och "
+"inget skickas till NewsMAN."
+
+#: src/backend.php:112
+msgid ""
+"This check only looks for the scripts in the page source, which is not "
+"enough to confirm that tracking works. When needed, check the installation "
+"in your NewsMAN account: newsman.app > Integrations > NewsMAN Remarketing > "
+"Check installation button."
+msgstr ""
+"Den här kontrollen letar bara efter skripten i sidans källkod, vilket inte "
+"räcker för att bekräfta att spårningen fungerar. Kontrollera vid behov "
+"installationen i ditt NewsMAN-konto: knappen newsman.app > Integrations > "
+"NewsMAN Remarketing > Check installation."
+
+#: src/backend.php:121
 msgid "Last exports"
 msgstr "Senaste exporter"
 
-#: src/backend.php:118
+#: src/backend.php:132
 msgid "When NewsMAN last read each type of data from this site."
 msgstr "När NewsMAN senast läste varje typ av data från den här webbplatsen."
 
-#: src/backend.php:127
+#: src/backend.php:141
 msgid "The same checks are also in Tools > Site Health."
 msgstr "Samma kontroller finns även under Verktyg > Webbplatsens hälsa."
 
-#: src/backend.php:135
+#: src/backend.php:149
 msgid "Widget"
 msgstr "Widget"
 
-#: src/backend.php:138
+#: src/backend.php:152
 msgid ""
 "Transform your website visitors into subscribers and customers. Generate "
 "easy to integrate pop-ups, embedded signup forms and web layers to convert "
@@ -2978,7 +3098,7 @@ msgstr ""
 "lättintegrerade popup-fönster, inbäddade registreringsformulär och webblager "
 "för att konvertera mer."
 
-#: src/backend.php:139
+#: src/backend.php:153
 msgid ""
 "Log in to your NewsMAN account: Select List -> Settings -> Subscription "
 "forms -> Create/Edit form -> Modal window -> Activate modal window for "
@@ -2990,15 +3110,15 @@ msgstr ""
 "Aktivera modalt fönster för nyhetsbrevsprenumeration -> Välj inbäddat "
 "formulär. Kopiera och klistra in shortcode newsman_subscribe_widget"
 
-#: src/backend.php:144
+#: src/backend.php:158
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: src/backend.php:148
+#: src/backend.php:162
 msgid "Configuration guide (English)"
 msgstr "Konfigurationsguide (engelska)"
 
-#: src/backend.php:151
+#: src/backend.php:165
 msgid "Ghid de configurare (Romana)"
 msgstr "Konfigurationsguide (rumänska)"
 
