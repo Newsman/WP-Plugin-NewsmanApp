@@ -127,12 +127,18 @@ class Oauth extends Settings {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $_GET['error'] ) && ! empty( $_GET['error'] ) ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			switch ( sanitize_text_field( wp_unslash( $_GET['error'] ) ) ) {
+			$error = sanitize_text_field( wp_unslash( $_GET['error'] ) );
+			switch ( $error ) {
 				case 'access_denied':
 					$this->form_error_message = esc_html__( 'Access is denied', 'newsman' );
 					break;
 				case 'missing_lists':
 					$this->form_error_message = esc_html__( 'There are no lists in your NewsMAN account', 'newsman' );
+					break;
+				default:
+					// The error code comes from the URL, so it is logged and not shown on the page.
+					$this->form_error_message = esc_html__( 'The connection with NewsMAN could not be completed. Please try again.', 'newsman' );
+					$this->logger->error( 'OAuth returned an unknown error code: ' . substr( $error, 0, 100 ) );
 					break;
 			}
 			return;

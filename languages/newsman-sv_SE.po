@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T16:02:47+00:00\n"
+"POT-Creation-Date: 2026-11-02T21:01:38+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -100,27 +100,31 @@ msgstr "Skicka SMS med SamedayCourier AWB"
 msgid "Unauthorized user"
 msgstr "Obehörig användare"
 
-#: includes/admin/settings/class-oauth.php:132
+#: includes/admin/settings/class-oauth.php:133
 msgid "Access is denied"
 msgstr "Åtkomst nekad"
 
-#: includes/admin/settings/class-oauth.php:135
+#: includes/admin/settings/class-oauth.php:136
 msgid "There are no lists in your NewsMAN account"
 msgstr "Det finns inga listor i ditt NewsMAN-konto"
 
-#: includes/admin/settings/class-oauth.php:235
+#: includes/admin/settings/class-oauth.php:140
+msgid "The connection with NewsMAN could not be completed. Please try again."
+msgstr "Anslutningen till NewsMAN kunde inte slutföras. Försök igen."
+
+#: includes/admin/settings/class-oauth.php:241
 msgid "Credentials were saved successfully."
 msgstr "Inloggningsuppgifterna har sparats."
 
-#: includes/admin/settings/class-oauth.php:241
+#: includes/admin/settings/class-oauth.php:247
 msgid "Could not save integration setup. Please try again."
 msgstr "Kunde inte spara integrationsinställningen. Försök igen."
 
-#: includes/admin/settings/class-oauth.php:265
+#: includes/admin/settings/class-oauth.php:271
 msgid "Integration setup completed successfully."
 msgstr "Integrationskonfigurationen har slutförts."
 
-#: includes/admin/settings/class-oauth.php:278
+#: includes/admin/settings/class-oauth.php:284
 msgid "Remarketing JavaScript was updated successfully."
 msgstr "Remarketing-JavaScript har uppdaterats."
 

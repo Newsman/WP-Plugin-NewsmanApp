@@ -46,6 +46,26 @@ class OauthTest extends NewsmanTestCase {
 	}
 
 	/**
+	 * An unknown error code shows a general message without the code and logs the code.
+	 */
+	public function test_unknown_error_shows_general_message() {
+		$logged = array();
+		$listen = function ( $message ) use ( &$logged ) {
+			$logged[] = $message;
+		};
+		add_action( 'newsman_logger_before_error', $listen );
+
+		$page = $this->return_from_newsman( array( 'error' => 'server_error<b>Call 555</b>' ) );
+
+		remove_action( 'newsman_logger_before_error', $listen );
+		$this->assertSame( 'The connection with NewsMAN could not be completed. Please try again.', $page->form_error_message );
+		$this->assertStringNotContainsString( 'server_error', $page->form_error_message );
+		$this->assertStringNotContainsString( '555', $page->form_error_message );
+		$this->assertSame( 1, $page->step );
+		$this->assertSame( array( 'OAuth returned an unknown error code: server_errorCall 555' ), $logged );
+	}
+
+	/**
 	 * Opening the page without an error or a code shows step one without a message.
 	 */
 	public function test_page_without_callback_shows_no_error() {

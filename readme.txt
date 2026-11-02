@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.37
+Stable tag: 3.7.38
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,10 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.38 =
+* The NewsMAN OAuth page now shows "The connection with NewsMAN could not be completed. Please try again." when NewsMAN returns an error code the plugin does not know; before, no message was shown. The code itself is not shown on the page, it is written to the error log.
+* Translations of the new message in all languages; tests for the unknown error code.
 
 = 3.7.37 =
 * Add a "Check the remarketing scripts on the storefront" button to the Remarketing row of the NewsMAN page. It loads the homepage, the newest product page and the category page with the most products in the browser and looks for the NewsMAN tracking script and the page view, product view and product list events. Cart, checkout and order confirmation pages are not checked. The scripts are only searched in the page source, never run, so nothing is sent to NewsMAN.
