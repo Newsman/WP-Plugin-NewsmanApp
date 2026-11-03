@@ -19,7 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Cron Subscribers WooCommerce to API Newsman
  *
  * @class \Newsman\Export\Retriever\SubscribersWoocommerce
- * @deprecated since 3.5.0
  */
 class SubscribersWoocommerce extends CronSubscribers {
 	/**
@@ -35,7 +34,7 @@ class SubscribersWoocommerce extends CronSubscribers {
 	 */
 	public function get_subscribers( $blog_id, $start, $limit, $cronlast, $date_created = null, $pre_count = null ) {
 		if ( true === $cronlast ) {
-			if ( empty( $date_created ) ) {
+			if ( empty( $pre_count ) ) {
 				$count = $this->get_count_subscribers( $blog_id, $date_created );
 			} else {
 				$count = $pre_count;

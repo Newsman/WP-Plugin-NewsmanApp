@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T21:29:40+00:00\n"
+"POT-Creation-Date: 2026-11-02T22:42:45+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -12,6 +12,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
 "X-Domain: newsman\n"
 "X-Generator: WP-CLI 2.12.0\n"
 
@@ -344,9 +346,10 @@ msgid "Sync"
 msgstr "Sincronizare"
 
 #: includes/class-admin.php:211 includes/class-admin.php:212
-#: includes/health/class-sitehealth.php:279 src/backend-remarketing.php:41
-#: src/backend-settings.php:41 src/backend-sms.php:75 src/backend-sync.php:41
-#: src/backend.php:26 src/backend.php:47
+#: includes/cli/class-command.php:679 includes/health/class-sitehealth.php:279
+#: src/backend-remarketing.php:41 src/backend-settings.php:41
+#: src/backend-sms.php:75 src/backend-sync.php:41 src/backend.php:26
+#: src/backend.php:47
 msgid "Remarketing"
 msgstr "Remarketing"
 
@@ -473,6 +476,244 @@ msgstr "webhook dezabonare: %1$s, blog %2$d"
 #, php-format
 msgid "webhook import received, blog %d"
 msgstr "webhook import primit, blog %d"
+
+#: includes/cli/class-command.php:141 src/backend.php:121
+msgid "Last exports"
+msgstr "Ultimele exporturi"
+
+#: includes/cli/class-command.php:144 src/backend.php:132
+msgid "When NewsMAN last read each type of data from this site."
+msgstr "Când a citit NewsMAN ultima dată fiecare tip de date de pe acest site."
+
+#. translators: 1: Export type, 2: List of export types
+#: includes/cli/class-command.php:242
+#, php-format
+msgid ""
+"The %1$s export is not available from the command line. Available exports: "
+"%2$s."
+msgstr ""
+"Exportul %1$s nu este disponibil din linia de comandă. Exporturi "
+"disponibile: %2$s."
+
+#. translators: %s: Export type
+#: includes/cli/class-command.php:253
+#, php-format
+msgid "The %s export needs WooCommerce."
+msgstr "Exportul %s necesită WooCommerce."
+
+#. translators: 1: Send type, 2: List of send types
+#: includes/cli/class-command.php:341
+#, php-format
+msgid "Unknown type %1$s. Types: %2$s."
+msgstr "Tip necunoscut %1$s. Tipuri: %2$s."
+
+#. translators: %s: Send type
+#: includes/cli/class-command.php:357
+#, php-format
+msgid "Sending %s needs WooCommerce."
+msgstr "Pentru a trimite %s este nevoie de WooCommerce."
+
+#: includes/cli/class-command.php:363
+msgid "Use the YYYY-MM-DD format for --since, for example 2026-01-31."
+msgstr "Folosiți formatul YYYY-MM-DD pentru --since, de exemplu 2026-01-31."
+
+#. translators: %d: Largest batch size
+#: includes/cli/class-command.php:372
+#, php-format
+msgid "Use a --batch-size from 1 to %d."
+msgstr "Folosiți un --batch-size de la 1 la %d."
+
+#. translators: 1: Number of rows, 2: What is sent, for example orders, 3: NewsMAN list ID
+#: includes/cli/class-command.php:394
+#, php-format
+msgid "Dry run: %1$d %2$s would be sent to the NewsMAN list %3$s."
+msgstr "Simulare: s-ar trimite %1$d %2$s la lista NewsMAN %3$s."
+
+#. translators: 1: Number of rows, 2: What is sent, for example orders, 3: NewsMAN list ID
+#: includes/cli/class-command.php:406
+#, php-format
+msgid "Send %1$d %2$s to the NewsMAN list %3$s?"
+msgstr "Trimiteți %1$d %2$s la lista NewsMAN %3$s?"
+
+#: includes/cli/class-command.php:417
+msgid "Sending to NewsMAN"
+msgstr "Se trimite la NewsMAN"
+
+#. translators: 1: Number of rows sent, 2: Number of rows read, 3: What is sent, for example orders
+#: includes/cli/class-command.php:448
+#, php-format
+msgid ""
+"Sent %1$d of %2$d %3$s to NewsMAN. Some batches failed, the NewsMAN log has "
+"the errors."
+msgstr ""
+"S-au trimis %1$d din %2$d %3$s la NewsMAN. Unele loturi au eșuat, erorile "
+"sunt în logul NewsMAN."
+
+#. translators: 1: Number of rows sent, 2: What is sent, for example orders
+#: includes/cli/class-command.php:458
+#, php-format
+msgid "Sent %1$d %2$s to NewsMAN."
+msgstr "S-au trimis %1$d %2$s la NewsMAN."
+
+#. translators: 1: Email, 2: Error message
+#: includes/cli/class-command.php:557
+#, php-format
+msgid "NewsMAN could not subscribe %1$s: %2$s"
+msgstr "NewsMAN nu a putut abona %1$s: %2$s"
+
+#. translators: 1: Email, 2: Error message
+#: includes/cli/class-command.php:628
+#, php-format
+msgid "NewsMAN could not unsubscribe %1$s: %2$s"
+msgstr "NewsMAN nu a putut dezabona %1$s: %2$s"
+
+#. translators: %s: Email
+#: includes/cli/class-command.php:634
+#, php-format
+msgid "NewsMAN will send %s an email to confirm the unsubscribe."
+msgstr "NewsMAN va trimite la %s un email pentru confirmarea dezabonării."
+
+#. translators: 1: Email, 2: NewsMAN list ID
+#: includes/cli/class-command.php:639
+#, php-format
+msgid "%1$s is unsubscribed from the NewsMAN list %2$s."
+msgstr "%1$s este dezabonat de la lista NewsMAN %2$s."
+
+#: includes/cli/class-command.php:665
+msgid "The cached NewsMAN lists, segments and SMS lists were cleared."
+msgstr ""
+"Listele NewsMAN, segmentele și listele SMS păstrate în cache au fost șterse."
+
+#: includes/cli/class-command.php:676 src/backend.php:23
+msgid "API credentials"
+msgstr "Date de acces API"
+
+#: includes/cli/class-command.php:677 src/backend.php:24
+msgid "Email list"
+msgstr "Listă de email"
+
+#: includes/cli/class-command.php:678 includes/health/class-sitehealth.php:272
+#: src/backend-settings.php:107 src/backend.php:25
+msgid "Allow API access"
+msgstr "Permite accesul API"
+
+#: includes/cli/class-command.php:680 src/backend.php:27
+msgid "Action Scheduler"
+msgstr "Planificatorul de acțiuni"
+
+#: includes/cli/class-command.php:681 includes/health/class-sitehealth.php:291
+#: src/backend.php:28
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#. translators: 1: Site URL, 2: WordPress blog ID
+#: includes/cli/class-command.php:692
+#, php-format
+msgid "Site: %1$s (blog ID %2$d)"
+msgstr "Site: %1$s (ID blog %2$d)"
+
+#. translators: %s: Argument name
+#: includes/cli/class-command.php:732
+#, php-format
+msgid "Use a whole number for --%s."
+msgstr "Folosiți un număr întreg pentru --%s."
+
+#: includes/cli/class-command.php:736
+msgid "Use a --limit of at least 1."
+msgstr "Folosiți un --limit de cel puțin 1."
+
+#. translators: 1: Export type, 2: Unknown filters, 3: Known filters
+#: includes/cli/class-command.php:779
+#, php-format
+msgid "Unknown filter for the %1$s export: %2$s. Filters: %3$s."
+msgstr "Filtru necunoscut pentru exportul %1$s: %2$s. Filtre: %3$s."
+
+#. translators: 1: Export type, 2: Unknown sort field, 3: Known sort fields
+#: includes/cli/class-command.php:791
+#, php-format
+msgid "Unknown sort field for the %1$s export: %2$s. Sort fields: %3$s."
+msgstr ""
+"Câmp de sortare necunoscut pentru exportul %1$s: %2$s. Câmpuri de sortare: "
+"%3$s."
+
+#: includes/cli/class-command.php:851
+msgid ""
+"The plugin is not connected to NewsMAN. Connect it with NewsMAN OAuth or "
+"save the API key and User ID in Settings."
+msgstr ""
+"Plugin-ul nu este conectat la NewsMAN. Conectați-l cu NewsMAN OAuth sau "
+"salvați cheia API și User ID în Setări."
+
+#: includes/cli/class-command.php:854
+msgid "No NewsMAN list is chosen. Choose one on the Sync page of the plugin."
+msgstr ""
+"Nu este aleasă nicio listă NewsMAN. Alegeți una pe pagina Sincronizare a "
+"plugin-ului."
+
+#. translators: %s: Email
+#: includes/cli/class-command.php:871
+#, php-format
+msgid "%s is not a valid email address."
+msgstr "%s nu este o adresă de email validă."
+
+#: includes/cli/class-command.php:874
+msgid "Use either --single-optin or --double-optin, not both."
+msgstr "Folosiți fie --single-optin, fie --double-optin, nu pe amândouă."
+
+#. translators: %s: Email
+#: includes/cli/class-command.php:909
+#, php-format
+msgid ""
+"NewsMAN will send a confirmation email to %s. The email is subscribed after "
+"it is confirmed."
+msgstr ""
+"NewsMAN va trimite un email de confirmare la %s. Adresa este abonată după "
+"confirmare."
+
+#. translators: 1: Email, 2: NewsMAN list ID
+#: includes/cli/class-command.php:913
+#, php-format
+msgid "%1$s is subscribed to the NewsMAN list %2$s."
+msgstr "%1$s este abonat la lista NewsMAN %2$s."
+
+#. translators: 1: Email, 2: NewsMAN list ID
+#: includes/cli/class-command.php:916
+#, php-format
+msgid "%1$s was already subscribed to the NewsMAN list %2$s."
+msgstr "%1$s era deja abonat la lista NewsMAN %2$s."
+
+#: includes/cli/class-command.php:929
+msgid "WordPress subscriber"
+msgid_plural "WordPress subscribers"
+msgstr[0] "abonat WordPress"
+msgstr[1] "abonați WordPress"
+msgstr[2] "de abonați WordPress"
+
+#: includes/cli/class-command.php:931
+msgid "WooCommerce subscriber"
+msgid_plural "WooCommerce subscribers"
+msgstr[0] "abonat WooCommerce"
+msgstr[1] "abonați WooCommerce"
+msgstr[2] "de abonați WooCommerce"
+
+#: includes/cli/class-command.php:933
+msgid "order"
+msgid_plural "orders"
+msgstr[0] "comandă"
+msgstr[1] "comenzi"
+msgstr[2] "de comenzi"
+
+#: includes/cli/class-command.php:947
+msgid "No WordPress subscribers to send."
+msgstr "Nu există abonați WordPress de trimis."
+
+#: includes/cli/class-command.php:949
+msgid "No WooCommerce subscribers to send."
+msgstr "Nu există abonați WooCommerce de trimis."
+
+#: includes/cli/class-command.php:951
+msgid "No orders to send."
+msgstr "Nu există comenzi de trimis."
 
 #: includes/contactform7/class-formpanel.php:202
 msgid ""
@@ -1034,23 +1275,23 @@ msgid "Added %1$d coupons %2$s"
 msgstr "S-au adăugat %1$d cupoane %2$s"
 
 #. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
-#: includes/export/retriever/class-cronsubscribers.php:64
+#: includes/export/retriever/class-cronsubscribers.php:78
 #, php-format
 msgid "Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
 msgstr "Trimite abonați %1$s %2$d, %3$d, ID blog %4$s, dată %5$s"
 
-#: includes/export/retriever/class-cronsubscribers.php:80
+#: includes/export/retriever/class-cronsubscribers.php:94
 msgid "No subscribers found."
 msgstr "Nu s-au găsit abonați."
 
 #. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
-#: includes/export/retriever/class-cronsubscribers.php:130
+#: includes/export/retriever/class-cronsubscribers.php:144
 #, php-format
 msgid "Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
 msgstr "Abonați trimisi %1$s %2$d, %3$d, ID blog %4$s, data %5$s"
 
 #. translators: 1: Sent subscribers count, 2: Total subscribers count
-#: includes/export/retriever/class-cronsubscribers.php:146
+#: includes/export/retriever/class-cronsubscribers.php:165
 #, php-format
 msgid "Sent to NewsMAN %1$d subscribers out of a total of %2$d."
 msgstr "Trimis către NewsMAN %1$d abonați dintr-un total de %2$d."
@@ -1132,31 +1373,31 @@ msgid "refresh.remarketing: updated newsman_scriptjs, blog %1$d"
 msgstr "refresh.remarketing: newsman_scriptjs actualizat, blog %1$d"
 
 #. translators: 1: Order ID, 2: WordPress blog ID
-#: includes/export/retriever/class-sendorders.php:67
+#: includes/export/retriever/class-sendorders.php:81
 #, php-format
 msgid "Send order %1$d, store ID %2$s"
 msgstr "Încercare de trimitere comandă %1$d, ID magazin %2$s"
 
 #. translators: 1: Order ID, 2: WordPress blog ID
-#: includes/export/retriever/class-sendorders.php:84
+#: includes/export/retriever/class-sendorders.php:98
 #, php-format
 msgid "Sent order %1$d, store ID %2$s"
 msgstr "Comanda %1$d a fost trimisă, ID magazin %2$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
-#: includes/export/retriever/class-sendorders.php:103
+#: includes/export/retriever/class-sendorders.php:117
 #, php-format
 msgid "Send orders %1$d, %2$d, blog ID %3$s, date %4$s"
 msgstr "Încercare trimitere comenzi %1$d, %2$d, ID blog %3$s, data %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
-#: includes/export/retriever/class-sendorders.php:156
+#: includes/export/retriever/class-sendorders.php:170
 #, php-format
 msgid "Sent orders %1$d, %2$d, blog ID %3$s, Date %4$s"
 msgstr "Comenzi trimise %1$d, %2$d, ID blog %3$s, Data %4$s"
 
 #. translators: 1: Sent orders count, 2: Total orders count
-#: includes/export/retriever/class-sendorders.php:171
+#: includes/export/retriever/class-sendorders.php:190
 #, php-format
 msgid "Sent to NewsMAN %1$d orders out of a total of %2$d."
 msgstr "Trimis către NewsMAN %1$d comenzi dintr-un total de %2$d."
@@ -1776,11 +2017,6 @@ msgstr "Cheia API și User ID salvate"
 msgid "List ID"
 msgstr "ID listă"
 
-#: includes/health/class-sitehealth.php:272 src/backend-settings.php:107
-#: src/backend.php:25
-msgid "Allow API access"
-msgstr "Permite accesul API"
-
 #: includes/health/class-sitehealth.php:285
 msgid "Remarketing ID"
 msgstr "ID de remarketing"
@@ -1788,10 +2024,6 @@ msgstr "ID de remarketing"
 #: includes/health/class-sitehealth.php:286
 msgid "Not set"
 msgstr "Nesetat"
-
-#: includes/health/class-sitehealth.php:291 src/backend.php:28
-msgid "WooCommerce"
-msgstr "WooCommerce"
 
 #: includes/health/class-sitehealth.php:298
 msgid "Action Scheduler available"
@@ -3073,18 +3305,6 @@ msgstr ""
 "de 15 minute; acest buton este util doar cand trebuie sa vedeti imediat "
 "modificarile facute in contul Newsman."
 
-#: src/backend.php:23
-msgid "API credentials"
-msgstr "Date de acces API"
-
-#: src/backend.php:24
-msgid "Email list"
-msgstr "Listă de email"
-
-#: src/backend.php:27
-msgid "Action Scheduler"
-msgstr "Planificatorul de acțiuni"
-
 #: src/backend.php:31
 msgid "OK"
 msgstr "OK"
@@ -3141,14 +3361,6 @@ msgstr ""
 "suficient pentru a confirma că urmărirea funcționează. Când este nevoie, "
 "verificați instalarea din contul dvs. NewsMAN: butonul newsman.app > "
 "Integrations > NewsMAN Remarketing > Check installation."
-
-#: src/backend.php:121
-msgid "Last exports"
-msgstr "Ultimele exporturi"
-
-#: src/backend.php:132
-msgid "When NewsMAN last read each type of data from this site."
-msgstr "Când a citit NewsMAN ultima dată fiecare tip de date de pe acest site."
 
 #: src/backend.php:141
 msgid "The same checks are also in Tools > Site Health."
@@ -3415,6 +3627,19 @@ msgstr ""
 msgctxt "block keyword"
 msgid "email"
 msgstr "email"
+
+#, php-format
+#~ msgid "No %s to send."
+#~ msgstr "Nu există %s de trimis."
+
+#~ msgid "WordPress subscribers"
+#~ msgstr "abonați WordPress"
+
+#~ msgid "WooCommerce subscribers"
+#~ msgstr "abonați WooCommerce"
+
+#~ msgid "orders"
+#~ msgstr "comenzi"
 
 #, php-format
 #~ msgid "On (ID: %s)"

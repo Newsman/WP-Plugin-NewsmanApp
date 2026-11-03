@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T21:29:40+00:00\n"
+"POT-Creation-Date: 2026-11-02T22:42:45+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -13,6 +13,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: newsman\n"
 "X-Generator: WP-CLI 2.12.0\n"
 
@@ -348,9 +349,10 @@ msgid "Sync"
 msgstr "Sincronización"
 
 #: includes/class-admin.php:211 includes/class-admin.php:212
-#: includes/health/class-sitehealth.php:279 src/backend-remarketing.php:41
-#: src/backend-settings.php:41 src/backend-sms.php:75 src/backend-sync.php:41
-#: src/backend.php:26 src/backend.php:47
+#: includes/cli/class-command.php:679 includes/health/class-sitehealth.php:279
+#: src/backend-remarketing.php:41 src/backend-settings.php:41
+#: src/backend-sms.php:75 src/backend-sync.php:41 src/backend.php:26
+#: src/backend.php:47
 msgid "Remarketing"
 msgstr "Remarketing"
 
@@ -481,6 +483,242 @@ msgstr "webhook unsubscribe: %1$s, blog %2$d"
 #, php-format
 msgid "webhook import received, blog %d"
 msgstr "webhook import recibido, blog %d"
+
+#: includes/cli/class-command.php:141 src/backend.php:121
+msgid "Last exports"
+msgstr "Últimas exportaciones"
+
+#: includes/cli/class-command.php:144 src/backend.php:132
+msgid "When NewsMAN last read each type of data from this site."
+msgstr "Cuándo leyó NewsMAN por última vez cada tipo de datos de este sitio."
+
+#. translators: 1: Export type, 2: List of export types
+#: includes/cli/class-command.php:242
+#, php-format
+msgid ""
+"The %1$s export is not available from the command line. Available exports: "
+"%2$s."
+msgstr ""
+"La exportación %1$s no está disponible desde la línea de comandos. "
+"Exportaciones disponibles: %2$s."
+
+#. translators: %s: Export type
+#: includes/cli/class-command.php:253
+#, php-format
+msgid "The %s export needs WooCommerce."
+msgstr "La exportación %s necesita WooCommerce."
+
+#. translators: 1: Send type, 2: List of send types
+#: includes/cli/class-command.php:341
+#, php-format
+msgid "Unknown type %1$s. Types: %2$s."
+msgstr "Tipo desconocido %1$s. Tipos: %2$s."
+
+#. translators: %s: Send type
+#: includes/cli/class-command.php:357
+#, php-format
+msgid "Sending %s needs WooCommerce."
+msgstr "Para enviar %s se necesita WooCommerce."
+
+#: includes/cli/class-command.php:363
+msgid "Use the YYYY-MM-DD format for --since, for example 2026-01-31."
+msgstr "Use el formato YYYY-MM-DD para --since, por ejemplo 2026-01-31."
+
+#. translators: %d: Largest batch size
+#: includes/cli/class-command.php:372
+#, php-format
+msgid "Use a --batch-size from 1 to %d."
+msgstr "Use un --batch-size de 1 a %d."
+
+#. translators: 1: Number of rows, 2: What is sent, for example orders, 3: NewsMAN list ID
+#: includes/cli/class-command.php:394
+#, php-format
+msgid "Dry run: %1$d %2$s would be sent to the NewsMAN list %3$s."
+msgstr "Simulación: se enviarían %1$d %2$s a la lista de NewsMAN %3$s."
+
+#. translators: 1: Number of rows, 2: What is sent, for example orders, 3: NewsMAN list ID
+#: includes/cli/class-command.php:406
+#, php-format
+msgid "Send %1$d %2$s to the NewsMAN list %3$s?"
+msgstr "¿Enviar %1$d %2$s a la lista de NewsMAN %3$s?"
+
+#: includes/cli/class-command.php:417
+msgid "Sending to NewsMAN"
+msgstr "Enviando a NewsMAN"
+
+#. translators: 1: Number of rows sent, 2: Number of rows read, 3: What is sent, for example orders
+#: includes/cli/class-command.php:448
+#, php-format
+msgid ""
+"Sent %1$d of %2$d %3$s to NewsMAN. Some batches failed, the NewsMAN log has "
+"the errors."
+msgstr ""
+"Se enviaron %1$d de %2$d %3$s a NewsMAN. Algunos lotes fallaron; los errores "
+"están en el registro de NewsMAN."
+
+#. translators: 1: Number of rows sent, 2: What is sent, for example orders
+#: includes/cli/class-command.php:458
+#, php-format
+msgid "Sent %1$d %2$s to NewsMAN."
+msgstr "Se enviaron %1$d %2$s a NewsMAN."
+
+#. translators: 1: Email, 2: Error message
+#: includes/cli/class-command.php:557
+#, php-format
+msgid "NewsMAN could not subscribe %1$s: %2$s"
+msgstr "NewsMAN no pudo suscribir a %1$s: %2$s"
+
+#. translators: 1: Email, 2: Error message
+#: includes/cli/class-command.php:628
+#, php-format
+msgid "NewsMAN could not unsubscribe %1$s: %2$s"
+msgstr "NewsMAN no pudo dar de baja a %1$s: %2$s"
+
+#. translators: %s: Email
+#: includes/cli/class-command.php:634
+#, php-format
+msgid "NewsMAN will send %s an email to confirm the unsubscribe."
+msgstr "NewsMAN enviará a %s un correo para confirmar la baja."
+
+#. translators: 1: Email, 2: NewsMAN list ID
+#: includes/cli/class-command.php:639
+#, php-format
+msgid "%1$s is unsubscribed from the NewsMAN list %2$s."
+msgstr "%1$s está dado de baja de la lista de NewsMAN %2$s."
+
+#: includes/cli/class-command.php:665
+msgid "The cached NewsMAN lists, segments and SMS lists were cleared."
+msgstr ""
+"Se vaciaron las listas de NewsMAN, los segmentos y las listas de SMS en "
+"caché."
+
+#: includes/cli/class-command.php:676 src/backend.php:23
+msgid "API credentials"
+msgstr "Credenciales API"
+
+#: includes/cli/class-command.php:677 src/backend.php:24
+msgid "Email list"
+msgstr "Lista de correo"
+
+#: includes/cli/class-command.php:678 includes/health/class-sitehealth.php:272
+#: src/backend-settings.php:107 src/backend.php:25
+msgid "Allow API access"
+msgstr "Permitir acceso API"
+
+#: includes/cli/class-command.php:680 src/backend.php:27
+msgid "Action Scheduler"
+msgstr "Action Scheduler"
+
+#: includes/cli/class-command.php:681 includes/health/class-sitehealth.php:291
+#: src/backend.php:28
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#. translators: 1: Site URL, 2: WordPress blog ID
+#: includes/cli/class-command.php:692
+#, php-format
+msgid "Site: %1$s (blog ID %2$d)"
+msgstr "Sitio: %1$s (ID de blog %2$d)"
+
+#. translators: %s: Argument name
+#: includes/cli/class-command.php:732
+#, php-format
+msgid "Use a whole number for --%s."
+msgstr "Use un número entero para --%s."
+
+#: includes/cli/class-command.php:736
+msgid "Use a --limit of at least 1."
+msgstr "Use un --limit de al menos 1."
+
+#. translators: 1: Export type, 2: Unknown filters, 3: Known filters
+#: includes/cli/class-command.php:779
+#, php-format
+msgid "Unknown filter for the %1$s export: %2$s. Filters: %3$s."
+msgstr "Filtro desconocido para la exportación %1$s: %2$s. Filtros: %3$s."
+
+#. translators: 1: Export type, 2: Unknown sort field, 3: Known sort fields
+#: includes/cli/class-command.php:791
+#, php-format
+msgid "Unknown sort field for the %1$s export: %2$s. Sort fields: %3$s."
+msgstr ""
+"Campo de ordenación desconocido para la exportación %1$s: %2$s. Campos de "
+"ordenación: %3$s."
+
+#: includes/cli/class-command.php:851
+msgid ""
+"The plugin is not connected to NewsMAN. Connect it with NewsMAN OAuth or "
+"save the API key and User ID in Settings."
+msgstr ""
+"El plugin no está conectado a NewsMAN. Conéctelo con NewsMAN OAuth o guarde "
+"la clave API y el User ID en Ajustes."
+
+#: includes/cli/class-command.php:854
+msgid "No NewsMAN list is chosen. Choose one on the Sync page of the plugin."
+msgstr ""
+"No se ha elegido ninguna lista de NewsMAN. Elija una en la página "
+"Sincronización del plugin."
+
+#. translators: %s: Email
+#: includes/cli/class-command.php:871
+#, php-format
+msgid "%s is not a valid email address."
+msgstr "%s no es una dirección de correo válida."
+
+#: includes/cli/class-command.php:874
+msgid "Use either --single-optin or --double-optin, not both."
+msgstr "Use --single-optin o --double-optin, no ambos."
+
+#. translators: %s: Email
+#: includes/cli/class-command.php:909
+#, php-format
+msgid ""
+"NewsMAN will send a confirmation email to %s. The email is subscribed after "
+"it is confirmed."
+msgstr ""
+"NewsMAN enviará un correo de confirmación a %s. La dirección queda suscrita "
+"tras la confirmación."
+
+#. translators: 1: Email, 2: NewsMAN list ID
+#: includes/cli/class-command.php:913
+#, php-format
+msgid "%1$s is subscribed to the NewsMAN list %2$s."
+msgstr "%1$s está suscrito a la lista de NewsMAN %2$s."
+
+#. translators: 1: Email, 2: NewsMAN list ID
+#: includes/cli/class-command.php:916
+#, php-format
+msgid "%1$s was already subscribed to the NewsMAN list %2$s."
+msgstr "%1$s ya estaba suscrito a la lista de NewsMAN %2$s."
+
+#: includes/cli/class-command.php:929
+msgid "WordPress subscriber"
+msgid_plural "WordPress subscribers"
+msgstr[0] "suscriptor de WordPress"
+msgstr[1] "suscriptores de WordPress"
+
+#: includes/cli/class-command.php:931
+msgid "WooCommerce subscriber"
+msgid_plural "WooCommerce subscribers"
+msgstr[0] "suscriptor de WooCommerce"
+msgstr[1] "suscriptores de WooCommerce"
+
+#: includes/cli/class-command.php:933
+msgid "order"
+msgid_plural "orders"
+msgstr[0] "pedido"
+msgstr[1] "pedidos"
+
+#: includes/cli/class-command.php:947
+msgid "No WordPress subscribers to send."
+msgstr "No hay suscriptores de WordPress que enviar."
+
+#: includes/cli/class-command.php:949
+msgid "No WooCommerce subscribers to send."
+msgstr "No hay suscriptores de WooCommerce que enviar."
+
+#: includes/cli/class-command.php:951
+msgid "No orders to send."
+msgstr "No hay pedidos que enviar."
 
 #: includes/contactform7/class-formpanel.php:202
 msgid ""
@@ -1048,23 +1286,23 @@ msgid "Added %1$d coupons %2$s"
 msgstr "Se agregaron %1$d cupones %2$s"
 
 #. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
-#: includes/export/retriever/class-cronsubscribers.php:64
+#: includes/export/retriever/class-cronsubscribers.php:78
 #, php-format
 msgid "Export subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
 msgstr "Exportar suscriptores %1$s %2$d, %3$d, blog ID %4$s, fecha %5$s"
 
-#: includes/export/retriever/class-cronsubscribers.php:80
+#: includes/export/retriever/class-cronsubscribers.php:94
 msgid "No subscribers found."
 msgstr "No se encontraron suscriptores."
 
 #. translators: 1: Method, 2: Batch start, 3: Batch end, 4: WP blog ID, 5: Date created
-#: includes/export/retriever/class-cronsubscribers.php:130
+#: includes/export/retriever/class-cronsubscribers.php:144
 #, php-format
 msgid "Exported subscribers %1$s %2$d, %3$d, blog ID %4$s, date %5$s"
 msgstr "Suscriptores exportados %1$s %2$d, %3$d, blog ID %4$s, fecha %5$s"
 
 #. translators: 1: Sent subscribers count, 2: Total subscribers count
-#: includes/export/retriever/class-cronsubscribers.php:146
+#: includes/export/retriever/class-cronsubscribers.php:165
 #, php-format
 msgid "Sent to NewsMAN %1$d subscribers out of a total of %2$d."
 msgstr "Enviados a NewsMAN %1$d suscriptores de un total de %2$d."
@@ -1146,31 +1384,31 @@ msgid "refresh.remarketing: updated newsman_scriptjs, blog %1$d"
 msgstr "refresh.remarketing: newsman_scriptjs actualizado, blog %1$d"
 
 #. translators: 1: Order ID, 2: WordPress blog ID
-#: includes/export/retriever/class-sendorders.php:67
+#: includes/export/retriever/class-sendorders.php:81
 #, php-format
 msgid "Send order %1$d, store ID %2$s"
 msgstr "Enviar pedido %1$d, ID tienda %2$s"
 
 #. translators: 1: Order ID, 2: WordPress blog ID
-#: includes/export/retriever/class-sendorders.php:84
+#: includes/export/retriever/class-sendorders.php:98
 #, php-format
 msgid "Sent order %1$d, store ID %2$s"
 msgstr "Pedido %1$d enviado, ID tienda %2$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
-#: includes/export/retriever/class-sendorders.php:103
+#: includes/export/retriever/class-sendorders.php:117
 #, php-format
 msgid "Send orders %1$d, %2$d, blog ID %3$s, date %4$s"
 msgstr "Enviar pedidos %1$d, %2$d, blog ID %3$s, fecha %4$s"
 
 #. translators: 1: Batch start, 2: Batch end, 3: WP blog ID, 4: Date created
-#: includes/export/retriever/class-sendorders.php:156
+#: includes/export/retriever/class-sendorders.php:170
 #, php-format
 msgid "Sent orders %1$d, %2$d, blog ID %3$s, Date %4$s"
 msgstr "Pedidos enviados %1$d, %2$d, blog ID %3$s, Fecha %4$s"
 
 #. translators: 1: Sent orders count, 2: Total orders count
-#: includes/export/retriever/class-sendorders.php:171
+#: includes/export/retriever/class-sendorders.php:190
 #, php-format
 msgid "Sent to NewsMAN %1$d orders out of a total of %2$d."
 msgstr "Enviados a NewsMAN %1$d pedidos de un total de %2$d."
@@ -1795,11 +2033,6 @@ msgstr "Clave API y User ID guardados"
 msgid "List ID"
 msgstr "ID de la lista"
 
-#: includes/health/class-sitehealth.php:272 src/backend-settings.php:107
-#: src/backend.php:25
-msgid "Allow API access"
-msgstr "Permitir acceso API"
-
 #: includes/health/class-sitehealth.php:285
 msgid "Remarketing ID"
 msgstr "ID de remarketing"
@@ -1807,10 +2040,6 @@ msgstr "ID de remarketing"
 #: includes/health/class-sitehealth.php:286
 msgid "Not set"
 msgstr "Sin definir"
-
-#: includes/health/class-sitehealth.php:291 src/backend.php:28
-msgid "WooCommerce"
-msgstr "WooCommerce"
 
 #: includes/health/class-sitehealth.php:298
 msgid "Action Scheduler available"
@@ -3097,18 +3326,6 @@ msgstr ""
 "útil de la caché es de 15 minutos; este botón solo es útil cuando necesita "
 "ver los cambios del lado de Newsman inmediatamente."
 
-#: src/backend.php:23
-msgid "API credentials"
-msgstr "Credenciales API"
-
-#: src/backend.php:24
-msgid "Email list"
-msgstr "Lista de correo"
-
-#: src/backend.php:27
-msgid "Action Scheduler"
-msgstr "Action Scheduler"
-
 #: src/backend.php:31
 msgid "OK"
 msgstr "Correcto"
@@ -3165,14 +3382,6 @@ msgstr ""
 "lo que no basta para confirmar que el seguimiento funciona. Cuando sea "
 "necesario, compruebe la instalación en su cuenta de NewsMAN: botón newsman."
 "app > Integrations > NewsMAN Remarketing > Check installation."
-
-#: src/backend.php:121
-msgid "Last exports"
-msgstr "Últimas exportaciones"
-
-#: src/backend.php:132
-msgid "When NewsMAN last read each type of data from this site."
-msgstr "Cuándo leyó NewsMAN por última vez cada tipo de datos de este sitio."
 
 #: src/backend.php:141
 msgid "The same checks are also in Tools > Site Health."
@@ -3442,6 +3651,19 @@ msgstr ""
 msgctxt "block keyword"
 msgid "email"
 msgstr "correo electrónico"
+
+#, php-format
+#~ msgid "No %s to send."
+#~ msgstr "No hay %s que enviar."
+
+#~ msgid "WordPress subscribers"
+#~ msgstr "suscriptores de WordPress"
+
+#~ msgid "WooCommerce subscribers"
+#~ msgstr "suscriptores de WooCommerce"
+
+#~ msgid "orders"
+#~ msgstr "pedidos"
 
 #, php-format
 #~ msgid "On (ID: %s)"

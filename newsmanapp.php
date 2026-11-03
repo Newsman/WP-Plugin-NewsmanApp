@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 3.7.39
+ * Version: 3.7.40
  * Author: Newsman
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSMAN_VERSION', '3.7.39' );
+define( 'NEWSMAN_VERSION', '3.7.40' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'NEWSMAN_JS_SCRIPT_VERSION', '20261102000000' );
@@ -135,6 +135,9 @@ class WP_Newsman {
 		// Remarketing scripts check from the NewsMAN admin page.
 		( new \Newsman\Remarketing\StorefrontCheck() )->init_hooks();
 
+		// The wp newsman commands. WP-CLI fires cli_init, web requests never do.
+		add_action( 'cli_init', array( $this, 'register_cli_commands' ) );
+
 		// Declare compatibility with custom_order_tables (HPOS).
 		add_action(
 			'before_woocommerce_init',
@@ -148,6 +151,22 @@ class WP_Newsman {
 				}
 			}
 		);
+	}
+
+	/**
+	 * Register the wp newsman commands.
+	 *
+	 * WP-CLI ends the whole command with an error when the class of a command cannot
+	 * be loaded, so a missing class (a stale Composer classmap) would break every wp
+	 * command on the site. Without the class the commands are simply not added.
+	 *
+	 * @return void
+	 */
+	public function register_cli_commands() {
+		if ( ! class_exists( '\WP_CLI' ) || ! class_exists( '\Newsman\Cli\Command' ) ) {
+			return;
+		}
+		\WP_CLI::add_command( 'newsman', '\Newsman\Cli\Command' );
 	}
 
 	/**

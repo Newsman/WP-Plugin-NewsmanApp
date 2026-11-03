@@ -19,6 +19,7 @@ This guide walks you through every setting in the Newsman plugin so you can conn
 - [WPForms](#wpforms)
 - [Gravity Forms](#gravity-forms)
 - [Exporting Subscribers from Form Submissions](#exporting-subscribers-from-form-submissions)
+- [WP-CLI Commands](#wp-cli-commands)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
 ---
@@ -220,6 +221,8 @@ When to click it: only when you have made changes inside your Newsman account (a
 If a Newsman API call fails during the refresh (network error, expired credentials), the existing cached value for that blog is **kept** — the refresh is a "best-effort" pass. The page returns with a notice listing which calls failed, and the next admin page-load still has the previously cached values to work with until the failed entries can be re-fetched. The persistent stale-fallback tier described above means that the read path also never returns an empty dropdown because of a transient API blip — it serves the last-known-good value with a quiet log entry.
 
 The OAuth flow (**NewsMAN > Settings - Reconfigure with Newsman OAuth**) bypasses the cache entirely so that mid-flight credentials cannot poison it.
+
+From the command line, `wp newsman flush-cache` clears the cached lists, segments and SMS lists of one site without calling the Newsman API; they are read again the next time they are needed, and the stale-fallback copy is kept (see [WP-CLI Commands](#wp-cli-commands)).
 
 ---
 
@@ -694,6 +697,80 @@ Each of the four form integrations (Elementor, Contact Form 7, WPForms, Gravity 
 If you enable more than one form export at once and select a Source Form for each, the Newsman settings page shows a red admin notice listing the conflicting sources — without this notice a misconfiguration would silently produce a result from the wrong source. Disable all but one.
 
 If no form export is enabled and the legacy WC/WP export options under **NewsMAN > Remarketing** are also off, `subscriber.list` returns `{"error": {"code": 3002, "message": "Subscriber export not enabled"}}`.
+
+---
+
+## WP-CLI Commands
+
+With [WP-CLI](https://wp-cli.org/) you can check and use the plugin from the command line, for example over SSH or from a cron job. `wp help newsman` lists the commands, and `wp help newsman <command>` shows every option.
+
+The commands work on the site WordPress loads. On a WordPress Multisite network, choose the site with the global `--url` parameter, like with every WP-CLI command; without it, the main site is used. Each site uses its own Newsman API key, list and settings, and the commands print the site and its blog ID. To run a command on every site of the network:
+
+```
+wp site list --field=url | xargs -I % wp newsman status --url=%
+```
+
+### Check the plugin: `wp newsman status`
+
+Shows the same checks as the Status section of the NewsMAN page (API credentials, email list, Allow API access, remarketing, Action Scheduler, WooCommerce) and when Newsman last read each type of data. The command ends with exit code 1 when a check finds a problem, so it can be used in monitoring. `--format=json`, `csv` or `yaml` give output for scripts.
+
+### See what Newsman reads: `wp newsman export <type>`
+
+Prints the data Newsman reads from the site, as JSON by default (`--format=csv`, `table` or `yaml` print nested values as JSON). No API key is needed.
+
+- Types: `products-feed`, `customers`, `orders`, `subscribers`, `subscribers-wordpress-feed`, `subscribers-woocommerce-feed`, and the platform information (`platform-name`, `platform-version`, `platform-language`, `platform-language-version`, `platform-has-products`, `integration-name`, `integration-version`, `server-ip`, `server-cloudflare`, `sql-name`, `sql-version`). `customers`, `orders`, `products-feed` and `subscribers-woocommerce-feed` need WooCommerce.
+- `--limit` (default 1000, like Newsman) and `--start` page through the rows; `--sort` and `--order=asc|desc` sort them.
+- Any other `--<field>=<value>` filters the rows, with the filter names of the export Newsman calls, for example `--email=ana@example.com`, `--order_id=123` or `--order_ids=12,13`. An unknown filter or sort field is reported together with the valid ones.
+- Only the exports that read data are available. The exports that create coupons, change subscriptions, send data or run SQL are not.
+- Running it does not change **Last exports** on the NewsMAN page.
+
+```
+wp newsman export products-feed --limit=5
+wp newsman export orders --email=ana@example.com --format=table
+```
+
+### Send data to Newsman: `wp newsman send <type>`
+
+Sends data from the site to Newsman in batches, with a progress bar:
+
+- `wordpress-subscribers` - WordPress users with the Subscriber role, to the list and segment chosen on the Sync page.
+- `woocommerce-subscribers` - the billing name, email and phone of completed orders, each email once, to the list and segment chosen on the Sync page. These customers did not necessarily subscribe to the newsletter, so check that you may email them before sending.
+- `orders` - all orders except drafts, for remarketing.
+
+`woocommerce-subscribers` and `orders` need WooCommerce. Options:
+
+- `--since=YYYY-MM-DD` - only users registered, or orders created, on or after this date.
+- `--batch-size` - rows sent in one request: default 1000 for subscribers (at most 9000) and 200 for orders (at most 500).
+- `--dry-run` - shows how many rows would be sent, without sending them.
+- `--yes` - sends without asking for confirmation, for example from a cron job.
+
+The command needs the API key, the User ID and a list. It asks for confirmation before sending. A batch that fails is written to the plugin log, the other batches are still sent, and the command ends with an error that says how many rows were sent.
+
+```
+wp newsman send orders --since=2026-01-01 --dry-run
+wp newsman send wordpress-subscribers --yes
+```
+
+### Subscribe and unsubscribe: `wp newsman subscribe <email>` and `wp newsman unsubscribe <email>`
+
+- `--single-optin` subscribes, or unsubscribes, the email right away.
+- `--double-optin` makes Newsman send a confirmation email first; the email is subscribed, or unsubscribed, only after it is confirmed.
+- Without either option, the **Newsletter Opt-in type** from Settings is used, like on the checkout and My Account pages.
+
+`subscribe` also accepts `--firstname`, `--lastname`, `--segment=<segment ID>` (default: the segment chosen on the Sync page) and `--form-id=<form ID>` for the double opt-in confirmation email (default: the **Confirmation email Form ID** from Settings). An email that unsubscribed earlier, or never confirmed, is subscribed again, like with the checkout checkbox; an email that is already subscribed stays subscribed. The IP address sent to Newsman is the server's, because there is no visitor.
+
+```
+wp newsman subscribe ana@example.com --firstname=Ana --single-optin
+wp newsman unsubscribe ana@example.com --double-optin
+```
+
+### Clear the lists cache: `wp newsman flush-cache`
+
+Clears the cached Newsman lists, segments and SMS lists of the site, so the plugin reads them again from Newsman the next time they are needed, for example after you added a list or a segment in Newsman. The copy kept for when Newsman cannot be reached stays. See [Refresh lists & segments cache](#refresh-lists--segments-cache).
+
+### Logs
+
+The commands write to the plugin log like the rest of the plugin (see [Where are the plugin logs?](#where-are-the-plugin-logs)). Without WooCommerce, the PHP error log of the command line is often the terminal, so log lines can appear in the output, depending on the **Logging level**.
 
 ---
 

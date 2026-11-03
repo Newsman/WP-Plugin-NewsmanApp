@@ -19,6 +19,7 @@ Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea cone
 - [WPForms](#wpforms)
 - [Gravity Forms](#gravity-forms)
 - [Export abonati din trimiteri de formulare](#export-abonati-din-trimiteri-de-formulare)
+- [Comenzi WP-CLI](#comenzi-wp-cli)
 - [Intrebari Frecvente](#intrebari-frecvente)
 
 ---
@@ -231,6 +232,8 @@ Cand sa apasati: doar atunci cand ati facut modificari in contul dvs. Newsman (a
 Daca un apel API Newsman esueaza in timpul reactualizarii (eroare retea, credentiale expirate), valoarea existenta din cache pentru acel blog este **pastrata** — reactualizarea este "best-effort". Pagina se intoarce cu o notificare care listeaza apelurile esuate, iar urmatoarea incarcare a paginii admin foloseste in continuare valorile cache-ului anterior pana cand intrarile esuate pot fi re-aduse. Stratul persistent de rezerva mentionat mai sus inseamna ca nici calea de citire nu returneaza vreodata un dropdown gol din cauza unui hop API tranzitoriu — serveste ultima valoare cunoscuta-buna cu o intrare de log discreta.
 
 Fluxul OAuth (**NewsMAN > Settings - Reconfigure with Newsman OAuth**) ocoleste in intregime cache-ul astfel incat credentiale aflate in tranzit sa nu il poata polua.
+
+Din linia de comanda, `wp newsman flush-cache` sterge listele, segmentele si listele SMS din cache pentru un site, fara sa apeleze API-ul Newsman; ele sunt citite din nou data viitoare cand este nevoie de ele, iar copia de rezerva ramane (vezi [Comenzi WP-CLI](#comenzi-wp-cli)).
 
 ---
 
@@ -705,6 +708,80 @@ Fiecare dintre cele patru integrari de formulare (Elementor, Contact Form 7, WPF
 Daca activati mai mult de un export de formular si selectati un Source Form pentru fiecare, pagina Newsman Settings afiseaza o notificare admin rosie care listeaza sursele in conflict — fara aceasta notificare, o configuratie gresita ar produce silentios un rezultat din sursa gresita. Dezactivati toate, cu exceptia uneia.
 
 Daca niciun export de formular nu este activat si optiunile de export WC/WP din **NewsMAN > Remarketing** sunt si ele dezactivate, `subscriber.list` returneaza `{"error": {"code": 3002, "message": "Subscriber export not enabled"}}`.
+
+---
+
+## Comenzi WP-CLI
+
+Cu [WP-CLI](https://wp-cli.org/) puteti verifica si folosi plugin-ul din linia de comanda, de exemplu prin SSH sau dintr-un cron job. `wp help newsman` afiseaza comenzile, iar `wp help newsman <comanda>` afiseaza toate optiunile.
+
+Comenzile lucreaza pe site-ul pe care il incarca WordPress. Intr-o retea WordPress Multisite, alegeti site-ul cu parametrul global `--url`, ca la orice comanda WP-CLI; fara el se foloseste site-ul principal. Fiecare site foloseste propria cheie API Newsman, propria lista si propriile setari, iar comenzile afiseaza site-ul si ID-ul lui de blog. Pentru a rula o comanda pe toate site-urile din retea:
+
+```
+wp site list --field=url | xargs -I % wp newsman status --url=%
+```
+
+### Verificarea plugin-ului: `wp newsman status`
+
+Afiseaza aceleasi verificari ca sectiunea Stare de pe pagina NewsMAN (API credentials, lista de email, Allow API access, remarketing, Action Scheduler, WooCommerce) si cand a citit Newsman ultima data fiecare tip de date. Comanda se termina cu codul de iesire 1 cand o verificare gaseste o problema, deci poate fi folosita pentru monitorizare. `--format=json`, `csv` sau `yaml` dau un rezultat pentru scripturi.
+
+### Ce citeste Newsman: `wp newsman export <tip>`
+
+Afiseaza datele pe care Newsman le citeste de pe site, implicit ca JSON (`--format=csv`, `table` sau `yaml` afiseaza valorile imbricate ca JSON). Nu este nevoie de cheia API.
+
+- Tipuri: `products-feed`, `customers`, `orders`, `subscribers`, `subscribers-wordpress-feed`, `subscribers-woocommerce-feed` si informatiile despre platforma (`platform-name`, `platform-version`, `platform-language`, `platform-language-version`, `platform-has-products`, `integration-name`, `integration-version`, `server-ip`, `server-cloudflare`, `sql-name`, `sql-version`). `customers`, `orders`, `products-feed` si `subscribers-woocommerce-feed` au nevoie de WooCommerce.
+- `--limit` (implicit 1000, ca la Newsman) si `--start` parcurg randurile pe pagini; `--sort` si `--order=asc|desc` le sorteaza.
+- Orice alt `--<camp>=<valoare>` filtreaza randurile, cu numele de filtre ale exportului apelat de Newsman, de exemplu `--email=ana@example.com`, `--order_id=123` sau `--order_ids=12,13`. Un filtru sau un camp de sortare necunoscut este semnalat impreuna cu cele valide.
+- Sunt disponibile doar exporturile care citesc date. Exporturile care creeaza cupoane, schimba abonari, trimit date sau ruleaza SQL nu sunt disponibile.
+- Rularea nu schimba **Last exports** de pe pagina NewsMAN.
+
+```
+wp newsman export products-feed --limit=5
+wp newsman export orders --email=ana@example.com --format=table
+```
+
+### Trimiterea datelor la Newsman: `wp newsman send <tip>`
+
+Trimite date de pe site la Newsman in loturi, cu o bara de progres:
+
+- `wordpress-subscribers` - utilizatorii WordPress cu rolul Subscriber, in lista si segmentul alese pe pagina Sync.
+- `woocommerce-subscribers` - numele, emailul si telefonul de facturare din comenzile finalizate, fiecare email o singura data, in lista si segmentul alese pe pagina Sync. Acesti clienti nu s-au abonat neaparat la newsletter, deci verificati ca aveti voie sa le trimiteti emailuri inainte de trimitere.
+- `orders` - toate comenzile, in afara de ciorne, pentru remarketing.
+
+`woocommerce-subscribers` si `orders` au nevoie de WooCommerce. Optiuni:
+
+- `--since=YYYY-MM-DD` - doar utilizatorii inregistrati, sau comenzile create, la aceasta data sau dupa.
+- `--batch-size` - randuri trimise intr-o cerere: implicit 1000 pentru abonati (cel mult 9000) si 200 pentru comenzi (cel mult 500).
+- `--dry-run` - afiseaza cate randuri ar fi trimise, fara sa le trimita.
+- `--yes` - trimite fara sa ceara confirmare, de exemplu dintr-un cron job.
+
+Comanda are nevoie de cheia API, User ID si o lista. Cere confirmare inainte de trimitere. Un lot care esueaza este scris in logul plugin-ului, celelalte loturi sunt trimise in continuare, iar comanda se termina cu o eroare care spune cate randuri au fost trimise.
+
+```
+wp newsman send orders --since=2026-01-01 --dry-run
+wp newsman send wordpress-subscribers --yes
+```
+
+### Abonare si dezabonare: `wp newsman subscribe <email>` si `wp newsman unsubscribe <email>`
+
+- `--single-optin` aboneaza, sau dezaboneaza, emailul imediat.
+- `--double-optin` face ca Newsman sa trimita intai un email de confirmare; emailul este abonat, sau dezabonat, doar dupa confirmare.
+- Fara niciuna dintre optiuni se foloseste **Newsletter Opt-in type** din Settings, ca pe paginile de checkout si My Account.
+
+`subscribe` accepta si `--firstname`, `--lastname`, `--segment=<ID segment>` (implicit segmentul ales pe pagina Sync) si `--form-id=<ID formular>` pentru emailul de confirmare double opt-in (implicit **Confirmation email Form ID** din Settings). Un email care s-a dezabonat inainte, sau nu a confirmat niciodata, este abonat din nou, ca la checkbox-ul din checkout; un email deja abonat ramane abonat. Adresa IP trimisa la Newsman este cea a serverului, pentru ca nu exista un vizitator.
+
+```
+wp newsman subscribe ana@example.com --firstname=Ana --single-optin
+wp newsman unsubscribe ana@example.com --double-optin
+```
+
+### Golirea cache-ului de liste: `wp newsman flush-cache`
+
+Sterge din cache listele, segmentele si listele SMS Newsman ale site-ului, astfel incat plugin-ul sa le citeasca din nou de la Newsman data viitoare cand este nevoie de ele, de exemplu dupa ce ati adaugat o lista sau un segment in Newsman. Copia pastrata pentru cand Newsman nu poate fi accesat ramane. Vezi [Refresh lists & segments cache](#refresh-lists--segments-cache).
+
+### Loguri
+
+Comenzile scriu in logul plugin-ului ca restul plugin-ului (vezi [Unde sunt logurile plugin-ului?](#unde-sunt-logurile-plugin-ului)). Fara WooCommerce, logul de erori PHP din linia de comanda este adesea chiar terminalul, deci liniile de log pot aparea in rezultat, in functie de **Logging level**.
 
 ---
 

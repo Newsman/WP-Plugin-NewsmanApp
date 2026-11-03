@@ -19,7 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Cron Subscribers WordPress to API Newsman
  *
  * @class \Newsman\Export\Retriever\SubscribersWordpress
- * @deprecated since 3.5.0
  */
 class SubscribersWordpress extends CronSubscribers {
 	/**

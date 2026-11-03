@@ -19,7 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Cron Subscribers to API Newsman
  *
  * @class \Newsman\Export\Retriever\CronSubscribers
- * @deprecated since 3.5.0
  */
 class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	/**
@@ -40,6 +39,16 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	protected $emails_cache = array();
 
 	/**
+	 * Rows read and rows sent to NewsMAN by the last process() call.
+	 *
+	 * @var array
+	 */
+	protected $last_counts = array(
+		'read' => 0,
+		'sent' => 0,
+	);
+
+	/**
 	 * Process cron subscribers retriever
 	 *
 	 * @param array    $data Data to filter entities, to save entities, other.
@@ -48,6 +57,11 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 	 * @throws \Exception On errors.
 	 */
 	public function process( $data = array(), $blog_id = null ) {
+		$this->last_counts = array(
+			'read' => 0,
+			'sent' => 0,
+		);
+
 		$start        = ! empty( $data['start'] ) && $data['start'] > 0 ? $data['start'] : 0;
 		$limit        = empty( $data['limit'] ) ? self::DEFAULT_PAGE_SIZE : $data['limit'];
 		$cronlast     = ! empty( $data['cronlast'] ) && 'true' === $data['cronlast'] ? true : false;
@@ -136,6 +150,11 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 			)
 		);
 
+		$this->last_counts = array(
+			'read' => $count_subscribers,
+			'sent' => $count,
+		);
+
 		if ( $this->is_different_blog( $blog_id ) ) {
 			restore_current_blog();
 		}
@@ -149,6 +168,16 @@ class CronSubscribers extends AbstractRetriever implements RetrieverInterface {
 			),
 			'results' => $api_results,
 		);
+	}
+
+	/**
+	 * Rows read and rows sent to NewsMAN by the last process() call. A batch the
+	 * NewsMAN API rejected counts as read and not sent.
+	 *
+	 * @return array Keys `read` and `sent`.
+	 */
+	public function get_last_counts() {
+		return $this->last_counts;
 	}
 
 	/**

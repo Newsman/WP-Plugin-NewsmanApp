@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Export Retriever Send Orders
  *
  * @class \Newsman\Export\Retriever\SendOrders
- * @deprecated since 3.5.0
  */
 class SendOrders extends AbstractRetriever implements RetrieverInterface {
 	/**
@@ -42,6 +41,16 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 	protected $order_mapper;
 
 	/**
+	 * Rows read and rows sent to NewsMAN by the last process() call.
+	 *
+	 * @var array
+	 */
+	protected $last_counts = array(
+		'read' => 0,
+		'sent' => 0,
+	);
+
+	/**
 	 * Class construct
 	 */
 	public function __construct() {
@@ -57,6 +66,11 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 	 * @return array
 	 */
 	public function process( $data = array(), $blog_id = null ) {
+		$this->last_counts = array(
+			'read' => 0,
+			'sent' => 0,
+		);
+
 		if ( isset( $data['order_id'] ) ) {
 			if ( empty( $data['order_id'] ) ) {
 				return array();
@@ -161,6 +175,11 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			)
 		);
 
+		$this->last_counts = array(
+			'read' => $count_orders,
+			'sent' => $count,
+		);
+
 		if ( $this->is_different_blog( $blog_id ) ) {
 			restore_current_blog();
 		}
@@ -174,6 +193,16 @@ class SendOrders extends AbstractRetriever implements RetrieverInterface {
 			),
 			'results' => $api_results,
 		);
+	}
+
+	/**
+	 * Rows read and rows sent to NewsMAN by the last process() call. A batch the
+	 * NewsMAN API rejected counts as read and not sent.
+	 *
+	 * @return array Keys `read` and `sent`.
+	 */
+	public function get_last_counts() {
+		return $this->last_counts;
 	}
 
 	/**
