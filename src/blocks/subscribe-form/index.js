@@ -10,14 +10,14 @@
 ( function ( wp, data ) {
 	'use strict';
 
-	var el = wp.element.createElement;
-	var Fragment = wp.element.Fragment;
-	var __ = wp.i18n.__;
-	var sprintf = wp.i18n.sprintf;
+	var el          = wp.element.createElement;
+	var Fragment    = wp.element.Fragment;
+	var __          = wp.i18n.__;
+	var sprintf     = wp.i18n.sprintf;
 	var blockEditor = wp.blockEditor;
-	var components = wp.components;
+	var components  = wp.components;
 
-	data = data || {};
+	data         = data || {};
 	var defaults = data.defaults || {};
 
 	/**
@@ -44,19 +44,12 @@
 	}
 
 	function listOptions() {
-		var options = [
-			{
-				value: '',
-				label: data.syncListName
-					? sprintf(
-							/* translators: %s: NewsMAN list name */
-							__( 'Default list from NewsMAN Sync (%s)', 'newsman' ),
-							data.syncListName
-					  )
-					: __( 'Default list from NewsMAN Sync', 'newsman' ),
-			},
-		];
-		return options.concat( data.lists || [] );
+		var label = __( 'Default list from NewsMAN Sync', 'newsman' );
+		if ( data.syncListName ) {
+			/* translators: %s: NewsMAN list name */
+			label = sprintf( __( 'Default list from NewsMAN Sync (%s)', 'newsman' ), data.syncListName );
+		}
+		return [ { value: '', label: label } ].concat( data.lists || [] );
 	}
 
 	function segmentOptions( listId ) {
@@ -77,6 +70,10 @@
 		return el( 'div', props, children );
 	}
 
+	function requiredMarker() {
+		return el( 'span', { className: 'nzm-subscribe-form__required', 'aria-hidden': 'true' }, ' *' );
+	}
+
 	function fieldPreview( attributes, key, labelKey, type, required ) {
 		return el(
 			'p',
@@ -85,7 +82,7 @@
 				'label',
 				null,
 				text( attributes, labelKey ),
-				required ? el( 'span', { className: 'nzm-subscribe-form__required', 'aria-hidden': 'true' }, ' *' ) : null
+				required ? requiredMarker() : null
 			),
 			el( 'input', { type: type, readOnly: true, tabIndex: -1 } )
 		);
@@ -140,34 +137,40 @@
 	}
 
 	function textControl( attributes, setAttributes, key, label ) {
-		return el( components.TextControl, {
-			key: key,
-			label: label,
-			value: attributes[ key ],
-			placeholder: defaults[ key ] || '',
-			onChange: function ( value ) {
-				var update = {};
-				update[ key ] = value;
-				setAttributes( update );
-			},
-			__nextHasNoMarginBottom: true,
-			__next40pxDefaultSize: true,
-		} );
+		return el(
+			components.TextControl,
+			{
+				key: key,
+				label: label,
+				value: attributes[ key ],
+				placeholder: defaults[ key ] || '',
+				onChange: function ( value ) {
+					var update    = {};
+					update[ key ] = value;
+					setAttributes( update );
+				},
+				__nextHasNoMarginBottom: true,
+				__next40pxDefaultSize: true,
+			}
+		);
 	}
 
 	function toggle( attributes, setAttributes, key, label, help ) {
-		return el( components.ToggleControl, {
-			key: key,
-			label: label,
-			help: help,
-			checked: !! attributes[ key ],
-			onChange: function ( value ) {
-				var update = {};
-				update[ key ] = value;
-				setAttributes( update );
-			},
-			__nextHasNoMarginBottom: true,
-		} );
+		return el(
+			components.ToggleControl,
+			{
+				key: key,
+				label: label,
+				help: help,
+				checked: Boolean( attributes[ key ] ),
+				onChange: function ( value ) {
+					var update    = {};
+					update[ key ] = value;
+					setAttributes( update );
+				},
+				__nextHasNoMarginBottom: true,
+			}
+		);
 	}
 
 	function fieldToggles( attributes, setAttributes, suffix, label ) {
@@ -181,51 +184,60 @@
 	}
 
 	function inspector( attributes, setAttributes ) {
-		var listId = attributes.listId || '';
+		var listId   = attributes.listId || '';
 		var segments = segmentOptions( listId );
 
 		var listPanel = [
-			el( components.SelectControl, {
-				key: 'list',
-				label: __( 'List', 'newsman' ),
-				value: listId,
-				options: listOptions(),
-				onChange: function ( value ) {
-					setAttributes( { listId: value, segmentId: '' } );
-				},
-				__nextHasNoMarginBottom: true,
-				__next40pxDefaultSize: true,
-			} ),
-		];
-		if ( listId !== '' && segments.length > 1 ) {
-			listPanel.push(
-				el( components.SelectControl, {
-					key: 'segment',
-					label: __( 'Segment', 'newsman' ),
-					value: attributes.segmentId || '',
-					options: segments,
+			el(
+				components.SelectControl,
+				{
+					key: 'list',
+					label: __( 'List', 'newsman' ),
+					value: listId,
+					options: listOptions(),
 					onChange: function ( value ) {
-						setAttributes( { segmentId: value } );
+						setAttributes( { listId: value, segmentId: '' } );
 					},
 					__nextHasNoMarginBottom: true,
 					__next40pxDefaultSize: true,
-				} )
+				}
+			),
+		];
+		if ( listId !== '' && segments.length > 1 ) {
+			listPanel.push(
+				el(
+					components.SelectControl,
+					{
+						key: 'segment',
+						label: __( 'Segment', 'newsman' ),
+						value: attributes.segmentId || '',
+						options: segments,
+						onChange: function ( value ) {
+							setAttributes( { segmentId: value } );
+						},
+						__nextHasNoMarginBottom: true,
+						__next40pxDefaultSize: true,
+					}
+				)
 			);
 		}
 		if ( data.doubleOptin ) {
 			listPanel.push(
-				el( components.TextControl, {
-					key: 'confirmationFormId',
-					label: __( 'Confirmation email Form ID', 'newsman' ),
-					help: __( 'Optional. Leave empty to use the Confirmation email Form ID from NewsMAN > Settings.', 'newsman' ),
-					value: attributes.confirmationFormId,
-					placeholder: data.globalFormId || '',
-					onChange: function ( value ) {
-						setAttributes( { confirmationFormId: value.trim() } );
-					},
-					__nextHasNoMarginBottom: true,
-					__next40pxDefaultSize: true,
-				} )
+				el(
+					components.TextControl,
+					{
+						key: 'confirmationFormId',
+						label: __( 'Confirmation email Form ID', 'newsman' ),
+						help: __( 'Optional. Leave empty to use the Confirmation email Form ID from NewsMAN > Settings.', 'newsman' ),
+						value: attributes.confirmationFormId,
+						placeholder: data.globalFormId || '',
+						onChange: function ( value ) {
+							setAttributes( { confirmationFormId: value.trim() } );
+						},
+						__nextHasNoMarginBottom: true,
+						__next40pxDefaultSize: true,
+					}
+				)
 			);
 		}
 		listPanel.push(
@@ -272,17 +284,20 @@
 		}
 		if ( attributes.showConsent ) {
 			textsPanel.push(
-				el( components.TextareaControl, {
-					key: 'consentText',
-					label: __( 'Consent text', 'newsman' ),
-					help: __( 'Leave empty to use the default text with a link to the privacy policy page. Links, bold and italic are allowed.', 'newsman' ),
-					value: attributes.consentText,
-					placeholder: defaults.consentText || '',
-					onChange: function ( value ) {
-						setAttributes( { consentText: value } );
-					},
-					__nextHasNoMarginBottom: true,
-				} )
+				el(
+					components.TextareaControl,
+					{
+						key: 'consentText',
+						label: __( 'Consent text', 'newsman' ),
+						help: __( 'Leave empty to use the default text with a link to the privacy policy page. Links, bold and italic are allowed.', 'newsman' ),
+						value: attributes.consentText,
+						placeholder: defaults.consentText || '',
+						onChange: function ( value ) {
+							setAttributes( { consentText: value } );
+						},
+						__nextHasNoMarginBottom: true,
+					}
+				)
 			);
 		}
 		textsPanel.push( textControl( attributes, setAttributes, 'buttonText', __( 'Button text', 'newsman' ) ) );
@@ -309,23 +324,26 @@
 		);
 	}
 
-	wp.blocks.registerBlockType( 'newsman/subscribe-form', {
-		edit: function ( props ) {
-			var blockProps = blockEditor.useBlockProps( { className: 'nzm-subscribe-form' } );
+	wp.blocks.registerBlockType(
+		'newsman/subscribe-form',
+		{
+			edit: function ( props ) {
+				var blockProps = blockEditor.useBlockProps( { className: 'nzm-subscribe-form' } );
 
-			if ( ! data.configured ) {
-				return el( 'div', blockProps, notConfigured() );
-			}
+				if ( ! data.configured ) {
+					return el( 'div', blockProps, notConfigured() );
+				}
 
-			return el(
-				Fragment,
-				null,
-				inspector( props.attributes, props.setAttributes ),
-				el( 'div', blockProps, el( components.Disabled, null, preview( props.attributes ) ) )
-			);
-		},
-		save: function () {
-			return null;
-		},
-	} );
+				return el(
+					Fragment,
+					null,
+					inspector( props.attributes, props.setAttributes ),
+					el( 'div', blockProps, el( components.Disabled, null, preview( props.attributes ) ) )
+				);
+			},
+			save: function () {
+				return null;
+			},
+		}
+	);
 } )( window.wp, window.newsmanSubscribeFormBlock );

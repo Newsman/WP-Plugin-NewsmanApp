@@ -23,7 +23,7 @@
 	}
 
 	function onSubmit( event ) {
-		var form = event.currentTarget;
+		var form    = event.currentTarget;
 		var ajaxUrl = form.getAttribute( 'data-ajax-url' );
 		if ( ! ajaxUrl || ! window.fetch || ! window.FormData ) {
 			return;
@@ -34,8 +34,8 @@
 			return;
 		}
 
-		var button = form.querySelector( 'button[type="submit"]' );
-		var errorMessage = form.getAttribute( 'data-error-message' ) || '';
+		var button         = form.querySelector( 'button[type="submit"]' );
+		var errorMessage   = form.getAttribute( 'data-error-message' ) || '';
 		var successMessage = form.getAttribute( 'data-success-message' ) || '';
 
 		form.classList.add( 'is-submitting' );
@@ -44,41 +44,55 @@
 		}
 
 		window
-			.fetch( ajaxUrl, {
-				method: 'POST',
-				body: new window.FormData( form ),
-				credentials: 'same-origin',
-			} )
-			.then( function ( response ) {
-				return response.json().catch( function () {
-					return null;
-				} );
-			} )
-			.then( function ( json ) {
-				var success = !! ( json && json.success );
-				var message = json && json.data && json.data.message ? json.data.message : errorMessage;
-				if ( success && successMessage !== '' ) {
-					message = successMessage;
+			.fetch(
+				ajaxUrl,
+				{
+					method: 'POST',
+					body: new window.FormData( form ),
+					credentials: 'same-origin',
 				}
-				showMessage( form, message, success );
-				if ( success ) {
-					form.reset();
+			)
+			.then(
+				function ( response ) {
+					return response.json().catch(
+						function () {
+							return null;
+						}
+					);
 				}
-			} )
-			.catch( function () {
-				showMessage( form, errorMessage, false );
-			} )
-			.then( function () {
-				form.classList.remove( 'is-submitting' );
-				if ( button ) {
-					button.disabled = false;
+			)
+			.then(
+				function ( json ) {
+					var success = Boolean( json && json.success );
+					var message = json && json.data && json.data.message ? json.data.message : errorMessage;
+					if ( success && successMessage !== '' ) {
+						message = successMessage;
+					}
+					showMessage( form, message, success );
+					if ( success ) {
+						form.reset();
+					}
 				}
-			} );
+			)
+			.catch(
+				function () {
+					showMessage( form, errorMessage, false );
+				}
+			)
+			.then(
+				function () {
+					form.classList.remove( 'is-submitting' );
+					if ( button ) {
+						button.disabled = false;
+					}
+				}
+			);
 	}
 
 	function init() {
 		var forms = document.querySelectorAll( '.nzm-subscribe-form__form' );
-		for ( var i = 0; i < forms.length; i++ ) {
+		var count = forms.length;
+		for ( var i = 0; i < count; i++ ) {
 			forms[ i ].addEventListener( 'submit', onSubmit );
 		}
 	}

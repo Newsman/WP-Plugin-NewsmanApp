@@ -11,7 +11,7 @@
 ( function () {
 	'use strict';
 
-	var config = window.NEWSMAN_REMARKETING_CHECK;
+	var config       = window.NEWSMAN_REMARKETING_CHECK;
 	var PAGE_TIMEOUT = 20000;
 
 	function format( text, value ) {
@@ -35,8 +35,8 @@
 			critical: 'dashicons-dismiss',
 			info: 'dashicons-info'
 		};
-		var line = element( 'span', 'nzm-health-status nzm-health-' + status );
-		var icon = element( 'span', 'dashicons ' + icons[ status ] );
+		var line  = element( 'span', 'nzm-health-status nzm-health-' + status );
+		var icon  = element( 'span', 'dashicons ' + icons[ status ] );
 		icon.setAttribute( 'aria-hidden', 'true' );
 		line.appendChild( icon );
 		line.appendChild( document.createTextNode( ' ' + text ) );
@@ -52,7 +52,7 @@
 
 	function fetchPage( url ) {
 		var controller = ( 'AbortController' in window ) ? new AbortController() : null;
-		var timer      = controller ? setTimeout( function () { controller.abort(); }, PAGE_TIMEOUT ) : null;
+		var timer      = controller ? setTimeout( controller.abort.bind( controller ), PAGE_TIMEOUT ) : null;
 		var options    = {
 			credentials: 'same-origin',
 			cache: 'no-store',
@@ -85,15 +85,15 @@
 	}
 
 	function renderPage( container, page, result ) {
-		var block  = element( 'div', 'nzm-rm-check-page nzm-rm-check-page-' + page.type );
-		var header = element( 'p', 'nzm-rm-check-page-title' );
-		var list   = element( 'ul', 'nzm-rm-check-list' );
+		var block    = element( 'div', 'nzm-rm-check-page nzm-rm-check-page-' + page.type );
+		var header   = element( 'p', 'nzm-rm-check-page-title' );
+		var list     = element( 'ul', 'nzm-rm-check-list' );
 		var allFound = true;
 
 		block.setAttribute( 'data-page', page.type );
 		header.appendChild( element( 'strong', '', page.label ) );
 		if ( page.link ) {
-			var link = element( 'a', 'nzm-rm-check-link', config.i18n.openPage );
+			var link    = element( 'a', 'nzm-rm-check-link', config.i18n.openPage );
 			link.href   = page.link;
 			link.target = '_blank';
 			link.rel    = 'noopener noreferrer';
@@ -147,7 +147,7 @@
 		button.disabled = true;
 		spinner.classList.add( 'is-active' );
 		results.textContent = '';
-		var progress = element( 'p', 'description', config.i18n.checking );
+		var progress        = element( 'p', 'description', config.i18n.checking );
 		results.appendChild( progress );
 
 		var body = new URLSearchParams();
