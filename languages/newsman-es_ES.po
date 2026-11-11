@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-02T22:42:45+00:00\n"
+"POT-Creation-Date: 2026-11-11T17:27:09+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -334,7 +334,9 @@ msgid "Newsman: Failed to fetch the remarketing script."
 msgstr "Newsman: Error al obtener el script de remarketing."
 
 #: includes/class-admin.php:193 includes/health/class-sitehealth.php:347
-#: includes/health/class-sitehealth.php:381 src/backend-oauth.php:29
+#: includes/health/class-sitehealth.php:381
+#: includes/privacy/class-exporter.php:109
+#: includes/privacy/class-exporter.php:124 src/backend-oauth.php:29
 #: src/backend-remarketing.php:32 src/backend-remarketing.php:37
 #: src/backend-settings.php:32 src/backend-settings.php:37
 #: src/backend-sms.php:66 src/backend-sms.php:71 src/backend-sync.php:32
@@ -893,7 +895,7 @@ msgstr ""
 #: includes/gravityforms/class-formpanel.php:202
 #: includes/gravityforms/class-formpanel.php:263
 #: includes/wpforms/class-formpanel.php:334
-#: src/blocks/subscribe-form/index.js:219
+#: src/blocks/subscribe-form/index.js:230
 msgid "Confirmation email Form ID"
 msgstr "ID del formulario de correo electrónico de confirmación"
 
@@ -1529,14 +1531,17 @@ msgid "Subscribe to our newsletter"
 msgstr "Suscríbase a nuestro boletín"
 
 #: includes/form/block/class-subscribeform.php:212
+#: includes/privacy/class-exporter.php:210
 msgid "Email"
 msgstr "Correo electrónico"
 
 #: includes/form/block/class-subscribeform.php:213
+#: includes/privacy/class-exporter.php:215
 msgid "First name"
 msgstr "Nombre"
 
 #: includes/form/block/class-subscribeform.php:214
+#: includes/privacy/class-exporter.php:216
 msgid "Last name"
 msgstr "Apellidos"
 
@@ -2067,6 +2072,192 @@ msgstr "Tareas en segundo plano fallidas en los últimos 7 días"
 msgid "Last export: %s"
 msgstr "Última exportación: %s"
 
+#: includes/privacy/class-eraser.php:151 includes/privacy/class-exporter.php:77
+msgid "NewsMAN newsletter subscription"
+msgstr "Suscripción al boletín de NewsMAN"
+
+#: includes/privacy/class-eraser.php:185
+msgid "The email address was unsubscribed from the NewsMAN list."
+msgstr ""
+"La dirección de correo electrónico se ha dado de baja de la lista de NewsMAN."
+
+#. translators: %s: Error message
+#: includes/privacy/class-eraser.php:193
+#, php-format
+msgid ""
+"NewsMAN could not unsubscribe the email address: %s. Erase the personal data "
+"again later."
+msgstr ""
+"NewsMAN no pudo dar de baja la dirección de correo electrónico: %s. Vuelva a "
+"borrar los datos personales más tarde."
+
+#. translators: 1: Phone number, 2: Error message
+#: includes/privacy/class-eraser.php:213
+#, php-format
+msgid ""
+"NewsMAN could not unsubscribe the phone number %1$s: %2$s. Erase the "
+"personal data again later."
+msgstr ""
+"NewsMAN no pudo dar de baja el número de teléfono %1$s: %2$s. Vuelva a "
+"borrar los datos personales más tarde."
+
+#. translators: %d: Number of phone numbers
+#: includes/privacy/class-eraser.php:225
+#, php-format
+msgid "%d phone number was unsubscribed from the NewsMAN SMS list."
+msgid_plural "%d phone numbers were unsubscribed from the NewsMAN SMS list."
+msgstr[0] ""
+"%d número de teléfono se ha dado de baja de la lista de SMS de NewsMAN."
+msgstr[1] ""
+"%d números de teléfono se han dado de baja de la lista de SMS de NewsMAN."
+
+#. translators: 1: Email
+#: includes/privacy/class-eraser.php:407
+#, php-format
+msgid "Erase personal data: %s is not on the NewsMAN list"
+msgstr "Borrado de datos personales: %s no está en la lista de NewsMAN"
+
+#. translators: 1: Phone number
+#: includes/privacy/class-eraser.php:458
+#, php-format
+msgid "Erase personal data: %s is not on the NewsMAN SMS list"
+msgstr "Borrado de datos personales: %s no está en la lista de SMS de NewsMAN"
+
+#: includes/privacy/class-exporter.php:110
+#: includes/privacy/class-exporter.php:125
+msgid ""
+"Newsletter and SMS subscriptions kept by NewsMAN, the service the site uses "
+"to send newsletters and SMS messages."
+msgstr ""
+"Suscripciones al boletín y a SMS que guarda NewsMAN, el servicio que el "
+"sitio utiliza para enviar boletines y mensajes SMS."
+
+#. translators: %s: Error message
+#: includes/privacy/class-exporter.php:139
+#, php-format
+msgid "NewsMAN could not be read: %s. Export the personal data again later."
+msgstr ""
+"No se pudo leer NewsMAN: %s. Vuelva a exportar los datos personales más "
+"tarde."
+
+#: includes/privacy/class-exporter.php:209
+msgid "NewsMAN email list"
+msgstr "Lista de correo de NewsMAN"
+
+#: includes/privacy/class-exporter.php:209
+msgid "NewsMAN SMS list"
+msgstr "Lista de SMS de NewsMAN"
+
+#: includes/privacy/class-exporter.php:210
+msgid "Phone number"
+msgstr "Número de teléfono"
+
+#: includes/privacy/class-exporter.php:211 src/backend.php:79
+msgid "Status"
+msgstr "Estado"
+
+#: includes/privacy/class-exporter.php:212
+msgid "Subscription source"
+msgstr "Origen de la suscripción"
+
+#: includes/privacy/class-exporter.php:213
+msgid "Subscribed on"
+msgstr "Suscrito el"
+
+#: includes/privacy/class-exporter.php:214
+msgid "Unsubscribed on"
+msgstr "Dado de baja el"
+
+#: includes/privacy/class-exporter.php:217
+msgid "IP address"
+msgstr "Dirección IP"
+
+#: includes/privacy/class-exporter.php:232
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: includes/privacy/class-exporter.php:288
+msgid ""
+"This text describes what the NewsMAN plugin sends to NewsMAN. Keep only the "
+"parts that match the NewsMAN features you use."
+msgstr ""
+"Este texto describe lo que el plugin de NewsMAN envía a NewsMAN. Conserve "
+"solo las partes que correspondan a las funciones de NewsMAN que utiliza."
+
+#: includes/privacy/class-exporter.php:289
+msgid "Suggested text:"
+msgstr "Texto sugerido:"
+
+#: includes/privacy/class-exporter.php:289
+msgid ""
+"We use NewsMAN, a service of Dazoot Software, to send newsletters and SMS "
+"messages and for remarketing."
+msgstr ""
+"Utilizamos NewsMAN, un servicio de Dazoot Software, para enviar boletines y "
+"mensajes SMS y para remarketing."
+
+#: includes/privacy/class-exporter.php:290
+msgid ""
+"When you subscribe to our newsletter (a subscription form, the checkout or "
+"your account page), we send NewsMAN your email address, your name and, when "
+"you give it, your phone number, with the date and the IP address of the "
+"request."
+msgstr ""
+"Cuando se suscribe a nuestro boletín (un formulario de suscripción, el "
+"proceso de pago o la página de su cuenta), enviamos a NewsMAN su dirección "
+"de correo electrónico, su nombre y, si lo facilita, su número de teléfono, "
+"con la fecha y la dirección IP de la solicitud."
+
+#: includes/privacy/class-exporter.php:291
+msgid ""
+"When you place an order, we may send NewsMAN the order details (products, "
+"quantities, prices and the order status) with your email address, name and "
+"phone number, to measure our campaigns and to send you SMS messages about "
+"your order."
+msgstr ""
+"Cuando realiza un pedido, podemos enviar a NewsMAN los detalles del pedido "
+"(productos, cantidades, precios y el estado del pedido) con su dirección de "
+"correo electrónico, su nombre y su número de teléfono, para medir nuestras "
+"campañas y enviarle mensajes SMS sobre su pedido."
+
+#: includes/privacy/class-exporter.php:292
+msgid ""
+"The NewsMAN tracking script on our pages records the pages and products you "
+"view, your cart and your purchases. It keeps a tracking identifier in "
+"cookies whose names start with _nzm and keeps events that were not sent yet "
+"in the storage of your browser."
+msgstr ""
+"El script de seguimiento de NewsMAN en nuestras páginas registra las páginas "
+"y los productos que ve, su carrito y sus compras. Guarda un identificador de "
+"seguimiento en cookies cuyo nombre empieza por _nzm y guarda en el "
+"almacenamiento de su navegador los eventos que aún no se han enviado."
+
+#: includes/privacy/class-exporter.php:293
+msgid ""
+"When you ask us to erase your personal data, or when your account is "
+"deleted, your email address and phone numbers are unsubscribed from our "
+"NewsMAN lists. NewsMAN keeps them as unsubscribed, so you do not receive our "
+"messages again."
+msgstr ""
+"Cuando nos pide que borremos sus datos personales, o cuando se elimina su "
+"cuenta, su dirección de correo electrónico y sus números de teléfono se dan "
+"de baja de nuestras listas de NewsMAN. NewsMAN los conserva como dados de "
+"baja, para que no vuelva a recibir nuestros mensajes."
+
+#. translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link
+#: includes/privacy/class-exporter.php:296
+#, php-format
+msgid "How NewsMAN processes personal data: %1$s and %2$s."
+msgstr "Cómo trata NewsMAN los datos personales: %1$s y %2$s."
+
+#: includes/privacy/class-exporter.php:297
+msgid "NewsMAN privacy policy"
+msgstr "Política de privacidad de NewsMAN"
+
+#: includes/privacy/class-exporter.php:298
+msgid "NewsMAN cookie policy"
+msgstr "Política de cookies de NewsMAN"
+
 #: includes/remarketing/class-storefrontcheck.php:148
 msgid "You are not allowed to run this check."
 msgstr "No tiene permiso para ejecutar esta comprobación."
@@ -2282,6 +2473,12 @@ msgstr "Intentando agregar al segmento %1$s el suscriptor ID %2$s"
 #, php-format
 msgid "Added to segment %1$s subscriber ID %2$s"
 msgstr "Agregado al segmento %1$s el suscriptor ID %2$s"
+
+#. translators: 1: Telephone number
+#: includes/service/sms/class-getbytelephone.php:49
+#, php-format
+msgid "Try to get by telephone %s"
+msgstr "Intentando obtener por teléfono %s"
 
 #. translators: 1: Phone number
 #: includes/service/sms/class-sendone.php:47
@@ -3350,10 +3547,6 @@ msgstr "Información NewsMAN"
 msgid "Newsman Plugin Version"
 msgstr "Versión del plugin Newsman"
 
-#: src/backend.php:79
-msgid "Status"
-msgstr "Estado"
-
 #: src/backend.php:105
 msgid "Check the remarketing scripts on the storefront"
 msgstr "Comprobar los scripts de remarketing en la tienda"
@@ -3435,49 +3628,49 @@ msgstr ""
 "suscripción > Crear/Editar formulario > Formulario integrado. Copie el ID "
 "del formulario del shortcode."
 
-#: src/blocks/embedded-form/index.js:27
+#: src/blocks/embedded-form/index.js:29
 msgid "Form ID"
 msgstr "ID del formulario"
 
-#: src/blocks/embedded-form/index.js:45
+#: src/blocks/embedded-form/index.js:75
 msgid "NewsMAN form"
 msgstr "Formulario NewsMAN"
 
-#: src/blocks/embedded-form/index.js:54 src/blocks/embedded-form/index.js:64
+#: src/blocks/embedded-form/index.js:84 src/blocks/embedded-form/index.js:94
 msgid "NewsMAN Embedded Form"
 msgstr "Formulario integrado de NewsMAN"
 
-#: src/blocks/embedded-form/index.js:65
+#: src/blocks/embedded-form/index.js:95
 msgid "The form is loaded from NewsMAN and shown on the published page."
 msgstr ""
 "El formulario se carga desde NewsMAN y se muestra en la página publicada."
 
-#. translators: %s: NewsMAN list name
-#: src/blocks/subscribe-form/index.js:53
-msgid "Default list from NewsMAN Sync (%s)"
-msgstr "Lista predeterminada de NewsMAN > Sincronización (%s)"
-
-#: src/blocks/subscribe-form/index.js:56
+#: src/blocks/subscribe-form/index.js:47
 msgid "Default list from NewsMAN Sync"
 msgstr "Lista predeterminada de NewsMAN > Sincronización"
 
-#: src/blocks/subscribe-form/index.js:64
+#. translators: %s: NewsMAN list name
+#: src/blocks/subscribe-form/index.js:50
+msgid "Default list from NewsMAN Sync (%s)"
+msgstr "Lista predeterminada de NewsMAN > Sincronización (%s)"
+
+#: src/blocks/subscribe-form/index.js:57
 msgid "No segment"
 msgstr "Sin segmento"
 
-#: src/blocks/subscribe-form/index.js:177
+#: src/blocks/subscribe-form/index.js:180
 msgid "Required"
 msgstr "Obligatorio"
 
-#: src/blocks/subscribe-form/index.js:190
+#: src/blocks/subscribe-form/index.js:195
 msgid "List"
 msgstr "Lista"
 
-#: src/blocks/subscribe-form/index.js:204
+#: src/blocks/subscribe-form/index.js:212
 msgid "Segment"
 msgstr "Segmento"
 
-#: src/blocks/subscribe-form/index.js:220
+#: src/blocks/subscribe-form/index.js:231
 msgid ""
 "Optional. Leave empty to use the Confirmation email Form ID from NewsMAN > "
 "Settings."
@@ -3485,13 +3678,13 @@ msgstr ""
 "Opcional. Déjelo vacío para usar el ID del formulario de correo electrónico "
 "de confirmación de NewsMAN > Ajustes."
 
-#: src/blocks/subscribe-form/index.js:236
+#: src/blocks/subscribe-form/index.js:248
 msgid "Subscribers go to the list and segment selected in NewsMAN > Sync."
 msgstr ""
 "Los suscriptores se añaden a la lista y al segmento seleccionados en NewsMAN "
 "> Sincronización."
 
-#: src/blocks/subscribe-form/index.js:239
+#: src/blocks/subscribe-form/index.js:251
 msgid ""
 "Opt-in type from NewsMAN > Settings: Double Opt-in (a confirmation email is "
 "sent)."
@@ -3499,64 +3692,64 @@ msgstr ""
 "Tipo de opt-in de NewsMAN > Ajustes: Doble opt-in (se envía un correo de "
 "confirmación)."
 
-#: src/blocks/subscribe-form/index.js:240
+#: src/blocks/subscribe-form/index.js:252
 msgid "Opt-in type from NewsMAN > Settings: Opt-in (subscribed right away)."
 msgstr "Tipo de opt-in de NewsMAN > Ajustes: Opt-in (suscripción inmediata)."
 
-#: src/blocks/subscribe-form/index.js:245
+#: src/blocks/subscribe-form/index.js:257
 msgid "The email field is always shown and required."
 msgstr "El campo de correo electrónico siempre se muestra y es obligatorio."
 
-#: src/blocks/subscribe-form/index.js:246
+#: src/blocks/subscribe-form/index.js:258
 msgid "Show first name"
 msgstr "Mostrar nombre"
 
-#: src/blocks/subscribe-form/index.js:247
+#: src/blocks/subscribe-form/index.js:259
 msgid "Show last name"
 msgstr "Mostrar apellidos"
 
-#: src/blocks/subscribe-form/index.js:248
+#: src/blocks/subscribe-form/index.js:260
 msgid "Show phone"
 msgstr "Mostrar teléfono"
 
-#: src/blocks/subscribe-form/index.js:253
+#: src/blocks/subscribe-form/index.js:265
 msgid "Show consent checkbox"
 msgstr "Mostrar casilla de consentimiento"
 
-#: src/blocks/subscribe-form/index.js:254
+#: src/blocks/subscribe-form/index.js:266
 msgid "A required checkbox. Subscribers must check it to subscribe."
 msgstr ""
 "Una casilla obligatoria. Los suscriptores deben marcarla para suscribirse."
 
-#: src/blocks/subscribe-form/index.js:256
+#: src/blocks/subscribe-form/index.js:268
 msgid "Show heading"
 msgstr "Mostrar título"
 
-#: src/blocks/subscribe-form/index.js:261
+#: src/blocks/subscribe-form/index.js:273
 msgid "Heading"
 msgstr "Título"
 
-#: src/blocks/subscribe-form/index.js:263
+#: src/blocks/subscribe-form/index.js:275
 msgid "Email label"
 msgstr "Etiqueta del correo electrónico"
 
-#: src/blocks/subscribe-form/index.js:265
+#: src/blocks/subscribe-form/index.js:277
 msgid "First name label"
 msgstr "Etiqueta del nombre"
 
-#: src/blocks/subscribe-form/index.js:268
+#: src/blocks/subscribe-form/index.js:280
 msgid "Last name label"
 msgstr "Etiqueta de los apellidos"
 
-#: src/blocks/subscribe-form/index.js:271
+#: src/blocks/subscribe-form/index.js:283
 msgid "Phone label"
 msgstr "Etiqueta del teléfono"
 
-#: src/blocks/subscribe-form/index.js:277
+#: src/blocks/subscribe-form/index.js:291
 msgid "Consent text"
 msgstr "Texto de consentimiento"
 
-#: src/blocks/subscribe-form/index.js:278
+#: src/blocks/subscribe-form/index.js:292
 msgid ""
 "Leave empty to use the default text with a link to the privacy policy page. "
 "Links, bold and italic are allowed."
@@ -3564,31 +3757,31 @@ msgstr ""
 "Déjelo vacío para usar el texto predeterminado con un enlace a la página de "
 "política de privacidad. Se permiten enlaces, negrita y cursiva."
 
-#: src/blocks/subscribe-form/index.js:288
+#: src/blocks/subscribe-form/index.js:303
 msgid "Button text"
 msgstr "Texto del botón"
 
-#: src/blocks/subscribe-form/index.js:289
+#: src/blocks/subscribe-form/index.js:304
 msgid "Success message"
 msgstr "Mensaje de éxito"
 
-#: src/blocks/subscribe-form/index.js:294
+#: src/blocks/subscribe-form/index.js:309
 msgid "NewsMAN list"
 msgstr "Lista de NewsMAN"
 
-#: src/blocks/subscribe-form/index.js:295
+#: src/blocks/subscribe-form/index.js:310
 msgid "Fields"
 msgstr "Campos"
 
-#: src/blocks/subscribe-form/index.js:296
+#: src/blocks/subscribe-form/index.js:311
 msgid "Texts"
 msgstr "Textos"
 
-#: src/blocks/subscribe-form/index.js:305
+#: src/blocks/subscribe-form/index.js:320
 msgid "NewsMAN Subscribe Form"
 msgstr "Formulario de suscripción NewsMAN"
 
-#: src/blocks/subscribe-form/index.js:306
+#: src/blocks/subscribe-form/index.js:321
 msgid ""
 "Connect the NewsMAN plugin to your NewsMAN account to use this form. The "
 "form is not shown on the site until then."
@@ -3596,7 +3789,7 @@ msgstr ""
 "Conecte el plugin de NewsMAN con su cuenta de NewsMAN para usar este "
 "formulario. Hasta entonces, el formulario no se muestra en el sitio."
 
-#: src/blocks/subscribe-form/index.js:308
+#: src/blocks/subscribe-form/index.js:323
 msgid "Open NewsMAN settings"
 msgstr "Abrir ajustes de NewsMAN"
 

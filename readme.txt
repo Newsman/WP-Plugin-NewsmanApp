@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.40
+Stable tag: 3.7.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,14 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.41 =
+* Personal data (GDPR): Tools > Erase Personal Data (also used by WooCommerce) now unsubscribes the email address from the NewsMAN list and the phone numbers (account billing phone and order billing phones) from the NewsMAN SMS list, right away and without a confirmation email, also for guests. Deleting a user unsubscribes them too, in the background when Action Scheduler is used; on a network, from the list of each site of the user. An email or phone number that is not on the list is not an error, and a NewsMAN error never stops the deletion.
+* Personal data (GDPR): Tools > Export Personal Data now has a NewsMAN section with what NewsMAN keeps about the person (email list and SMS list entries, read from NewsMAN), and Settings > Privacy > Policy Guide has a suggested NewsMAN text.
+* Fixed: with "Use Action Scheduler for unsubscribe" on, unsubscribes from the My Account page were queued but never sent to NewsMAN.
+* Fixed: when NewsMAN could not be reached, or answered with an error without a code, the plugin treated the answer as a success.
+* Fixed: on a network with the plugin network-activated, adding a site stopped with "The link you followed has expired."; new sites are now set up through wp_initialize_site (wpmu_new_blog on WordPress before 5.1).
+* Translations of the new texts in all languages; tests for the new features; the configuration guides describe the personal data tools.
 
 = 3.7.40 =
 * New WP-CLI commands: wp newsman status (the NewsMAN checks, exit code 1 on a problem), wp newsman export (prints the data NewsMAN reads, read-only), wp newsman send (WordPress subscribers, WooCommerce subscribers or orders to NewsMAN, with --since, --batch-size and --dry-run), wp newsman subscribe and wp newsman unsubscribe (--single-optin or --double-optin, the default comes from Settings) and wp newsman flush-cache. On multisite, choose the site with --url.

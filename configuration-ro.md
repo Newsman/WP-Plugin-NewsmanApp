@@ -19,6 +19,7 @@ Acest ghid prezinta toate setarile din plugin-ul Newsman, pentru a va putea cone
 - [WPForms](#wpforms)
 - [Gravity Forms](#gravity-forms)
 - [Export abonati din trimiteri de formulare](#export-abonati-din-trimiteri-de-formulare)
+- [Date personale (GDPR)](#date-personale-gdpr)
 - [Comenzi WP-CLI](#comenzi-wp-cli)
 - [Intrebari Frecvente](#intrebari-frecvente)
 
@@ -708,6 +709,24 @@ Fiecare dintre cele patru integrari de formulare (Elementor, Contact Form 7, WPF
 Daca activati mai mult de un export de formular si selectati un Source Form pentru fiecare, pagina Newsman Settings afiseaza o notificare admin rosie care listeaza sursele in conflict — fara aceasta notificare, o configuratie gresita ar produce silentios un rezultat din sursa gresita. Dezactivati toate, cu exceptia uneia.
 
 Daca niciun export de formular nu este activat si optiunile de export WC/WP din **NewsMAN > Remarketing** sunt si ele dezactivate, `subscriber.list` returneaza `{"error": {"code": 3002, "message": "Subscriber export not enabled"}}`.
+
+---
+
+## Date personale (GDPR)
+
+Cand un client va cere sa stergeti datele lui personale, plugin-ul il scoate si din lista NewsMAN a site-ului. Functioneaza cand plugin-ul este conectat la NewsMAN (credentiale API si o lista setata).
+
+- **Tools > Erase Personal Data** - Este adaugat eraser-ul **NewsMAN newsletter subscription** la cele din WordPress (si WooCommerce). Cand stergeti datele personale ale unei cereri, adresa de email este dezabonata imediat de la lista NewsMAN, iar cererea afiseaza "Adresa de email a fost dezabonata de la lista NewsMAN.". Contactul ramane in NewsMAN ca dezabonat, astfel ca o sincronizare ulterioara a aceluiasi email (de exemplu din emailurile de facturare ale comenzilor pastrate de WooCommerce) nu il poate abona din nou. Functioneaza si pentru persoanele fara cont, de exemplu un client care a comandat ca vizitator sau cineva abonat dintr-un formular. Daca NewsMAN nu poate fi contactat, cererea afiseaza eroarea si puteti sterge din nou datele personale mai tarziu.
+
+- **Stergerea unui utilizator** - Cand un utilizator este sters (**Users > Delete**, stergere in masa, `wp user delete`, API-ul REST WooCommerce), adresa de email este dezabonata de la lista NewsMAN. Cu **Use Action Scheduler** activat (Developer Settings), dezabonarea ruleaza in fundal, ca stergerea multor utilizatori odata sa ramana rapida; altfel ruleaza imediat. Intr-o retea multisite, un utilizator sters din retea este dezabonat de la lista fiecarui site din care facea parte, iar un utilizator scos dintr-un site este dezabonat de la lista acelui site.
+
+- **Tools > Export Personal Data** - Exportatorul **NewsMAN newsletter subscription** adauga o sectiune **NewsMAN** in export: ce pastreaza NewsMAN despre persoana, citit din NewsMAN cand descarcati exportul (starea in lista de email, datele de abonare si dezabonare, numele, etichetele si proprietatile, si intrarile din lista SMS ale numerelor de telefon ale persoanei cand SMS-ul este configurat). Daca NewsMAN nu poate fi contactat, exportul se opreste cu eroarea; descarcati-l din nou mai tarziu.
+
+- **Settings > Privacy > Policy Guide** - Plugin-ul sugereaza un text **NewsMAN** pentru politica de confidentialitate: ce se trimite catre NewsMAN (abonari, comenzi, SMS), scriptul de urmarire si cookie-urile lui `_nzm`, si linkuri catre politicile de confidentialitate si de cookie-uri NewsMAN. Copiati partile care corespund functiilor pe care le folositi.
+
+Cand SMS-ul este configurat (**NewsMAN > SMS**, Use SMS si o lista SMS), sunt dezabonate si numerele de telefon de la lista SMS NewsMAN: telefonul de facturare al contului si telefoanele de facturare ale comenzilor WooCommerce plasate cu acea adresa de email sau de acel utilizator.
+
+Nimic nu trece printr-un email de confirmare, chiar daca **Newsletter Opt-in type** este Double Opt-in, ca nimeni sa nu primeasca un email dupa ce a cerut sa fie sters. O adresa de email sau un numar de telefon care nu este in lista NewsMAN nu este o eroare. O eroare NewsMAN nu opreste niciodata stergerea.
 
 ---
 

@@ -25,6 +25,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Client implements ClientInterface {
 	/**
+	 * Error code when NewsMAN cannot be reached (connection refused, timeout, DNS error)
+	 * and there is no HTTP status.
+	 */
+	public const ERROR_CODE_CONNECTION = 599;
+
+	/**
+	 * Error code of an error answer without a code.
+	 */
+	public const ERROR_CODE_UNKNOWN = 1;
+
+	/**
 	 * Newsman Config
 	 *
 	 * @var Config
@@ -222,7 +233,7 @@ class Client implements ClientInterface {
 					$result    = json_decode( $remote_result['body'], true );
 					$api_error = $this->parse_api_error( $result );
 					if ( false !== $api_error ) {
-						$this->error_code    = (int) $api_error['code'];
+						$this->error_code    = (int) $api_error['code'] > 0 ? (int) $api_error['code'] : self::ERROR_CODE_UNKNOWN;
 						$this->error_message = $api_error['message'];
 						$this->logger->warning( $this->error_code . ' | ' . $this->error_message );
 					} else {
@@ -241,7 +252,10 @@ class Client implements ClientInterface {
 						$body      = json_decode( $remote_result['body'], true );
 						$api_error = $this->parse_api_error( $body );
 						if ( false !== $api_error ) {
-							$this->error_code    = (int) $api_error['code'];
+							// Without a NewsMAN code the HTTP status stays the error code.
+							if ( (int) $api_error['code'] > 0 ) {
+								$this->error_code = (int) $api_error['code'];
+							}
 							$this->error_message = $api_error['message'];
 						} else {
 							$this->error_message = 'Error: ' . $this->error_code;
@@ -253,7 +267,8 @@ class Client implements ClientInterface {
 				$this->logger->error( $this->status . ' | ' . $remote_result['body'] );
 			}
 		} catch ( \Exception $e ) {
-			$this->error_code    = (int) $e->getCode();
+			// WP_Error codes are strings (http_request_failed), so (int) gives 0.
+			$this->error_code    = (int) $e->getCode() > 0 ? (int) $e->getCode() : self::ERROR_CODE_CONNECTION;
 			$this->error_message = $e->getMessage();
 			$this->logger->log_exception( $e );
 		}

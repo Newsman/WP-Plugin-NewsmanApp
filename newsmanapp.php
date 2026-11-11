@@ -3,7 +3,7 @@
  * Plugin Name: NewsmanApp
  * Plugin URI: https://github.com/Newsman/WP-Plugin-NewsmanApp
  * Description: NewsmanApp for WordPress (sign up widget, subscribers sync, create and send newsletters from blog posts)
- * Version: 3.7.40
+ * Version: 3.7.41
  * Author: Newsman
  * Author URI: https://www.newsman.com
  * Text Domain: newsman
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSMAN_VERSION', '3.7.40' );
+define( 'NEWSMAN_VERSION', '3.7.41' );
 define( 'NEWSMAN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NEWSMAN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'NEWSMAN_JS_SCRIPT_VERSION', '20261102000000' );
@@ -48,15 +48,36 @@ add_action( 'upgrader_process_complete', array( '\Newsman\Setup', 'on_upgrade' )
 register_uninstall_hook( __FILE__, array( '\Newsman\Setup', 'on_uninstall' ) );
 register_deactivation_hook( __FILE__, array( '\Newsman\Setup', 'on_deactivate' ) );
 
-// For network-wide activation.
-add_action(
-	'wpmu_new_blog',
-	function ( $blog_id ) {
-		switch_to_blog( $blog_id );
-		\Newsman\Setup::on_activation();
-		restore_current_blog();
+// Network-wide activation: set up each new site of the network. No activation nonce is
+// checked here, the request is the one that adds the site.
+$newsman_setup_new_site = static function ( $blog_id ) {
+	$network_plugins = (array) get_site_option( 'active_sitewide_plugins', array() );
+	if ( ! isset( $network_plugins[ plugin_basename( __FILE__ ) ] ) ) {
+		return;
 	}
-);
+	global $wpdb;
+	switch_to_blog( (int) $blog_id );
+	// The Action Scheduler tables of a new site are created on its first request; the
+	// plugin sets the site up on that request then (Setup::is_setup_executed()).
+	$as_table = $wpdb->prefix . 'actionscheduler_actions';
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table existence check, must not be cached.
+	if ( ! class_exists( '\ActionScheduler' ) || $as_table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $as_table ) ) ) ) {
+		\Newsman\Setup::is_setup_executed();
+	}
+	restore_current_blog();
+};
+if ( version_compare( $GLOBALS['wp_version'], '5.1', '>=' ) ) {
+	// After WordPress created the tables of the new site (priority 10).
+	add_action(
+		'wp_initialize_site',
+		static function ( $site ) use ( $newsman_setup_new_site ) {
+			$newsman_setup_new_site( $site->blog_id );
+		},
+		100
+	);
+} else {
+	add_action( 'wpmu_new_blog', $newsman_setup_new_site );
+}
 
 /**
  * Newsman WP main class
@@ -134,6 +155,16 @@ class WP_Newsman {
 
 		// Remarketing scripts check from the NewsMAN admin page.
 		( new \Newsman\Remarketing\StorefrontCheck() )->init_hooks();
+
+		// Unsubscribe from NewsMAN on Tools > Erase Personal Data and on deleted users.
+		if ( class_exists( '\Newsman\Privacy\Eraser' ) ) {
+			( new \Newsman\Privacy\Eraser() )->init_hooks();
+		}
+
+		// NewsMAN data in Tools > Export Personal Data and the suggested privacy policy text.
+		if ( class_exists( '\Newsman\Privacy\Exporter' ) ) {
+			( new \Newsman\Privacy\Exporter() )->init_hooks();
+		}
 
 		// The wp newsman commands. WP-CLI fires cli_init, web requests never do.
 		add_action( 'cli_init', array( $this, 'register_cli_commands' ) );
@@ -271,6 +302,7 @@ class WP_Newsman {
 			// '\Newsman\Scheduler\Export\SubscribersWoocommerce',
 			'\Newsman\Scheduler\Subscribe\Email',
 			'\Newsman\Scheduler\Subscribe\Phone',
+			'\Newsman\Scheduler\Unsubscribe\Email',
 		);
 
 		return apply_filters( 'newsman_known_scheduled_classes', $classes );
