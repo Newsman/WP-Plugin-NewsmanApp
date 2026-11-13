@@ -549,6 +549,17 @@ class Config {
 	}
 
 	/**
+	 * Is the email of deleted users anonymised in NewsMAN (otherwise unsubscribed).
+	 * On when the option was never saved.
+	 *
+	 * @param null|int $blog_id WP blog ID.
+	 * @return bool
+	 */
+	public function is_anonymise_on_delete( $blog_id = null ) {
+		return 'on' === $this->get_blog_option( $blog_id, 'newsman_anonymise_on_delete', 'on' );
+	}
+
+	/**
 	 * Get my account subscribe menu label
 	 *
 	 * @param null|int $blog_id WP blog ID.

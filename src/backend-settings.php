@@ -230,6 +230,16 @@ $form_values = $this->get_form_values();
 								</p>
 							</td>
 						</tr>
+						<tr>
+							<th scope="row">
+								<label class="nzm-label" for="newsman_anonymise_on_delete"><?php echo esc_html__( 'Anonymise in NewsMAN when users are deleted', 'newsman' ); ?></label>
+							</th>
+							<td>
+								<input name="newsman_anonymise_on_delete" type="checkbox"
+									id="newsman_anonymise_on_delete" <?php echo ( ! isset( $form_values['newsman_anonymise_on_delete'] ) || false === $form_values['newsman_anonymise_on_delete'] || 'on' === $form_values['newsman_anonymise_on_delete'] ) ? 'checked' : ''; ?>/>
+								<p class="description"><?php echo esc_html__( 'When a user is deleted, the email address is anonymised in the NewsMAN list. When this is off, the email address is unsubscribed instead. Tools > Erase Personal Data always anonymises.', 'newsman' ); ?></p>
+							</td>
+						</tr>
 					</table>
 					<?php if ( $this->is_woo_commerce_exists() ) : ?>
 						<h2><?php echo esc_html__( 'Checkout Subscribe to Newsletter and SMS', 'newsman' ); ?></h2>

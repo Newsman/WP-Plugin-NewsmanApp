@@ -61,6 +61,7 @@ class Settings extends \Newsman\Admin\Settings {
 		'newsman_myaccountnewsletter_menu_label',
 		'newsman_myaccountnewsletter_page_title',
 		'newsman_myaccountnewsletter_checkbox_label',
+		'newsman_anonymise_on_delete',
 		'newsman_developerlogseverity',
 		'newsman_developerapitimeout',
 		'newsman_developeractiveuserip',

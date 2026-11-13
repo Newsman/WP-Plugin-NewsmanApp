@@ -253,5 +253,38 @@ class PrivacyExporterTest extends NewsmanTestCase {
 		$this->assertStringContainsString( '<a href="https://www.newsman.com/privacy">NewsMAN privacy policy</a>', $text );
 		$this->assertStringContainsString( '<a href="https://www.newsman.com/cookies">NewsMAN cookie policy</a>', $text );
 		$this->assertStringContainsString( 'class="privacy-policy-tutorial"', $text );
+		$this->assertStringContainsString( 'or when your account is deleted, NewsMAN replaces your email address', $text );
+
+		update_option( 'newsman_anonymise_on_delete', '' );
+		$text = $this->policy_text();
+		$this->assertStringContainsString( 'When you ask us to erase your personal data, NewsMAN replaces your email address', $text );
+		$this->assertStringContainsString( 'When your account is deleted, we unsubscribe your email address from our NewsMAN lists.', $text );
+		update_option( 'newsman_anonymise_on_delete', 'on' );
+	}
+
+	/**
+	 * The NewsMAN suggested privacy policy text, added now.
+	 *
+	 * @return string
+	 */
+	private function policy_text() {
+		set_current_screen( 'dashboard' );
+		global $wp_actions;
+		$did_admin_init           = isset( $wp_actions['admin_init'] ) ? $wp_actions['admin_init'] : null;
+		$wp_actions['admin_init'] = 1; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+		( new Exporter() )->add_privacy_policy_content();
+
+		$text = '';
+		foreach ( WP_Privacy_Policy_Content::get_suggested_policy_text() as $policy ) {
+			if ( 'NewsMAN' === $policy['plugin_name'] ) {
+				$text = $policy['policy_text'];
+			}
+		}
+		if ( null === $did_admin_init ) {
+			unset( $wp_actions['admin_init'] );
+		}
+		set_current_screen( 'front' );
+		return $text;
 	}
 }

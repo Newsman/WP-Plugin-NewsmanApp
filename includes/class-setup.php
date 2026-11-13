@@ -27,7 +27,7 @@ class Setup {
 	 *
 	 * @var string
 	 */
-	protected static $setup_version = '15.0.0';
+	protected static $setup_version = '16.0.0';
 
 	/**
 	 * Current version of setup in database
@@ -534,6 +534,11 @@ jt/modal_{{api_key}}.js'
 			self::upgrade_options_fifteen_zero_zero();
 			update_option( 'newsman_setup_version', '15.0.0', true );
 		}
+
+		if ( version_compare( self::$current_version, '16.0.0', '<' ) ) {
+			self::upgrade_options_sixteen_zero_zero();
+			update_option( 'newsman_setup_version', '16.0.0', true );
+		}
 	}
 
 	/**
@@ -802,6 +807,15 @@ jt/modal_{{api_key}}.js'
 		add_option( 'newsman_gravity_forms_active', 'on', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_gravity_forms_export_subscribers', 'off', '', Config::AUTOLOAD_OPTIONS );
 		add_option( 'newsman_gravity_forms_export_form_id', '', '', Config::AUTOLOAD_OPTIONS );
+	}
+
+	/**
+	 * Version 16.0.0: anonymise in NewsMAN the email of deleted users, on by default.
+	 *
+	 * @return void
+	 */
+	protected static function upgrade_options_sixteen_zero_zero() {
+		add_option( 'newsman_anonymise_on_delete', 'on', '', Config::AUTOLOAD_OPTIONS );
 	}
 
 	/**

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-13T14:11:51+00:00\n"
+"POT-Creation-Date: 2026-11-13T19:30:11+00:00\n"
 "PO-Revision-Date: 2026-01-25T17:33:17+02:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -97,7 +97,7 @@ msgstr "Trimite SMS cu Sameday Courier AWB"
 
 #: includes/admin/settings/class-oauth.php:99
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:102
+#: includes/admin/settings/class-settings.php:103
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:105
 msgid "Unauthorized user"
@@ -135,7 +135,7 @@ msgid "Remarketing JavaScript was updated successfully."
 msgstr "JavaScript-ul de remarketing a fost actualizat cu succes."
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:167
+#: includes/admin/settings/class-settings.php:168
 #: includes/admin/settings/class-sync.php:196
 msgid "Options saved."
 msgstr "Opțiuni salvate."
@@ -145,30 +145,30 @@ msgstr "Opțiuni salvate."
 msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr "Credențiale invalide. Vă rugăm să le configurați în fila Setări."
 
-#: includes/admin/settings/class-settings.php:171
-#: includes/admin/settings/class-settings.php:185
+#: includes/admin/settings/class-settings.php:172
+#: includes/admin/settings/class-settings.php:186
 #: includes/admin/settings/class-sync.php:200
 msgid "Invalid Credentials"
 msgstr "Credențiale invalide"
 
-#: includes/admin/settings/class-settings.php:206 src/backend-settings.php:354
+#: includes/admin/settings/class-settings.php:207 src/backend-settings.php:364
 msgid "Elementor"
 msgstr "Elementor"
 
-#: includes/admin/settings/class-settings.php:210 src/backend-settings.php:405
+#: includes/admin/settings/class-settings.php:211 src/backend-settings.php:415
 msgid "Contact Form 7"
 msgstr "Contact Form 7"
 
-#: includes/admin/settings/class-settings.php:214 src/backend-settings.php:456
+#: includes/admin/settings/class-settings.php:215 src/backend-settings.php:466
 msgid "WPForms"
 msgstr "WPForms"
 
-#: includes/admin/settings/class-settings.php:218 src/backend-settings.php:514
+#: includes/admin/settings/class-settings.php:219 src/backend-settings.php:524
 msgid "Gravity Forms"
 msgstr "Gravity Forms"
 
 #. translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7").
-#: includes/admin/settings/class-settings.php:229
+#: includes/admin/settings/class-settings.php:230
 #, php-format
 msgid ""
 "More than one \"Export Subscribers from Form Submissions\" is enabled (%s). "
@@ -181,24 +181,24 @@ msgstr ""
 "- WPForms - Gravity Forms) va fi folosită de subscriber.list; celelalte sunt "
 "ignorate. Dezactivează toate cu excepția uneia."
 
-#: includes/admin/settings/class-settings.php:269
-#: includes/admin/settings/class-settings.php:343
-#: includes/admin/settings/class-settings.php:415
-#: includes/admin/settings/class-settings.php:494
+#: includes/admin/settings/class-settings.php:270
+#: includes/admin/settings/class-settings.php:344
+#: includes/admin/settings/class-settings.php:416
+#: includes/admin/settings/class-settings.php:495
 msgid "Trash"
 msgstr "Coș de gunoi"
 
 #. translators: %d: CF7 form post id.
 #. translators: %d: WPForms form post id.
 #. translators: %d: Gravity Forms form id.
-#: includes/admin/settings/class-settings.php:284
-#: includes/admin/settings/class-settings.php:437
-#: includes/admin/settings/class-settings.php:511
+#: includes/admin/settings/class-settings.php:285
+#: includes/admin/settings/class-settings.php:438
+#: includes/admin/settings/class-settings.php:512
 #, php-format
 msgid "Form #%d"
 msgstr "Formular #%d"
 
-#: includes/admin/settings/class-settings.php:560
+#: includes/admin/settings/class-settings.php:561
 msgid "Untitled form"
 msgstr "Formular fără titlu"
 
@@ -2034,7 +2034,7 @@ msgstr "Nesetat"
 msgid "Action Scheduler available"
 msgstr "Planificatorul de acțiuni disponibil"
 
-#: includes/health/class-sitehealth.php:305 src/backend-settings.php:672
+#: includes/health/class-sitehealth.php:305 src/backend-settings.php:682
 msgid "Use Action Scheduler"
 msgstr "Utilizează Planificatorul de acțiuni"
 
@@ -2056,16 +2056,16 @@ msgstr "Sarcini în fundal eșuate în ultimele 7 zile"
 msgid "Last export: %s"
 msgstr "Ultimul export: %s"
 
-#: includes/privacy/class-eraser.php:177 includes/privacy/class-exporter.php:77
+#: includes/privacy/class-eraser.php:199 includes/privacy/class-exporter.php:77
 msgid "NewsMAN newsletter subscription"
 msgstr "Abonarea la newsletter-ul NewsMAN"
 
-#: includes/privacy/class-eraser.php:211
+#: includes/privacy/class-eraser.php:233
 msgid "The email address was anonymised in the NewsMAN list."
 msgstr "Adresa de email a fost anonimizată în lista NewsMAN."
 
 #. translators: %s: Error message
-#: includes/privacy/class-eraser.php:219
+#: includes/privacy/class-eraser.php:241
 #, php-format
 msgid ""
 "NewsMAN could not anonymise the email address: %s. Erase the personal data "
@@ -2075,7 +2075,7 @@ msgstr ""
 "caracter personal mai târziu."
 
 #. translators: 1: Phone number, 2: Error message
-#: includes/privacy/class-eraser.php:239
+#: includes/privacy/class-eraser.php:261
 #, php-format
 msgid ""
 "NewsMAN could not unsubscribe the phone number %1$s: %2$s. Erase the "
@@ -2085,7 +2085,7 @@ msgstr ""
 "datele cu caracter personal mai târziu."
 
 #. translators: %d: Number of phone numbers
-#: includes/privacy/class-eraser.php:251
+#: includes/privacy/class-eraser.php:273
 #, php-format
 msgid "%d phone number was unsubscribed from the NewsMAN SMS list."
 msgid_plural "%d phone numbers were unsubscribed from the NewsMAN SMS list."
@@ -2094,13 +2094,13 @@ msgstr[1] "%d numere de telefon au fost dezabonate de la lista SMS NewsMAN."
 msgstr[2] "%d de numere de telefon au fost dezabonate de la lista SMS NewsMAN."
 
 #. translators: 1: Email
-#: includes/privacy/class-eraser.php:439
+#: includes/privacy/class-eraser.php:471 includes/privacy/class-eraser.php:523
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN list"
 msgstr "Ștergerea datelor cu caracter personal: %s nu este pe lista NewsMAN"
 
 #. translators: 1: Phone number
-#: includes/privacy/class-eraser.php:490
+#: includes/privacy/class-eraser.php:574
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN SMS list"
 msgstr ""
@@ -2216,7 +2216,7 @@ msgstr ""
 "păstrează în spațiul de stocare al browserului evenimentele care nu au fost "
 "încă trimise."
 
-#: includes/privacy/class-exporter.php:293
+#: includes/privacy/class-exporter.php:294
 msgid ""
 "When you ask us to erase your personal data, or when your account is "
 "deleted, NewsMAN replaces your email address in our NewsMAN lists with an "
@@ -2227,17 +2227,30 @@ msgstr ""
 "NewsMAN cu una anonimă și dezabonează numerele tale de telefon de la listele "
 "noastre SMS NewsMAN."
 
+#: includes/privacy/class-exporter.php:295
+msgid ""
+"When you ask us to erase your personal data, NewsMAN replaces your email "
+"address in our NewsMAN lists with an anonymous one. When your account is "
+"deleted, we unsubscribe your email address from our NewsMAN lists. In both "
+"cases we unsubscribe your phone numbers from our NewsMAN SMS lists."
+msgstr ""
+"Când ne ceri să ștergem datele tale cu caracter personal, NewsMAN "
+"înlocuiește adresa ta de email din listele noastre NewsMAN cu una anonimă. "
+"Când contul tău este șters, dezabonăm adresa ta de email de la listele "
+"noastre NewsMAN. În ambele cazuri dezabonăm numerele tale de telefon de la "
+"listele noastre SMS NewsMAN."
+
 #. translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link
-#: includes/privacy/class-exporter.php:296
+#: includes/privacy/class-exporter.php:298
 #, php-format
 msgid "How NewsMAN processes personal data: %1$s and %2$s."
 msgstr "Cum prelucrează NewsMAN datele cu caracter personal: %1$s și %2$s."
 
-#: includes/privacy/class-exporter.php:297
+#: includes/privacy/class-exporter.php:299
 msgid "NewsMAN privacy policy"
 msgstr "Politica de confidențialitate NewsMAN"
 
-#: includes/privacy/class-exporter.php:298
+#: includes/privacy/class-exporter.php:300
 msgid "NewsMAN cookie policy"
 msgstr "Politica de cookie-uri NewsMAN"
 
@@ -2654,7 +2667,7 @@ msgstr "Salvează"
 msgid "Invalid credentials!"
 msgstr "Credențiale invalide!"
 
-#: src/backend-remarketing.php:68 src/backend-settings.php:310
+#: src/backend-remarketing.php:68 src/backend-settings.php:320
 #: src/backend-sms.php:273 src/backend-sms.php:300 src/backend-sms.php:327
 msgid "Enable"
 msgstr "Permite"
@@ -2777,7 +2790,7 @@ msgstr ""
 "Selectați atributele clienților (din comenzi) pe care să le includeți în "
 "datele de remarketing."
 
-#: src/backend-remarketing.php:212 src/backend-settings.php:704
+#: src/backend-remarketing.php:212 src/backend-settings.php:714
 #: src/backend-sms.php:397 src/backend-sync.php:126
 msgid "Save Changes"
 msgstr "Salvați modificările"
@@ -2901,33 +2914,47 @@ msgstr ""
 "manager\">newsman.app</a> > Formulare."
 
 #: src/backend-settings.php:235
+msgid "Anonymise in NewsMAN when users are deleted"
+msgstr "Anonimizează în NewsMAN când utilizatorii sunt șterși"
+
+#: src/backend-settings.php:240
+msgid ""
+"When a user is deleted, the email address is anonymised in the NewsMAN list. "
+"When this is off, the email address is unsubscribed instead. Tools > Erase "
+"Personal Data always anonymises."
+msgstr ""
+"Când un utilizator este șters, adresa de email este anonimizată în lista "
+"NewsMAN. Când opțiunea este dezactivată, adresa de email este dezabonată. "
+"Unelte > Șterge datele personale anonimizează întotdeauna."
+
+#: src/backend-settings.php:245
 msgid "Checkout Subscribe to Newsletter and SMS"
 msgstr "Finalizare comandă Abonează-te la newsletter și SMS"
 
-#: src/backend-settings.php:239
+#: src/backend-settings.php:249
 msgid "Enable Newsletter Checkbox"
 msgstr "Activează caseta de selectare pentru newsletter"
 
-#: src/backend-settings.php:244
+#: src/backend-settings.php:254
 msgid "Enable checkbox to subscribe to newsletter in checkout."
 msgstr ""
 "Activați caseta de selectare pentru abonare la newsletter la finalizarea "
 "comenzii."
 
-#: src/backend-settings.php:249
+#: src/backend-settings.php:259
 msgid "Newsletter Checkbox Label"
 msgstr "Eticheta casetei de selectare pentru newsletter"
 
-#: src/backend-settings.php:259
+#: src/backend-settings.php:269
 msgid "Is newsletter checkbox checked by default ?"
 msgstr "Caseta de selectare pentru newsletter este bifată în mod implicit?"
 
-#: src/backend-settings.php:268
+#: src/backend-settings.php:278
 msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr ""
 "Activează SMS-urile, sincronizează numerele de telefon cu lista ta de SMS-uri"
 
-#: src/backend-settings.php:273
+#: src/backend-settings.php:283
 msgid ""
 "Enable subscribe after checkout to SMS list with order billing telephone "
 "number."
@@ -2935,67 +2962,67 @@ msgstr ""
 "Activați abonarea după finalizarea comenzii la lista de SMS-uri cu numărul "
 "de telefon pentru facturarea comenzii."
 
-#: src/backend-settings.php:278
+#: src/backend-settings.php:288
 msgid "Enable Order Status Checkbox"
 msgstr "Activează caseta de selectare pentru starea comenzii"
 
-#: src/backend-settings.php:283
+#: src/backend-settings.php:293
 msgid "Enable checkbox to send SMS about order status in checkout."
 msgstr ""
 "Bifați caseta de selectare pentru a trimite SMS-uri despre starea comenzii "
 "la finalizarea comenzii."
 
-#: src/backend-settings.php:288
+#: src/backend-settings.php:298
 msgid "Order Status Checkbox Label"
 msgstr "Etichetă casetă de selectare pentru starea comenzii"
 
-#: src/backend-settings.php:298
+#: src/backend-settings.php:308
 msgid "Is order status checkbox checked by default ?"
 msgstr ""
 "Caseta de selectare pentru starea comenzii este bifată în mod implicit?"
 
-#: src/backend-settings.php:306
+#: src/backend-settings.php:316
 msgid "My Account Subscribe to Newsletter"
 msgstr "Contul meu Abonează-te la newsletter"
 
-#: src/backend-settings.php:315
+#: src/backend-settings.php:325
 msgid ""
 "Enable page and checkbox to subscribe to newsletter in customers account."
 msgstr ""
 "Activați pagina și bifați caseta de selectare pentru abonarea la newsletter "
 "în contul clientului."
 
-#: src/backend-settings.php:320
+#: src/backend-settings.php:330
 msgid "Page Menu Label"
 msgstr "Etichetă meniu pagină"
 
-#: src/backend-settings.php:326
+#: src/backend-settings.php:336
 msgid "The label on the link on the left side menu in customer account."
 msgstr "Eticheta de pe linkul din meniul din stânga din contul clientului."
 
-#: src/backend-settings.php:331
+#: src/backend-settings.php:341
 msgid "Page Title"
 msgstr "Titlul paginii"
 
-#: src/backend-settings.php:337
+#: src/backend-settings.php:347
 msgid "The title of subscribe to newsletter page in customer account."
 msgstr "Titlul paginii de abonare la newsletter din contul clientului."
 
-#: src/backend-settings.php:342
+#: src/backend-settings.php:352
 msgid "Checkbox Label"
 msgstr "Etichetă casetă de selectare"
 
-#: src/backend-settings.php:348
+#: src/backend-settings.php:358
 msgid "The label on subscribe to newsletter checkbox in customer account."
 msgstr ""
 "Eticheta de pe caseta de selectare a abonării la newsletter din contul "
 "clientului."
 
-#: src/backend-settings.php:358
+#: src/backend-settings.php:368
 msgid "Use Elementor Integration"
 msgstr "Foloseste Integrarea Elementor"
 
-#: src/backend-settings.php:363
+#: src/backend-settings.php:373
 msgid ""
 "When enabled, the Newsman section appears on Elementor Pro Form widgets and "
 "Atomic Forms in the editor, and submissions push the email plus marked field "
@@ -3008,12 +3035,12 @@ msgstr ""
 "pentru a elimina toate controalele Newsman din editor si gestionarea "
 "trimiterilor pentru Elementor."
 
-#: src/backend-settings.php:373 src/backend-settings.php:424
-#: src/backend-settings.php:480 src/backend-settings.php:532
+#: src/backend-settings.php:383 src/backend-settings.php:434
+#: src/backend-settings.php:490 src/backend-settings.php:542
 msgid "Export Subscribers from Form Submissions"
 msgstr "Exportă abonații din trimiterile de formular"
 
-#: src/backend-settings.php:378
+#: src/backend-settings.php:388
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from Elementor Pro form submissions (wp_e_submissions) instead of from "
@@ -3024,17 +3051,17 @@ msgstr ""
 "utilizatorii WordPress / comenzile WooCommerce. Alege formularul sursă mai "
 "jos."
 
-#: src/backend-settings.php:383 src/backend-settings.php:434
-#: src/backend-settings.php:493 src/backend-settings.php:542
+#: src/backend-settings.php:393 src/backend-settings.php:444
+#: src/backend-settings.php:503 src/backend-settings.php:552
 msgid "Source Form"
 msgstr "Formular sursă"
 
-#: src/backend-settings.php:387 src/backend-settings.php:438
-#: src/backend-settings.php:497 src/backend-settings.php:546
+#: src/backend-settings.php:397 src/backend-settings.php:448
+#: src/backend-settings.php:507 src/backend-settings.php:556
 msgid "— select a form —"
 msgstr "— selectează un formular —"
 
-#: src/backend-settings.php:395
+#: src/backend-settings.php:405
 msgid ""
 "No Elementor forms are marked as newsletter forms yet. Open a form in the "
 "editor and turn on both \"Send to Newsman\" and \"Newsletter form\" to make "
@@ -3044,7 +3071,7 @@ msgstr ""
 "Deschide un formular în editor și activează atât „Trimite la Newsman” cât și "
 "„Formular newsletter” pentru a-l face disponibil aici."
 
-#: src/backend-settings.php:397
+#: src/backend-settings.php:407
 msgid ""
 "Only one form per store is supported. The 8-char ID shown matches what "
 "appears in Elementor admin - Submissions - Form column."
@@ -3052,11 +3079,11 @@ msgstr ""
 "Este acceptat un singur formular per magazin. ID-ul de 8 caractere afișat "
 "corespunde cu cel din Elementor admin - Submissions - coloana Form."
 
-#: src/backend-settings.php:409
+#: src/backend-settings.php:419
 msgid "Use Contact Form 7 Integration"
 msgstr "Foloseste integrarea Contact Form 7"
 
-#: src/backend-settings.php:414
+#: src/backend-settings.php:424
 msgid ""
 "When enabled, the Newsman tab appears on Contact Form 7 forms in the editor "
 "(per-form list selection, email field, and properties), and submissions push "
@@ -3075,7 +3102,7 @@ msgstr ""
 "WordPress — instalati plugin-ul Flamingo pentru a persista trimiterile si "
 "pentru a activa exportul de abonati API v1 din formularele CF7."
 
-#: src/backend-settings.php:429
+#: src/backend-settings.php:439
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from Flamingo Inbound Messages of the selected Contact Form 7 form instead "
@@ -3085,7 +3112,7 @@ msgstr ""
 "din mesajele Inbound Flamingo ale formularului Contact Form 7 selectat, în "
 "loc de utilizatorii WordPress / comenzile WooCommerce."
 
-#: src/backend-settings.php:446
+#: src/backend-settings.php:456
 msgid ""
 "No Contact Form 7 forms are marked as newsletter forms yet. Open a CF7 form, "
 "go to the Newsman tab, and turn on both \"Send to Newsman\" and \"Newsletter "
@@ -3095,7 +3122,7 @@ msgstr ""
 "Deschide un formular CF7, mergi la tab-ul Newsman și activează atât „Trimite "
 "la Newsman” cât și „Formular newsletter” pentru a-l face disponibil aici."
 
-#: src/backend-settings.php:448
+#: src/backend-settings.php:458
 msgid ""
 "Only one form per store is supported. Flamingo persists every submission of "
 "the selected form to the flamingo_inbound channel matching the form slug."
@@ -3104,11 +3131,11 @@ msgstr ""
 "trimitere a formularului selectat în canalul flamingo_inbound care "
 "corespunde slug-ului formularului."
 
-#: src/backend-settings.php:460
+#: src/backend-settings.php:470
 msgid "Use WPForms Integration"
 msgstr "Foloseste integrarea WPForms"
 
-#: src/backend-settings.php:465
+#: src/backend-settings.php:475
 msgid ""
 "When enabled, a Newsman section appears in the Settings panel of every "
 "WPForms form (per-form list selection, email field, and properties), and "
@@ -3123,7 +3150,7 @@ msgstr ""
 "controalele Newsman din builder si pentru a opri redirectionarea "
 "trimiterilor pentru WPForms."
 
-#: src/backend-settings.php:485
+#: src/backend-settings.php:495
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from WPForms entries of the selected form instead of from WordPress users / "
@@ -3133,7 +3160,7 @@ msgstr ""
 "abonații din intrările WPForms ale formularului selectat în loc de "
 "utilizatorii WordPress / comenzile WooCommerce."
 
-#: src/backend-settings.php:487
+#: src/backend-settings.php:497
 msgid ""
 "WPForms Lite does not store form entries — only WPForms Pro persists them to "
 "the database. Without entries, this export source will return no rows. "
@@ -3144,7 +3171,7 @@ msgstr ""
 "returna niciun rând. Instalează sau actualizează la WPForms Pro pentru a "
 "folosi această funcție."
 
-#: src/backend-settings.php:505
+#: src/backend-settings.php:515
 msgid ""
 "No WPForms forms are marked as newsletter forms yet. Open a WPForms form, go "
 "to Settings - Newsman, and turn on both \"Send to Newsman\" and \"Newsletter "
@@ -3155,7 +3182,7 @@ msgstr ""
 "atât „Send to Newsman\" cât și „Newsletter form\" pentru a-l face disponibil "
 "aici."
 
-#: src/backend-settings.php:507
+#: src/backend-settings.php:517
 msgid ""
 "Only one form per store is supported. WPForms persists every submission of "
 "the selected form to wp_wpforms_entries (Pro only)."
@@ -3163,11 +3190,11 @@ msgstr ""
 "Este suportat doar un singur formular per magazin. WPForms persistă fiecare "
 "trimitere a formularului selectat în wp_wpforms_entries (doar Pro)."
 
-#: src/backend-settings.php:518
+#: src/backend-settings.php:528
 msgid "Use Gravity Forms Integration"
 msgstr "Folosește integrarea Gravity Forms"
 
-#: src/backend-settings.php:523
+#: src/backend-settings.php:533
 msgid ""
 "When enabled, a \"Newsman\" sub-page appears under each form's Form Settings "
 "menu (per-form list, segment, email field, and properties), and submissions "
@@ -3181,7 +3208,7 @@ msgstr ""
 "Newsman selectată. Dezactivează pentru a elimina subpagina și a opri "
 "redirecționarea pentru Gravity Forms."
 
-#: src/backend-settings.php:537
+#: src/backend-settings.php:547
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from Gravity Forms entries of the selected form instead of from WordPress "
@@ -3191,7 +3218,7 @@ msgstr ""
 "din intrările Gravity Forms ale formularului selectat în loc deutilizatorii "
 "WordPress / comenzile WooCommerce."
 
-#: src/backend-settings.php:554
+#: src/backend-settings.php:564
 msgid ""
 "No Gravity Forms forms are marked as newsletter forms yet. Open a Gravity "
 "Forms form, go to Form Settings - Newsman, and turn on both \"Send to "
@@ -3202,7 +3229,7 @@ msgstr ""
 "Newsman și activați atât „Send to Newsman\" cât și „Newsletter form\" pentru "
 "a-l face disponibil aici."
 
-#: src/backend-settings.php:556
+#: src/backend-settings.php:566
 msgid ""
 "Only one form per store is supported. Gravity Forms persists every "
 "submission of the selected form to wp_gf_entry / wp_gf_entry_meta."
@@ -3210,19 +3237,19 @@ msgstr ""
 "Este suportat doar un singur formular per magazin. Gravity Forms persistă "
 "fiecare trimitere a formularului selectat în wp_gf_entry / wp_gf_entry_meta."
 
-#: src/backend-settings.php:566
+#: src/backend-settings.php:576
 msgid "Logging level"
 msgstr "Nivel Jurnalizare "
 
-#: src/backend-settings.php:575
+#: src/backend-settings.php:585
 msgid "No Logging"
 msgstr "Fara Jurnalizare"
 
-#: src/backend-settings.php:619
+#: src/backend-settings.php:629
 msgid "The log is in WooCommerce > Status > Logs, source newsman."
 msgstr "Logul este în WooCommerce > Stare > Jurnale, sursa newsman."
 
-#: src/backend-settings.php:621
+#: src/backend-settings.php:631
 msgid ""
 "Without WooCommerce, the log is written to the PHP error log of the server, "
 "or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts "
@@ -3232,15 +3259,15 @@ msgstr ""
 "în wp-content/debug.log când WP_DEBUG_LOG este activat. Fiecare linie începe "
 "cu [NewsMAN]."
 
-#: src/backend-settings.php:627
+#: src/backend-settings.php:637
 msgid "API Timeout"
 msgstr "Expirare API"
 
-#: src/backend-settings.php:639
+#: src/backend-settings.php:649
 msgid "Enable Test User IP"
 msgstr "Activează adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:644
+#: src/backend-settings.php:654
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -3248,15 +3275,15 @@ msgstr ""
 "Atenție! Vă rugăm să nu utilizați această adresă IP în producție, deoarece "
 "este utilizată de endpoint-ul API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:649
+#: src/backend-settings.php:659
 msgid "Test User IP address"
 msgstr "Adresa IP a utilizatorului de testare"
 
-#: src/backend-settings.php:660
+#: src/backend-settings.php:670
 msgid "Plugin Loaded Priority"
 msgstr "Prioritate încărcare plugin"
 
-#: src/backend-settings.php:666
+#: src/backend-settings.php:676
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -3265,17 +3292,17 @@ msgstr ""
 "plugins_loaded și prioritatea este setată în această configurație. Implicit "
 "este 20."
 
-#: src/backend-settings.php:677
+#: src/backend-settings.php:687
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 "Utilizați pluginul de planificare a acțiunilor pentru unele dintre acțiunile "
 "API-ului NewsMAN."
 
-#: src/backend-settings.php:682
+#: src/backend-settings.php:692
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Folosește Planificatorul de acțiuni pentru Abonare"
 
-#: src/backend-settings.php:687
+#: src/backend-settings.php:697
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -3283,11 +3310,11 @@ msgstr ""
 "În magazinul virtual, folosiți planificatorul de acțiuni pentru abonarea la "
 "listele de e-mail și SMS."
 
-#: src/backend-settings.php:692
+#: src/backend-settings.php:702
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Folosește Planificatorul de Acțiuni pentru Dezabonare"
 
-#: src/backend-settings.php:697
+#: src/backend-settings.php:707
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""

@@ -132,6 +132,8 @@ Go to **NewsMAN > Settings** to configure the plugin behavior.
 
 - **Confirmation email Form ID** - If you chose Double Opt-in above, enter the Form ID from your Newsman account. This tells Newsman which confirmation email template to send. You can find this ID in your Newsman dashboard under Forms. It is used by the checkout checkbox, the My Account newsletter page, the **NewsMAN Subscribe Form** block and the integration forms marked as **Newsletter form** (a block or a form can set its own ID instead). Use only an ID that exists in your Newsman account: Newsman rejects a subscription with an unknown form ID, so no confirmation email is sent.
 
+- **Anonymise in NewsMAN when users are deleted** - On by default. When a user is deleted, the email address is anonymised in the NewsMAN list. Turn it off to unsubscribe the email address instead, for example when a cleanup plugin or script deletes users and you want to keep them in NewsMAN. **Tools > Erase Personal Data** always anonymises. See [Personal Data (GDPR)](#personal-data-gdpr).
+
 ### Checkout Options (WooCommerce only)
 
 These settings add a newsletter checkbox to your store's checkout page, so customers can subscribe while placing an order.
@@ -703,13 +705,13 @@ If no form export is enabled and the legacy WC/WP export options under **NewsMAN
 
 ## Personal Data (GDPR)
 
-When a customer asks you to delete their personal data, or you delete their account, the plugin also anonymises them in the NewsMAN list of the site. This works when the plugin is connected to NewsMAN (API credentials and a list set).
+When a customer asks you to delete their personal data, or you delete their account, the plugin also anonymises them in the NewsMAN list of the site (for deleted accounts, see the **Anonymise in NewsMAN when users are deleted** setting below). This works when the plugin is connected to NewsMAN (API credentials and a list set).
 
 - **Tools > Erase Personal Data** - The **NewsMAN newsletter subscription** eraser is added to the WordPress (and WooCommerce) erasers. When you erase the personal data of a request, the email address is anonymised in the NewsMAN list right away, whatever its status there (subscribed, unsubscribed or not confirmed), and the request shows "The email address was anonymised in the NewsMAN list." A few seconds later NewsMAN replaces the email address with an anonymous one, and the contact stays unsubscribed. It also works for people without an account, for example a guest customer or someone who subscribed through a form. If NewsMAN cannot be reached, the request shows the error and you can erase the personal data again later.
 
-- **Deleting a user** - When a user is deleted (**Users > Delete**, bulk delete, `wp user delete`, the WooCommerce REST API), the email address is anonymised in the NewsMAN list. With **Use Action Scheduler** on (Developer Settings), this runs in the background, so deleting many users at once stays fast; otherwise it runs right away. On a multisite network, a user deleted from the network is anonymised in the list of every site they belonged to, and a user removed from one site is anonymised in the list of that site, even when another site uses the same NewsMAN list.
+- **Deleting a user** - When a user is deleted (**Users > Delete**, bulk delete, `wp user delete`, the WooCommerce REST API, another plugin that deletes users), the email address is anonymised in the NewsMAN list. With **Anonymise in NewsMAN when users are deleted** off (**Settings > Subscribe to Newsletter**), the email address is unsubscribed instead. With **Use Action Scheduler** on (Developer Settings), this runs in the background, so deleting many users at once stays fast; otherwise it runs right away. On a multisite network, only deleting the account from the network sends it (**Network Admin > Users > Delete**, `wp user delete --network`), to the list of every site the user belonged to.
 
-- **Nothing is sent to NewsMAN** when users are deleted because a whole site of a multisite network is deleted (**Network Admin > Sites > Delete**, `wp site delete`), or because WooCommerce deletes inactive accounts (**WooCommerce > Settings > Accounts & Privacy > Retain inactive accounts**). Nobody asked to be forgotten in these cases. To remove those people from NewsMAN too, do it in your NewsMAN account.
+- **Nothing is sent to NewsMAN** when users are deleted because a whole site of a multisite network is deleted (**Network Admin > Sites > Delete**, `wp site delete`), because WooCommerce deletes inactive accounts (**WooCommerce > Settings > Accounts & Privacy > Retain inactive accounts**), or when a user is only removed from a site of a multisite network (**Users > Remove**, or a plugin that removes users from a site): the account still exists. Nobody asked to be forgotten in these cases. To remove those people from NewsMAN too, do it in your NewsMAN account.
 
 - **Unsubscribing is not deleting** - An unsubscribe (the My Account Newsletter tab, a form, the unsubscribe link of a NewsMAN email) only unsubscribes, as before.
 

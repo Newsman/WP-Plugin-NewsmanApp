@@ -290,7 +290,9 @@ class Exporter {
 			'<p>' . esc_html__( 'When you subscribe to our newsletter (a subscription form, the checkout or your account page), we send NewsMAN your email address, your name and, when you give it, your phone number, with the date and the IP address of the request.', 'newsman' ) . '</p>',
 			'<p>' . esc_html__( 'When you place an order, we may send NewsMAN the order details (products, quantities, prices and the order status) with your email address, name and phone number, to measure our campaigns and to send you SMS messages about your order.', 'newsman' ) . '</p>',
 			'<p>' . esc_html__( 'The NewsMAN tracking script on our pages records the pages and products you view, your cart and your purchases. It keeps a tracking identifier in cookies whose names start with _nzm and keeps events that were not sent yet in the storage of your browser.', 'newsman' ) . '</p>',
-			'<p>' . esc_html__( 'When you ask us to erase your personal data, or when your account is deleted, NewsMAN replaces your email address in our NewsMAN lists with an anonymous one and unsubscribes your phone numbers from our NewsMAN SMS lists.', 'newsman' ) . '</p>',
+			'<p>' . ( $this->config->is_anonymise_on_delete( get_current_blog_id() )
+				? esc_html__( 'When you ask us to erase your personal data, or when your account is deleted, NewsMAN replaces your email address in our NewsMAN lists with an anonymous one and unsubscribes your phone numbers from our NewsMAN SMS lists.', 'newsman' )
+				: esc_html__( 'When you ask us to erase your personal data, NewsMAN replaces your email address in our NewsMAN lists with an anonymous one. When your account is deleted, we unsubscribe your email address from our NewsMAN lists. In both cases we unsubscribe your phone numbers from our NewsMAN SMS lists.', 'newsman' ) ) . '</p>',
 			'<p>' . sprintf(
 				/* translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link */
 				esc_html__( 'How NewsMAN processes personal data: %1$s and %2$s.', 'newsman' ),

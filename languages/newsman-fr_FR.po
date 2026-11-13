@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-13T14:11:51+00:00\n"
+"POT-Creation-Date: 2026-11-13T19:30:11+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -97,7 +97,7 @@ msgstr "Envoyer un SMS avec SamedayCourier AWB"
 
 #: includes/admin/settings/class-oauth.php:99
 #: includes/admin/settings/class-remarketing.php:90
-#: includes/admin/settings/class-settings.php:102
+#: includes/admin/settings/class-settings.php:103
 #: includes/admin/settings/class-sms.php:153
 #: includes/admin/settings/class-sync.php:105
 msgid "Unauthorized user"
@@ -135,7 +135,7 @@ msgid "Remarketing JavaScript was updated successfully."
 msgstr "Le JavaScript de remarketing a été mis à jour avec succès."
 
 #: includes/admin/settings/class-remarketing.php:110
-#: includes/admin/settings/class-settings.php:167
+#: includes/admin/settings/class-settings.php:168
 #: includes/admin/settings/class-sync.php:196
 msgid "Options saved."
 msgstr "Options enregistrées."
@@ -146,30 +146,30 @@ msgid "Invalid Credentials. Please configure them in Settings tab."
 msgstr ""
 "Identifiants invalides. Veuillez les configurer dans l'onglet Paramètres."
 
-#: includes/admin/settings/class-settings.php:171
-#: includes/admin/settings/class-settings.php:185
+#: includes/admin/settings/class-settings.php:172
+#: includes/admin/settings/class-settings.php:186
 #: includes/admin/settings/class-sync.php:200
 msgid "Invalid Credentials"
 msgstr "Identifiants invalides"
 
-#: includes/admin/settings/class-settings.php:206 src/backend-settings.php:354
+#: includes/admin/settings/class-settings.php:207 src/backend-settings.php:364
 msgid "Elementor"
 msgstr "Elementor"
 
-#: includes/admin/settings/class-settings.php:210 src/backend-settings.php:405
+#: includes/admin/settings/class-settings.php:211 src/backend-settings.php:415
 msgid "Contact Form 7"
 msgstr "Contact Form 7"
 
-#: includes/admin/settings/class-settings.php:214 src/backend-settings.php:456
+#: includes/admin/settings/class-settings.php:215 src/backend-settings.php:466
 msgid "WPForms"
 msgstr "WPForms"
 
-#: includes/admin/settings/class-settings.php:218 src/backend-settings.php:514
+#: includes/admin/settings/class-settings.php:219 src/backend-settings.php:524
 msgid "Gravity Forms"
 msgstr "Gravity Forms"
 
 #. translators: %s: comma-separated list of integration names (e.g. "Elementor, Contact Form 7").
-#: includes/admin/settings/class-settings.php:229
+#: includes/admin/settings/class-settings.php:230
 #, php-format
 msgid ""
 "More than one \"Export Subscribers from Form Submissions\" is enabled (%s). "
@@ -182,24 +182,24 @@ msgstr ""
 "Contact Form 7 - WPForms - Gravity Forms) sera utilisée par subscriber."
 "list ; les autres sont ignorées. Désactivez-les toutes sauf une."
 
-#: includes/admin/settings/class-settings.php:269
-#: includes/admin/settings/class-settings.php:343
-#: includes/admin/settings/class-settings.php:415
-#: includes/admin/settings/class-settings.php:494
+#: includes/admin/settings/class-settings.php:270
+#: includes/admin/settings/class-settings.php:344
+#: includes/admin/settings/class-settings.php:416
+#: includes/admin/settings/class-settings.php:495
 msgid "Trash"
 msgstr "Corbeille"
 
 #. translators: %d: CF7 form post id.
 #. translators: %d: WPForms form post id.
 #. translators: %d: Gravity Forms form id.
-#: includes/admin/settings/class-settings.php:284
-#: includes/admin/settings/class-settings.php:437
-#: includes/admin/settings/class-settings.php:511
+#: includes/admin/settings/class-settings.php:285
+#: includes/admin/settings/class-settings.php:438
+#: includes/admin/settings/class-settings.php:512
 #, php-format
 msgid "Form #%d"
 msgstr "Formulaire n° %d"
 
-#: includes/admin/settings/class-settings.php:560
+#: includes/admin/settings/class-settings.php:561
 msgid "Untitled form"
 msgstr "Formulaire sans titre"
 
@@ -2041,7 +2041,7 @@ msgstr "Non défini"
 msgid "Action Scheduler available"
 msgstr "Action Scheduler disponible"
 
-#: includes/health/class-sitehealth.php:305 src/backend-settings.php:672
+#: includes/health/class-sitehealth.php:305 src/backend-settings.php:682
 msgid "Use Action Scheduler"
 msgstr "Utiliser Action Scheduler"
 
@@ -2063,16 +2063,16 @@ msgstr "Tâches en arrière-plan en échec ces 7 derniers jours"
 msgid "Last export: %s"
 msgstr "Dernier export : %s"
 
-#: includes/privacy/class-eraser.php:177 includes/privacy/class-exporter.php:77
+#: includes/privacy/class-eraser.php:199 includes/privacy/class-exporter.php:77
 msgid "NewsMAN newsletter subscription"
 msgstr "Abonnement à la newsletter NewsMAN"
 
-#: includes/privacy/class-eraser.php:211
+#: includes/privacy/class-eraser.php:233
 msgid "The email address was anonymised in the NewsMAN list."
 msgstr "L'adresse e-mail a été anonymisée dans la liste NewsMAN."
 
 #. translators: %s: Error message
-#: includes/privacy/class-eraser.php:219
+#: includes/privacy/class-eraser.php:241
 #, php-format
 msgid ""
 "NewsMAN could not anonymise the email address: %s. Erase the personal data "
@@ -2082,7 +2082,7 @@ msgstr ""
 "données personnelles plus tard."
 
 #. translators: 1: Phone number, 2: Error message
-#: includes/privacy/class-eraser.php:239
+#: includes/privacy/class-eraser.php:261
 #, php-format
 msgid ""
 "NewsMAN could not unsubscribe the phone number %1$s: %2$s. Erase the "
@@ -2092,7 +2092,7 @@ msgstr ""
 "nouveau les données personnelles plus tard."
 
 #. translators: %d: Number of phone numbers
-#: includes/privacy/class-eraser.php:251
+#: includes/privacy/class-eraser.php:273
 #, php-format
 msgid "%d phone number was unsubscribed from the NewsMAN SMS list."
 msgid_plural "%d phone numbers were unsubscribed from the NewsMAN SMS list."
@@ -2100,14 +2100,14 @@ msgstr[0] "%d numéro de téléphone a été désabonné de la liste SMS NewsMAN
 msgstr[1] "%d numéros de téléphone ont été désabonnés de la liste SMS NewsMAN."
 
 #. translators: 1: Email
-#: includes/privacy/class-eraser.php:439
+#: includes/privacy/class-eraser.php:471 includes/privacy/class-eraser.php:523
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN list"
 msgstr ""
 "Effacement des données personnelles : %s n'est pas dans la liste NewsMAN"
 
 #. translators: 1: Phone number
-#: includes/privacy/class-eraser.php:490
+#: includes/privacy/class-eraser.php:574
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN SMS list"
 msgstr ""
@@ -2222,7 +2222,7 @@ msgstr ""
 "de suivi dans des cookies dont le nom commence par _nzm et conserve dans le "
 "stockage de votre navigateur les événements qui n'ont pas encore été envoyés."
 
-#: includes/privacy/class-exporter.php:293
+#: includes/privacy/class-exporter.php:294
 msgid ""
 "When you ask us to erase your personal data, or when your account is "
 "deleted, NewsMAN replaces your email address in our NewsMAN lists with an "
@@ -2233,17 +2233,30 @@ msgstr ""
 "listes NewsMAN par une adresse anonyme et désabonne vos numéros de téléphone "
 "de nos listes SMS NewsMAN."
 
+#: includes/privacy/class-exporter.php:295
+msgid ""
+"When you ask us to erase your personal data, NewsMAN replaces your email "
+"address in our NewsMAN lists with an anonymous one. When your account is "
+"deleted, we unsubscribe your email address from our NewsMAN lists. In both "
+"cases we unsubscribe your phone numbers from our NewsMAN SMS lists."
+msgstr ""
+"Lorsque vous nous demandez d'effacer vos données personnelles, NewsMAN "
+"remplace votre adresse e-mail dans nos listes NewsMAN par une adresse "
+"anonyme. Lorsque votre compte est supprimé, nous désabonnons votre adresse e-"
+"mail de nos listes NewsMAN. Dans les deux cas, nous désabonnons vos numéros "
+"de téléphone de nos listes SMS NewsMAN."
+
 #. translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link
-#: includes/privacy/class-exporter.php:296
+#: includes/privacy/class-exporter.php:298
 #, php-format
 msgid "How NewsMAN processes personal data: %1$s and %2$s."
 msgstr "Comment NewsMAN traite les données personnelles : %1$s et %2$s."
 
-#: includes/privacy/class-exporter.php:297
+#: includes/privacy/class-exporter.php:299
 msgid "NewsMAN privacy policy"
 msgstr "Politique de confidentialité de NewsMAN"
 
-#: includes/privacy/class-exporter.php:298
+#: includes/privacy/class-exporter.php:300
 msgid "NewsMAN cookie policy"
 msgstr "Politique relative aux cookies de NewsMAN"
 
@@ -2664,7 +2677,7 @@ msgstr "Enregistrer"
 msgid "Invalid credentials!"
 msgstr "Identifiants invalides !"
 
-#: src/backend-remarketing.php:68 src/backend-settings.php:310
+#: src/backend-remarketing.php:68 src/backend-settings.php:320
 #: src/backend-sms.php:273 src/backend-sms.php:300 src/backend-sms.php:327
 msgid "Enable"
 msgstr "Activer"
@@ -2790,7 +2803,7 @@ msgstr ""
 "Sélectionnez les attributs client (des commandes) à inclure dans vos données "
 "de remarketing."
 
-#: src/backend-remarketing.php:212 src/backend-settings.php:704
+#: src/backend-remarketing.php:212 src/backend-settings.php:714
 #: src/backend-sms.php:397 src/backend-sync.php:126
 msgid "Save Changes"
 msgstr "Enregistrer les modifications"
@@ -2913,32 +2926,47 @@ msgstr ""
 "newsman.app/manager\">newsman.app</a> &gt; Formulaires."
 
 #: src/backend-settings.php:235
+msgid "Anonymise in NewsMAN when users are deleted"
+msgstr "Anonymiser dans NewsMAN lorsque des utilisateurs sont supprimés"
+
+#: src/backend-settings.php:240
+msgid ""
+"When a user is deleted, the email address is anonymised in the NewsMAN list. "
+"When this is off, the email address is unsubscribed instead. Tools > Erase "
+"Personal Data always anonymises."
+msgstr ""
+"Lorsqu'un utilisateur est supprimé, l'adresse e-mail est anonymisée dans la "
+"liste NewsMAN. Lorsque cette option est désactivée, l'adresse e-mail est "
+"désabonnée à la place. Outils > Effacer les données personnelles anonymise "
+"toujours."
+
+#: src/backend-settings.php:245
 msgid "Checkout Subscribe to Newsletter and SMS"
 msgstr "Abonnement à la newsletter et SMS lors du paiement"
 
-#: src/backend-settings.php:239
+#: src/backend-settings.php:249
 msgid "Enable Newsletter Checkbox"
 msgstr "Activer la case à cocher de la newsletter"
 
-#: src/backend-settings.php:244
+#: src/backend-settings.php:254
 msgid "Enable checkbox to subscribe to newsletter in checkout."
 msgstr ""
 "Activer la case à cocher pour s'inscrire à la newsletter lors du paiement."
 
-#: src/backend-settings.php:249
+#: src/backend-settings.php:259
 msgid "Newsletter Checkbox Label"
 msgstr "Libellé de la case à cocher de la newsletter"
 
-#: src/backend-settings.php:259
+#: src/backend-settings.php:269
 msgid "Is newsletter checkbox checked by default ?"
 msgstr "La case à cocher de la newsletter est-elle cochée par défaut ?"
 
-#: src/backend-settings.php:268
+#: src/backend-settings.php:278
 msgid "Enable SMS, sync phone numbers to your SMS list"
 msgstr ""
 "Activer les SMS, synchroniser les numéros de téléphone avec votre liste SMS"
 
-#: src/backend-settings.php:273
+#: src/backend-settings.php:283
 msgid ""
 "Enable subscribe after checkout to SMS list with order billing telephone "
 "number."
@@ -2946,67 +2974,67 @@ msgstr ""
 "Activer l'inscription après le paiement à la liste SMS avec le numéro de "
 "téléphone de facturation."
 
-#: src/backend-settings.php:278
+#: src/backend-settings.php:288
 msgid "Enable Order Status Checkbox"
 msgstr "Activer la case à cocher du statut de commande"
 
-#: src/backend-settings.php:283
+#: src/backend-settings.php:293
 msgid "Enable checkbox to send SMS about order status in checkout."
 msgstr ""
 "Activer la case à cocher pour envoyer un SMS sur le statut de la commande "
 "lors du paiement."
 
-#: src/backend-settings.php:288
+#: src/backend-settings.php:298
 msgid "Order Status Checkbox Label"
 msgstr "Libellé de la case à cocher du statut de commande"
 
-#: src/backend-settings.php:298
+#: src/backend-settings.php:308
 msgid "Is order status checkbox checked by default ?"
 msgstr "La case à cocher du statut de commande est-elle cochée par défaut ?"
 
-#: src/backend-settings.php:306
+#: src/backend-settings.php:316
 msgid "My Account Subscribe to Newsletter"
 msgstr "Mon compte - S'inscrire à la newsletter"
 
-#: src/backend-settings.php:315
+#: src/backend-settings.php:325
 msgid ""
 "Enable page and checkbox to subscribe to newsletter in customers account."
 msgstr ""
 "Activer la page et la case à cocher pour s'inscrire à la newsletter dans le "
 "compte client."
 
-#: src/backend-settings.php:320
+#: src/backend-settings.php:330
 msgid "Page Menu Label"
 msgstr "Libellé du menu de la page"
 
-#: src/backend-settings.php:326
+#: src/backend-settings.php:336
 msgid "The label on the link on the left side menu in customer account."
 msgstr "Le libellé du lien dans le menu de gauche du compte client."
 
-#: src/backend-settings.php:331
+#: src/backend-settings.php:341
 msgid "Page Title"
 msgstr "Titre de la page"
 
-#: src/backend-settings.php:337
+#: src/backend-settings.php:347
 msgid "The title of subscribe to newsletter page in customer account."
 msgstr ""
 "Le titre de la page d'inscription à la newsletter dans le compte client."
 
-#: src/backend-settings.php:342
+#: src/backend-settings.php:352
 msgid "Checkbox Label"
 msgstr "Libellé de la case à cocher"
 
-#: src/backend-settings.php:348
+#: src/backend-settings.php:358
 msgid "The label on subscribe to newsletter checkbox in customer account."
 msgstr ""
 "Le libellé de la case à cocher d'inscription à la newsletter dans le compte "
 "client."
 
-#: src/backend-settings.php:358
+#: src/backend-settings.php:368
 msgid "Use Elementor Integration"
 msgstr "Utiliser l'intégration Elementor"
 
-#: src/backend-settings.php:363
+#: src/backend-settings.php:373
 msgid ""
 "When enabled, the Newsman section appears on Elementor Pro Form widgets and "
 "Atomic Forms in the editor, and submissions push the email plus marked field "
@@ -3019,12 +3047,12 @@ msgstr ""
 "liste Newsman sélectionnée. Désactivez-la pour supprimer tous les contrôles "
 "d'éditeur Newsman et la prise en charge des soumissions pour Elementor."
 
-#: src/backend-settings.php:373 src/backend-settings.php:424
-#: src/backend-settings.php:480 src/backend-settings.php:532
+#: src/backend-settings.php:383 src/backend-settings.php:434
+#: src/backend-settings.php:490 src/backend-settings.php:542
 msgid "Export Subscribers from Form Submissions"
 msgstr "Exporter les abonnés depuis les soumissions de formulaire"
 
-#: src/backend-settings.php:378
+#: src/backend-settings.php:388
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from Elementor Pro form submissions (wp_e_submissions) instead of from "
@@ -3035,17 +3063,17 @@ msgstr ""
 "(wp_e_submissions) au lieu des utilisateurs WordPress / commandes "
 "WooCommerce. Choisissez le formulaire source ci-dessous."
 
-#: src/backend-settings.php:383 src/backend-settings.php:434
-#: src/backend-settings.php:493 src/backend-settings.php:542
+#: src/backend-settings.php:393 src/backend-settings.php:444
+#: src/backend-settings.php:503 src/backend-settings.php:552
 msgid "Source Form"
 msgstr "Formulaire source"
 
-#: src/backend-settings.php:387 src/backend-settings.php:438
-#: src/backend-settings.php:497 src/backend-settings.php:546
+#: src/backend-settings.php:397 src/backend-settings.php:448
+#: src/backend-settings.php:507 src/backend-settings.php:556
 msgid "— select a form —"
 msgstr "— sélectionner un formulaire —"
 
-#: src/backend-settings.php:395
+#: src/backend-settings.php:405
 msgid ""
 "No Elementor forms are marked as newsletter forms yet. Open a form in the "
 "editor and turn on both \"Send to Newsman\" and \"Newsletter form\" to make "
@@ -3055,7 +3083,7 @@ msgstr ""
 "Ouvrez un formulaire dans l'éditeur et activez à la fois « Envoyer à Newsman "
 "» et « Formulaire newsletter » pour le rendre disponible ici."
 
-#: src/backend-settings.php:397
+#: src/backend-settings.php:407
 msgid ""
 "Only one form per store is supported. The 8-char ID shown matches what "
 "appears in Elementor admin - Submissions - Form column."
@@ -3064,11 +3092,11 @@ msgstr ""
 "affiché correspond à celui apparaissant dans Elementor admin - Submissions - "
 "colonne Form."
 
-#: src/backend-settings.php:409
+#: src/backend-settings.php:419
 msgid "Use Contact Form 7 Integration"
 msgstr "Utiliser l'intégration Contact Form 7"
 
-#: src/backend-settings.php:414
+#: src/backend-settings.php:424
 msgid ""
 "When enabled, the Newsman tab appears on Contact Form 7 forms in the editor "
 "(per-form list selection, email field, and properties), and submissions push "
@@ -3088,7 +3116,7 @@ msgstr ""
 "Flamingo pour conserver les soumissions et activer l'export des abonnés de "
 "l'API v1 depuis les formulaires CF7."
 
-#: src/backend-settings.php:429
+#: src/backend-settings.php:439
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from Flamingo Inbound Messages of the selected Contact Form 7 form instead "
@@ -3098,7 +3126,7 @@ msgstr ""
 "abonnés depuis les messages Inbound Flamingo du formulaire Contact Form 7 "
 "sélectionné au lieu des utilisateurs WordPress / commandes WooCommerce."
 
-#: src/backend-settings.php:446
+#: src/backend-settings.php:456
 msgid ""
 "No Contact Form 7 forms are marked as newsletter forms yet. Open a CF7 form, "
 "go to the Newsman tab, and turn on both \"Send to Newsman\" and \"Newsletter "
@@ -3109,7 +3137,7 @@ msgstr ""
 "à la fois « Envoyer à Newsman » et « Formulaire newsletter » pour le rendre "
 "disponible ici."
 
-#: src/backend-settings.php:448
+#: src/backend-settings.php:458
 msgid ""
 "Only one form per store is supported. Flamingo persists every submission of "
 "the selected form to the flamingo_inbound channel matching the form slug."
@@ -3118,11 +3146,11 @@ msgstr ""
 "soumission du formulaire sélectionné dans le canal flamingo_inbound "
 "correspondant au slug du formulaire."
 
-#: src/backend-settings.php:460
+#: src/backend-settings.php:470
 msgid "Use WPForms Integration"
 msgstr "Utiliser l'intégration WPForms"
 
-#: src/backend-settings.php:465
+#: src/backend-settings.php:475
 msgid ""
 "When enabled, a Newsman section appears in the Settings panel of every "
 "WPForms form (per-form list selection, email field, and properties), and "
@@ -3137,7 +3165,7 @@ msgstr ""
 "tous les contrôles du constructeur Newsman et le traitement des soumissions "
 "pour WPForms."
 
-#: src/backend-settings.php:485
+#: src/backend-settings.php:495
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from WPForms entries of the selected form instead of from WordPress users / "
@@ -3147,7 +3175,7 @@ msgstr ""
 "récupère les abonnés à partir des entrées WPForms du formulaire sélectionné "
 "au lieu des utilisateurs WordPress / commandes WooCommerce."
 
-#: src/backend-settings.php:487
+#: src/backend-settings.php:497
 msgid ""
 "WPForms Lite does not store form entries — only WPForms Pro persists them to "
 "the database. Without entries, this export source will return no rows. "
@@ -3158,7 +3186,7 @@ msgstr ""
 "aucune ligne. Installez ou passez à WPForms Pro pour utiliser cette "
 "fonctionnalité."
 
-#: src/backend-settings.php:505
+#: src/backend-settings.php:515
 msgid ""
 "No WPForms forms are marked as newsletter forms yet. Open a WPForms form, go "
 "to Settings - Newsman, and turn on both \"Send to Newsman\" and \"Newsletter "
@@ -3169,7 +3197,7 @@ msgstr ""
 "la fois « Envoyer à Newsman » et « Formulaire de newsletter » pour qu'il "
 "soit disponible ici."
 
-#: src/backend-settings.php:507
+#: src/backend-settings.php:517
 msgid ""
 "Only one form per store is supported. WPForms persists every submission of "
 "the selected form to wp_wpforms_entries (Pro only)."
@@ -3178,11 +3206,11 @@ msgstr ""
 "chaqueenvoi du formulaire sélectionné dans wp_wpforms_entries (Pro "
 "uniquement)."
 
-#: src/backend-settings.php:518
+#: src/backend-settings.php:528
 msgid "Use Gravity Forms Integration"
 msgstr "Utiliser l'intégration Gravity Forms"
 
-#: src/backend-settings.php:523
+#: src/backend-settings.php:533
 msgid ""
 "When enabled, a \"Newsman\" sub-page appears under each form's Form Settings "
 "menu (per-form list, segment, email field, and properties), and submissions "
@@ -3196,7 +3224,7 @@ msgstr ""
 "marqués à la liste Newsman sélectionnée. Désactivez pour supprimer la sous-"
 "page et arrêter le transfert pour Gravity Forms."
 
-#: src/backend-settings.php:537
+#: src/backend-settings.php:547
 msgid ""
 "When enabled, the Newsman subscriber.list API v1 endpoint pulls subscribers "
 "from Gravity Forms entries of the selected form instead of from WordPress "
@@ -3206,7 +3234,7 @@ msgstr ""
 "récupère les abonnés à partir des entrées Gravity Forms du formulaire "
 "sélectionné au lieu des utilisateurs WordPress / commandes WooCommerce."
 
-#: src/backend-settings.php:554
+#: src/backend-settings.php:564
 msgid ""
 "No Gravity Forms forms are marked as newsletter forms yet. Open a Gravity "
 "Forms form, go to Form Settings - Newsman, and turn on both \"Send to "
@@ -3217,7 +3245,7 @@ msgstr ""
 "Newsman et activez à la fois « Send to Newsman » et « Newsletter form » pour "
 "qu'il soit disponible ici."
 
-#: src/backend-settings.php:556
+#: src/backend-settings.php:566
 msgid ""
 "Only one form per store is supported. Gravity Forms persists every "
 "submission of the selected form to wp_gf_entry / wp_gf_entry_meta."
@@ -3225,20 +3253,20 @@ msgstr ""
 "Un seul formulaire par boutique est pris en charge. Gravity Forms persiste "
 "chaque envoi du formulaire sélectionné dans wp_gf_entry / wp_gf_entry_meta."
 
-#: src/backend-settings.php:566
+#: src/backend-settings.php:576
 msgid "Logging level"
 msgstr "Niveau de journalisation"
 
-#: src/backend-settings.php:575
+#: src/backend-settings.php:585
 msgid "No Logging"
 msgstr "Pas de journalisation"
 
-#: src/backend-settings.php:619
+#: src/backend-settings.php:629
 msgid "The log is in WooCommerce > Status > Logs, source newsman."
 msgstr ""
 "Le journal se trouve dans WooCommerce > État > Journaux, source newsman."
 
-#: src/backend-settings.php:621
+#: src/backend-settings.php:631
 msgid ""
 "Without WooCommerce, the log is written to the PHP error log of the server, "
 "or to wp-content/debug.log when WP_DEBUG_LOG is enabled. Each line starts "
@@ -3248,15 +3276,15 @@ msgstr ""
 "serveur, ou dans wp-content/debug.log lorsque WP_DEBUG_LOG est activé. "
 "Chaque ligne commence par [NewsMAN]."
 
-#: src/backend-settings.php:627
+#: src/backend-settings.php:637
 msgid "API Timeout"
 msgstr "Délai d'expiration de l'API"
 
-#: src/backend-settings.php:639
+#: src/backend-settings.php:649
 msgid "Enable Test User IP"
 msgstr "Activer l'IP utilisateur de test"
 
-#: src/backend-settings.php:644
+#: src/backend-settings.php:654
 msgid ""
 "Warning! Please do not use this IP address in production because it is used "
 "by API endpoint subscriber.saveSubscribe."
@@ -3264,15 +3292,15 @@ msgstr ""
 "Attention ! Veuillez ne pas utiliser cette adresse IP en production car elle "
 "est utilisée par le point de terminaison API subscriber.saveSubscribe."
 
-#: src/backend-settings.php:649
+#: src/backend-settings.php:659
 msgid "Test User IP address"
 msgstr "Adresse IP de l'utilisateur de test"
 
-#: src/backend-settings.php:660
+#: src/backend-settings.php:670
 msgid "Plugin Loaded Priority"
 msgstr "Priorité de chargement du plugin"
 
-#: src/backend-settings.php:666
+#: src/backend-settings.php:676
 msgid ""
 "NewsMAN plugin Woo Commerce hooks are loaded with add_action plugins_loaded "
 "and priority set in this configuration. Default is 20."
@@ -3281,16 +3309,16 @@ msgstr ""
 "plugins_loaded et la priorité définie dans cette configuration. La valeur "
 "par défaut est 20."
 
-#: src/backend-settings.php:677
+#: src/backend-settings.php:687
 msgid "Use action scheduler plugin for some of NewsMAN API actions."
 msgstr ""
 "Utiliser le plugin Action Scheduler pour certaines actions de l'API NewsMAN."
 
-#: src/backend-settings.php:682
+#: src/backend-settings.php:692
 msgid "Use Action Scheduler for Subscribe"
 msgstr "Utiliser Action Scheduler pour l'inscription"
 
-#: src/backend-settings.php:687
+#: src/backend-settings.php:697
 msgid ""
 "On storefront use action scheduler for subscribe to email and SMS lists "
 "actions."
@@ -3298,11 +3326,11 @@ msgstr ""
 "En vitrine, utiliser Action Scheduler pour les actions d'inscription aux "
 "listes e-mail et SMS."
 
-#: src/backend-settings.php:692
+#: src/backend-settings.php:702
 msgid "Use Action Scheduler for Unsubscribe"
 msgstr "Utiliser Action Scheduler pour la désinscription"
 
-#: src/backend-settings.php:697
+#: src/backend-settings.php:707
 msgid ""
 "On storefront use action scheduler for unsubscribe from email lists action."
 msgstr ""

@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.42
+Stable tag: 3.7.43
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,13 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.43 =
+* New setting Anonymise in NewsMAN when users are deleted (Settings > Subscribe to Newsletter), on by default. Turn it off to unsubscribe the email address of deleted users instead of anonymising it, for example when a cleanup plugin deletes users. Tools > Erase Personal Data always anonymises.
+* Multisite: removing a user from a site (Users > Remove, or wp_delete_user() on a network) sends nothing to NewsMAN, the account still exists. Only deleting the account from the network anonymises it, in the list of every site the user belonged to.
+* The suggested privacy policy text follows the new setting.
+* Developers: new filter newsman_privacy_delete_mode; filter newsman_privacy_unsubscribe_context and action newsman_privacy_unsubscribed for the unsubscribe of deleted users.
+* Translations of the new texts in all languages; tests for the changes.
 
 = 3.7.42 =
 * Personal data (GDPR): Tools > Erase Personal Data and deleting a user now anonymise the email address in the NewsMAN list (NewsMAN replaces it with an anonymous address), whatever its status there. The phone numbers are still unsubscribed from the NewsMAN SMS list. Unsubscribing (My Account, forms) still only unsubscribes.
