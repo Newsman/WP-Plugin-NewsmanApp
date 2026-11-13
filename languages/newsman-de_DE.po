@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-11T17:27:09+00:00\n"
+"POT-Creation-Date: 2026-11-13T14:11:51+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -2076,26 +2076,26 @@ msgstr "Fehlgeschlagene Hintergrundaufgaben in den letzten 7 Tagen"
 msgid "Last export: %s"
 msgstr "Letzter Export: %s"
 
-#: includes/privacy/class-eraser.php:151 includes/privacy/class-exporter.php:77
+#: includes/privacy/class-eraser.php:177 includes/privacy/class-exporter.php:77
 msgid "NewsMAN newsletter subscription"
 msgstr "NewsMAN-Newsletter-Abonnement"
 
-#: includes/privacy/class-eraser.php:185
-msgid "The email address was unsubscribed from the NewsMAN list."
-msgstr "Die E-Mail-Adresse wurde von der NewsMAN-Liste abgemeldet."
+#: includes/privacy/class-eraser.php:211
+msgid "The email address was anonymised in the NewsMAN list."
+msgstr "Die E-Mail-Adresse wurde in der NewsMAN-Liste anonymisiert."
 
 #. translators: %s: Error message
-#: includes/privacy/class-eraser.php:193
+#: includes/privacy/class-eraser.php:219
 #, php-format
 msgid ""
-"NewsMAN could not unsubscribe the email address: %s. Erase the personal data "
+"NewsMAN could not anonymise the email address: %s. Erase the personal data "
 "again later."
 msgstr ""
-"NewsMAN konnte die E-Mail-Adresse nicht abmelden: %s. Löschen Sie die "
+"NewsMAN konnte die E-Mail-Adresse nicht anonymisieren: %s. Löschen Sie die "
 "personenbezogenen Daten später erneut."
 
 #. translators: 1: Phone number, 2: Error message
-#: includes/privacy/class-eraser.php:213
+#: includes/privacy/class-eraser.php:239
 #, php-format
 msgid ""
 "NewsMAN could not unsubscribe the phone number %1$s: %2$s. Erase the "
@@ -2105,7 +2105,7 @@ msgstr ""
 "personenbezogenen Daten später erneut."
 
 #. translators: %d: Number of phone numbers
-#: includes/privacy/class-eraser.php:225
+#: includes/privacy/class-eraser.php:251
 #, php-format
 msgid "%d phone number was unsubscribed from the NewsMAN SMS list."
 msgid_plural "%d phone numbers were unsubscribed from the NewsMAN SMS list."
@@ -2113,13 +2113,13 @@ msgstr[0] "%d Telefonnummer wurde von der NewsMAN-SMS-Liste abgemeldet."
 msgstr[1] "%d Telefonnummern wurden von der NewsMAN-SMS-Liste abgemeldet."
 
 #. translators: 1: Email
-#: includes/privacy/class-eraser.php:407
+#: includes/privacy/class-eraser.php:439
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN list"
 msgstr "Personenbezogene Daten löschen: %s ist nicht auf der NewsMAN-Liste"
 
 #. translators: 1: Phone number
-#: includes/privacy/class-eraser.php:458
+#: includes/privacy/class-eraser.php:490
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN SMS list"
 msgstr "Personenbezogene Daten löschen: %s ist nicht auf der NewsMAN-SMS-Liste"
@@ -2236,14 +2236,13 @@ msgstr ""
 #: includes/privacy/class-exporter.php:293
 msgid ""
 "When you ask us to erase your personal data, or when your account is "
-"deleted, your email address and phone numbers are unsubscribed from our "
-"NewsMAN lists. NewsMAN keeps them as unsubscribed, so you do not receive our "
-"messages again."
+"deleted, NewsMAN replaces your email address in our NewsMAN lists with an "
+"anonymous one and unsubscribes your phone numbers from our NewsMAN SMS lists."
 msgstr ""
 "Wenn Sie uns bitten, Ihre personenbezogenen Daten zu löschen, oder wenn Ihr "
-"Konto gelöscht wird, werden Ihre E-Mail-Adresse und Ihre Telefonnummern von "
-"unseren NewsMAN-Listen abgemeldet. NewsMAN behält sie als abgemeldet, damit "
-"Sie unsere Nachrichten nicht mehr erhalten."
+"Konto gelöscht wird, ersetzt NewsMAN Ihre E-Mail-Adresse in unseren NewsMAN-"
+"Listen durch eine anonyme und meldet Ihre Telefonnummern von unseren NewsMAN-"
+"SMS-Listen ab."
 
 #. translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link
 #: includes/privacy/class-exporter.php:296
@@ -2305,6 +2304,18 @@ msgstr "NewsMAN-Tracking-Skript"
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
 msgstr "Ungültige E-Mail-Adresse %1"
+
+#. translators: 1: Email
+#: includes/service/class-anonymiseemail.php:52
+#, php-format
+msgid "Try to anonymise email %s"
+msgstr "Versuch, E-Mail %s zu anonymisieren"
+
+#. translators: 1: Email
+#: includes/service/class-anonymiseemail.php:76
+#, php-format
+msgid "Anonymised email %s"
+msgstr "E-Mail %s anonymisiert"
 
 #. translators: 1: Count subscribers
 #: includes/service/class-exportcsvsubscribers.php:48
@@ -3836,6 +3847,28 @@ msgstr ""
 msgctxt "block keyword"
 msgid "email"
 msgstr "e-mail"
+
+#~ msgid "The email address was unsubscribed from the NewsMAN list."
+#~ msgstr "Die E-Mail-Adresse wurde von der NewsMAN-Liste abgemeldet."
+
+#, php-format
+#~ msgid ""
+#~ "NewsMAN could not unsubscribe the email address: %s. Erase the personal "
+#~ "data again later."
+#~ msgstr ""
+#~ "NewsMAN konnte die E-Mail-Adresse nicht abmelden: %s. Löschen Sie die "
+#~ "personenbezogenen Daten später erneut."
+
+#~ msgid ""
+#~ "When you ask us to erase your personal data, or when your account is "
+#~ "deleted, your email address and phone numbers are unsubscribed from our "
+#~ "NewsMAN lists. NewsMAN keeps them as unsubscribed, so you do not receive "
+#~ "our messages again."
+#~ msgstr ""
+#~ "Wenn Sie uns bitten, Ihre personenbezogenen Daten zu löschen, oder wenn "
+#~ "Ihr Konto gelöscht wird, werden Ihre E-Mail-Adresse und Ihre "
+#~ "Telefonnummern von unseren NewsMAN-Listen abgemeldet. NewsMAN behält sie "
+#~ "als abgemeldet, damit Sie unsere Nachrichten nicht mehr erhalten."
 
 #, php-format
 #~ msgid "No %s to send."

@@ -23,14 +23,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Unsubscribe from NewsMAN the people whose data is erased on the site: Tools > Erase
- * Personal Data (also used by WooCommerce) and deleted users. The email is unsubscribed
- * from the email list and the phone numbers (account and order billing phones) from the
- * SMS list.
+ * Anonymise in NewsMAN the people whose data is erased on the site: Tools > Erase Personal
+ * Data (also used by WooCommerce) and deleted users. The email is anonymised in the email
+ * list (subscriber.anonymiseEmail), whatever its status there. The phone numbers (account
+ * and order billing phones) are unsubscribed from the SMS list: NewsMAN has no SMS anonymise.
  *
- * The email is unsubscribed, not anonymised (subscriber.anonymiseEmail): a later import of
- * the same email, for example from the order billing emails that WooCommerce keeps, would
- * subscribe an anonymised contact again, while an unsubscribed contact stays unsubscribed.
+ * Nothing is sent when users are deleted because a whole network site is deleted, or when
+ * WooCommerce deletes inactive accounts (Personal data retention): nobody asked to be
+ * forgotten, the store owner manages the list in NewsMAN.
+ *
+ * A later import of the same email, for example from the order billing emails that
+ * WooCommerce keeps, subscribes the anonymised contact again.
  *
  * Nothing goes through a confirmation flow, even with double opt-in, so nobody receives
  * a confirmation email after asking to be forgotten.
@@ -44,9 +47,14 @@ class Eraser {
 	public const ERASER_ID = 'newsman';
 
 	/**
-	 * Background event hook: unsubscribe the email and phone numbers of a deleted user.
+	 * Background event hook: anonymise the email and unsubscribe the phone numbers of a deleted user.
 	 */
-	public const BACKGROUND_HOOK_EVENT = 'newsman_unsubscribe_erased_email';
+	public const BACKGROUND_HOOK_EVENT = 'newsman_anonymise_erased_email';
+
+	/**
+	 * Background event hook of version 3.7.41, still handled for the actions it scheduled.
+	 */
+	public const LEGACY_BACKGROUND_HOOK_EVENT = 'newsman_unsubscribe_erased_email';
 
 	/**
 	 * NewsMAN API error code returned when the email or phone number is not on the list.
@@ -54,7 +62,12 @@ class Eraser {
 	public const ERROR_NO_SUCH_SUBSCRIBER = 121;
 
 	/**
-	 * Result: unsubscribed.
+	 * Result: the email was anonymised.
+	 */
+	public const RESULT_ANONYMISED = 'anonymised';
+
+	/**
+	 * Result: the phone number was unsubscribed.
 	 */
 	public const RESULT_UNSUBSCRIBED = 'unsubscribed';
 
@@ -77,6 +90,18 @@ class Eraser {
 	 * Most orders of one email address read for phone numbers.
 	 */
 	public const MAX_ORDERS = 500;
+
+	/**
+	 * Functions that delete users when nobody asked to be forgotten, so nothing is sent to
+	 * NewsMAN: a whole network site is deleted (WordPress 5.1 and newer, then older versions),
+	 * and WooCommerce deletes the inactive accounts (Personal data retention).
+	 */
+	public const NO_ACTION_CALLERS = array(
+		'wp_uninitialize_site',
+		'wpmu_delete_blog',
+		'WC_Privacy::delete_inactive_accounts_query',
+		'WC_Privacy::delete_inactive_accounts',
+	);
 
 	/**
 	 * Config
@@ -130,6 +155,7 @@ class Eraser {
 		}
 
 		add_action( self::BACKGROUND_HOOK_EVENT, array( $this, 'run_scheduled' ), 10, 3 );
+		add_action( self::LEGACY_BACKGROUND_HOOK_EVENT, array( $this, 'run_scheduled' ), 10, 3 );
 	}
 
 	/**
@@ -155,8 +181,8 @@ class Eraser {
 	}
 
 	/**
-	 * Eraser callback: unsubscribe the email from the NewsMAN list and its phone numbers
-	 * from the NewsMAN SMS list of this site.
+	 * Eraser callback: anonymise the email in the NewsMAN list and unsubscribe its phone
+	 * numbers from the NewsMAN SMS list of this site.
 	 *
 	 * @param string $email_address Email address of the erasure request.
 	 * @param int    $page          Page number, the eraser always finishes on the first one.
@@ -180,9 +206,9 @@ class Eraser {
 		// The privacy screen shows the messages as HTML.
 		if ( $this->is_allow( $blog_id ) ) {
 			try {
-				if ( self::RESULT_UNSUBSCRIBED === $this->unsubscribe_now( $email, $blog_id ) ) {
+				if ( self::RESULT_ANONYMISED === $this->anonymise_now( $email, $blog_id ) ) {
 					$response['items_removed'] = true;
-					$response['messages'][]    = esc_html__( 'The email address was unsubscribed from the NewsMAN list.', 'newsman' );
+					$response['messages'][]    = esc_html__( 'The email address was anonymised in the NewsMAN list.', 'newsman' );
 				}
 			} catch ( \Exception $e ) {
 				$this->get_logger()->log_exception( $e );
@@ -190,7 +216,7 @@ class Eraser {
 				$response['messages'][]     = esc_html(
 					sprintf(
 						/* translators: %s: Error message */
-						__( 'NewsMAN could not unsubscribe the email address: %s. Erase the personal data again later.', 'newsman' ),
+						__( 'NewsMAN could not anonymise the email address: %s. Erase the personal data again later.', 'newsman' ),
 						$e->getMessage()
 					)
 				);
@@ -250,7 +276,7 @@ class Eraser {
 		if ( ! $user instanceof \WP_User ) {
 			$user = get_userdata( $user_id );
 		}
-		$this->unsubscribe_user( $user, get_current_blog_id() );
+		$this->erase_user( $user, get_current_blog_id() );
 	}
 
 	/**
@@ -261,31 +287,37 @@ class Eraser {
 	 * @return void
 	 */
 	public function on_remove_user_from_blog( $user_id, $blog_id ) {
-		$this->unsubscribe_user( get_userdata( $user_id ), (int) $blog_id );
+		$this->erase_user( get_userdata( $user_id ), (int) $blog_id );
 	}
 
 	/**
-	 * Unsubscribe the email and phone numbers of a deleted user from the NewsMAN lists of a site.
-	 * The phone numbers are read now, while the user and its meta still exist.
+	 * Anonymise the email and unsubscribe the phone numbers of a deleted user in the NewsMAN
+	 * lists of a site. The phone numbers are read now, while the user and its meta still exist.
 	 *
 	 * @param \WP_User|false $user    User.
 	 * @param int            $blog_id Site ID.
 	 * @return void
 	 */
-	public function unsubscribe_user( $user, $blog_id ) {
+	public function erase_user( $user, $blog_id ) {
 		try {
 			if ( ! $user instanceof \WP_User || empty( $user->user_email ) ) {
 				return;
 			}
 
+			$allow = ! $this->is_no_action_delete();
+			if ( ! $allow ) {
+				$this->get_logger()->debug( 'Deleted user ' . $user->user_email . ': nothing sent to NewsMAN, the site is deleted or WooCommerce deletes inactive accounts.' );
+			}
+
 			/**
-			 * Whether to unsubscribe the email and phone numbers of a deleted user from NewsMAN.
+			 * Whether to anonymise the email and unsubscribe the phone numbers of a deleted user in NewsMAN.
 			 *
-			 * @param bool     $allow   Default true.
+			 * @param bool     $allow   Default true, false when a whole network site is deleted
+			 *                          or WooCommerce deletes inactive accounts.
 			 * @param \WP_User $user    The user being deleted.
 			 * @param int      $blog_id Site ID.
 			 */
-			if ( ! apply_filters( 'newsman_privacy_unsubscribe_deleted_user', true, $user, $blog_id ) ) {
+			if ( ! apply_filters( 'newsman_privacy_erase_deleted_user', $allow, $user, $blog_id ) ) {
 				return;
 			}
 
@@ -297,8 +329,8 @@ class Eraser {
 	}
 
 	/**
-	 * Unsubscribe an email and phone numbers in the background when Action Scheduler is used,
-	 * right away otherwise. Never throws: a NewsMAN error must not stop the deletion.
+	 * Anonymise an email and unsubscribe phone numbers in the background when Action Scheduler
+	 * is used, right away otherwise. Never throws: a NewsMAN error must not stop the deletion.
 	 *
 	 * @param string $email   Email address.
 	 * @param int    $blog_id Site ID.
@@ -328,7 +360,7 @@ class Eraser {
 			}
 
 			if ( $this->is_allow( $blog_id ) ) {
-				$this->try_once( array( $this, 'unsubscribe_now' ), $email, $blog_id );
+				$this->try_once( array( $this, 'anonymise_now' ), $email, $blog_id );
 			}
 			if ( $this->is_allow_sms( $blog_id ) ) {
 				foreach ( (array) $phones as $phone ) {
@@ -341,7 +373,7 @@ class Eraser {
 	}
 
 	/**
-	 * Action Scheduler callback. Each unsubscribe is tried one more time after a short wait;
+	 * Action Scheduler callback. Each call is tried one more time after a short wait;
 	 * then the action fails so it shows in Tools > Scheduled Actions.
 	 *
 	 * @param string   $email   Email address.
@@ -356,7 +388,7 @@ class Eraser {
 		}
 
 		$failed = array();
-		if ( ! empty( $email ) && $this->is_allow( $blog_id ) && ! $this->try_twice( array( $this, 'unsubscribe_now' ), $email, $blog_id ) ) {
+		if ( ! empty( $email ) && $this->is_allow( $blog_id ) && ! $this->try_twice( array( $this, 'anonymise_now' ), $email, $blog_id ) ) {
 			$failed[] = $email;
 		}
 		if ( $this->is_allow_sms( $blog_id ) ) {
@@ -369,36 +401,36 @@ class Eraser {
 
 		if ( ! empty( $failed ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Shown in Tools > Scheduled Actions, escaped there.
-			throw new \Exception( 'NewsMAN could not unsubscribe: ' . implode( ', ', $failed ) );
+			throw new \Exception( 'NewsMAN could not anonymise or unsubscribe: ' . implode( ', ', $failed ) );
 		}
 	}
 
 	/**
-	 * Unsubscribe an email from the NewsMAN list of a site with subscriber.saveUnsubscribe.
+	 * Anonymise an email in the NewsMAN list of a site with subscriber.anonymiseEmail. NewsMAN
+	 * replaces the email address with an anonymous one a few seconds later.
 	 *
 	 * @param string $email   Email address.
 	 * @param int    $blog_id Site ID.
-	 * @return string self::RESULT_UNSUBSCRIBED or self::RESULT_NOT_SUBSCRIBED.
+	 * @return string self::RESULT_ANONYMISED or self::RESULT_NOT_SUBSCRIBED.
 	 * @throws \Exception On NewsMAN errors other than "no such subscriber".
 	 */
-	public function unsubscribe_now( $email, $blog_id ) {
-		$context = new \Newsman\Service\Context\UnsubscribeEmail();
+	public function anonymise_now( $email, $blog_id ) {
+		$context = new \Newsman\Service\Context\AnonymiseEmail();
 		$context->set_blog_id( $blog_id )
 			->set_list_id( $this->config->get_list_id( $blog_id ) )
-			->set_email( $email )
-			->set_ip( IpAddress::init()->get_ip() );
+			->set_email( $email );
 
 		/**
-		 * Context of the unsubscribe sent for erased personal data.
+		 * Context of the anonymise sent for erased personal data.
 		 *
-		 * @param \Newsman\Service\Context\UnsubscribeEmail $context Context.
-		 * @param int                                        $blog_id Site ID.
+		 * @param \Newsman\Service\Context\AnonymiseEmail $context Context.
+		 * @param int                                      $blog_id Site ID.
 		 */
-		$context = apply_filters( 'newsman_privacy_unsubscribe_context', $context, $blog_id );
+		$context = apply_filters( 'newsman_privacy_anonymise_context', $context, $blog_id );
 
 		try {
-			$unsubscribe = new \Newsman\Service\UnsubscribeEmail();
-			$unsubscribe->execute( $context );
+			$anonymise = new \Newsman\Service\AnonymiseEmail();
+			$anonymise->execute( $context );
 		} catch ( \Exception $e ) {
 			if ( self::ERROR_NO_SUCH_SUBSCRIBER === (int) $e->getCode() ) {
 				$this->get_logger()->info(
@@ -414,14 +446,14 @@ class Eraser {
 		}
 
 		/**
-		 * After an email with erased personal data was unsubscribed from the NewsMAN list.
+		 * After an email with erased personal data was anonymised in the NewsMAN list.
 		 *
 		 * @param string $email   Email address.
 		 * @param int    $blog_id Site ID.
 		 */
-		do_action( 'newsman_privacy_unsubscribed', $context->get_email(), $blog_id );
+		do_action( 'newsman_privacy_anonymised', $context->get_email(), $blog_id );
 
-		return self::RESULT_UNSUBSCRIBED;
+		return self::RESULT_ANONYMISED;
 	}
 
 	/**
@@ -541,12 +573,25 @@ class Eraser {
 	 */
 	public function is_allow( $blog_id ) {
 		/**
-		 * Whether to unsubscribe from the NewsMAN list the people whose data is erased.
+		 * Whether to anonymise in the NewsMAN list the people whose data is erased, and to
+		 * add their NewsMAN data to the personal data export.
 		 *
 		 * @param bool $allow   Default: the plugin is connected to NewsMAN on the site.
 		 * @param int  $blog_id Site ID.
 		 */
-		return (bool) apply_filters( 'newsman_privacy_unsubscribe_allow', $this->config->is_enabled_with_api( $blog_id ), $blog_id );
+		return (bool) apply_filters( 'newsman_privacy_anonymise_allow', $this->config->is_enabled_with_api( $blog_id ), $blog_id );
+	}
+
+	/**
+	 * Whether the user being deleted is deleted because a whole network site is deleted or
+	 * because WooCommerce deletes inactive accounts, read from the call stack.
+	 *
+	 * @return bool
+	 */
+	public function is_no_action_delete() {
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_wp_debug_backtrace_summary -- Only reads which functions delete the user, nothing is output.
+		$callers = wp_debug_backtrace_summary( null, 0, false );
+		return is_array( $callers ) && array() !== array_intersect( self::NO_ACTION_CALLERS, $callers );
 	}
 
 	/**
@@ -566,7 +611,7 @@ class Eraser {
 	}
 
 	/**
-	 * Whether deleted users are unsubscribed in the background. Uses the general
+	 * Whether deleted users are sent to NewsMAN in the background. Uses the general
 	 * Action Scheduler setting: deleting many users at once must stay fast.
 	 *
 	 * @param int $blog_id Site ID.
@@ -580,9 +625,9 @@ class Eraser {
 	}
 
 	/**
-	 * Call an unsubscribe once, log the error.
+	 * Call a NewsMAN method once, log the error.
 	 *
-	 * @param callable $unsubscribe Unsubscribe method.
+	 * @param callable $unsubscribe Anonymise or unsubscribe method.
 	 * @param string   $value       Email or phone number.
 	 * @param int      $blog_id     Site ID.
 	 * @return bool False on error.
@@ -598,9 +643,9 @@ class Eraser {
 	}
 
 	/**
-	 * Call an unsubscribe, and once more after a short wait when it fails.
+	 * Call a NewsMAN method, and once more after a short wait when it fails.
 	 *
-	 * @param callable $unsubscribe Unsubscribe method.
+	 * @param callable $unsubscribe Anonymise or unsubscribe method.
 	 * @param string   $value       Email or phone number.
 	 * @param int      $blog_id     Site ID.
 	 * @return bool False when both tries failed.

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: NewsmanApp 3.7.40\n"
+"Project-Id-Version: NewsmanApp 3.7.41\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-11T17:27:09+00:00\n"
+"POT-Creation-Date: 2026-11-13T14:11:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: newsman\n"
@@ -1788,29 +1788,29 @@ msgstr ""
 msgid "Last export: %s"
 msgstr ""
 
-#: includes/privacy/class-eraser.php:151
+#: includes/privacy/class-eraser.php:177
 #: includes/privacy/class-exporter.php:77
 msgid "NewsMAN newsletter subscription"
 msgstr ""
 
-#: includes/privacy/class-eraser.php:185
-msgid "The email address was unsubscribed from the NewsMAN list."
+#: includes/privacy/class-eraser.php:211
+msgid "The email address was anonymised in the NewsMAN list."
 msgstr ""
 
 #. translators: %s: Error message
-#: includes/privacy/class-eraser.php:193
+#: includes/privacy/class-eraser.php:219
 #, php-format
-msgid "NewsMAN could not unsubscribe the email address: %s. Erase the personal data again later."
+msgid "NewsMAN could not anonymise the email address: %s. Erase the personal data again later."
 msgstr ""
 
 #. translators: 1: Phone number, 2: Error message
-#: includes/privacy/class-eraser.php:213
+#: includes/privacy/class-eraser.php:239
 #, php-format
 msgid "NewsMAN could not unsubscribe the phone number %1$s: %2$s. Erase the personal data again later."
 msgstr ""
 
 #. translators: %d: Number of phone numbers
-#: includes/privacy/class-eraser.php:225
+#: includes/privacy/class-eraser.php:251
 #, php-format
 msgid "%d phone number was unsubscribed from the NewsMAN SMS list."
 msgid_plural "%d phone numbers were unsubscribed from the NewsMAN SMS list."
@@ -1818,13 +1818,13 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: Email
-#: includes/privacy/class-eraser.php:407
+#: includes/privacy/class-eraser.php:439
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN list"
 msgstr ""
 
 #. translators: 1: Phone number
-#: includes/privacy/class-eraser.php:458
+#: includes/privacy/class-eraser.php:490
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN SMS list"
 msgstr ""
@@ -1902,7 +1902,7 @@ msgid "The NewsMAN tracking script on our pages records the pages and products y
 msgstr ""
 
 #: includes/privacy/class-exporter.php:293
-msgid "When you ask us to erase your personal data, or when your account is deleted, your email address and phone numbers are unsubscribed from our NewsMAN lists. NewsMAN keeps them as unsubscribed, so you do not receive our messages again."
+msgid "When you ask us to erase your personal data, or when your account is deleted, NewsMAN replaces your email address in our NewsMAN lists with an anonymous one and unsubscribes your phone numbers from our NewsMAN SMS lists."
 msgstr ""
 
 #. translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link
@@ -1964,6 +1964,18 @@ msgstr ""
 #. translators: 1: Email
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
+msgstr ""
+
+#. translators: 1: Email
+#: includes/service/class-anonymiseemail.php:52
+#, php-format
+msgid "Try to anonymise email %s"
+msgstr ""
+
+#. translators: 1: Email
+#: includes/service/class-anonymiseemail.php:76
+#, php-format
+msgid "Anonymised email %s"
 msgstr ""
 
 #. translators: 1: Count subscribers

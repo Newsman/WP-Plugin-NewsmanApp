@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NewsmanApp for WordPress 3.7.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newsmanapp\n"
-"POT-Creation-Date: 2026-11-11T17:27:09+00:00\n"
+"POT-Creation-Date: 2026-11-13T14:11:51+00:00\n"
 "PO-Revision-Date: 2026-03-28T12:00:00+00:00\n"
 "Last-Translator: NewsMAN <contact@newsman.com>\n"
 "Language-Team: NewsMAN <contact@newsman.com>\n"
@@ -2059,26 +2059,26 @@ msgstr "Mislukte achtergrondtaken in de afgelopen 7 dagen"
 msgid "Last export: %s"
 msgstr "Laatste export: %s"
 
-#: includes/privacy/class-eraser.php:151 includes/privacy/class-exporter.php:77
+#: includes/privacy/class-eraser.php:177 includes/privacy/class-exporter.php:77
 msgid "NewsMAN newsletter subscription"
 msgstr "NewsMAN-nieuwsbriefabonnement"
 
-#: includes/privacy/class-eraser.php:185
-msgid "The email address was unsubscribed from the NewsMAN list."
-msgstr "Het e-mailadres is uitgeschreven van de NewsMAN-lijst."
+#: includes/privacy/class-eraser.php:211
+msgid "The email address was anonymised in the NewsMAN list."
+msgstr "Het e-mailadres is geanonimiseerd in de NewsMAN-lijst."
 
 #. translators: %s: Error message
-#: includes/privacy/class-eraser.php:193
+#: includes/privacy/class-eraser.php:219
 #, php-format
 msgid ""
-"NewsMAN could not unsubscribe the email address: %s. Erase the personal data "
+"NewsMAN could not anonymise the email address: %s. Erase the personal data "
 "again later."
 msgstr ""
-"NewsMAN kon het e-mailadres niet uitschrijven: %s. Wis de persoonlijke "
+"NewsMAN kon het e-mailadres niet anonimiseren: %s. Wis de persoonlijke "
 "gegevens later opnieuw."
 
 #. translators: 1: Phone number, 2: Error message
-#: includes/privacy/class-eraser.php:213
+#: includes/privacy/class-eraser.php:239
 #, php-format
 msgid ""
 "NewsMAN could not unsubscribe the phone number %1$s: %2$s. Erase the "
@@ -2088,7 +2088,7 @@ msgstr ""
 "persoonlijke gegevens later opnieuw."
 
 #. translators: %d: Number of phone numbers
-#: includes/privacy/class-eraser.php:225
+#: includes/privacy/class-eraser.php:251
 #, php-format
 msgid "%d phone number was unsubscribed from the NewsMAN SMS list."
 msgid_plural "%d phone numbers were unsubscribed from the NewsMAN SMS list."
@@ -2096,13 +2096,13 @@ msgstr[0] "%d telefoonnummer is uitgeschreven van de NewsMAN-sms-lijst."
 msgstr[1] "%d telefoonnummers zijn uitgeschreven van de NewsMAN-sms-lijst."
 
 #. translators: 1: Email
-#: includes/privacy/class-eraser.php:407
+#: includes/privacy/class-eraser.php:439
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN list"
 msgstr "Persoonlijke gegevens wissen: %s staat niet op de NewsMAN-lijst"
 
 #. translators: 1: Phone number
-#: includes/privacy/class-eraser.php:458
+#: includes/privacy/class-eraser.php:490
 #, php-format
 msgid "Erase personal data: %s is not on the NewsMAN SMS list"
 msgstr "Persoonlijke gegevens wissen: %s staat niet op de NewsMAN-sms-lijst"
@@ -2219,14 +2219,13 @@ msgstr ""
 #: includes/privacy/class-exporter.php:293
 msgid ""
 "When you ask us to erase your personal data, or when your account is "
-"deleted, your email address and phone numbers are unsubscribed from our "
-"NewsMAN lists. NewsMAN keeps them as unsubscribed, so you do not receive our "
-"messages again."
+"deleted, NewsMAN replaces your email address in our NewsMAN lists with an "
+"anonymous one and unsubscribes your phone numbers from our NewsMAN SMS lists."
 msgstr ""
 "Wanneer u ons vraagt uw persoonsgegevens te wissen, of wanneer uw account "
-"wordt verwijderd, worden uw e-mailadres en uw telefoonnummers uitgeschreven "
-"van onze NewsMAN-lijsten. NewsMAN bewaart ze als uitgeschreven, zodat u onze "
-"berichten niet meer ontvangt."
+"wordt verwijderd, vervangt NewsMAN uw e-mailadres in onze NewsMAN-lijsten "
+"door een anoniem adres en schrijft het uw telefoonnummers uit van onze "
+"NewsMAN-sms-lijsten."
 
 #. translators: 1: NewsMAN privacy policy link, 2: NewsMAN cookie policy link
 #: includes/privacy/class-exporter.php:296
@@ -2288,6 +2287,18 @@ msgstr "NewsMAN-trackingscript"
 #: includes/service/class-abstractservice.php:156
 msgid "Invalid email address %1"
 msgstr "Ongeldig e-mailadres %1"
+
+#. translators: 1: Email
+#: includes/service/class-anonymiseemail.php:52
+#, php-format
+msgid "Try to anonymise email %s"
+msgstr "Probeer e-mail %s te anonimiseren"
+
+#. translators: 1: Email
+#: includes/service/class-anonymiseemail.php:76
+#, php-format
+msgid "Anonymised email %s"
+msgstr "E-mail %s geanonimiseerd"
 
 #. translators: 1: Count subscribers
 #: includes/service/class-exportcsvsubscribers.php:48
@@ -3822,6 +3833,28 @@ msgstr ""
 msgctxt "block keyword"
 msgid "email"
 msgstr "e-mail"
+
+#~ msgid "The email address was unsubscribed from the NewsMAN list."
+#~ msgstr "Het e-mailadres is uitgeschreven van de NewsMAN-lijst."
+
+#, php-format
+#~ msgid ""
+#~ "NewsMAN could not unsubscribe the email address: %s. Erase the personal "
+#~ "data again later."
+#~ msgstr ""
+#~ "NewsMAN kon het e-mailadres niet uitschrijven: %s. Wis de persoonlijke "
+#~ "gegevens later opnieuw."
+
+#~ msgid ""
+#~ "When you ask us to erase your personal data, or when your account is "
+#~ "deleted, your email address and phone numbers are unsubscribed from our "
+#~ "NewsMAN lists. NewsMAN keeps them as unsubscribed, so you do not receive "
+#~ "our messages again."
+#~ msgstr ""
+#~ "Wanneer u ons vraagt uw persoonsgegevens te wissen, of wanneer uw account "
+#~ "wordt verwijderd, worden uw e-mailadres en uw telefoonnummers "
+#~ "uitgeschreven van onze NewsMAN-lijsten. NewsMAN bewaart ze als "
+#~ "uitgeschreven, zodat u onze berichten niet meer ontvangt."
 
 #, php-format
 #~ msgid "No %s to send."

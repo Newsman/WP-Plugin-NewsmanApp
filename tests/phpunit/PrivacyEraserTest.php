@@ -1,7 +1,7 @@
 <?php
 /**
- * Tests for the unsubscribe sent to NewsMAN when personal data is erased:
- * Tools > Erase Personal Data and deleted users.
+ * Tests for the anonymise (email) and unsubscribe (SMS phone numbers) sent to NewsMAN when
+ * personal data is erased: Tools > Erase Personal Data and deleted users.
  *
  * @package NewsmanApp for WordPress
  */
@@ -20,7 +20,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 	private $calls = array();
 
 	/**
-	 * Answer of the fake API to subscriber.saveUnsubscribe: ok, missing or error.
+	 * Answer of the fake API: ok, missing or error.
 	 *
 	 * @var string
 	 */
@@ -129,14 +129,15 @@ class PrivacyEraserTest extends NewsmanTestCase {
 	}
 
 	/**
-	 * Emails sent to subscriber.saveUnsubscribe, in call order.
+	 * Emails sent to subscriber.anonymiseEmail, in call order. Never sent to subscriber.saveUnsubscribe.
 	 *
 	 * @return string[]
 	 */
-	private function unsubscribed_emails() {
+	private function anonymised_emails() {
 		$emails = array();
 		foreach ( $this->calls as $call ) {
-			if ( 'subscriber.saveUnsubscribe' === $call[0] ) {
+			$this->assertNotSame( 'subscriber.saveUnsubscribe', $call[0] );
+			if ( 'subscriber.anonymiseEmail' === $call[0] ) {
 				$emails[] = $call[1]['email'];
 			}
 		}
@@ -216,18 +217,19 @@ class PrivacyEraserTest extends NewsmanTestCase {
 	}
 
 	/**
-	 * Erasing unsubscribes the email right away from the list of the site.
+	 * Erasing anonymises the email right away in the list of the site.
 	 */
-	public function test_erase_unsubscribes_the_email() {
+	public function test_erase_anonymises_the_email() {
 		$response = $this->run_eraser( 'erase-me@example.com' );
 
-		$this->assertSame( array( 'subscriber.saveUnsubscribe' ), $this->endpoints() );
+		$this->assertSame( array( 'subscriber.anonymiseEmail' ), $this->endpoints() );
 		$this->assertSame( 'erase-me@example.com', $this->calls[0][1]['email'] );
 		$this->assertSame( '1', (string) $this->calls[0][1]['list_id'] );
+		$this->assertArrayNotHasKey( 'ip', $this->calls[0][1] );
 		$this->assertTrue( $response['items_removed'] );
 		$this->assertFalse( $response['items_retained'] );
 		$this->assertTrue( $response['done'] );
-		$this->assertSame( array( 'The email address was unsubscribed from the NewsMAN list.' ), $response['messages'] );
+		$this->assertSame( array( 'The email address was anonymised in the NewsMAN list.' ), $response['messages'] );
 	}
 
 	/**
@@ -239,7 +241,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		$this->run_eraser( 'double@example.com' );
 
-		$this->assertSame( array( 'subscriber.saveUnsubscribe' ), $this->endpoints() );
+		$this->assertSame( array( 'subscriber.anonymiseEmail' ), $this->endpoints() );
 	}
 
 	/**
@@ -250,7 +252,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		$response = $this->run_eraser( 'stranger@example.com' );
 
-		$this->assertSame( array( 'subscriber.saveUnsubscribe' ), $this->endpoints() );
+		$this->assertSame( array( 'subscriber.anonymiseEmail' ), $this->endpoints() );
 		$this->assertFalse( $response['items_removed'] );
 		$this->assertFalse( $response['items_retained'] );
 		$this->assertSame( array(), $response['messages'] );
@@ -269,7 +271,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$this->assertTrue( $response['items_retained'] );
 		$this->assertTrue( $response['done'] );
 		$this->assertCount( 1, $response['messages'] );
-		$this->assertStringContainsString( 'NewsMAN could not unsubscribe the email address: Failure.', $response['messages'][0] );
+		$this->assertStringContainsString( 'NewsMAN could not anonymise the email address: Failure.', $response['messages'][0] );
 	}
 
 	/**
@@ -290,19 +292,19 @@ class PrivacyEraserTest extends NewsmanTestCase {
 	}
 
 	/**
-	 * Deleting a user unsubscribes the email right away when Action Scheduler is not used.
+	 * Deleting a user anonymises the email right away when Action Scheduler is not used.
 	 */
-	public function test_deleted_user_is_unsubscribed() {
+	public function test_deleted_user_is_anonymised() {
 		$user_id = $this->create_user( 'customer', 'deleted-user@example.com', 'Ana', 'Pop' );
 
 		$this->assertTrue( wp_delete_user( $user_id ) );
 
-		$this->assertSame( array( 'deleted-user@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'deleted-user@example.com' ), $this->anonymised_emails() );
 		$this->assertUserDeleted( $user_id );
 	}
 
 	/**
-	 * Every role is unsubscribed, and double opt-in does not apply.
+	 * Every role is anonymised, and double opt-in does not apply.
 	 */
 	public function test_deleted_user_any_role_double_optin() {
 		update_option( 'newsman_newslettertype', 'init' );
@@ -310,8 +312,8 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		wp_delete_user( $user_id );
 
-		$this->assertSame( array( 'subscriber.saveUnsubscribe' ), $this->endpoints() );
-		$this->assertSame( array( 'deleted-subscriber@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'subscriber.anonymiseEmail' ), $this->endpoints() );
+		$this->assertSame( array( 'deleted-subscriber@example.com' ), $this->anonymised_emails() );
 	}
 
 	/**
@@ -328,7 +330,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$this->assertTrue( wp_delete_user( $user_id ) );
 		$this->assertUserDeleted( $user_id );
 
-		$this->assertSame( array( 'deleted-error@example.com', 'deleted-missing@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'deleted-error@example.com', 'deleted-missing@example.com' ), $this->anonymised_emails() );
 	}
 
 	/**
@@ -340,9 +342,9 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$this->assertSame( array(), $this->endpoints() );
 
 		update_option( 'newsman_api', 'on' );
-		add_filter( 'newsman_privacy_unsubscribe_deleted_user', '__return_false' );
+		add_filter( 'newsman_privacy_erase_deleted_user', '__return_false' );
 		wp_delete_user( $this->create_user( 'customer', 'deleted-filtered@example.com', 'Ana', 'Pop' ) );
-		remove_filter( 'newsman_privacy_unsubscribe_deleted_user', '__return_false' );
+		remove_filter( 'newsman_privacy_erase_deleted_user', '__return_false' );
 		$this->assertSame( array(), $this->endpoints() );
 	}
 
@@ -353,11 +355,11 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$eraser = new Eraser();
 		$eraser->execute( 'twice@example.com', get_current_blog_id() );
 		$eraser->execute( 'TWICE@example.com', get_current_blog_id() );
-		$this->assertSame( array( 'twice@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'twice@example.com' ), $this->anonymised_emails() );
 
 		$user_id = $this->create_user( 'customer', 'removed-from-site@example.com', 'Ana', 'Pop' );
 		$eraser->on_remove_user_from_blog( $user_id, get_current_blog_id() );
-		$this->assertSame( array( 'twice@example.com', 'removed-from-site@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'twice@example.com', 'removed-from-site@example.com' ), $this->anonymised_emails() );
 	}
 
 	/**
@@ -394,7 +396,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		$response = $this->run_eraser( 'sms-erase@example.com' );
 
-		$this->assertSame( array( 'sms-erase@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'sms-erase@example.com' ), $this->anonymised_emails() );
 		$this->assertSame( array( '0722111222', '0744666777', '40733444555' ), $this->unsubscribed_phones() );
 		$this->assertTrue( $response['items_removed'] );
 		$this->assertFalse( $response['items_retained'] );
@@ -419,7 +421,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		update_option( 'newsman_api', 'on' );
 		update_option( 'newsman_usesms', '' );
 		$this->run_eraser( 'sms-only@example.com' );
-		$this->assertSame( array( 'subscriber.saveUnsubscribe' ), $this->endpoints() );
+		$this->assertSame( array( 'subscriber.anonymiseEmail' ), $this->endpoints() );
 	}
 
 	/**
@@ -434,7 +436,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$response      = $this->run_eraser( 'sms-missing@example.com' );
 		$this->assertSame( array( '0722000222' ), $this->unsubscribed_phones() );
 		$this->assertFalse( $response['items_retained'] );
-		$this->assertSame( array( 'The email address was unsubscribed from the NewsMAN list.' ), $response['messages'] );
+		$this->assertSame( array( 'The email address was anonymised in the NewsMAN list.' ), $response['messages'] );
 
 		$this->answers = array( 'sms.saveUnsubscribe' => 'error' );
 		$response      = $this->run_eraser( 'sms-missing@example.com' );
@@ -443,7 +445,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 	}
 
 	/**
-	 * Deleting a user unsubscribes the email and the account billing phone; in the background
+	 * Deleting a user anonymises the email and unsubscribes the account billing phone; in the background
 	 * the phone numbers travel with the action, read while the user still exists.
 	 */
 	public function test_deleted_user_phone_numbers() {
@@ -451,7 +453,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$user_id = $this->create_user( 'customer', 'sms-deleted@example.com', 'Ana', 'Pop' );
 		update_user_meta( $user_id, 'billing_phone', '0722 000 333' );
 		wp_delete_user( $user_id );
-		$this->assertSame( array( 'sms-deleted@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'sms-deleted@example.com' ), $this->anonymised_emails() );
 		$this->assertSame( array( '0722000333' ), $this->unsubscribed_phones() );
 
 		if ( ! $this->has_woocommerce() ) {
@@ -469,16 +471,16 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		$this->assertSame( array(), $this->endpoints() );
 		$this->assertTrue( as_has_scheduled_action( Eraser::BACKGROUND_HOOK_EVENT, $args ) );
 		do_action_ref_array( Eraser::BACKGROUND_HOOK_EVENT, $args );
-		$this->assertSame( array( 'sms-deleted-later@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'sms-deleted-later@example.com' ), $this->anonymised_emails() );
 		$this->assertSame( array( '0722000444', '0722000555' ), $this->unsubscribed_phones() );
 		as_unschedule_all_actions( Eraser::BACKGROUND_HOOK_EVENT );
 	}
 
 	/**
-	 * Multisite: deleting a user from the network unsubscribes the email from the list of
-	 * every site it belonged to, once; deleting from one site unsubscribes from that site only.
+	 * Multisite: deleting a user from the network anonymises the email in the list of
+	 * every site it belonged to, once; deleting from one site anonymises in that site only.
 	 */
-	public function test_multisite_deleted_user_is_unsubscribed_from_each_site() {
+	public function test_multisite_deleted_user_is_anonymised_in_each_site() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( 'Run the suite with WP_MULTISITE=1.' );
 		}
@@ -500,7 +502,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		$lists = array();
 		foreach ( $this->calls as $call ) {
-			$this->assertSame( 'subscriber.saveUnsubscribe', $call[0] );
+			$this->assertSame( 'subscriber.anonymiseEmail', $call[0] );
 			$this->assertSame( 'network-user@example.com', $call[1]['email'] );
 			$lists[] = (string) $call[1]['list_id'];
 		}
@@ -513,14 +515,14 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		switch_to_blog( $second_id );
 		wp_delete_user( $user_id );
 		restore_current_blog();
-		$this->assertSame( array( 'site-user@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'site-user@example.com' ), $this->anonymised_emails() );
 		$this->assertSame( '2', (string) $this->calls[0][1]['list_id'] );
 	}
 
 	/**
-	 * With Action Scheduler the deletion only schedules the unsubscribe; the action sends it.
+	 * With Action Scheduler the deletion only schedules the anonymise; the action sends it.
 	 */
-	public function test_deleted_user_is_unsubscribed_in_the_background() {
+	public function test_deleted_user_is_anonymised_in_the_background() {
 		$this->require_woocommerce();
 		update_option( 'newsman_developer_use_action_scheduler', 'on' );
 		$blog_id = get_current_blog_id();
@@ -531,10 +533,10 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		$this->assertSame( array(), $this->endpoints() );
 		$this->assertTrue( as_has_scheduled_action( Eraser::BACKGROUND_HOOK_EVENT, $args ) );
-		$this->assertNotFalse( has_action( Eraser::BACKGROUND_HOOK_EVENT ), 'Nothing handles the scheduled unsubscribe.' );
+		$this->assertNotFalse( has_action( Eraser::BACKGROUND_HOOK_EVENT ), 'Nothing handles the scheduled anonymise.' );
 
 		do_action_ref_array( Eraser::BACKGROUND_HOOK_EVENT, $args );
-		$this->assertSame( array( 'deleted-later@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'deleted-later@example.com' ), $this->anonymised_emails() );
 
 		as_unschedule_all_actions( Eraser::BACKGROUND_HOOK_EVENT );
 	}
@@ -552,7 +554,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 		update_option( 'newsman_api', 'on' );
 		$this->answer = 'missing';
 		$eraser->run_scheduled( 'later-missing@example.com', get_current_blog_id() );
-		$this->assertSame( array( 'later-missing@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'later-missing@example.com' ), $this->anonymised_emails() );
 
 		$eraser       = new class() extends Eraser {
 			/**
@@ -566,7 +568,7 @@ class PrivacyEraserTest extends NewsmanTestCase {
 			$eraser->run_scheduled( 'later-error@example.com', get_current_blog_id() );
 		} finally {
 			// One try and one retry.
-			$this->assertSame( array( 'later-missing@example.com', 'later-error@example.com', 'later-error@example.com' ), $this->unsubscribed_emails() );
+			$this->assertSame( array( 'later-missing@example.com', 'later-error@example.com', 'later-error@example.com' ), $this->anonymised_emails() );
 		}
 	}
 
@@ -584,6 +586,107 @@ class PrivacyEraserTest extends NewsmanTestCase {
 
 		$this->assertNotFalse( has_action( \Newsman\Scheduler\Unsubscribe\Email::BACKGROUND_HOOK_EVENT ) );
 		do_action( \Newsman\Scheduler\Unsubscribe\Email::BACKGROUND_HOOK_EVENT, 'account-later@example.com', array(), true );
-		$this->assertSame( array( 'account-later@example.com' ), $this->unsubscribed_emails() );
+		$this->assertSame( array( 'subscriber.saveUnsubscribe' ), $this->endpoints() );
+		$this->assertSame( 'account-later@example.com', $this->calls[0][1]['email'] );
+	}
+
+	/**
+	 * Actions scheduled by version 3.7.41 under the old hook still run, and anonymise.
+	 */
+	public function test_legacy_background_hook_still_anonymises() {
+		$this->assertNotFalse( has_action( Eraser::LEGACY_BACKGROUND_HOOK_EVENT ), 'Nothing handles the actions scheduled by 3.7.41.' );
+
+		do_action_ref_array( Eraser::LEGACY_BACKGROUND_HOOK_EVENT, array( 'legacy-later@example.com', get_current_blog_id(), array() ) );
+
+		$this->assertSame( array( 'legacy-later@example.com' ), $this->anonymised_emails() );
+	}
+
+	/**
+	 * WooCommerce Personal data retention deletes the inactive accounts: nothing is sent, nobody
+	 * asked to be forgotten. The same account deleted by hand is anonymised; a filter can send
+	 * for the cleanup too.
+	 */
+	public function test_woocommerce_inactive_accounts_cleanup_sends_nothing() {
+		$this->require_woocommerce();
+		if ( ! class_exists( '\WC_Privacy' ) ) {
+			$this->markTestSkipped( 'WC_Privacy is not loaded.' );
+		}
+		update_option(
+			'woocommerce_delete_inactive_accounts',
+			array(
+				'number' => '1',
+				'unit'   => 'months',
+			)
+		);
+		update_option( 'newsman_usesms', 'on' );
+
+		$inactive = $this->create_user( 'customer', 'inactive@example.com', 'Ana', 'Pop' );
+		update_user_meta( $inactive, 'wc_last_active', (string) strtotime( '-2 months' ) );
+		update_user_meta( $inactive, 'billing_phone', '0722000666' );
+		$active = $this->create_user( 'customer', 'active@example.com', 'Ana', 'Pop' );
+		update_user_meta( $active, 'wc_last_active', (string) time() );
+
+		\WC_Privacy::delete_inactive_accounts();
+
+		$this->assertUserDeleted( $inactive );
+		$this->assertNotFalse( get_userdata( $active ) );
+		$this->assertSame( array(), $this->endpoints() );
+
+		$by_hand = $this->create_user( 'customer', 'inactive-by-hand@example.com', 'Ana', 'Pop' );
+		update_user_meta( $by_hand, 'wc_last_active', (string) strtotime( '-2 months' ) );
+		wp_delete_user( $by_hand );
+		$this->assertSame( array( 'inactive-by-hand@example.com' ), $this->anonymised_emails() );
+
+		$this->calls = array();
+		$filtered    = $this->create_user( 'customer', 'inactive-filtered@example.com', 'Ana', 'Pop' );
+		update_user_meta( $filtered, 'wc_last_active', (string) strtotime( '-2 months' ) );
+		add_filter( 'newsman_privacy_erase_deleted_user', '__return_true' );
+		\WC_Privacy::delete_inactive_accounts();
+		remove_filter( 'newsman_privacy_erase_deleted_user', '__return_true' );
+		$this->assertSame( array( 'inactive-filtered@example.com' ), $this->anonymised_emails() );
+
+		delete_option( 'woocommerce_delete_inactive_accounts' );
+	}
+
+	/**
+	 * Multisite: deleting a whole site removes each of its users from it, and nothing is sent;
+	 * the store owner manages the list in NewsMAN. Removing a user from a site by hand still
+	 * anonymises.
+	 */
+	public function test_multisite_site_deletion_sends_nothing() {
+		if ( ! is_multisite() ) {
+			$this->markTestSkipped( 'Run the suite with WP_MULTISITE=1.' );
+		}
+		require_once ABSPATH . 'wp-admin/includes/ms.php';
+
+		$site_id = self::factory()->blog->create();
+		switch_to_blog( $site_id );
+		$this->enable_api();
+		update_option( 'newsman_list', '3' );
+		update_option( 'newsman_developer_use_action_scheduler', '' );
+		restore_current_blog();
+
+		$user_id = $this->create_user( 'customer', 'site-deleted@example.com', 'Ana', 'Pop' );
+		add_user_to_blog( $site_id, $user_id, 'customer' );
+		$other_id = $this->create_user( 'customer', 'site-other@example.com', 'Ana', 'Pop' );
+		add_user_to_blog( $site_id, $other_id, 'customer' );
+
+		$this->assertTrue( is_user_member_of_blog( $user_id, $site_id ) );
+		wpmu_delete_blog( $site_id, true );
+
+		$this->assertEmpty( get_site( $site_id ) );
+		$this->assertNotFalse( get_userdata( $user_id ) );
+		$this->assertSame( array(), $this->endpoints() );
+
+		$second_id = self::factory()->blog->create();
+		switch_to_blog( $second_id );
+		$this->enable_api();
+		update_option( 'newsman_list', '4' );
+		update_option( 'newsman_developer_use_action_scheduler', '' );
+		restore_current_blog();
+		add_user_to_blog( $second_id, $user_id, 'customer' );
+		remove_user_from_blog( $user_id, $second_id );
+		$this->assertSame( array( 'site-deleted@example.com' ), $this->anonymised_emails() );
+		$this->assertSame( '4', (string) $this->calls[0][1]['list_id'] );
 	}
 }

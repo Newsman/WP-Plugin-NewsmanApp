@@ -5,7 +5,7 @@ Tags: newsman, email, subscribers, sync, newsletter
 Requires at least: 3.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.7.41
+Stable tag: 3.7.42
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Languages: English (US), Romanian
@@ -113,6 +113,13 @@ Go to Remarketing Tab and paste your NewsMAN Remarketing ID (you can find those 
 Login to your acccount on [https://www.newsman.com](https://www.newsman.com/ "Smart Email Service Provider - Send and track your newsletters") and go to `General Settings -> API Keys`. There is a list of generated API Keys. Generate a new API Key for the WordPress plugin.
 
 == Changelog ==
+
+= 3.7.42 =
+* Personal data (GDPR): Tools > Erase Personal Data and deleting a user now anonymise the email address in the NewsMAN list (NewsMAN replaces it with an anonymous address), whatever its status there. The phone numbers are still unsubscribed from the NewsMAN SMS list. Unsubscribing (My Account, forms) still only unsubscribes.
+* Nothing is sent to NewsMAN when users are deleted because a whole network site is deleted or because WooCommerce deletes inactive accounts (Personal data retention).
+* The suggested privacy policy text and the configuration guides describe the anonymisation and how to keep an anonymised email address from being sent to NewsMAN again by a sync.
+* Developers: the erase filters and action are now newsman_privacy_anonymise_allow, newsman_privacy_erase_deleted_user, newsman_privacy_anonymise_context and newsman_privacy_anonymised; background actions scheduled by 3.7.41 still run.
+* Translations of the new texts in all languages; tests for the changes.
 
 = 3.7.41 =
 * Personal data (GDPR): Tools > Erase Personal Data (also used by WooCommerce) now unsubscribes the email address from the NewsMAN list and the phone numbers (account billing phone and order billing phones) from the NewsMAN SMS list, right away and without a confirmation email, also for guests. Deleting a user unsubscribes them too, in the background when Action Scheduler is used; on a network, from the list of each site of the user. An email or phone number that is not on the list is not an error, and a NewsMAN error never stops the deletion.

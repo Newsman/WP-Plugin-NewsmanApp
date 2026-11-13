@@ -703,19 +703,29 @@ If no form export is enabled and the legacy WC/WP export options under **NewsMAN
 
 ## Personal Data (GDPR)
 
-When a customer asks you to delete their personal data, the plugin also removes them from the NewsMAN list of the site. This works when the plugin is connected to NewsMAN (API credentials and a list set).
+When a customer asks you to delete their personal data, or you delete their account, the plugin also anonymises them in the NewsMAN list of the site. This works when the plugin is connected to NewsMAN (API credentials and a list set).
 
-- **Tools > Erase Personal Data** - The **NewsMAN newsletter subscription** eraser is added to the WordPress (and WooCommerce) erasers. When you erase the personal data of a request, the email address is unsubscribed from the NewsMAN list right away, and the request shows "The email address was unsubscribed from the NewsMAN list." The contact stays in NewsMAN as unsubscribed, so a later sync of the same email (for example from the order billing emails WooCommerce keeps) cannot subscribe it again. It also works for people without an account, for example a guest customer or someone who subscribed through a form. If NewsMAN cannot be reached, the request shows the error and you can erase the personal data again later.
+- **Tools > Erase Personal Data** - The **NewsMAN newsletter subscription** eraser is added to the WordPress (and WooCommerce) erasers. When you erase the personal data of a request, the email address is anonymised in the NewsMAN list right away, whatever its status there (subscribed, unsubscribed or not confirmed), and the request shows "The email address was anonymised in the NewsMAN list." A few seconds later NewsMAN replaces the email address with an anonymous one, and the contact stays unsubscribed. It also works for people without an account, for example a guest customer or someone who subscribed through a form. If NewsMAN cannot be reached, the request shows the error and you can erase the personal data again later.
 
-- **Deleting a user** - When a user is deleted (**Users > Delete**, bulk delete, `wp user delete`, the WooCommerce REST API), the email address is unsubscribed from the NewsMAN list. With **Use Action Scheduler** on (Developer Settings), this runs in the background, so deleting many users at once stays fast; otherwise it runs right away. On a multisite network, a user deleted from the network is unsubscribed from the list of every site they belonged to, and a user removed from one site is unsubscribed from the list of that site.
+- **Deleting a user** - When a user is deleted (**Users > Delete**, bulk delete, `wp user delete`, the WooCommerce REST API), the email address is anonymised in the NewsMAN list. With **Use Action Scheduler** on (Developer Settings), this runs in the background, so deleting many users at once stays fast; otherwise it runs right away. On a multisite network, a user deleted from the network is anonymised in the list of every site they belonged to, and a user removed from one site is anonymised in the list of that site, even when another site uses the same NewsMAN list.
+
+- **Nothing is sent to NewsMAN** when users are deleted because a whole site of a multisite network is deleted (**Network Admin > Sites > Delete**, `wp site delete`), or because WooCommerce deletes inactive accounts (**WooCommerce > Settings > Accounts & Privacy > Retain inactive accounts**). Nobody asked to be forgotten in these cases. To remove those people from NewsMAN too, do it in your NewsMAN account.
+
+- **Unsubscribing is not deleting** - An unsubscribe (the My Account Newsletter tab, a form, the unsubscribe link of a NewsMAN email) only unsubscribes, as before.
 
 - **Tools > Export Personal Data** - The **NewsMAN newsletter subscription** exporter adds a **NewsMAN** section to the export: what NewsMAN keeps about the person, read from NewsMAN when you download the export (email list status, subscription and unsubscription dates, name, tags and properties, and the SMS list entries of the person's phone numbers when SMS is set up). If NewsMAN cannot be reached, the export stops with the error; download it again later.
 
-- **Settings > Privacy > Policy Guide** - The plugin suggests a **NewsMAN** text for your privacy policy: what is sent to NewsMAN (subscriptions, orders, SMS), the tracking script and its `_nzm` cookies, and links to the NewsMAN privacy and cookie policies. Copy the parts that match the features you use.
+- **Settings > Privacy > Policy Guide** - The plugin suggests a **NewsMAN** text for your privacy policy: what is sent to NewsMAN (subscriptions, orders, SMS), the tracking script and its `_nzm` cookies, what happens when personal data is erased, and links to the NewsMAN privacy and cookie policies. Copy the parts that match the features you use.
 
-When SMS is set up (**NewsMAN > SMS**, Use SMS and an SMS list), the phone numbers are also unsubscribed from the NewsMAN SMS list: the billing phone of the account and the billing phones of the WooCommerce orders placed with that email address or by that user.
+When SMS is set up (**NewsMAN > SMS**, Use SMS and an SMS list), the phone numbers are unsubscribed from the NewsMAN SMS list (NewsMAN has no anonymise for SMS lists): the billing phone of the account and the billing phones of the WooCommerce orders placed with that email address or by that user.
 
 Nothing goes through a confirmation email, even when the **Newsletter Opt-in type** is Double Opt-in, so nobody receives an email after asking to be forgotten. An email address or phone number that is not on the NewsMAN list is not an error. A NewsMAN error never stops the deletion.
+
+**An anonymised email address can come back with a later sync.** If the same email address is sent to NewsMAN again, NewsMAN subscribes it again. This happens when the site still has the email address, for example:
+- **Sync > WooCommerce subscribers** sends the billing emails of the orders, and WooCommerce keeps them after a user is deleted or erased, unless **WooCommerce > Settings > Accounts & Privacy > Account erasure requests > Remove personal data from orders on request** is on;
+- **Sync > WordPress subscribers** sends the users with the Subscriber role, and Erase Personal Data does not delete the user account.
+
+So when a person asks to be forgotten, turn on **Remove personal data from orders on request**, erase their personal data, and delete their user account.
 
 ---
 

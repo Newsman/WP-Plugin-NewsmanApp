@@ -123,13 +123,13 @@ class ApiClientErrorTest extends NewsmanTestCase {
 	}
 
 	/**
-	 * Erase Personal Data while NewsMAN cannot be reached: reported as retained, not as unsubscribed.
+	 * Erase Personal Data while NewsMAN cannot be reached: reported as retained, not as anonymised.
 	 */
 	public function test_erase_while_unreachable_is_reported() {
 		$this->answer = 'wp_error';
 		$response     = ( new Eraser() )->erase( 'unreachable@example.com', 1 );
 		$this->assertFalse( $response['items_removed'] );
 		$this->assertTrue( $response['items_retained'] );
-		$this->assertStringContainsString( 'NewsMAN could not unsubscribe the email address', $response['messages'][0] );
+		$this->assertStringContainsString( 'NewsMAN could not anonymise the email address', $response['messages'][0] );
 	}
 }
